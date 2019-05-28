@@ -1,0 +1,267 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed onclick="checkExpand()">
+<script language="JSCRIPT"><!--
+function checkExpand(){
+     if (""!=event.srcElement.id)
+	 {
+	  var ch=event.srcElement.id+"Child";
+	  var el=document.all[ch];
+      if(null!=el)
+	  {
+	   el.style.display="none"==el.style.display?"":"none";
+	   //document.scroll(1000000,50000000);
+       if(el.style.display!="none")
+	    event.returnValue=false;
+	  }
+	 }
+	 }
+--></script>
+<p align="center"><b><font face="Times New Roman CE" size="6">D</font><font face="Times New Roman CE" size="5">IA</font><font 
+face="Times New Roman CE" size="6">L</font><font face="Times New Roman CE" size="5">OGUE CUSTOM
+</font>
+<font face="Times New Roman CE" size="6"><span lang="de">
+&nbsp;(</span>DL<span lang="de">)</span></font><span lang="de"><span lang="de"><font face="Arial" size="2"><br>
+</font></span></span><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b>
+</p>
+
+<p><b><font face="Arial" size="2" color="#333333">Supports custom dialogue creating.<br>
+</font></b><font face="Arial" size="2">See
+<a target="_self" href="../other/triger_r.htm#dl"><span lang="de">DL</span>
+<span lang="de">Trigger</span></a></font></p>
+
+<table border="2" bordercolorlight="#000000" bordercolordark="#000000" height="16" width="100%">
+      <tr>
+        <td nowrap valign="top"><font class=ermtext>!!DL<font class=param>#</font>:<font class=param>XXXX</font>;</font></b></td>
+        <td valign="top">Trace into dialogue number <font class=param>#</font>, <font class=param>#</font>&gt;0.</td>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+<tr><td valign=top><a name=a></a><font class=ermtext>A<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$
+   <td valign=top><b>Change dialogue item characteristic.</b><br>
+   &nbsp;<font class=param>#1</font> - item ID<br><br>
+   <table>
+   <tr><td><font class=param>#2<td>type<td><font class=param>$
+   <tr><td> 3<td>Text<td><b>(string)</b>: new text of the item
+   <tr><td> 4<td>Def <td><b>(number)</b>: new cadre in Def
+   <tr><td>11<td>Pcx <td><b>(string)</b>: new picture
+   </table>
+   <font class=notes>Notes</font>:<br>May be called in !?DL trigger and so may be used to customize
+the dialog on a fly.
+<tr><td valign=top><a name=c></a><font class=ermtext>C<font class=param>#
+   <td valign=top><b>Set a specific callback action OR change current mouse pointer.</b><br>
+   &nbsp;&nbsp;<font class=param>#</font> - type of action<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;<b>1</b> - close dialog with current item return code<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;<b>1000+#</b> - set current pointer as # (see <a href=../format/fmpm2.htm>format PM2</a>)<br>
+   <font class=notes>Comments</font>:<br>
+   &nbsp;&nbsp;For this command you need not to set a dialog Id in DL trigger
+   part. It affect the active dialog and any item.<br>
+   <font class=example>Example</font>:<br>
+   <script type="erm">!!DL:C1; - close dialog
+!!DL:C1000; - change mouse pointer to arrow (standard pointer)
+!!DL:C1042; - change mouse pointer to 'Scuttle Boat'</script>
+<tr><td valign=top><a name=e></a><font class=ermtext>E<font class=param>#1</font>/<font class=param>#2</font>
+   <td valign=top><b>Enable dialogue item</b><br>
+   &nbsp;&nbsp;<font class=param>#1</font> - dialogue item ID<br>
+   &nbsp;&nbsp;<font class=param>#2</font> - enable (1) or disable (0) item   
+<tr><td valign=top><a name=h></a><font class=ermtext>H<font class=param>#1</font>/<font class=param>#2</font>
+   <td valign=top><b>Set hint text for dialogue item</b><br>
+   &nbsp;&nbsp;<font class=param>#1</font> - dialogue item ID<br>
+   &nbsp;&nbsp;<font class=param>#2</font> - hint text for item (appears when you move a mouse over the item)<br>
+   <font class=notes>Comments</font>:<br>
+  &nbsp;&nbsp;<font class=param>#2</font> may be global or static Z variable.<br>
+  &nbsp;&nbsp;The text is parsed before showing (not setting).
+<tr><td valign=top><a name=n></a><font class=ermtext>N<font class=param>#
+   <td valign=top><b>Parse dialogue template</b><br>
+   &nbsp;&nbsp;<font class=param>#</font> - template file name (may be direct text, global, local or static Z variable)<br>
+   <font class=notes>Comments</font>:<br>
+   &nbsp;&nbsp;The text is parsed before using.<br>
+   &nbsp;&nbsp;This command load template file (if not loaded already), searches
+the dialog (using dialog Id) in the file and parses it.<br>
+  &nbsp;&nbsp;It does not show the dialog.<br>
+  &nbsp;&nbsp;The main aim of it is to give you a chance to adjust loaded dialog
+settings before showing it.<br>
+  <font class=notes>Results</font>:<br>
+    &nbsp;&nbsp;Flag 1 = 1 if Ok<br>
+    &nbsp;&nbsp;Flag 1 = 0 if Error happens (no dialog template found)<br>
+  See <a href=#template>template format below</a>.
+<tr><td valign=top><a name=p></a><font class=ermtext>P<font class=param>$
+   <td valign=top><b>Pass decision control to function $ </b><br>
+   Function parameters:<br>
+   &nbsp;&nbsp;<font class=param>x1</font> - action<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0  - mouse move to another square<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12 - left mouse button push<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13 - left mouse button release<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14 - right mouse button push<br>
+   &nbsp;&nbsp;<font class=param>x2</font> - x coordinate of clicked map square<br>
+   &nbsp;&nbsp;<font class=param>x3</font> - y coordinate of clicked map square<br>
+   &nbsp;&nbsp;<font class=param>x4</font> - level of clicked map square<br>
+   <font color=example>Example</font>:<br><font class=ermtext>
+   Note: this example is valid only in ERA version of game
+   <script type="erm">!?OB8/11/0;
+!!DL:P12345;
+!!IF:M^Now spell has ended^;
+!?FU12345;
+!!if&x1=0:;  mouse move
+!!OBx2/x3/x4:T?y1; get object type at a square
+!!if&y1=34:; hero
+!!DL:C1042; sunk boat cursor
+!!el:;
+!!DL:C1000; arrow cursor
+!!en:;
+!!FU:E;
+!!en:;
+!!if&x1=13:;  left mouse button release
+!!OBx2/x3/x4:T?y1 C?y2;
+!!if&y1=34:; hero
+!!HEy2:K; kill hero
+!!DL:C1000; arrow cursor
+!!en:;
+!!FU:E;
+!!en:;
+!!if&x1=14:;  right mouse push
+!!DL:C1;
+!!en:;</script></td>
+<tr><td valign=top><a name=s></a><font class=ermtext>S<font class=param>$
+   <td valign=top><b>Show dialog</b><br>
+   &nbsp;&nbsp;<font class=param>$</font> - return item (the active item when closed)<br>
+   <font class=notes>Comments</font>:<br>
+   &nbsp;&nbsp;Shows the dialog (with a specific Id) and wait until it is closed.
+This means that the followed command will be executed not immediately
+but when the dialog is closed by any means.<br>
+  &nbsp;&nbsp;You may use no parameter at all, it means that return code is
+ignored.<br>
+  &nbsp;&nbsp;You may show one dialog "from another" and the sequence may be
+unlimited but you may have only ONE dialog of the same type on the
+screen at the same moment. This means that you cannot call a dialog X
+from dialog X.</tr>
+  </table>
+  
+<a name=template></a><h4>Template layout.</h4>
+Dialog template is parsed as dialog items until the next '#' sign in the 1st column is found.
+This may be just an empty line with '#' sign or a line with a new dialog start.<br>
+<table border="2" bordercolorlight="#000000" bordercolordark="#000000">
+<tr><td>This is example of HoMM III dialog template.</td><td>First two lines are ignored (they can contain anything, but the text will be ignored)
+</td></tr>
+<tr><td>First column is also ignored.</td><td>In this example it will contain short description of item</td></tr>
+<tr>
+<td>Every dialog begins with this line</td>
+<td>#</td>
+<td>Dialog ID</td>
+<td>x position <font size="1">(-1 for center)</font></td>
+<td>y position <font size="1">(-1 for center)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>number of dialog items</td>
+<td>player to adjust border color <font size="1">(-1 for current)</font></td>
+<td>background PCX file name</td>
+<td>Id of text item used for hint field</td></tr>
+<tr>
+<td>This is comment line</td>
+<td>;</td>
+<td>It's not parsed when loading dialog</td>
+<td>Note the semicolon in secont column :)</td></tr>
+<tr>
+<td>Pcx image</td>
+<td>Pcx</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>file name</td>
+<td>2048</td>
+</tr>
+<tr>
+<td>Particular frame from def</td>
+<td>Def</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>file name</td>
+<td>frame number</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Animated DEF</td>
+<td>A</td>
+<td>not supported yet</td>
+</tr>
+<tr>
+<td>Button</td>
+<td>Button</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>file name</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Text</td>
+<td>Text</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>text  <font size="1">(may be empty and set later)</font></td>
+<td>font</td>
+<td>text color</td>
+<td>background color</td>
+<td>text alignment</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Text with scrollbar</td>
+<td>Scrollable Text</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>text  <font size="1">(may be empty and set later)</font></td>
+<td>font</td>
+<td>text color</td>
+<td>Scrollbar color (??)</td>
+<td>text alignment</td>
+<td>Hint <font size="1">(displayed in hint field)</font></td>
+</tr>
+<tr>
+<td>Editable text box</td>
+<td>Edit</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>horizontal size</td>
+<td>vertical size</td>
+<td>text  <font size="1">(may be empty and set later)</font></td>
+<td>font</td>
+<td>Hint <font size="1">(displayed in hint field)</font></td>
+</tr>
+<tr>
+<td>Video file</td>
+<td>Video</td>
+<td>Item ID</td>
+<td>x position <font size="1">(based on dialog's top left corner)</font></td>
+<td>y position <font size="1">(based on dialog's top left corner)</font></td>
+<td>Video index (??)</td>
+<td>Hint <font size="1">(displayed in hint field)</font></td>
+</tr>
+</table>
+
+
+
+
+  <font class=bnotes>Notes</font>:<br>
+  You may have more than one dialog in one template file.<br>
+  You may not use dialogs with identical Id in different template
+files, every dialog should have its own unique Id. This in particular
+means that we should reserve an Id range for WoG dialogs.<br>
+  Item with number 30721 is a default cancel item. So if a user press
+ESC button when a dialog is shown, it is closed.<br>
+
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

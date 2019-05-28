@@ -1,0 +1,46 @@
+:Base h3wmaped.hlp
+:Index Map Editor Patch Help=h3wmapedpatch.hlp
+1 Overview=overview
+:include h3wmapedpatch.cnt
+1 Map Editor Interface
+2 Keyboard Shortcuts=shortcuts
+2 Map Window=map_window
+2 Mini-Map=mini_map
+2 Object Palette=object_palette
+2 Menus=toolbar
+2 Status Bar=statusbar
+2 Options=HIDD_OPTIONS
+1 Creating Maps
+2 Creating a New Map=HIDD_NEW_MAP
+2 Loading an Existing Map=load_map
+2 Saving a Map=save_map
+2 Map Specifications=map_specs
+2 Map Validation=HIDD_MAP_VALIDATION
+2 Placing Terrain=placing_terrain
+2 Placing Rivers=placing_rivers
+2 Placing Roads=placing_roads
+2 Placing Objects=placing_objects
+2 Moving and Copying Objects=moving_objects
+2 Erasing Objects=erasing_objects
+2 Automatic Obstacle Placement=automatic_obstacle_placement
+2 Object Properties
+3 Overview=HIDD_OBJECT_PROPERTIES
+3 Town Properties=HIDD_TOWN_PROPS
+3 Hero Properties=HIDD_HERO_PROPS
+3 Event Properties=HIDD_EVENT_PROPS
+3 Monster Properties=HIDD_MONSTER_PROPS
+3 Artifact Properties=HIDD_ARTIFACT_PROPS
+3 Pandora's Box Properties=HIDD_BLACK_BOX_PROPS
+3 Resource Properties=HIDD_RESOURCE_PROPS
+3 Seer's Hut Properties=HIDD_SEERS_HUT_PROPS
+3 Garrison Properties=HIDD_GARRISON_PROPERTIES
+3 Flaggable Properties=HIDD_FLAGGABLE_PROPERTIES
+3 Scholar Properties=HIDD_SCHOLAR_PROPERTIES
+3 Sign Properties=HIDD_SIGN_PROPERTIES
+3 Shrine Properties=HIDD_SHRINE_PROPERTIES
+3 Abandoned Mine Properties=HIDD_ABANDONED_MINE_PROPS
+3 Grail Properties=HIDD_HOLY_GRAIL_PROPS
+3 Crossover Hero Placeholder Properties=HIDD_HERO_PLACEHOLDER_PROPS
+3 Quest Guard Properties=HIDD_QUEST_GUARD_PROPS
+3 Random Dwelling Properties=HIDD_RANDOM_GENERATOR_PROPS
+3 Witch Hut Properties=HIDD_WITCH_HUT_PROPERTIES

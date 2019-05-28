@@ -1,0 +1,10 @@
+Title	ShortCut	Description	Command	Params	Directory(same as in command by default)
+ 
+Here are the tools that
+ appear in "WoG Tools" menu.
+
+-			-
+Heroes 3 WoG	F4	Run the game	h3wog.exe
+ERM Help	F5	Open ERM Help	erm_help\index.htm
+ERM Scripter	F6	Run ERM Scripter	erm_s\ERM_S.EXE
+ERM Script Master	F7	Run ERM Script Master	erm_s\ERM_SM.exe

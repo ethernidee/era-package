@@ -1,0 +1,196 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Tools</title>
+<base target="annexe">
+</head>
+
+<body bgproperties="fixed" background="../images/intile.jpg">
+
+<p align="center"><b><font size="6">U</font><font size="5">seful programs</font></span></b></p>
+
+ERA package includes several useful programs that can be used to enhance gameplay experience of ease the life of mod makers. This page will give
+brief instructions how to use each program.<br>
+
+<table border="0" cellspacing="1" width="100%" id="AutoNumber1">
+  <tr>
+<td width="100%" height="20" colspan="2"><b><font face="Arial" color="#000080">
+<a name="binmagic"></a></font></b></td>
+  </tr>
+  <tr>
+<td width="81%" background="../images/fond.gif" height="20"><b>
+<font face="Times New Roman" color="#D6C579" size="4">B</font><font face="Times New Roman" color="#D6C579">inMagic</font></b>
+</td>
+  </tr>
+  <tr>
+  <td width="100%" colspan="2">
+Designed to work with binary patches format that is compatible with all versions of ERA of utility and ExeBuilder.<br>
+Technical details of the program parameters are given in the file "binmagichelp.txt".<br>
+To simplify the work in the directory with the program are 3 bat-files: binary.bat, text.bat, diff.bat.<br>
+
+The first two accept as the one argument: a patch file, which will be optimized and transferred to, respectively, binary or text form.
+diff.bat is used to create patches by comparing the original and modified files. Takes three arguments:<br>
+- The original file;<br>
+- Changed file;<br>
+- A way to save patches.<br><br>
+
+To save as a binary patch should have the extension "*. bin", otherwise any other. All three bat-file creates a patch for the memory, which can 
+be activated by placing the directory EraPlugins \ [BeforeWoG | AfterWoG].<br>
+
+The text format of the patch:<br>
+The document consists of a patch label with useful information (author, scope, description) addresses, which need to be written new data and the 
+data in hexadecimal (0-9a-f).<br><br>
+
+<b>Example:</b><br>
+<font face="courier">
+; Author = Unknown<br>
+; Version = 1.0<br>
+; Not for commercial use<br>
+00887668 12345678<br>
+00401FC7 9090A090B2<br></font>
+
+The addresses are separated by whitespace information. Each new address is placed in a separate line.
+  </td>
+<b><font face="Arial" color="#000080">
+<a name="dee"></a></font></b>
+  </tr>
+  <tr>
+<td width="81%" background="../images/fond.gif" height="20"><b>
+<font face="Times New Roman" color="#D6C579">Dee</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" colspan="2"><font face="Arial">
+DEE stands for Dynamic Erm Editor<br>
+The program lets you open, edit and manage a large amount of scripts and upload them to the editor of the game's memory (00 .. 99), 
+edit them in memory and even completely delete fscripts from there. Additional features include the ability to extract the script from the 
+compressed form in one line.<br>
+</font><b><font face="Arial" color="#000080"><a name="defka"></a></font></b></td>
+  </tr>
+  <tr>
+<td width="81%" background="../images/fond.gif" height="20"><b>
+<font face="Times New Roman" color="#D6C579">DEFka</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2"></td>
+  </tr>
+  <tr>
+<td width="100%" colspan="2">
+
+This program allows to replace defs of any standard creature to another (you can find many of them on the internet) and also allows to restore their
+original graphics at any time
+  
+  </td>
+  </tr>
+  <tr>
+<td width="81%" background="../images/fond.gif" height="20"><b><a name="evme"></a>
+<font face="Times New Roman" color="#D6C579">EVME</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+This tool allows the user to change the values stored in global and local variables
+</td>
+  </tr>
+  
+  
+  
+  <tr>
+<td width="81%" background="../images/fond.gif" height="20"><b><a name="exebuilder"></a>
+<font face="Times New Roman" color="#D6C579">ExeBuilder</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+This program takes all *.bin patches from it's working directory, applies them to the file In.exe and saves the modified file as Out.exe
+</td>
+  </tr>
+  
+
+  <tr>
+<td width="81%" background="../images/fond.gif" height="20"><b><a name="repman"></a>
+<font face="Times New Roman" color="#D6C579">RepMan</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+This tool replaces all entities of string1 to string do in input file.<br>
+<b>Example:</b><br>
+<font face="courier">repman Data\s\script00.erm v2391 v600<font>
+
+
+</td>
+  </tr>
+  
+<td width="81%" background="../images/fond.gif" height="20"><b><a name="resman"></a>
+<font face="Times New Roman" color="#D6C579">ResMan</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+Program for managing snd/vid/lod archives. Run without parameters for help<br>
+
+
+</td>
+  </tr>
+  
+  
+  <td width="81%" background="../images/fond.gif" height="20"><b><a name="lodimport"></a>
+<font face="Times New Roman" color="#D6C579">LodImport</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+imports specified file to LOD<br>
+Parameters: path to lod, path to file
+</td>
+  </tr>
+  
+  <td width="81%" background="../images/fond.gif" height="20"><b><a name="lodexport"></a>
+<font face="Times New Roman" color="#D6C579">LodExport</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+A tool to export files from lod archive<br>
+parameters: path to lod, filename in lod, path to extracted file<font>
+</td>
+  </tr>
+  
+  
+  <td width="81%" background="../images/fond.gif" height="20"><b><a name="objector"></a>
+<font face="Times New Roman" color="#D6C579">Objector</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+Allows to combine object (z[e]obj[c]ts.txt) with custom files properly.<br>
+Parameters: targer file, custom file [parameter - replace already existing files]
+<font>
+
+
+</td>
+  </tr><td width="81%" background="../images/fond.gif" height="20"><b><a name="defexplode"></a>
+<font face="Times New Roman" color="#D6C579">DefExplode</font></b></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2">
+This tool breaks up def file to frames in bmp format<br>
+Parameters: path to def file, path to extract frames<font>
+</td>
+  </tr>
+  
+  
+  <tr>
+<td width="100%" height="19" colspan="2" background="../images/fond.gif">
+<font color="#D6C579">Protip: By using LodImport, ResMan and your own *.bat scripts, you can avoid using h3wupd installer,
+which often becomes unstable and corrupts data files.</font>
+</td>
+ 
+ </tr>
+  <tr>
+<td width="100%" height="19" colspan="2">&nbsp;</td>
+  </tr>
+</table>
+
+</body>
+
+<script src="./erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="./erm.css"/>
+</html>

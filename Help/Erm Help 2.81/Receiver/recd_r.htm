@@ -1,0 +1,145 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b><font face="Times New Roman CE" size="6"><span lang="de">
+C</font><font face="Times New Roman CE" size="5">ASTLE</font><font face="Times New Roman CE" size="6"> 
+D</font><font face="Times New Roman CE" size="5">EMOLITION</font><font face="Times New Roman CE" size="6"> 
+(</font></span><font face="Times New Roman CE" size="6">CD</font><span lang="de"><font face="Times New Roman CE" size="6">)</font><font face="Arial" size="2"><br>
+</font></span><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b></p>
+<p><b><font face="Arial" size="2" color="#333333">Used to set up the parameters for town
+demolitions initiated by a player.</font></b></p>
+
+  <table border="2" bordercolorlight="#000000" bordercolordark="#000000">
+      <tr>
+        <td nowrap> <b><font face="Arial" size="2"><font color="#FF0000">!!CD</font><font face="Arial" size="3" color="#FF0000">:</font><font color="#8B008B">XXXX</font><font color="#FF0000">;</font></font></b></td>
+        <td>
+
+<font face="Arial" size="2">Used to set up the parameters for town demolitions initiated by a player.</font>
+
+        </td>
+      </tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+  <tr>
+    <td nowrap valign=top><b><font face="Arial" size="2" color="#FF0000">
+    <a name="A"></a>A</font><font face="Arial" size="2" color="#800080">$1</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$2</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$3<span lang="de">;</span></font></b></td>
+    <td><font face="Arial" size="2">
+   <b>
+   Lets you set up a Hero's army minimum HP to break a particular building type in particular town.</b><br>
+   &nbsp;&nbsp; $1=town type (see
+    <a target="annexe" href="../format/fmt.htm">Format T</a>)<br>
+      &nbsp;&nbsp; $2=building type (see
+    <a target="annexe" href="../format/fmu.htm">Format U</a>)<br>
+      &nbsp;&nbsp; $3=HP of all Hero's army</font></td>
+  </tr>
+  <tr><td valign=top><font class=ermtext>B0/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$ <img src=../images/new.gif>
+  <td><b>Enable building of structure globally.</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#1</font> = town type (see <a href=../format/fmt.htm>Format T</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#2</font> = structure number (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$</font> = 1 to enable building structure<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$</font> = 0 to disable building structure<br>
+  <tr><td valign=top><font class=ermtext>B1/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$1</font>/<font class=param>$2</font> <img src=../images/new.gif><br>
+  <td><b>Set build dependencies for structure.</b><br>
+      <font class=ermtext>B1/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$1</font>/<font class=param>$2</font></font><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#1</font> = town type (see <a href=../format/fmt.htm>Format T</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#2</font> = structure number (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$1</font> = first double word (bytes 0-3) (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$2</font> = second double word (bytes 4-5) (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+	  <font class=bnotes>Comments</font>:<br>
+	   Every set bit in <font class=param>$1</font> (dword 0) or in <font class=param>$2</font> (dword 1) means that this structure may be build 
+	   only when a structure represented by this bit is built.<br>
+     <font class=example>Example</font>:<br> 
+	 <font class=ermtext>B1/0/3/36/0</font> means that Magic guild lvl 4 may be build only when Magic Guild Lvl 3 and Tavern are both built.
+	  
+	  <tr><td valign=top>B2/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>#3</font>... <img src=../images/era.gif><br>
+  <td>Set build dependencies for structure (alternative syntax).<br>
+	  <font class=ermtext>B2/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>#3</font>...</font><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#1</font> = town type (see <a href=../format/fmt.htm>Format T</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#2</font> = structure number (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#3</font>, <font class=param>#4</font> and further are numbers of buildings<br>
+	  <b>Note:</b> If you set a building that has a requirement of another building, and the building that's required by the first building, the 
+	  building that is required for both won't appear in requirement list.<br>
+	  <u>Example</u>: If you set requirements of Portal of Glory to Guardhouse and Archer's tower, only Archer's tower will appear in 
+	  requirements list
+	  
+	  
+  <tr><td valign=top><font class=ermtext>B3/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$1</font>/<font class=param>$2</font> <img src=../images/new.gif><br>
+  <td><b>Set exclusion dependencies for structure.</b><br>
+      <font class=ermtext>B1/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$1</font>/<font class=param>$2</font></font><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#1</font> = town type (see <a href=../format/fmt.htm>Format T</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>#2</font> = structure number (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$1</font> = first double word (bytes 0-3) (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$2</font> = second double word (bytes 4-5) (see <a href=../format/fmcbl.htm>Format BL</a>)<br>
+	  <font class=bnotes>Comments</font>:<br>
+	   Every set bit in <font class=param>$1</font> (dword 0) or in <font class=param>$2</font> (dword 1) 
+	   means that if structure <font class=param>#1</font> is built then all structures defined in both dwords will be
+	   removed (visually) from the town screen.<br>
+     <font class=example>Example</font>:<br> 
+	 <font class=ermtext>B3/0/43/31/0</font> means that after building Upgraded Portal of Glory Magic guild (if is built)
+      will not be shown.
+	<tr>
+    <td nowrap valign=top><b><font face="Arial" size="2" color="#FF0000">
+    <a name="D"></a>D</font><font face="Arial" size="2" color="#800080">$<span lang="de">;</span></font></b></td>
+    <td><font face="Arial" size="2">
+   &nbsp;&nbsp;<b> $=number of demolitions allowed per day</b></font></td>
+  </tr>
+  <tr>
+    <td nowrap valign=top><b><font face="Arial" size="2" color="#FF0000">
+    <a name="E"></a>E</font><font face="Arial" size="2" color="#800080">$1</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$2</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$3<span lang="de">;</span></font></b></td>
+    <td><font face="Arial" size="2">
+   <b>
+   Lets you set up a Hero's minimum experience level required to break a
+   particular building type in particular town.</b><br>
+   &nbsp;&nbsp; $1=town type (see
+    <a target="annexe" href="../format/fmt.htm">Format T</a>)<br>
+      &nbsp;&nbsp; $2=building type (see
+    <a target="annexe" href="../format/fmu.htm">Format
+      U</a>)<br>
+      &nbsp;&nbsp; $3=experience</font></td>
+  </tr>
+  <tr>
+    <td nowrap valign=top><b><font face="Arial" size="2" color="#FF0000">
+    <a name="M"></a>M</font><font face="Arial" size="2" color="#800080">$<span lang="de">;</span></font></b></td>
+    <td><font face="Arial" size="2">
+   &nbsp;<b>&nbsp; $=Hero's movement to lose per demolished building.</b></font></td>
+  </tr>
+  <tr>
+    <td valign=top nowrap><b><font face="Arial" size="2" color="#FF0000">
+    <a name="N"></a>N</font><font face="Arial" size="2" color="#800080">$1</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$2<span lang="de">;</span></font></b></td>
+    <td><font face="Arial" size="2">
+   &nbsp;&nbsp;<b> $1=number of demolition in one day<br>
+   &nbsp;&nbsp; $2=cost to break next building on the same day</b></font></td>
+  </tr>
+  <tr>
+    <td valign=top nowrap><b><font face="Arial" size="2" color="#FF0000">
+    <a name="P"></a>P</font><font face="Arial" size="2" color="#800080">$1</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$2</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$3</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$4</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#800080">$5<span lang="de">;</span>&nbsp;</font></b></td>
+    <td><font face="Arial" size="2">
+   <b>
+   Used to set up a square on the map where the battle with these
+   monsters will take place</b> (as though it were really there) when you break their dwelling.
+   This may be used for adjusting a terrain type and terrain bonus during the battle. Nothing more.<br>
+      &nbsp;&nbsp; $1=monster number inside town (0...7 basic, 8...13 upgraded)<br>
+      &nbsp;&nbsp; $2=x<br>
+      &nbsp;&nbsp; $3=y<br>
+      &nbsp;&nbsp; $4=l<br>
+      &nbsp;&nbsp; $5=relative(1)/absolute(0) coordinates</font></td>
+  </tr>
+</table>
+
+<p><font face="Arial" size="2"><u>What's happen when you destroy completely your town and there
+are two heroes inside it?</u><br>
+  External (visiting) hero has no choice just to go away for 6 days.<br>
+  Internal Hero will be lost for owner :-) He become a nobody's hero.<br>
+He always stays inside and protect the town from everyone. If he wins,<br>
+he will gain experience :-)</font>
+</p>
+
+<p><font face="Arial" size="2"><u>Can the AI destroy towns?</u><br>
+  AI cannot destroy a town at this time. The problem is that it's hard to
+formulate rules for this (though it is possible). If you want AI to break towns, you should use ERM script (take control when AI visits a
+town, decide for him what to do and break it yourself).<br>
+  But AI will rebuild town including changing it to a native hero's town type.</font>
+</p>
+
+</body>
+
+</html>

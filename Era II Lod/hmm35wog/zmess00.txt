@@ -1,0 +1,349 @@
+E All New Messages are to be placed below.
+"
+
+You can try to demolish this wonderful building."
+"
+
+Do you really want to do it?"
+Taking a look at the neglected building you could not see anyone.
+Very strange... where are the Ghosts?
+Having spent some time, you finally managed to find them. Here they are! 
+It seems that now they are bored and ready to be hired.
+You walked up to the familiar building but stopped short. 
+You have never seen such strange creatures.
+They were flying around paying little attention to your visit.
+Well... There is no choice. Maybe later.
+There is nobody around. It seems that this formerly beautiful place can be restored now.
+
+Do you want to start the City again?
+Right. But the common people felt scared and you have to get rid of the ex-Ghosts' house.
+It used to be a useful building once but is completely abandoned now.
+The dwelling is inhabited.
+Monsters do not wish to leave their home unless you are willing to pay them for it.
+
+Do you agree?
+People do not like your wish to break everything.
+You should pay to keep them contented or wait until another day.
+
+Do you agree to pay them?
+Unfortunately you do not have enough money.
+You can still disperse the creatures. But battle is the only way!
+
+Are you ready for battle?
+When a wind has scattered the smoke, you find out that there is something left over from the building.
+The angry creatures still allow you to run away.
+The Hero having influence can turn the city to a native one.
+
+Take your choice.
+And even more!
+No more demolition! People are getting anxious and you have no choice but to wait.
+Only a visiting Hero in the Castle can do it.
+You are weary from travelling. Return in the morning.
+Sorry to say but your Army is too weak.
+Only one type of Creature can be left.
+Only God can choose which of them will survive.
+Do not put temptation in his way!
+
+
+You can leave a part of your Army to protect this land against invasion.
+Or you can leave an Artifact from your backpack.
+
+Do what you think is best.
+You brought so much sorrow to this place that no one wishes to remember your name.
+
+Now begone!
+Who can live without a home?
+ERM command has a wrong syntax. Skipped.
+Event Related Model has been found. Enabled.
+ERM has wrong syntax. Disabled.
+Error:
+
+Game was not saved properly or is an old version.
+Error:
+
+Unable to save the Game.
+Too many castles (over 100).
+Unfortunately your Hero is too weak.
+You can try to dismantle the Grail but a thorough job is expensive.
+You have no free slot in your backpack.
+There are only ruins left now, open to the four winds.
+The %s ready %s (press F to cast)
+The %s readies %s (press F to cast)
+Acid breath reduces the defense of the %s by %i
+
+%s are always lucky
+Ghost
+Ghosts
+These monsters that you have left all alone no longer trust you and scatter.
+Sorry, but God's Creature does not want to wait.
+If you wish to make a recruitment offer, search for this creature in a more attractive place.
+Do not keep the God's Creatures waiting. His divine nature is too sensitive.
+Nobody's home.
+The God's Creature is searching for a better place for Providence.
+Your hero is already devoted to another God.
+{You have}                    {Local}  
+
+
+At your approach you hear a voice:
+"What are you searching for, Hero?"
+  You feel a powerful presence in your mind, sifting through your thoughts.
+Then the voice speaks again.
+"Yes, I see. But are you strong enough?"
+Now that you have a God Representative, your hero will get an incremental bonus until you lose him.
+
+{Each week:}
+
+
+You are too late. God already blesses a Hero.
+Are you sure that you want to dismiss the God Representative?
+Your Hero has the Bonus of:
+God would be very angry.
+Not a very good idea. Two God Representatives in one...
+The old owner will lose the bonus.
+Are you sure?
+{God Bonus}
+
+Your Hero may have an incremental bonus if God blesses him.
+{God Bonus}
+
+God increases your Hero's {%s} by {%d}.
+Attack Skill
+Defense Skill
+Spell Power
+Knowledge
+God Representative is too peaceful to attack.
+Ghosts do not want to stay alone.
+How dare you leave the God's present! Are you searching for your death?
+Red
+Blue
+Tan
+Green
+Orange
+Purple
+Teal
+Pink
+{God Blessings and Curses}
+
+Your Hero may have various bonuses or penalties if God blesses or curses him.
+Value is %i and will last for another %i turns.
+Will last forever :-)
+73
+74
+75
+76
+77
+78
+79
+80  Curse  0 (nothing)
+Hero is dazzled and cannot see anything new around
+One Hero's slot is occupied by a lock
+Monsters will never offer to join the Hero
+Hero will lose Gold daily
+Hero will get additional Crystal, Gems, Mercury and Sulfur daily
+Hero will lose mana points daily
+Hero will receive mana points daily
+Hero has a limited scouting area
+Here gets additional experience daily
+Hero cannot move fast enough
+91  Curse 11 (not yet)
+92  Curse 12 (not yet)
+93  Curse 13 (not yet)
+94  Curse 14 (not yet)
+Hero will get additional Wood daily
+Hero will get additional Ore daily
+Hero will get additional Gems daily
+Hero will get additional Mercury daily
+Hero will get additional Sulfur daily
+Hero will get additional Crystal daily
+Hero will get additional Gold daily
+Hero is forbidden to visit a Water Wheel
+Hero is forbidden to visit any Dwelling
+Hero is forbidden to visit an Arena
+Hero is forbidden to visit a Star Axis
+Hero is forbidden to visit a Garden of Revelation
+Hero is forbidden to visit a Learning Stone
+Hero is forbidden to visit a Library of Enkightment
+Hero is forbidden to visit a Marletto Tower
+Hero is forbidden to visit a Mercenary Camp
+Hero is forbidden to visit a School of Magic
+Hero is forbidden to visit a University
+Hero is forbidden to visit a School of War
+Hero is forbidden to visit a Witch Hut
+Hero is forbidden to visit a Subterranian Gate
+Hero is forbidden to take a Treasure Chest
+Hero is forbidden to visit a Mystical Garden
+Hero is forbidden to take any Resource
+Hero is forbidden to visit a Den of Thieves
+Hero is forbidden to visit a Fountain of Youth
+Fear
+One-word answer to Sphinx' riddle:
+Sorry, but restarting the scenario is prohibited.
+You know, Gods do not want for you to even touch it.
+The monsters are scared of the Gods' curse and do not join you.
+126
+127
+128
+129
+130
+Hero is forbidden to visit a Crypt
+Hero is forbidden to visit a Hill Fort
+Hero is forbidden to visit a Shrine of Magic
+Hero is forbidden to visit a Lighthouse
+Hero is forbidden to visit a Cartographer
+Hero is forbidden to visit a Undeground Cartographer
+Hero is forbidden to visit a Water Cartographer
+Hero is forbidden to visit a Black Marcet
+Hero is forbidden to visit a Monolith
+Hero is forbidden to visit an Obelisk
+Hero is forbidden to visit a Pillar of Fire
+Hero is forbidden to visit a Trading Post
+Hero is forbidden to visit a Pyramid
+Hero is forbidden to visit a Prison
+Hero is forbidden to visit a Redwood Observatory
+Hero is forbidden to visit a Sanctuary
+Hero is forbidden to visit a Scholar
+Hero is forbidden to visit Stables
+Hero is forbidden to visit a Tree of Knowledge
+Hero is forbidden to visit a Tavern
+Hero is forbidden to visit a Magic Well
+Hero is forbidden to visit a Whirlpool
+Hero is forbidden to dig for the Grail
+Hero will get additional Wood and Ore daily
+Hero can move faster
+156 Curse 66 (not yet)
+157 Curse 67 (not yet)
+158 Curse 68 (not yet)
+159 Curse 69 (not yet)
+160 Curse 70 (not yet)
+161 Curse 71 (not yet)
+162 Curse 72 (not yet)
+163 Curse 73 (not yet)
+164 Curse 74 (not yet)
+165 Curse 75 (not yet)
+166 Curse 76 (not yet)
+167 Curse 77 (not yet)
+168 Curse 78 (not yet)
+169 Curse 79 (not yet)
+170 Curse 80 (not yet)
+171 Curse 81 (not yet)
+172 Curse 82 (not yet)
+173 Curse 83 (not yet)
+174 Curse 84 (not yet)
+175 Curse 85 (not yet)
+176 Curse 86 (not yet)
+177 Curse 87 (not yet)
+178 Curse 88 (not yet)
+179 Curse 89 (not yet)
+180 Curse 90 (not yet)
+181 Curse 91 (not yet)
+182 Curse 92 (not yet)
+183 Curse 93 (not yet)
+184 Curse 94 (not yet)
+185 Curse 95 (not yet)
+186 Curse 96 (not yet)
+187 Curse 97 (not yet)
+188 Curse 98 (not yet)
+189 Curse 99 (not yet)
+Correct. I bestow upon you a new blessing.
+Wrong. I punish you with a curse.
+##### blockedes Towers.
+{Quest Log and Papyrus}
+
+Display a list of all current quests and other useful info
+
+You can also control ERM script
+Do you want to debug it?
+Pyramid
+You receive a Gift!
+Wise and Mighty Sphinx
+{!!! VERY IMPORTANT !!!}
+
+    This map has internal ERM scripts.
+    If you WoGify it, there may be conflicts that will cause the scripts to function incorrectly, ruin playability or even cause the game to crash.
+    Therefore we insist that you WoGify this map {ONLY} if you have explicit instructions from the map maker (in the readme file or an in-game message).
+
+Do you wish to WoGify the map anyway?
+{!!! VERY IMPORTANT !!!}
+
+    This map is linked to an external ERM script.
+    If you WoGify it, there may be conflicts that will cause the scripts to function incorrectly, ruin playability or even cause the game to crash.
+    Therefore we insist that you WoGify this map {ONLY} if you have explicit instructions from the map maker (in the readme file or an in-game message).
+
+Do you wish to WoGify the map anyway?
+This WoG format map has no internal scripts and is NOT being WoGified. You can change this in the WoG Options Dialogue: WoGify Settings. However, the state (enabled or disabled) of all hard-coded WoG features will be taken from the WoG Options settings.
+
+Hard-coded WoG features are: Level 8 dwelling operation, Tower experience, Troops leaving, Troops rejoining, Commanders, Commander hiring, Town demolition, Creature dwelling accumulation, Creature dwelling guard accumulation, Sylvan Centaur creation, Stack experience, Artifact leaving, and Disabling cheat codes and menu.
+The custom WoGification options cannot be loaded from the options file. Used default.
+Opal of Magic
+Ruby of Offense
+Sapphire of Defense
+Emerald of Speed
+Permanent Bonus your Commander could get
+You come upon an Opal of Magic.
+It shimmers with a mystic light.
+Your Commander's Magic Power would increase by 1...
+...but dead Commanders cannot improve.
+You come upon a Ruby of Offense.
+It pulses with power, red as blood.
+Your Commander's Attack would increase by 2...
+...but dead Commanders cannot improve.
+You come upon a Sapphire of Defense.
+It sparkles with protective power.
+Your Commander's Defense would increase by 2...
+...but dead Commanders cannot improve.
+You come upon an Emerald of Speed.
+It glows brightly.
+Your Commander's Speed would increase by 1...
+...but dead Commanders cannot improve.
+You may destroy this Opal of Magic (Yes) or leave it as is (No).
+You may destroy this Ruby of Offense (Yes) or leave it as is (No).
+You may destroy this Sapphire of Defense (Yes) or leave it as is (No).
+You may destroy this Emerald of Speed (Yes) or leave it as is (No).
+You come upon an Opal of Magic.
+It shimmers with a mystic light.
+Your Commander's Magic Power would increase by 1...
+...if you only had one.
+You come upon a Ruby of Offense.
+It pulses with power, red as blood.
+Your Commander's Attack would increase by 2...
+...if you only had one.
+You come upon a Sapphire of Defense.
+It sparkles with protective power.
+Your Commander's Defense would increase by 2...
+...if you only had one.
+You come upon an Emerald of Speed.
+It glows brightly.
+Your Commander's Speed would increase by 1...
+...if you only had one.
+You may destroy this Opal of Magic (Yes) or leave it as is (No).
+You may destroy this Ruby of Offense (Yes) or leave it as is (No).
+You may destroy this Sapphire of Defense (Yes) or leave it as is (No).
+You may destroy this Emerald of Speed (Yes) or leave it as is (No).
+Here are all artifacts in your Hero's backpack. Choose one or none to leave.
+You have no artifacts in your backpack to leave.
+Troops
+Artifact
+{Do you wish to WoGify this map?}
+
+PLEASE NOTE:
+With this WoGify Option setting, RoE, AB and SoD maps will be converted to WoG format even if you choose NOT to WoGify them, and all hard-coded WoG options will be taken from the WoG Option screen settings.
+Choose an Attack type
+Melee
+Melee (with return)
+Ranged
+Attack and Return
+Attack and Stay
+May Cast Spell
+{Grand} {Elves} and {Centaur} {Captains} are happy to meet each other in your army and want to be together forever...
+Do you agree?
+
+(Note: Their Experience will be set to 0.)
+%s turns %s to %s
+%s turn %s to %s
+You may Lock a Town gate for 5 days.
+
+Do you want to do it?
+This town may not be locked for another %i days
+239
+240
+

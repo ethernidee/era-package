@@ -1,0 +1,653 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b><font face="Times New Roman CE" size=6>H<font size=5>ERO</font> (HE)</font><br>
+<font face=Arial size=2><font color=#333333>RECEIVER
+<p>Used to modify characteristics, troops, inventory, skills, location and just about everything 
+imaginable for a specified hero. Also used for setting blessings and curses.</p>
+When any hero steps <a href=../other/triger_r.htm#hm target=principal>!?HM trigger</a> occurs.</font></b></p>
+
+  <p><font class=bnotes>Note</font>: <br>
+  <font size="2" face="Arial">v998/v999/v1000 variables will store the location of the current hero visited.<br> 
+  Also, you can refer to it easily with an indirect reference (for example: !!HE998:...; )</p>
+  For a more detailed and explained version of HE receiver, read
+  <a target="_self" href="../other/tutor_r1.htm#howto6">the HE receiver easily explained</a> (ERM for dummies, by Qurqirish Dragon)</font></p>
+
+<table border=2 bordercolorlight=#000000 bordercolordark=#000000>
+<tr><td nowrap valign=top><font class=ermtext>!!HE<font class=param>#</font>:<font class=param>XXXX;</td>
+   <td width=100%>The hero number of # (see <a href=../format/fmh.htm>Format H</a> - each hero has a unique number in the game).</td>
+<tr><td nowrap valign=top><font class=ermtext>!!HE<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>#3</font>:<font class=param>XXXX</font>;</td>
+   <td width=100%>The hero at x,y,l coordinates<br>
+&nbsp;&nbsp;<font class=param>#1</font> = x<br>
+&nbsp;&nbsp;<font class=param>#2</font> = y<br>
+&nbsp;&nbsp;<font class=param>#3</font> = level (0-Surface, 1-Underground)</td></tr>
+<tr><td nowrap valign=top><font class=ermtext>!!HE<font class=param>-1</font>:<font class=param>XXXX</font>;</td>
+   <td width=100% valign=top>Current hero, the hero who activated the trigger. Using this format simplifies things greatly as you do not need
+   to keep changing the coordinates for every !!HE command if you move the trigger event or object.
+   <br>
+   <font color="FF0000">Note:<br>
+   When you load a saved game, the top Hero in the Hero scroll list appears to be active, but the MGO trigger (Spell Book) will not have a valid 
+   Hero number for HE-1 at this point! Use OW:A to check whether there is an active Hero, to avoid error messages.
+   </font>
+   </td></tr>
+   <tr><td nowrap valign=top><font class=ermtext>!!HE<font class=param>-10</font>:<font class=param>XXXX</font>;</td>
+   <td width=100% valign=top>Attacking hero in battle.</td></tr>
+   <tr><td nowrap valign=top><font class=ermtext>!!HE<font class=param>-20</font>:<font class=param>XXXX</font>;</td>
+   <td width=100% valign=top>Defending hero in battle.</td></tr>
+<tr><td colspan=2 align=center class=rowforoptions><br><b>OPTIONS</b><br><br></td></tr>
+<tr><td valign=top><a name=A></a><font class=ermtext>A1/<font class=param>$1</font>/<font class=param>$2</font><br>
+          A2/<font class=param>$1</font>/<font class=param>?$2</font>/<font class=param>?$3</font><br>
+          A3/<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font><br>
+		   A4/<font class=param>$</font><br>
+		   A<font class=param>#<br>
+		  
+		  </td>
+   <td valign=top><b>These commands let you equip, check, calculate, or delete one or more artifacts from a hero.</b><br>
+&nbsp;&nbsp;(When you equip/take off an artifact, <a href=../other/triger_r.htm#ae target=principal>!?AE trigger</a> occurs.)<br><br>
+  All artifacts start from 7 (Centaur's Axe) on.<br>
+  1000 is a magic book<br>
+  1001 on means a scroll with a spell of <a href=../format/fmsp.htm>format SP</a> and number is calculated as [artifact number]-1001.<br>
+<br>
+<a name=a1></a><font class=ermtext>A1/<font class=param>$1</font>/<font class=param>$2</font></font> - <b>Equip an artifact</b><br>
+ &nbsp;&nbsp;<font class=param>$1</font> - number of artifact. (see <a href=../format/fma1.htm>Format A1</a>).<br>
+ &nbsp;&nbsp;<font class=param>$2</font> - position on the body where to place (see <a href=../format/fmap.htm>Format AP</a>).<br>
+ <font class=bnotes>Notes</font>:<br>
+ &nbsp;- If the slot is busy, the ERM Flag1 will be set to 0 otherwise to 1.<br>
+ &nbsp;- If you use HE:A1 to equip an artifact that gives spells, such as a Tome, Spell Scroll or Spellbinder's Hat, the spell won't be added. It will only be added if the player unequips and reequips the artifact.<br>
+ &nbsp;- If you use the HE:A1 command to equip an artifact, it will equip into a locked slot and the slot won't register as busy.<br></p>
+<a name=a2></a><font class=ermtext>A2/<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font></font> - <b>Calculate numbers of an artifact (get or check)</b><br>
+ &nbsp;&nbsp;<font class=param>&nbsp;&nbsp;$1</font> - Number of artifact. (see <a href=../format/fma1.htm>Format A1</a>).<br>
+ &nbsp;&nbsp;<font class=param>?$2</font> - Returns number of artifacts of the type hero has<br>
+ &nbsp;&nbsp;<font class=param>?$3</font> - Returns the numbers of equipped artifacts of the type</p>
+<a name=a3></a><font class=ermtext>A3/<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font></font> - <b>Remove several copies of artifact</b><br>
+ &nbsp;&nbsp;<font class=param>$1</font> - Number of artifact. (see <a href=../format/fma1.htm>Format A1</a>).<br>
+ &nbsp;&nbsp;<font class=param>$2</font> - Numbers of copy to delete<br>
+ &nbsp;&nbsp;<font class=param>$3</font> - Flag to delete first equipped (1) or in backpack (0)<br>
+<font class=bnotes>Notes</font>:<br>
+ &nbsp;- If you remove an artifact that has added a spell to a hero's book with ERM (<font class=ermtext>HE:A<font class=param>-</font></font> or <font class=ermtext>HE:A3</font>), the spell remains in the hero's book permanently.<br>
+ &nbsp;- If you remove an artifact with <font class=ermtext>HE:A<font class=param>-</font></font> it will correctly remove the added bonuses but if you remove it with <font class=ermtext>HE:A3</font> it won't remove the bonuses.<br>
+ &nbsp;- If you remove a combo artifact with <font class=ermtext>HE:A<font class=param>-</font></font> it will correctly remove the locked slots and added bonuses too, but if you remove it with <font class=ermtext>HE:A3</font> it won't remove either!</font></p>
+<a name=a4></a><font class=ermtext>A4/<font class=param>$</font></font> - <b>Equip an artifact</b><br>
+ You can now automaticaly add spells from artifacts. Also, the locked slots problem solved.<br>
+ &nbsp;&nbsp;<font class=param>$</font> - Number of artifact. (see <a href=../format/fma1.htm>Format A1</a>).<br>
+ <font class=bnotes>Notes</font>:<br>
+ 1. &nbsp;Uses an internal function for this so artifact will be equipped if possible and not equipped (put to backpack) otherwise.<br>
+ 2. &nbsp;HEm:A4/n will cause the !?AE1 (equip) trigger to execute for artifact n. (But HEm:A-n will NOT cause !?AE0 (unequip) to execute!<br>
+
+ <font class=example>Example</font>:<br>
+ <script type="erm">!?LE4/2/0;
+!!HE-1:A4/129; [equip Angelic Alliance]
+!!HE-1:A4/15; [try to equip a shield but put to backpack]
+!!HE-1:A4/1016; [equip Magic Arrow scroll]
+!!HE-1:A4/1000; [equip Magic Book]</script>
+<a name=a5></a><font class=ermtext>A<font class=param>#</font></font> - <b>Give/remove an artifact.</b><br>
+  &nbsp;&nbsp;<font class=param>#</font> is the artifact's number (see <a href=../format/fma1.htm>Format A1</a>).<br>
+  &nbsp;&nbsp;&nbsp; If <font class=param>#</font> > <font class=param>0</font> the artifact will be added to the hero's <b>backpack</b>.&nbsp;<br>
+  &nbsp;&nbsp;&nbsp; If <font class=param>#</font> &lt; <font class=param>0</font> removes the artifact from all slots.<br>
+  <font class=example>Example</font>:<br>
+  <font class=ermtext>!!HE<font class=param>106</font>:A<font class=param>-1; [Remove all scrolls in Lydorie's possession]</td>
+      </tr>
+<tr><td  valign=top><a name=b></a><a name=b0></a><font class=ermtext>B0/z<font class=param>$</font></font></td>
+   <td valign=top><b>Set/get the name of a hero.</b><br>
+   &nbsp;&nbsp;<font class=param>$</font> - number of z-variable with new name.<br>
+   &nbsp;Now if you customize a name but do not set a biography, it will display a hero's default  biography, rather than setting it to the same string as the customized name. So if you want to name Orrin Orrin II, it will still display Orrin's default biography.
+  </td></tr>
+<tr><td  valign=top><a name=b1></a><font class=ermtext>B1/<font class=param>$</font></font></td>
+   <td valign=top><b>Set/get the bios of a hero.</b><br>
+  <font class=notes>Comments</font>:<br>
+  If it has a default name or bio, you will get a void string not default text.<br>
+  <font class=example>Example</font>:<br>
+  <script type="erm"!!IFv10:S3;
+  !!IVz15:S^This is a new bios.^;
+  !!HE-1:B1/?v10; get the old bios of current hero to z[v10] -> z3 string var
+  !!HE-1:B1/z15; set the new bios to z15 string var</script></td></tr>
+<tr><td  valign=top><a name=b2><font class=ermtext>B2/<font class=param>$</td>
+    <td valign=top><b>Set/get the class of a hero.</b><br>          
+	&nbsp;&nbsp; <font class=param>$</font> is a class (0...17, see <a href=../format/fmhc.htm>Format HC)</a><br>
+ Divide <font class=param>$</font> to 2 and you will get a town type of a class.</td></tr>
+<tr><td  valign=top><a name=b3></a><font class=ermtext>B3/<font class=param>?$</td>
+   <td valign=top><b>Read a hero's default biography.</b><br>
+    Get a hero's default biography text to a string variable.<br>
+    This will always return the same text whether you changed the hero's biography text or not.
+    You may use only get syntax, like this:<br>
+	<script type="erm">!!HE0:B3/?z25; Store Orrin's default biography in the z25 variable.'</script>
+	</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=C></a><a name=c0></a>C0/<font class=param>#1</font>/<font class=param>$2</font>/<font class=param>$3
+   <td valign=top><b>Set/get monsters by hero slot</b><br>
+  &nbsp;&nbsp;<font class=param>#1</font> - hero's slot number (slots are numbered 0..6)<br>
+  &nbsp;&nbsp;<font class=param>$2</font> - monster type (<a href=../format/fmc.htm>Format C</a>)<br>
+  &nbsp;&nbsp;<font class=param>$3</font> - number of monsters<br><br>
+  &nbsp;&nbsp;This command may be used to determine which creatures a hero has in his or her army slots, 
+  and also the number of those monsters in each slot. It can also be used to change the type 
+  or number of creatures in that slot. Use the '<font class=param>d</font>' modifier (as usual) for a relative change.
+  e.g., <font class=ermtext>!!HE-1:C0/0/d/<font class=param>d5; This would add 5 creatures of the same type to the current hero's 
+  first army slot (slot 0). <br>
+  <font class=bnotes>Note</font>:<br> &nbsp;a value of -1 for type means none.</td></tr>
+<tr><td  valign=top><nobr><font class=ermtext><a name=C></a><a name=c1></a>C1/<font class=param>#1</font>/<font class=param>$2</font>/<font class=param>$3
+   <td valign=top><b>Change monsters by type</b><br>
+  All monsters of type <font class=param>#1</font> will change into:<br>
+  &nbsp;&nbsp;<font class=param>$2</font> - type: <a href=../format/fmc.htm>Format C</a><br>
+  &nbsp;&nbsp;<font class=param>$3</font> - number.<br><br>
+  <font class=example>Example</font>:<br>
+  <script type="erm">!!HE-1:C1/0/1/d20; add 20 units to every pikemen slot (d20) and change all pikemen (0) to halberdiers(1))</script></font>
+  <font class=bnotes>Note</font>:<br> 
+   If you use a value of -1 for $2 or 0 for $3, all creatures of that type will be removed from the hero.<br><br>
+  You can also get the number ($3). Getting the number ($3) lets you quickly check if a hero has any creatures of a given type without using a loop.
+  However, if a hero has multiple stacks, it will only return the number of creatures of that type in the last creature slot that contains 
+  those creatures. For example, suppose a hero has:<br>
+  &nbsp;&nbsp;&nbsp;Slot 0: 14 Cyclops<br>
+  &nbsp;&nbsp;&nbsp;Slot 1: 18 Cyclops Kings<br>
+  &nbsp;&nbsp;&nbsp;Slot 2: 50 Pikemen<br>
+  &nbsp;&nbsp;&nbsp;Slot 3: 100 Halberdiers<br>
+  &nbsp;&nbsp;&nbsp;Slot 4: 9 Cyclops<br>
+  &nbsp;&nbsp;&nbsp;Slot 5: 49 Pikemen<br>
+  &nbsp;&nbsp;&nbsp;Slot 6: empty<br>
+  <script type="erm">!!HE-1:C1/94/?y-1/?y-2; returns y-1=94, y-2=9 for the current hero.  (94=Cyclops)
+!!HE-1:C1/96/?y-1/?y-2;  returns y-1=0, y-2=0.  (96=Behemoth)</script>
+ </td></tr>
+<tr><td  valign=top><font class=ermtext><a name=C2></a>C2/<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>#3</td>
+   <td valign=top><b>Add a new stack of monsters to a hero.</b><br>
+  &nbsp;&nbsp;<font class=param>#1</font> = type of monsters (<a href=../format/fmc.htm>Format C</a>)&nbsp;<br>
+  &nbsp;&nbsp;<font class=param>#2</font> = number of monsters<br>
+  &nbsp;&nbsp;<font class=param>#3</font> = 1 - ask human to find room in the army if all slots are filled.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0 - use AI to add it (if it feels the addition is more valuable than an existing stack)</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=cc></a>C<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>....</font>/<font class=param>#14</td>
+        <td valign=top><b>Change monsters : Give to player a choice of monsters set.</b><br>
+ &nbsp;&nbsp; <font class=param>#1</font>  = type of monster 1 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#2</font>  = number of monsters 1<br>
+ &nbsp;&nbsp; <font class=param>#3</font>  = type of monster 2 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#4</font>  = number of monsters 2<br>
+ &nbsp;&nbsp; <font class=param>#5</font>  = type of monster 3 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#6</font>  = number of monsters 3<br>
+ &nbsp;&nbsp; <font class=param>#7</font>  = type of monster 4 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#8</font>  = number of monsters 4<br>
+ &nbsp;&nbsp; <font class=param>#9</font>  = type of monster 5 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#10</font> = number of monsters 5<br>
+ &nbsp;&nbsp; <font class=param>#11</font> = type of monster 6 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#12</font> = number of monsters 6<br>
+ &nbsp;&nbsp; <font class=param>#13</font> = type of monster 7 (-1 = no, see <a href=../format/fmc.htm>Format C</a>)<br>
+ &nbsp;&nbsp; <font class=param>#14</font> = number of monsters 7<br>
+ <font class=example>Example:</font><br> 
+  This will be a dialog like when you leave creatures.<br>
+  <script type="erm">!!HE-1:C5/6/7/8/9/10/11/12/13/14/15/16/17/18;
+!!HE-1:C1/2/-1/0/-1/0/-1/0/-1/0/-1/0/-1/0;</script>
+        </td>
+      </tr>
+<tr><td  valign=top><font class=ermtext>C<font class=param>(...)</font> <br>(SE support)</td><td>
+ <b>Extended <font class=ermtext>!!HE:C<font class=param>0</font></font>, <font class=ermtext>!!HE:C<font class=param>1</font></font> and <font class=ermtext>!!HE:C<font class=param>2</font></font> syntax for setting or retaining Stack Experience.</b><br>
+ (<font class=notes>Note</font>:  &nbsp;does not work with <font class=ermtext><a name=cc></a>C<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>....</font>/<font class=param>#14</font></font>).</font><br><br>
+ Now these commands may have 5 or 6 parameters:<b>
+<font class=param><font color=red>!!HE...:C</font>#<font color=red>/</font>#1<font color=red>/</font>$2<font color=red>/</font>$3<font color=red>/</font>$4<font color=red>/</font>$5<font color=red>;</font></font></b><br>
+&nbsp;&nbsp;<font class=param>#</font> = 0 - <a href=#c0>change monsters (by slot)</a><br>
+&nbsp;&nbsp;<font class=param>#</font> = 1 - <a href=#c1>change monsters (by type)</a><br>
+&nbsp;&nbsp;<font class=param>#</font> = 2 - <a href=#c2>add stack of monsters</a><br>
+&nbsp;&nbsp;<font class=param>$4</font> = experience value (default is 0)<br>
+&nbsp;&nbsp;<font class=param>$5</font> = experience modifier (default is 0)<br><br>
+<B>Supported $5 modifier values:</b>
+<br><br>
+ <table cellspacing=0 cellpadding=0>
+
+ <tr><td colspan=2><b><font size=2>Mode 0 - Use this mode to add additional creatures that have experience.</td></tr>
+ <tr><td width=5%>&nbsp;</td>
+ <td><font face=arial size=2>New creatures have their own experience $4, but old creatures (if you add monsters) keep their own experience.
+The result of experience per creature is calculated as:<br>
+   <font class=param>Exp=(ExpOld*NumOld+ExpNew*NumNew)/(NumOld+NumNew)</font><br>
+  <font class=param>a</font>) Say you have a stack of 10 Monks with Exp 1000 (here and later per creature) and want to add 5 Monks with experience 
+  3000.<br>
+  The result will be: (1000*10+3000*5)/15=1666<br>
+  E.g. HE...:C0/0/d/d100/5000/0;<br>
+  Add to the stack 100 creatures with exp 5000.<br>
+  <font class=param>b</font>) If you add a creature of a different type, only the experience of the new creatures is taken. So if you have 10 
+  Griffins Exp 1000 and want to add 5 Monks with experience 3000.<br>
+  The result will be: 3000.<br>
+  This is used to avoid problems when you move stacks from one slot to another and the experience is mixed. Say you placed a stack of Griffins in
+  the stack 1 and then changed it to Monks accidentally forgot to change experience (so it IS a stack of Monks but the system thinks that it IS a
+  stack of Griffins). So now adding more Monks, the system will think that you changed the type of creatures and takes only experience of new
+  creatures.<br>
+   Exception: if the stack has not gained experience yet the experience will be averaged as if you weren't changing the type (same as mode 1).<br>
+  <font class=bnotes>Note</font>:<br> do not use the 'd' modifier for $4 with mode 0.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 1 - The same as Mode 0 except that there is no check of creature type. So it always works according a)
+ formula (above) whatever type of ex and new creature type you have. </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>Examples.<br>
+  a) you want to set creatures in slot to Pikemen and they should have the experience (per creature) of previous creatures in the stack (whatever
+  they were) plus new 7 creatures has 50 exp. points.<br>
+  <font class=ermtext>!!HE...:C0/1/0/d7/50/1;</font><br>
+   <font class=bnotes>Note</font>:<br> do not use the 'd' modifier for $4 with mode 1.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 2 - Use this mode to set experience for the whole stack. </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>The stack will always be set to $4 experience.<br>
+  Example: <br><font color=red><b>HE...:C0/0/d/d/5000/2;<br></b></font>
+   The stack will have experience 5000<br>
+  <font class=bnotes>Note</font>:<br> if you use the 'd' modifier with Mode 2 for $4, it will add the experience instead. This is identical to the
+  operation of mode 3.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 3 - Use this mode to add additional experience to a stack. </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>E.g. <font color=red><b>HE...:C0/0/d/d/5000/3;</b></font><br>
+   The stack will have +5000 experience.<br>
+  New creatures take the experience of the old creatures plus $4. Experience is not distributed. So if you have a stack of 10 Monks with Exp 1000, 
+  want to add 5 Monks and add 3000 experience with Mode 3, the result is: 1000+3000=4000.<br>
+  E.g.  <b><font color=red>HE...:C0/0/d/d5/3000/3;<br></b></font>
+   The stack will have +5 creatures and +3000 experience.<br>
+   You can also use this mode to add creatures to a stack without reducing the stack's experience, or change the type of creatures in the stack
+   while keeping the experience unchanged.<br>
+   You may use this modifier for temporary creature type changing as well, because the new stack will still have the same experience and if you
+   change it then back, the stack will keep the experience.<br>
+   <font class=ermtext>
+   !!HE...:C0/1/0/d/0/3;<br>
+   !!HE...:C0/1/99/d/0/3;<br>
+   !!HE...:C0/1/0/d/0/3;<br></font><br>
+   <font class=bnotes>Note</font>: <br>if you use the 'd' modifier for $4 with mode 3 it will work the following way:<br>
+   <font class=param>StackExp=OldExp+OldExp+AdditionalExperience.</font><br> 
+   So if a stack had 200 experience, and you add 100 experience, it will have 200+200+100=500.<br>
+   Then if you add another 100 experience it will have 500+500+100=1100.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 4 - Use this mode to add experience Levels (Ranks) to a stack. </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>New creatures take the experience of the old creatures plus experience equal to $4 levels.<br>
+  Experience is not distributed. So if you have a stack of 10 Monks with Exp 1000, and want
+  to add 5 Monks and add 3 experience levels, the result is:<br>
+  1000+3levels=????<br>
+  It uses the next calculation:<br>
+  - we have E exp<br>
+  - get a current stack exp. level L0<br>
+  - get an exp. value E0 for level L0<br>
+  - get a reminder dE as E-E0<br>
+  - we have a level bonus L<br>
+  - get a resulting level L1 as L0+L<br>
+  - get an exp. value E1 for level L1<br>
+  - get a final exp. E as E1+dE<br>
+  E.g.  <b><font color=red>HE...:C0/0/d/d/5/4;<br></font></b>
+   The stack will have +5 experience levels.<br>
+   <font class=bnotes>Note</font>:<br>do not use the 'd' modifier for $4 with mode 4.<br><br> </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 5 - Use this mode if you upgrade creatures. </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>The same as Mode 3 but the experience of new creatures is taken as though you made an upgrade of old creatures. The
+  new experience will be the old experience multiplied by the Upgrade Multiplier plus an experience bonus.<br>
+  E.g.  <b><font color=red>HE...:C0/0/d/d/500/5;<br></b></font>
+   The stack will have experience as if upgraded +500 experience.<br>
+   <font class=bnotes>Note:</font><br>do not use the 'd' modifier for $4 with mode 5.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 10 - Use this mode to add additional creatures with levels (ranks) of experience.</td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>This is the same as Mode 0 but $4 means additional levels (ranks) of new creature type experience.<br>
+  E.g.  <b><font color=red>HE...:C0/0/d/d100/5/10;<br></font></b>
+   Add to the stack 100 creatures with exp of Rank 5.<br>
+  <font class=bnotes>Note</font>:<br> do not use the 'd' modifier for $4 with mode 10.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 11 - The same as Mode 10 but regardless of creature types.</td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>This is the same as Mode 1 but you add creatures with experience equal to $4 levels (ranks).<br>
+  E.g.  <font class=ermtext>HE...:C0/0/3/d100/5/11;</font><br>
+   Add to the stack 100 creatures with exp of Rank 5, but also changing their type to Marksmen.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 12 - Use this mode to set the experience level (rank) for the whole stack.</td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>This is he same as 2 but $4 means experience levels (ranks).<br>
+  E.g.  <font class=ermtext>HE...:C0/0/d/d/5/12;<br></font>
+   The stack will have 5 levels (ranks) of experience.<br><br>
+  </td></tr>
+ 
+ <tr><td colspan=2><font size=2><b>Mode 13 - Use this mode to set the equivalent percentage of experience for a new type of creature. </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>This is the same as Mode 3 but it is assumed that you change the type of creatures and a new creature experience is
+  taken as the same percentage that the old creatures have.<br>
+   So if you have a stack of Monks with exp. X and change it to a stack of Angels, the new experience will be:<br>
+   <font class=param>X*MaxA/MaxM+dE</font><br>
+   where MaxA is a max experience of an Angel and MaxM is a max experience of a Monk, dE is the added experience.<br>
+   E.g.  <b><font color=red>HE...:C0/0/../d/1000/13;<br></b></font>
+   The new stack gets the corresponding experience that the old stack had plus 1000 exp.<br>
+   <font class=param>NewExp=OldExp*NewCreatureTypeR10Exp/OldCreatureTypeR10Exp+ExtraExp.<br><br>
+  </td></tr>
+ <tr><td colspan=2><font size=2><b>Mode 14 - The same as Mode 13 but an addition is experience levels (ranks). </td></tr>
+  <tr><td width=5>&nbsp;</td>
+  <td><font face=arial size=2>E.g.  <b><font color=red>HE...:C0/0/../d/3/14;</b></font><br>
+   The new stack gets the corresponding experience that the old stack had plus 3 levels (ranks) of exp.
+  </td></tr>
+ </table>
+</td></tr>
+<tr><td  valign=top><a name=D></a><font class=ermtext>D</td>
+   <td valign=top><b>Call upgrade dialog for hero's army (no parameters)</td></tr>
+<tr><td  valign=top><a name=E><a name=e1></a></a><font class=ermtext>E<font class=param>$</td>
+   <td valign=top><b>Set/check/get experience# to the hero</b> (<a href=../format/fmhl.htm>Format HL</a>)</td></tr>
+<tr><td  valign=top><a name=e2></a><font class=ermtext>E<font class=param>$1</font>/<font class=param>$2</font>
+   <td valign=top><b>Set/check/get hero's experience (additional syntax)</b><br>
+  &nbsp;&nbsp; <font class=param>$1</b></font> - Experience points<br>
+  &nbsp;&nbsp; <font class=param>$2</b></font> - Hero's level <a href=../format/fmhl.htm>(Format HL)</tr>
+<tr><td  valign=top><font class=ermtext><a name=e3></a>E<font class=param>$1</font>/<font class=param>?$2</font>/1
+   <td valign=top><b>Additional Syntax</b><br>
+   The same as HE:E$1/?$2 but without redrawing<br>
+   For standard syntax some of them called redrawing always even if you check only.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=F></a>F<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/<font class=param>$4</font></td>
+   <td valign=top><b>Set/check/get primary skills.</b><br>
+  &nbsp;&nbsp; <font class=param>$1</font> = Attack<br>
+  &nbsp;&nbsp; <font class=param>$2</font> = Defence<br>
+  &nbsp;&nbsp; <font class=param>$3</font> = Power<br>
+  &nbsp;&nbsp; <font class=param>$4</font> = Knowledge<br>
+  <B>Note:</B><br>
+  Changing hero's stats during a makes no sense: for example if your hero enters battle with 10 spell power and you set it to 20, the spells will 
+  still be cast as if the hero had 10 points in spell power.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=f2></a>F<font class=param>?$1</font>/<font class=param>?$2</font>/<font class=param>?$3</font>/<font class=param>?$4</font>/<font class=param>1</td>
+   <td valign=top><b>Return the base value of hero's primary skills without artifact bonuses.</b><br>
+  &nbsp;&nbsp; <font class=param>$1</font> = Attack<br>
+  &nbsp;&nbsp; <font class=param>$2</font> = Defence<br>
+  &nbsp;&nbsp; <font class=param>$3</font> = Power<br>
+  &nbsp;&nbsp; <font class=param>$4</font> = Knowledge<br>
+  <u><b>Comments:</b></u><br>
+  You can use only get or check syntax. You can also set it but it will do nothing.<br>
+  <font class=example>Example</font>:<br>
+  <font class=ermtext>!!HE-1:F?v100/?v101/?v102/?v103/1;</font></td></tr>
+<tr><td  valign=top><a name=g></a><font class=ermtext>G<font class=param>$</font> 
+   <td><b>Set initial hero's movement points</b><br>
+   &nbsp;&nbsp;<font class=param>$</font> - initial hero's movement points.<br>
+   <font class=notes>Comment</font>:<br>
+   If you set both <font class=ermtext>HE:<a href=#W target=_self>W</a></font> and <font class=ermtext>HE:G</font> options to the same value (any),
+   you may dig for the Grail.
+  </td></tr>
+<tr><td  valign=top><font class=ermtext><a name=H></a>H<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/<font class=param>$4</td>
+   <td valign=top><b>Set army type for newly hired heroes.</b><br>
+  &nbsp;&nbsp; <font class=param>$1</b></font> = Slot number (0,1,2)<br>
+  &nbsp;&nbsp; <font class=param>$2</b></font> = Monster type (-1 means no monster, see <a href=../format/fmc.htm>Format C</a>)<br>
+  &nbsp;&nbsp; <font class=param>$3</b></font> = Minimum value of monsters number<br>
+  &nbsp;&nbsp; <font class=param>$4</b></font> = Maximum value of monsters number (may be equal to min number for fixed number)<br>
+  <font class=bnotes>Comments:</font><br>
+  This will be applied to a hero that CANNOT be hired right now. So if Orrin and Jeddite are currently available in a tavern, their army WILL NOT
+  be changed until next week. But if you change the army of Crag Hack and he will be available to be hired after you hire Orrin or Jeddite, he WILL
+  have the army that you set.<br>
+  Then, when you hire a hero that appears in a Tavern in the beginning of the week, he will have 2 or 3 slots of army (it's not possible to set 2
+  or 3 exactly). So you can set 1st and 2nd slots to desired monsters and 3rd slot to -1 monster type. This will result in the hero always having 2
+  slots of monsters. Then if you hire a Hero, he or she will have only one slot of monsters and number 1.<br><br>
+  <font class=example>Example</font>:<br>
+  Set Army of Orrin to Gnoll at the game start<br>
+  <font class=ermtext>!#HE0:H0/99/3/3H1/-1/2/2H2/-1/0/0;</font><br>
+  This may be used later during a game.<br><font class=ermtext>
+  !?LE3/7/0; Trigger for cycle<br>
+  !!DO21000/0/155/1:P; Set Army to all Heroes<br>
+  !?FU21000;<br>
+  !!VRv1:Sx16;<br>
+  !!HEv1:H0/99/3/3H1/-1/2/2H2/-1/0/0;</font></td></tr>
+<tr><td  valign=top><font class=ermtext><a name=I></a>I<font class=param>$</td>
+   <td valign=top><b>Set/check/get spell points.</b><br>
+   &nbsp;&nbsp;<font class=param>$</font> - number of spell points.<br>
+  Be sure to use <font class=param>d</font> for relative change if you wish to add or subtract rather than set.<br>
+  <font class=example>Example</font>:<br>
+  <font class=ermtext>!!HE-1:I<font class=param>d-1; This will reduce the hero's current spell points by 1.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=i1></a>I<font class=param>$</font>/<font class=param>1</td>
+   <td valign=top><b>Additional Syntax</b><br>
+   The same as HE:I$ but without redrawing<br>
+  For standard syntax some of them called redrawing always even if you check only.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=K></a>K</td>
+   <td valign=top><b>Instantly kills the hero</b><br> Put this to a well - all will fall inside :-)</td></tr>
+<tr><td  valign=top><a name=L><a name=ll></a></a><font class=ermtext>L<font class=param>#</font>^<font class=param>file.pcx</font>^</td>
+   <td valign=top><b>Sets a hero's portrait to an external image file.</b><br>
+   &nbsp;&nbsp; <font class=param>#</font> = 1 - Set small picture to <font class=param>file.pcx</font><br>
+   &nbsp;&nbsp; <font class=param>#</font> = 2 - Set large picture to <font class=param>file.pcx</font><br>
+  <font class=bnotes>Comments</font>:<br>
+  <font class=param>file.pcx</font> will be searched for in heroes DATA directory. But you can use subdirectory. Example ^<font class=param>c\name.pcx</font>^ - in &quot;c&quot;
+  subdirectory of the DATA dir. Or ^..\maps\1.1^ - in MAPS dir of Heroes.<br>
+  Important! The full length of file name (with subdirectory path) cannot be more than 12 characters.<br>
+  The screen will be redrawn automatically if you change the hero's portrait.</td></tr>
+<tr><td  valign=top><a name=l0></a><font class=ermtext>L0/<font class=param>$
+    <td valign=top><b>Set hero's portrait to portrait number $. (Cf.CMD file).<br></b>
+	<b>Note:</b><br>
+	This command doesn't work.</font></td></tr>
+<tr><td  valign=top><a name=l3></a><font class=ermtext>L3/<font class=param>$
+   <td valign=top><b>Restores the original portrait.</td></tr>
+<tr><td  valign=top><a name=l4></a><font class=ermtext>L4/<font class=param>$
+   <td valign=top><b>Sets both the small and large portrait to the game portrait equal to $. <br>
+   <b>Note:</b><br>
+   If you set hero's portrait to custom in map editor, this command will be ignored</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=l5></a>L5/<font class=param>$1</font>/<font class=param>$2
+   <td valign=top><b>Set a hero portraits.</b><br>
+          &nbsp;&nbsp; <font class=param>$1</font> - String variable for large pic (0-do not change)<br>
+          &nbsp;&nbsp; <font class=param>$2</font> - String variable for small pic (0-do not change)</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=M></a>M<font class=param>#1</font>/<font class=param>$2</font></td>
+   <td valign=top><b>Give/remove spell in the spellbook</b><br>
+   &nbsp;&nbsp;<font class=param>#1</font> - number of a spell (see <a href=../format/fmsp.htm>Format SP)</a><br>
+   &nbsp;&nbsp;<font class=param>$2</font> = 0 - remove spell<br>
+   &nbsp;&nbsp;<font class=param>&nbsp;&nbsp;&nbsp;</font>&nbsp; = 1 - give spell<br>
+  <font class=bnotes>Notes</font>:<br>
+  To check if spell is learned/gained or just learned use the two ways described below:<br>
+  &nbsp; - You can check for a spell that the hero has learned *or* that he/she knows due to a scroll or spell-giving artifact by using
+  <font class=ermtext>HE:M#/<font class=param>?$</font></font>. In *either* case, the variable will have a value of 1 if the hero has the spell.<br>
+  &nbsp; - You can check for a spell that the hero has learned but NOT one he/she only knows from a scroll or spell-giving artifact by using
+  <font class=ermtext>HE:M<font class=param>=#/1</font></font>   with flag 1 set to 1 the hero has learned the spell. If the hero has the spell
+  from a scroll or spell-giving artifact, flag 1 will still be set to 0.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=N></a>N?<font class=param>$</font></td>
+    <td valign=top><b>Check or get the hero's number.</b><br>
+  <font class=bnotes>Comments</font>:<br>
+  Don't try to set the hero's number to something else. It won't work or will cause instability.<br>
+  <font class=example>Example</font>:<br>
+  <font class=ermtext>!!HE-1:N<font class=param>?v100;</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=O></a>O<font class=param>$</font></td>
+    <td valign=top><b>Set/check/get the hero's owner.</b> <br>
+	&nbsp;&nbsp;<font class=param>$</font> - player who controls the hero (see <a href=../format/fme1.htm>Format E1</a>).<br>
+  If a hero isn't on the map and thus has no owner, the number returned will be -1.<br>
+  <font class=bnotes>Comments</font>:<br>
+  This command should work properly to let you change the owner of a player, unlike in previous versions where the changeover didn't work
+  completely.<br>
+  If you try to give a hero to an owner that has 8 active heroes already, the command will be just canceled. Check a hero's owner to be sure that
+  he/she was transferred successfully.</td></tr>
+<tr><td  valign=top><a name=01></a><font class=ermtext>O<font class=param>$</font>/1 </td>
+   <td><b>Extended HE:O command syntax to use a neutral hero in a battle.</b><br>
+   Use a dummy second parameter in HE:O command (like HE-1:O5/1; ) to use this way. If you use a two parameters syntax, it will directly change the
+   hero's owner. You can use this to set an unowned hero to defend a neutral monster stack. After the battle is over, the hero will not be owned.
+   [Setting owner to -1 causes error message.]<br> 
+   <font class=notes>Note</font>:<br> if you change an unowned hero in this way to temporarily give it an owner (number 0..7), it can be read with
+   HE:O, but BA:O will still return -1.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=P></a>P<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/<font class=param>$4</td>
+   <td valign=top><b>Move hero</b><br>
+   &nbsp;&nbsp;<font class=param>$1</font> - x<br>
+   &nbsp;&nbsp;<font class=param>$2</font> - y<br>
+   &nbsp;&nbsp;<font class=param>$3</font> - level<br>
+   &nbsp;&nbsp;<font class=param>$4</font> - style<br>
+   &nbsp;&nbsp;if <font class=param>$4</font> = 1 - move hero with sound and redraw (teleport)<br>
+   &nbsp;&nbsp;if <font class=param>$4</font> = 0 - hero jumps to new place immediately<br>
+  <font class=bnotes>Comments</font>:<br>
+  In addition to its normal use of moving a hero on the map, this command can also be used  to bring a hero from the hero pool (not currently
+  &quot;in play&quot;) into the game. After you bring the hero onto the map with this command, you should then set the hero's owner with the 
+  <a href=#o target=_self>HE:O</a> command.</font></font></td>
+<tr><td  valign=top><font class=ermtext><a name=R></a>R0/<font class=param>$
+   <td valign=top><font face=Arial size=2><b>Set/check/get hero's morale (until next battle)</b></font></td></tr>
+<tr><td  valign=top><font class=ermtext><a name=r1></a>R1/<font class=param>$</td>
+   <td valign=top><b>Set/check/get hero's luck (until next battle)</b></font></td></tr>
+<tr><td  valign=top><font class=ermtext><a name=r2></a>R2/<font class=param>$
+   <td valign=top><b>Set/check/get sex of Hero</b><br>
+   Male=0, Female=1.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=r3></a>R3/<font class=param>$
+   <td valign=top><b>Set hero's availability in the hero pool for all players<br>
+   &nbsp;&nbsp;<font class=param>$</font> - enable (1) or disable (0) hero to hire for all
+<tr><td  valign=top><font class=ermtext><a name=r3a></a>R3/<font class=param>$1</font>/<font class=param>$2
+   <td valign=top><b>Set hero's availability in the hero pool for each player</b><br>
+  &nbsp;&nbsp; <font class=param>$1</font> - enable (1) or disable (0) hero to hire<br>
+  &nbsp;&nbsp; <font class=param>$2</font> - players to affect (see <a href=../format/fme1.htm>Format E1</a>)<br>
+  <font class=bnotes>Comments</font>:<br>
+  $2 makes sense (will be set) only if you enable a hero.<br>
+  If you disable a hero that is owned by any player, the hero will be killed.</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=r4></a>R4/<font class=param>$
+    <td valign=top><b>Set/check/get a hero's Tactic control</b><br>
+  &nbsp;&nbsp;<font class=param>$</font> = -1 - Enable<br>
+  &nbsp;&nbsp;<font class=param>$</font> = &nbsp;0 - Disable</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=r5></a>R5/<font class=param>$
+   <td valign=top><b>Maximum morale</b><br>
+  &nbsp;&nbsp;<font class=param>$</font> = 1 - maximum morale set<br>
+  &nbsp;&nbsp;<font class=param>$</font> = 0 - maximum morale not set</td></tr>
+<tr><td  valign=top><font class=ermtext><a name=r6></a>R6/<font class=param>$
+   <td valign=top><b>Maximum luck</b><br>
+  &nbsp;&nbsp;<font class=param>$</font> = 1 - maximum luck set<br>
+  &nbsp;&nbsp;<font class=param>$</font> = 0 - maximum luck not set</td></tr>
+<tr><td valign=top><font class=ermtext><a name=r7></a>R7/<font class=param>$ <img src=../images/new.gif>
+ <td>Set modifiers of visiting structures of temporal changing parameters of a hero.</b><br>
+ &nbsp;&nbsp;&nbsp;&nbsp;<font class=param>$</font> - modifiers dword, bit mask.<br>
+ <font class=bnotes>Comments</font>:<br>
+ In most cases, setting or clearing these bits won't change Luck, Morale, movement or spell points - they only set (or clear) the record of whether
+ the hero has already visited a given type of structure in a given period, e.g., this week, for next battle, etc. However, it will set or clear 
+ any text associated with these structure if you click on the hero's Luck or Morale in the hero screen (e.g., "Temple Visited +1"), but you'll
+ still have to set the hero's temporary Luck or Morale with the HE:R0 and HE:R1 commands. See <a href=../format/fmhb.htm>Format HB</a> for the
+ meaning of these bits.<br>
+ 
+
+<tr><td  valign=top><font class=ermtext><a name=S></a>S<font class=param>$
+   <td valign=top><b>Check or set the number of known skills that are displayed</b><br>
+  &nbsp;&nbsp;<font class=param>$</font> - number of skills to show (0..8).<br>
+  <font class=notes>Comments</font>:<br>
+  If you want to display only one skill, first swap it's display position to slot number 1 and then limit the display to only 1 skill with this
+  command.</tr>
+<tr><td  valign=top><font class=ermtext><a name=s2></a>S<font class=param>#1</font>/<font class=param>$2</td>
+    <td valign=top>Set/check/get secondary skill</b><br>
+  &nbsp;&nbsp;<font class=param>#1</font> - Skill number (see <a href=../format/fmss.htm>Format SS</a>)<br>
+  &nbsp;&nbsp;<font class=param>$2</font> - Skill level (0=none, 1=basic, 2 =advanced, 3 =expert).<br>
+  <font class=bnotes>Comments</font>:<br>
+  You can even set all(!) secondary skills (28 altogether) but only the first eight will show on the hero screen.
+<tr><td  valign=top><font class=ermtext><a name=s3></a>S<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>1
+   <td valign=top><b>Manage secondary skills showing</b><br>
+   &nbsp;&nbsp;<font class=param>$1</font> - is a number in display sequence (0 = not shown, 1..8 = slot index)<br>
+   &nbsp;&nbsp;<font class=param>$2</font> - is a skill index (0...27)<br>
+  <font class=notes>Comments</font>:<br>
+  You may use three types of syntax:<br>
+  <font class=ermtext>!!HE#:S<font class=param>?#1</font>/<font class=param>#2</font>/1;</font> ask what display slot takes #2 skill to #1 var<br>
+  <font class=ermtext>!!HE#:S<font class=param>#1</font>/<font class=param>?#2</font>/1;</font> ask what skill occupies display slot #1 to #2 var<br>
+  <font class=ermtext>!!HE#:S<font class=param>#1</font>/<font class=param>#2</font>/1;</font> set display slot #1 to #2 skill<br> 
+  In the last case if another skill takes this slot, it will be set to 
+  &quot;no slot&quot;. You can use the command twice to swap two skill positions.<br>
+  <br>
+  When setting skills with this command, you must use the following rules:<br>
+  - you may move any two displayed skills to exchange their position;<br>
+  - you must NOT set a skill to display if it's below Basic level (no skill);<br>
+  - you must set skills to display in order (no empty spaces);<br>
+  <br>
+  Therefore you cannot use the command to hide a skill that's already displayed. You also can't use it to set a skill to display if the hero
+  doesn't know the skill. Attempting either will usually display a different &quot;phantom&quot; skill (perhaps Basic Wisdom) that will crash if
+  clicked on.</font></td></tr>
+<tr><td  valign=top><font class=ermtext><a name=T></a>T<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/<font class=param>$4</font>/<font class=param>$5
+   <td valign=top><b>Provoke a battle but only with one type of monsters.</b><br>
+   &nbsp;&nbsp;<font class=param>$1</font> = x position of the battle<br>
+   &nbsp;&nbsp;<font class=param>$2</font> = y position of the battle<br>
+   &nbsp;&nbsp;<font class=param>$3</font> = level of the battle<br>
+   &nbsp;&nbsp;<font class=param>$4</font> = type of monsters to fight (<a href=../format/fmc.htm target=annexe>Format C</a>)<br>
+   &nbsp;&nbsp;<font class=param>$5</font> = number of monsters to fight<br>
+   <font class=notes>Comments</font>:<br>
+   x,y and level are used only for choosing the type of the ground and corresponding bonuses.
+<tr><td  valign=top><font class=ermtext><a name=U></a>U<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>
+   <td valign=top><b>Set/check/get hero's patrol position and radius.&nbsp;</b><br>
+    &nbsp;&nbsp; Patrol position will be set to X(<font class=param>$1</font>), Y(<font class=param>$2</font>) (the <font class=param>level</font> is fixed).&nbsp;<br>
+  &nbsp;&nbsp; The <font class=param>radius</font> will be set to <font class=param>$3</font> (&quot;set free&quot; if <font class=param>$3</font> = -1).</font>        </td>
+<tr><td  valign=top><font class=ermtext><a name=V></a>V<font class=param>#1</font>/<font class=param>$2</font><br>V<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$3</td>
+   <td valign=top><b>Set/check/get if hero visited objects 'of one visit'.</b><br><br>
+   
+   <font class=ermtext>V<font class=param>#1</font>/<font class=param>$2</font></font><br>
+   &nbsp;&nbsp;<font class=param>#1</font> - type of object (<a href=../format/fmov.htm>Format OV</a>)<br>
+   &nbsp;&nbsp;<font class=param>$2</font> - 32-bit variable which is bit mask for 32 OV-objects of <font class=param>#1</font> type.<br><br>
+   <font class=ermtext>V<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$3</font></font><br>
+   &nbsp;&nbsp;<font class=param>#1</font> - type of object (<a href=../format/fmov.htm>Format OV</a>)<br>
+   &nbsp;&nbsp;<font class=param>#2</font> - object number (0..31)<br>
+   &nbsp;&nbsp;<font class=param>$3</font> - Hero visited (1) or not (0)<br><br>
+   <font class=example>Examples</font>:<br>
+   <font class=ermtext>V0/0/0</font> - set the Learning stone number 0 to be &quot;not visited&quot; by the hero.<br>
+   <font class=ermtext>V6/2/0</font> - set the Library of Enlightenment number 2 to be &quot;not visited&quot; by the hero.<br>
+   <font class=ermtext>V5/2</font> - set all Trees of Knowledge except second to be &quot;not visited&quot; (second one is visited).  </td>      </tr>      
+<tr><td  valign=top><font class=ermtext><a name=W></a>W<font class=param>$</td>
+    <td valign=top><b>Change Hero's movement points</b><br>
+    &nbsp;&nbsp;<font class=param>$</font> - movement points.<br>
+  This number is <i>not</i> the number of steps that the hero can take in a turn but is a much higher number (usually between 1500 and 2000
+  depending on fastest troop speed) that the game sets internally. This was probably done so that they wouldn't have to deal with fractions when
+  calculating terrain bonuses and penalties (plus path finding, logistics, Boots of Speed, etc.). On grass terrain with mixed creatures, 1 step
+  equals about 100 movement points.<br>
+  <font class=notes>Note</font>:<br>
+  In both SoD and WoG, AI heroes get additional movement points at higher difficulty level settings. At Expert they get 125 extra points and at
+  Impossible, they get 75. While it seems like it should be the other way around (a bigger bonus for the AI at Impossible), it appears that it's
+  set to give more at Expert for some unknown reason.
+<tr><td  valign=top><font class=ermtext><a name=w1></a>W<font class=param>$</font>/<font class=param>1</font>
+   <td valign=top><b>Change Hero's movement points. Additional Syntax</b><br>
+ The same as <font class=ermtext>HE:W<font class=param>$</font></font> but without redrawing.<br>
+ For standard syntax some of them called redrawing always even if you check only.
+<tr><td valign=top><a name=X></a><nobr><b><font class=ermtext>X</a><font class=param>(...)</td>
+   <td valign=top><b>Change hero's specialty.</b><br>
+ <br>
+ <B>To make hero master of a secondary skill</b><br>
+ &nbsp; <font class=ermtext>X0/<font class=param>$1</font>/0/0/0/0/0</font> or <font class=ermtext>X0/<font class=param>$1</font></font><br>
+ &nbsp;&nbsp;&nbsp;    <b>$1</b>=secondary skill number (<a href=../format/fmss.htm>see Format SS </a>)<br>
+ <br>
+ <B>To make hero master of creatures</b><br>
+ &nbsp; <font class=ermtext>X1/<font class=param>$1</font>/0/0/0/0/0</font> or <font class=ermtext>X1/<font class=param>$1</font></font><br>
+ &nbsp;&nbsp;&nbsp;    <b>$1</b>=creature type number (<a href=../format/fmc.htm>see Format C </a>)<br>
+ <br>
+ <B>To make hero keeper of resources</b><br>
+ &nbsp; <font class=ermtext>X2/<font class=param>$1</font>/0/0/0/0/0</font> or <font class=ermtext>X2/<font class=param>$1</font></font><br>
+ &nbsp;&nbsp;&nbsp;    $1=resource type (<a href=../format/fmr.htm>see Format R </a>)<br>
+ <br>
+ <B>To make hero master of a spell</b><br>
+ &nbsp; <font class=ermtext>X3/<font class=param>$1</font>/0/0/0/0/0</font> or <font class=ermtext>X3/<font class=param>$1</font></font><br>
+ &nbsp;&nbsp;&nbsp;    $1=spell number (<a href=../format/fmsp.htm>see Format SP</a>)<br>
+ <br>
+ <B>To make hero grandmaster of creatures</b><br>
+ &nbsp; <font class=ermtext>X4/<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/<font class=param>$4</font>/0/0</font> or <font class=ermtext>X4/<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/
+ <font class=param>$4</font></font><br>
+ &nbsp;&nbsp;&nbsp;    $1=creature type number (<a href=../format/fmc.htm>see Format C </a>)<br>
+ &nbsp;&nbsp;&nbsp;    $2=attack bonus<br>
+ &nbsp;&nbsp;&nbsp;    $3=defence bonus<br>
+ &nbsp;&nbsp;&nbsp;    $4=damage bonus<br>
+ <br>
+ <B>To make hero master of speed</b><br>
+ &nbsp; <font class=ermtext>X5/<font class=param>2</font>/0/0/0/0/0</font> or <font class=ermtext>X5/<font class=param>2</font></font><br>
+ <br>
+ <B>To make hero master of upgrades</b><br>
+ &nbsp; <font class=ermtext>X6/<font class=param>$1</font>/0/0/0/<font class=param>$2</font>/<font class=param>$3</font></font> or <font class=ermtext>X6/<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font></font><br>
+ &nbsp;&nbsp;&nbsp;    $1=creature 1 to upgrade (<a href=../format/fmc.htm>see Format C </a>)<br>
+ &nbsp;&nbsp;&nbsp;    $2=creature 2 to upgrade (<a href=../format/fmc.htm>see Format C </a>)<br>
+ &nbsp;&nbsp;&nbsp;    $3=creature to upgrade to (<a href=../format/fmc.htm>see Format C </a>)<br>
+ <br>
+ <B>To make hero master of dragons</b><br>
+ &nbsp; <font class=ermtext>X7/<font class=param>$1</font>/<font class=param>$2</font>/0/0/0/0</font> or <font class=ermtext>X7/<font class=param>$1</font>/<font class=param>$2</font></font></font></font><br>
+ &nbsp;&nbsp;&nbsp;    $1=attack bonus<br>
+ &nbsp;&nbsp;&nbsp;    $2=defense bonus<br>
+ <br>
+ <B>To make hero master of WoG speciality</b><br>
+ &nbsp; <font class=ermtext>X8/<font class=param>$1</font>/0/0/0/0/0</font> or <font class=ermtext>X8/<font class=param>$1</font></font><br>
+ &nbsp;&nbsp;&nbsp;$2=subtype <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=1 for Walking Darkness<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=2 for Builder<br>
+ <br>
+   <i>Comment:</i><br>
+   You may use 'd' modifier to ignore unchanged settings: HE:...:X8/2/d/d/d/d/d;<br>
+  The original syntax (number of parameters &lt; 7) should work as before.<br>
+ <br>
+ <b>  Example.</b><br>
+  To check the current settings use:<br>
+ <b><font class=ermtext>!!HE#:X?y5/?y6/?y7/?y8/?y9/?y10/?y11; <br></font></b>
+ <font class=notes>Note</font>:<br>
+ If you set it X7/???/$1/$2/$3 (so it will be compatible with X4 syntax), so ??? - no matter (it is a placeholder for a creature type)<br>
+ $1 is an attack bonus<br>
+ $2 is a defence bonus<br>
+ $3 is a damage (low and high) bonus. <br>
+ </td></tr>
+<tr><td  valign=top><font class=ermtext><a name=Y></a>Y<font class=param>$1</font>/<font class=param>$2</font>/<font class=param>$3</font>/<font class=param>$4<br>
+    </td>
+   <td valign=top><b>Give, remove or adjust blessings and curses.</b><br>
+   &nbsp;&nbsp;<font class=param>$1</font> - number of curse from 1 to 65 (<a href=../format/fmbc.htm>Format BC</a>)<br>
+   &nbsp;&nbsp;<font class=param>$2</font> - the power of curse (0 for affects 1,3,8,22..62; number of slot (<a href=../format/fmap.htm>Format AP</a>, -1 for random) for Lock)<br>
+   &nbsp;&nbsp;<font class=param>$3</font> - the length in days of the curse<br>
+   &nbsp;&nbsp;<font class=param>$4</font> - what to do<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 = set<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 = add/sub<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 = del<br><br>
+   <font class=bnotes>Comments</font>:<br>
+   &nbsp; - Every hero can have only one curse of each type. So when you add/sub (sub is addition of negative value), that means that the power
+   and the length will be changed to a sum of old and new values. If you del the curse, the power and length parameters do not matter.<br>
+   &nbsp; - If the slot to be locked has an artifact, it will be <i>hidden</i> and appear at the same place when curse has gone.
+  </table>
+</body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

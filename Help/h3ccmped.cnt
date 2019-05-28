@@ -1,0 +1,11 @@
+:Base h3ccmped.hlp
+1 Overview=overview
+1 Campaign Editor Interface
+2 Keyboard Shortcuts=shortcuts
+2 Campaign Map Window=map_window
+1 Creating Campaigns
+2 Creating a New Campaign=HIDD_NEW_CAMPAIGN
+2 Loading an Existing Campaign=load_campaign
+2 Saving a Campaign=save_campaign
+2 Campaign Properties=HIDD_CAMPAIGN_PROPS
+2 Scenario Properties=HIDD_SCENARIO_PROPS

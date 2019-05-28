@@ -1,0 +1,1737 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>AI RECEIVER</title>
+<base target="annexe">
+</head>
+
+<body bgproperties="fixed" background="../images/intile.jpg">
+
+<p align="center"><b><span lang="de">
+<font size="6">S</font><font size="5">CRIPTS</font></span><font color="#333333" face="Arial" size="2"><br>
+<span lang="de">Examples</span></font></b></p>
+<table border="0" cellspacing="1" width="100%" id="AutoNumber1" height="6633">
+  <tr>
+<td width="100%" height="20" colspan="2"><b><font face="Arial" color="#000080">
+<a name="s1"></a></font></b></td>
+  </tr>
+  <tr>
+<td width="19%" height="20"><b><font face="Arial" color="#000080">
+Script:</font><font color="#FFFFFF" face="Arial">
+</font></b></td>
+<td width="81%" background="../images/fond.gif" height="20"><span lang="de"><b>
+<font face="Times New Roman" color="#D6C579" size="4">A</font><font face="Times New Roman" color="#D6C579">RTIFICER</font></b><font face="Times New Roman" size="4" color="#D6C579"><b>
+</b>(original 3.57)</font></span></td>
+  </tr>
+  <tr>
+  <td width="100%" height="2489" colspan="2">
+	<script type="erm">
+ZVSE
+ERMS_PoweredBy=ERM Script Editor v.1.2.6.10
+** [Artificer]
+** Artificer 1.0 - Dieter Averbeck
+** This Script grades all swords, shields, breastplates
+** and helmets a heroes has equiped up. The Artificer can
+** only upgrade one artefact for one level but revisited
+** every day
+   
+** To use this script, just copy and paste it into a
+** timed event, that not will be shown. For example Day 500.
+** Then place one or more of the object 6 on the map
+** (It`s the 4th building after the towns).
+** Variables used: v160-v164,z160-z164, FU160, FU161, Flag160-162
+**vars
+**v160 set Hint Text
+**v161 money of current heroe
+**v162 var for 3 artefakt question
+**v163 var for 4 artefakt question
+**v164 var for visit check
+   
+!#VRz160:S^Artificer^;
+!#VRv160:S0;
+!#HT63/52:V160/0/160;
+   
+   
+!?TM16;
+!#TM16:S1/999/1/255;
+!!VRv164:S0;
+   
+   
+!?OB63/52;
+!!OW:R-1/6/?v161;
+!!IF&1000/v164=1:M^I can only upgrade one artifact per day. Come back tomorrow!^;
+!!IF&1000/v164<>1:Q160^{I am an Artificer and can upgrade} {your equipped Helmet, Sword, Shield or} {Breastplate. The cost will be:} 2000 for Level 1 to Level 2, 3000 for Level 2 to Level 3, 4000 for Level 3 to 4 and so on. {Do you want to upgrade one of your artifacts?}^;
+!!IF&1000/-160:M^No? It's a good deal. Think it over at least!^;
+!!FU160&1000/160/v164<>1:P;
+   
+   
+!?FU160;
+!!HE-1:A1/?y1/0; ** check helmet
+!!HE-1:A1/?y2/3; ** check sword
+!!HE-1:A1/?y3/4; ** check shield
+!!HE-1:A1/?y4/5; ** check breastplate
+   
+!!VRy11&y1>=19/y1<24:S1; ** set helmet checkvar
+!!VRy12&y2>=7/y2<12:S2; ** set sword checkvar
+!!VRy13&y3>=13/y3<18:S4; ** set shield checkvar
+!!VRy14&y4>=25/y4<30:S8; ** set breastplate ceckvar
+   
+!!VRy5:S0;
+!!VRy5:+y11; ** add helmet checkvar to checkall var
+!!VRy5:+y12; ** add sword checkvar to checkall var
+!!VRy5:+y13; ** add shield checkvar to checkall var
+!!VRy5:+y14; ** add breastplate checkvar to checkall var
+   
+!!UN&y1<>-1:N0/161/y1; ** get name of helmet
+!!UN&y2<>-1:N0/162/y2; ** get name of sword
+!!UN&y3<>-1:N0/163/y3; ** get name of shield
+!!UN&y4<>-1:N0/164/y4; ** get name of breastplate
+   
+** All possible Questions
+   
+** Heroe wears no artefact
+!!IF&y5=0:M^I am sorry but I can't help you! You don`t have an artifact, that I can upgrade^;
+   
+** Heroes wears one artefact
+!!IF&y5=1:Q161/8/y1/2^You wear a %Z161, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=1:Py1/0;
+!!IF&y5=2:Q161/8/y2/2^You hold a %Z162, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=2:Py2/3;
+!!IF&y5=4:Q161/8/y3/2^You hold a %Z163, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=4:Py3/4;
+!!IF&y5=8:Q161/8/y4/2^You wear a %Z164, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=8:Py4/5;
+   
+** Heroes wears two artefacts
+   
+!!IF&y5=3:Q162/8/y1/8/y2/7^You've got a %Z161 and a %Z162, that I can upgrade! Choose one which you want to upgrade.^;
+!!FU161&162/y5=3:Py1/0;
+!!FU161&-162/y5=3:Py2/3;
+!!IF&y5=5:Q162/8/y1/8/y3/7^You've got a %Z161 and a %Z163, that I can upgrade! Choose one which you want to upgrade.^;
+!!FU161&162/y5=5:Py1/0;
+!!FU161&-162/y5=5:Py3/4;
+!!IF&y5=9:Q162/8/y1/8/y4/7^You've got a %Z161 and a %Z164, that I can upgrade! Choose one which you want to upgrade.^;
+!!FU161&162/y5=9:Py1/0;
+!!FU161&-162/y5=9:Py4/5;
+!!IF&y5=6:Q162/8/y2/8/y3/7^You've got a %Z162 and a %Z163, that I can upgrade! Choose one which you want to upgrade.^;
+!!FU161&162/y5=6:Py2/3;
+!!FU161&-162/y5=6:Py3/4;
+!!IF&y5=10:Q162/8/y2/8/y4/7^You've got a %Z162 and a %Z164, that I can upgrade! Choose one which you want to upgrade.^;
+!!FU161&162/y5=10:Py2/3;
+!!FU161&-162/y5=10:Py4/5;
+!!IF&y5=12:Q162/8/y3/8/y4/7^You've got a %Z163 and a %Z164, that I can upgrade! Choose one which you want to upgrade.^;
+!!FU161&162/y5=12:Py3/4;
+!!FU161&-162/y5=12:Py4/5;
+   
+** Text Vars vor II:G - command headline
+   
+!!VRz165:S^You wear three artifacts. Please choose one which you want to upgrade.^;
+!!VRz166:S^You wear four artifacts. Please choose one which you want to upgrade.^;
+   
+** Heroes wears three artefacts
+   
+!!IF&y5=7:G1/162/0/165/161/162/163;
+!!FU161&v162=1/y5=7:Py1/0;
+!!FU161&v162=2/y5=7:Py2/3;
+!!FU161&v162=4/y5=7:Py3/4;
+!!IF&y5=11:G1/162/0/165/161/162/164;
+!!FU161&v162=1/y5=11:Py1/0;
+!!FU161&v162=2/y5=11:Py2/3;
+!!FU161&v162=4/y5=11:Py4/5;
+!!IF&y5=13:G1/162/0/165/161/163/164;
+!!FU161&v162=1/y5=13:Py1/0;
+!!FU161&v162=2/y5=13:Py3/4;
+!!FU161&v162=4/y5=13:Py4/5;
+!!IF&y5=14:G1/162/0/165/162/163/164;
+!!FU161&v162=1/y5=14:Py2/3;
+!!FU161&v162=2/y5=14:Py3/4;
+!!FU161&v162=4/y5=14:Py4/5;
+   
+** Heroes wears four artefacts
+   
+!!IF&y5=15:G1/163/0/166/161/162/163/164;
+!!FU161&v163=1/y5=15:Py1/0;
+!!FU161&v163=2/y5=15:Py2/3;
+!!FU161&v163=4/y5=15:Py3/4;
+!!FU161&v163=8/y5=15:Py4/5;
+   
+   
+** ------------------------------ Change Artefact Function --------------------------------- **
+   
+!?FU161;
+   
+** caculate cost
+   
+!!VRy21&x1<12:Sx1;
+!!VRy21&x1<12:-5;
+   
+!!VRy21&x1>12/x1<18:Sx1;
+!!VRy21&x1>12/x1<18:-11;
+   
+!!VRy21&x1>18/x1<24:Sx1;
+!!VRy21&x1>18/x1<24:-17;
+   
+!!VRy21&x1>24/x1<30:Sx1;
+!!VRy21&x1>24/x1<30:-23;
+!!VRy21:*1000;
+   
+** upgrade the artifact
+** check artefact inclusive skills
+!!HE-1:F?y22/?y23/?y24/?y25;
+   
+!!HE-1&v161>=y21:A3/x1/1/1; ** delete previous artefact
+!!VRx1&v161>=y21:+1; ** add + 1 to number of previous artefact
+   
+** calculate primary skill values
+!!VRy25&x1>=19/x1<24:+1; ** check 'normal artefact'
+!!VRy25&x1=24:+6; ** check relict
+   
+!!VRy22&x1>=7/x1<12:+1;
+!!VRy22&x1=12:+6;
+   
+!!VRy23&x1>=13/x1<18:+1;
+!!VRy23&x1=18:+6;
+   
+!!VRy24&x1>=25/x1<30:+1;
+!!VRy24&x1=30:+6;
+   
+!!HE-1&v161>=y21:A1/x1/x2; ** add new artefact
+   
+!!HE-1:Fy22/y23/y24/y25; ** set new primary skills
+   
+   
+!!IF&v161<y21:Q163/6/y21/1^This upgade costs %Y21 You don't have enough money! Come back later!^;
+!!IF&v161>=y21:Q164/8/x1/1^The Artificer takes your artifact and you wait a few hours. When he returns, he has your upgraded artifact ready!^;
+   
+!!VRv161&v161>=y21:-y21; ** substract money
+!!OW:R-1/6/v161; ** set money
+!!VRv164&v161>=y21:S1; ** set visitvar to visited </script>
+	</td>
+<b><font face="Arial" color="#000080">
+<a name="s2"></a></font></b>
+  </tr>
+  <tr>
+<td width="19%" height="20"><b><font face="Arial" color="#000080">
+Script:</font><font color="#FFFFFF" face="Arial">
+</font></b></td>
+<td width="81%" background="../images/fond.gif" height="20"><span lang="de"><b>
+<font face="Times New Roman" color="#D6C579">MAGIC MUSHROOMS</font></b><font face="Times New Roman" size="4" color="#D6C579"><b>
+</b>(original 3.57)</font></span></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2"><span lang="de"><b>Note:</b>
+<font face="Arial" size="2">An alternative way to 
+view this document: Go into \Data\s\&nbsp; and double click script10.erm. Is 
+should launch the script editor in \erm_se\ . In this editor you will have 
+an ergonomic view of the script. However, <b>attention</b>: never save/overwrite or answer 
+yes to saving question when exiting as you might have accidentally changed the 
+script while editing.</font></span><hr></td>
+  </tr>
+  <tr>
+<td width="100%" height="2489" colspan="2"><font face="Arial" size="1">
+<script type="erm">
+ZVSE
+ERMS_PoweredBy=ERM Script Editor v.1.2.5.26 
+************************ 
+*** Magic  Mushrooms *** 
+***     By  Bruno    *** 
+***       V1.10e     *** 
+************************ 
+IA support 10e 
+This version is working well 10.d 
+Thanks To Donald for his suggestions and his help 
+When you visit the Mushroom, your hero gains Expert level in one of the four schools of magic for the rest of the week. 
+This works even if your hero has all eight skill slots filled. 
+Uses timer 10 and Functions 10-12 
+Uses v1-v2-v3 just for local use 
+Uses w20-w27 to track hero visits to mushrooms and previous skill levels 
+Uses z10-z17 for hint texts 
+
+*** Init for amm mushroom 
+!#TM10:S1/999/7/255; launch timer every 7 days launch timer every 7 days for all players 
+
+*** Init for Magic Water Mushroom 
+!#VRz10:S^Magic Water Mushroom (Not Visited)^; 
+!#VRz11:S^Magic Water Mushroom (Visited)^; 
+!#HT63/18:W21/0/10; Rename all Magic Water mushromm 
+!#HT63/18:W21/1/11; call z11 string if mushroom was visited 
+*** Init for Magic Fire Mushroom 
+!#VRz12:S^Magic Fire Mushroom (Not Visited)^; 
+!#VRz13:S^Magic Fire Mushroom (Visited)^; 
+!#HT63/29:W23/0/12; Rename all Magic Fire mushromm 
+!#HT63/29:W23/1/13; call z13 string if mushroom was visited 
+*** Init for Magic Earth Mushroom 
+!#VRz14:S^Magic Earth Mushroom (Not Visited)^; 
+!#VRz15:S^Magic Earth Mushroom (Visited)^; 
+!#HT63/23:W25/0/14; Rename all Magic Earth mushromm 
+!#HT63/23:W25/1/15; call z15 string if mushroom was visited 
+*** Init for Magic Air Mushroom 
+!#VRz16:S^Magic Air Mushroom (Not Visited)^; 
+!#VRz17:S^Magic Air Mushroom (Visited)^; 
+!#HT63/14:W27/0/16; Rename all Magic Air mushromm 
+!#HT63/14:W27/1/17; call z17 string if mushroom was visited 
+
+*** Timer 
+!?TM10; 
+!!OW:C?v1; [get current player] 
+!!DO10/0/155/1:P; 
+
+** function to check one hero for variable resetting 
+!?FU10; 
+!!HEx16:O?v2; [get owner of this hero if any] 
+!!FU11&v1=v2:P; [continue if it's this player's turn] 
+
+*** Function to reset variable 
+!?FU11; 
+!!IF:Wx16; 
+*** water 
+!!HEx16&w21=1:S16/w20; 
+!!VRw20:S0; [reinstate old skill level if visited mushroom] 
+!!VRw21:S0; free the visit 
+*** Fire 
+!!HEx16&w23=1:S14/w22; 
+!!VRw22:S0; [reinstate old skill level if visited mushroom] 
+!!VRw23:S0; free the visit 
+*** Earth 
+!!HEx16&w25=1:S17/w24; 
+!!VRw24:S0; [reinstate old skill level if visited mushroom] 
+!!VRw25:S0; free the visit 
+*** Air 
+!!HEx16&w27=1:S15/w26; 
+!!VRw26:S0; [reinstate old skill level if visited mushroom] 
+!!VRw27:S0; free the visit 
+
+*** Magic Water Mushroom *** 
+!?OB63/18; 
+!!VRv1:S0; 
+!!IF:W-1; 
+!!HE-1&w21<>1/v1<>3:S16/?v1; ask skill 
+!!IF&v1=3/1000:Q1/20/53/1^{Magic Water Mushroom}
+The Magic Water Mushroom gives Expert Water Magic until the end of the week...
+Since you already have Expert Water Magic, the mushroom can't help you.^;
+!!IF&w21=1/1000:M^{Magic Water Mushroom}
+You have already visited a Magic Water Mushroom this week.
+Try again next week.^; 
+!!VRw20&v1<>3/w21<>1:Sv1; w20 stock the level of the skill 
+!!IF&v1<>3/w21<>1/1000:Q1/20/53/1^{Magic Water Mushroom}
+The Magic Water Mushroom gives Expert Water Magic until the end of the week... 
+You inhale the spores of the magic mushroom... 
+You learn Expert Water Magic!^; 
+!!HE-1&v1<>3:S16/3; put skill in expert 
+!!VRw21&v1<>3:S1; heroes have visited the magic water mushroom 
+
+*** Magic Fire Mushrooms *** 
+!?OB63/29; 
+!!VRv1:S0; 
+!!IF:W-1; 
+!!HE-1&w23<>1/v1<>3:S14/?v1; 
+!!IF&v1=3/1000:Q1/20/47/1^{Magic Fire Mushroom} 
+The Magic Fire Mushroom gives Expert Fire Magic until the end of the week...
+Since you already have Expert Fire Magic, the mushroom can't help you.^; 
+!!IF&w23=1/1000:M^{Magic Fire Mushroom} 
+You have already visited a Magic Fire Mushroom this week. 
+Try again next week.^; 
+!!VRw22&v1<>3/w23<>1:Sv1; w22 stock the level of the skill 
+!!IF&v1<>3/w23<>1/1000:Q1/20/47/1^{Magic Fire Mushroom} 
+The Magic Fire Mushroom gives Expert Fire Magic until the end of the week...
+You inhale the spores of the magic mushroom... 
+You learn Expert Fire Magic!^; 
+!!HE-1&v1<>3:S14/3; put skill in expert 
+!!VRw23&v1<>3:S1; heroes have visited the magic mushroom 
+
+*** Magic Earth Mushrooms *** 
+!?OB63/23; 
+!!VRv1:S0; 
+!!IF:W-1; 
+!!HE-1&w25<>1/v1<>3:S17/?v1; 
+!!IF&v1=3/1000:Q1/20/56/1^{Magic Earth Mushroom} 
+The Magic Earth Mushroom gives Expert Earth Magic until the end of the week... 
+Since you already have Expert Earth Magic, the mushroom can't help you.^;
+!!IF&w25=1/1000:M^{Magic Earth Mushroom} 
+You have already visited a Magic Earth Mushroom this week. 
+Try again next week.^; 
+!!VRw24&v1<>3/w25<>1:Sv1; w22 stock the level of the skill 
+!!IF&v1<>3/w25<>1/1000:Q1/20/56/1^{Magic Earth Mushroom} 
+The Magic Earth Mushroom gives Expert Earth Magic until the end of the week... 
+You inhale the spores of the magic mushroom... 
+You learn Expert Earth Magic!^; 
+!!HE-1&v1<>3:S17/3; put skill in expert 
+!!VRw25&v1<>3:S1; heroes have visited the magic mushroom 
+
+*** Magic Air Mushrooms *** 
+!?OB63/14; 
+!!VRv1:S0; 
+!!IF:W-1; 
+!!HE-1&w27<>1/v1<>3:S15/?v1; 
+!!IF&v1=3/1000:Q1/20/50/1^{Magic Air Mushroom} 
+The Magic Air Mushroom gives Expert Air Magic until the end of the week...
+Since you already have Expert Air Magic, the mushroom can't help you.^; 
+!!IF&w27=1/1000:M^{Magic Air Mushroom} 
+You have already visited a Magic Air Mushroom this week. 
+Try again next week.^; 
+!!VRw26&v1<>3/w27<>1:Sv1; w22 stock the level of the skill 
+!!IF&v1<>3/w27<>1/1000:Q1/20/50/1^{Magic Air Mushroom} 
+The Magic Air Mushroom gives Expert Air Magic until the end of the week...
+You inhale the spores of the magic mushroom... 
+You learn Expert Air Magic!^; 
+!!HE-1&v1<>3:S15/3; put skill in expert 
+!!VRw27&v1<>3:S1; heroes have visited the magic mushroom 
+</script>
+</font><b><font face="Arial" color="#000080">
+<a name="s3"></a></font></b></td>
+  </tr>
+  <tr>
+<td width="19%" height="20"><b><font face="Arial" color="#000080">
+Script:</font><font color="#FFFFFF" face="Arial">
+</font></b></td>
+<td width="81%" background="../images/fond.gif" height="20"><span lang="de"><b>
+<font face="Times New Roman" color="#D6C579">KARMIC BATTLES</font></b><font face="Times New Roman" size="4" color="#D6C579"><b>
+</b>(original 3.57)</font></span></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2"><span lang="de"><b>Note:</b>
+<font face="Arial" size="2">An alternative way to view this document: Go into \Data\s\&nbsp; and double click script38.erm. Is 
+should launch the script editor in \erm_se\ . In this editor you will have an ergonomic view of the script. However, <b>attention</b>: never save/overwrite or answer 
+yes to saving question when exiting as you might have accidentally changed the script while editing.</font></span><hr></td>
+  </tr>
+  <tr>
+<td width="100%" height="1553" colspan="2">
+<script type = "erm">ZVSE
+AUTO_PoweredBy=ERM Script Editor v.1.2.6.10
+** Karmic Battles Script 1.0 by Dieter Averbeck
+** This script summons for every battle against wandering monster
+** some additional stacks of creatures. This Script can`t be used
+** as predone. If you want to, just send me a mail:
+** dieter<at>byteware.de
+** Variables Used: v490-v491, w49
+** Flags Used: 490
+** Functions Used: FU491-FU493
+** Variables v490,v491 and Flag 490 must not be modified by other programs!
+
+
+** check wogify options
+!#UN:P38/?v491; ** v491=1 if Karmic Battles is enabled
+
+** before battle
+!?BAO&1000/v491=1;
+!!VRv490:S0 R8; ** set random parameter for battle script
+!!FU491:P; ** check if battle will be called
+!!IF:W-1;
+!!VRw49&v490<>0:+1; ** count w49 up, if battlescript called
+
+!?FU491;
+!!BA:P?y1/?y2/?y3; ** get pos of battle
+!!OBy1/y2/y3:T?y4; ** get object type at battel pos
+!!VRv490&y4<>54:S0; ** dissalbe battle if not WM
+!!IF&v490<>0:V490/1; ** set flag to enable/disable action
+
+** battle modify - v490=1: summon 6 random creatures
+!?BG0&490/v491=1; 
+** x1=multiplicator x2=startPos x3=increase 
+!!DO492/1/6/1&v490>0/v490<4:P1/5/34; ** sumon 6 random stacks 
+!!DO492/1/3/1&v490>3/v490<6:P2/39/34; ** sumon 3 random stacks 
+!!DO492/1/1/1&v490>5/v490<8:P4/91/0; ** sumon 1 random stack 
+!!FU493&v490>8:P; ** sumon 2 calculated stacks 
+!!IF:V490/0; 
+
+** after battle - give AI experience 
+!?BA1&-1000/v491=1; 
+!!IF:W-1; 
+!!VRw49:+1; 
+!!VRw49:*200; 
+!!HE-1:Edw49; 
+!!VRw49::1000; 
+
+** sumon random stacks 
+
+!?FU492; 
+!!VRy1:Sw49; ** amount per stack 
+!!VRy1:*x1; ** multiplicator 
+
+!!VRy2:Sw49; ** set Level 
+!!VRy2::10; ** set multiplicator for level 
+!!VRy2&y2>13:S13; 
+!!VRy3:S0 R7; ** calculate creature 
+!!VRy3:*14; 
+!!VRy3:+y2; 
+
+!!VRy4:S0 R5; ** calculate position 
+!!VRy4:+x2; 
+!!BU:Sy3/y1/y4/1/-1/1; 
+!!VRx2:+x3; 
+
+** sumon calculated stacks 
+
+!?FU493; 
+!!VRy1:S0 R1; 
+!!VRy1&w49>0/w49<11/y1=0:S139; **Peasant 
+!!VRy1&w49>0/w49<11/y1=1:S118; **Pixie 
+
+!!VRy1&w49>10/w49<21/y1=0:S119; **Sprite 
+!!VRy1&w49>10/w49<21/y1=1:S138; **Halfling 
+
+!!VRy1&w49>20/w49<31/y1=0:S112; **Air Elemental 
+!!VRy1&w49>20/w49<31/y1=1:S140; **Boar 
+
+!!VRy1&w49>30/w49<41/y1=0:S127; **Storm Elemantal 
+!!VRy1&w49>30/w49<41/y1=1:S159; **Ghost 
+
+!!VRy1&w49>40/w49<51/y1=0:S115; **Water Elemental 
+!!VRy1&w49>40/w49<51/y1=1:S141; **Mummy 
+
+!!VRy1&w49>50/w49<61/y1=0:S123; **Ice Elemental 
+!!VRy1&w49>50/w49<61/y1=1:S166; **Air Messenger 
+
+!!VRy1&w49>60/w49<71/y1=0:S114; **Fire Elemental 
+!!VRy1&w49>60/w49<71/y1=1:S164; **Fire Messenger 
+
+!!VRy1&w49>70/w49<81/y1=0:S129; **Energy Elemental 
+!!VRy1&w49>70/w49<81/y1=1:S165; **Earth Messenger 
+
+!!VRy1&w49>80/w49<91/y1=0:S113; **Earth Elemental 
+!!VRy1&w49>80/w49<91/y1=1:S170; **Arctic Sharpshooter 
+
+!!VRy1&w49>90/w49<101/y1=0:S125; **Magma Elemental 
+!!VRy1&w49>90/w49<101/y1=1:S171; **Lava Sharpshooter 
+
+!!VRy1&w49>100/w49<111/y1=0:S120; **Psychic Elemental 
+!!VRy1&w49>100/w49<111/y1=1:S169; **War Zealot 
+
+!!VRy1&w49>110/w49<121/y1=0:S121; **Magic Elemental 
+!!VRy1&w49>110/w49<121/y1=1:S172; **Nightmare 
+
+!!VRy1&w49>120/w49<131/y1=0:S130; **Firebird 
+!!VRy1&w49>120/w49<131/y1=1:S168; **Gorynych 
+
+!!VRy1&w49>130/w49<141/y1=0:S130; **Phoenix 
+!!VRy1&w49>130/w49<141/y1=1:S168; **Gorynych (Guthllu) 
+
+!!VRy1&w49>140:S0 R9; **Random Level 8 
+!!VRy1&w49>140:+150; 
+
+!!VRy2:S0 R5; 
+!!VRy2:+73; 
+!!BU:Sy1/w49/y2/1/-1/1; 
+!!VRy2:+34; 
+!!BU:Sy1/w49/y2/1/-1/1;
+  </script>
+<a name="s4"></a></td>
+  </tr>
+  <tr>
+<td width="19%" height="20"><b><font face="Arial" color="#000080">Script:</font><font color="#FFFFFF" face="Arial">
+</font></b></td>
+<td width="81%" background="../images/fond.gif" height="20"><span lang="de"><b>
+<font face="Times New Roman" color="#D6C579">HERO SPECIALIZATION BOOST</font></b><font face="Times New Roman" size="4" color="#D6C579"><b>
+</b>(original 3.57)</font></span></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2"><span lang="de"><b>Note:</b>
+<font face="Arial" size="2">An alternative way to 
+view this document: Go into \Data\s\&nbsp; and double click script39.erm. Is 
+should launch the script editor in \erm_se\ . In this editor you will have 
+an ergonomic view of the script. However, <b>attention</b>: never save/overwrite or answer 
+yes to saving question when exiting as you might have accidentally changed the 
+script while editing.</font></span><hr></td>
+  </tr>
+  <tr>
+<td width="100%" height="5" colspan="2"><script type = "erm">
+ZVSE
+_WARNING_#1=IMPORTANT! This file is not in a plain text format. NEVER use any editor except ERM_S for making any kind of changes!
+ERMS_ScriptLanguage=Russian or ðóññêèé (native) 
+ERMS_ScriptERMVersion=2,5 
+ERMS_ScriptDate=15.10.2002 
+ERMS_ScriptVersion=15 
+ERMS_ScriptAuthor=Alexis Koz 
+ERMS_ScriptName=Hero Specialization Boost 
+ERMS_PoweredBy=ERM Scripter v. 2003.2.27.2212
+
+;Thanks to: Fnord the Wizard who enchanted me 
+;Thanks to: All WoG command 
+;USED: 
+;v425-v444 dont use these variables in all scripts before I agreed. 
+;w28-w32 
+;z405-406 
+;FU803-808, 836-838, 850-852 
+;Flags 428, 429, 430 
+
+;-------------------------------Description-------------------------------------
+
+;New abilities: 
+; - All hero with monster specialities are greatly improve their units (Vampires and Skeletons specialists smaller than others) 
+; - All spell-casters can randomly cast their spells in a battle at no cost.
+; - All heroes with Intelligence specialization have commander with DeathShare ability 
+; - All heroes with Navigation specialization have commander with flying ability 
+; - All heroes with Ballista specialization have commander which can shoot
+; - All heroes with Archery specialization cast at the beginning of battle Precision spell on all allied units (even if hero has not spellbook or this spell in spellbook) 
+; - All heroes with First Aid specialization casts at the beginning of battle StoneSkin spell on all allied units except undeads (even if hero has not spellbook or this spell in spellbook) 
+; - All heroes with Fire Magic specialization casts at the beginning of battle Curse spell on all enemy units (even if hero has not spellbook or this spell in spellbook) 
+; - All heroes with Eagle Eye specialization let all 1st and 2nd level allied units to fly in the battle 
+; - All heroes with Mysticism specialization add 12+4*Herolevel mana to hero's mana-pool in the beginning of battle. (Remarks After battle amount of mana cannot be more than before battle). 
+; - All heroes with Resistance specialization decrease 12+4*Herolevel mana from enemy hero's mana-pool in the beginning of battle. 
+
+
+;---------------------Function that sets W28, W29, W30-------------------------- 
+;if 0<w28<1000 then hero is spell-caster 
+;w28 = number of spell 
+;w29 = chance to cast (1 of w29) 
+;w30 = to ally (0) or to enemy (1) 
+;w31 = chance improver 
+;w32 = type of spell nature: 0 - all 14 - fire 15 - air 16 water 17 earth
+
+;if 1000<=w28<2000 then hero is monster-specialist 
+;w28-1000 = additional damage to monster 
+;w29 = number of monster 
+;w30 = percent of additional hitpoints 
+;w31 = amount of additional Attack 
+;w32 = amount of additional Defence 
+
+;w28=2000 - Logistics 
+;w28=2001 - Nagash (AntiScouting) 
+;w28=2002 - Navigation 
+;w28=2003 - Estates 
+;w28=2004 - Armorer 
+;w28=2005 - Offence 
+;w28=2006 - Archery 
+;w28=2007 - Sir Mullich 
+;w28=2008 - Ballista 
+;w28=2009 - First Aid 
+;w28=2010 - Sorcery 
+;w28=2011 - Eagle Eye 
+;w28=2012 - Intelligence 
+;w28=2013 - Mysticism w29 - amount of in the beginning of game added to hero
+;w28=2014 - Resistance w29 - amount of in the beginning of game reduced from enemy hero 
+;w28=2015 - Fire Magic 
+;w28=2016 - Necromancy 
+;w28=210x - Adds resources (x= number of resource) w29 - number for a day
+;w28=2200 - Begemoth specialist 
+;w28=2201 - Lord Haart Black Knight 
+;w28=2202 - Xeron Devils specialist 
+;w28=2203 - Mutare Dragon spec 
+;w28=2204 - Gelu 
+;w28=2205 - Enchanter spec 
+
+--------------------------------------------------------------------------------
+
+!?FU838; 
+;Castle 
+!!FU836:P2006/0/0/0/0; 
+!!FU836:P1002/2/2/1/0; 
+!!FU836:P1003/4/3/2/0; 
+!!FU836:P2002/0/0/3/0; 
+!!FU836:P2003/0/0/4/0; 
+!!FU836:P1004/6/4/5/0; 
+!!FU836:P2008/0/0/6/0; 
+!!FU836:P1006/10/6/7/0; 
+!!FU836:P2009/0/0/8/0; 
+!!FU836:P41/6/0/9/16; 
+!!FU836:P45/6/1/10/16; 
+!!FU836:P15/14/1/11/0; 
+!!FU836:P1005/8/5/12/0; 
+!!FU836:P2011/0/0/13/0; 
+!!FU836:P48/13/0/14/16; 
+!!FU836:P2106/350/0/15/0; 
+
+;Rampart 
+!!FU836:P2004/0/0/16/0; 
+!!FU836:P1002/16/2/17/0; 
+!!FU836:P2106/350/0/18/0; 
+!!FU836:P1005/22/5/19/0; 
+!!FU836:P2014/10/0/20/0; 
+!!FU836:P1003/18/3/21/0; 
+!!FU836:P1006/24/6/22/0; 
+!!FU836:P2000/0/0/23/0; 
+!!FU836:P55/8/0/24/14; 
+!!FU836:P37/6/0/25/16; 
+!!FU836:P2012/0/0/26/0; 
+!!FU836:P2009/0/0/27/0; 
+!!FU836:P2011/0/0/28/0; 
+!!FU836:P51/5/0/29/15; 
+!!FU836:P16/17/1/30/16; 
+!!FU836:P1004/20/4/31/0; 
+
+;Tower 
+!!FU836:P1002/30/2/32/0; 
+!!FU836:P1005/36/5/33/0; 
+!!FU836:P1003/32/3/34/0; 
+!!FU836:P2004/0/0/35/0; 
+!!FU836:P2008/0/0/36/0; 
+!!FU836:P1006/38/6/37/0; 
+!!FU836:P2101/1/0/38/0; 
+!!FU836:P1005/36/5/39/0; 
+!!FU836:P60/20/1/40/15; 
+!!FU836:P2013/10/0/41/0; 
+!!FU836:P2011/0/0/42/0; 
+!!FU836:P51/5/0/43/15; 
+!!FU836:P1004/34/4/44/0; 
+!!FU836:P15/14/1/45/0; 
+!!FU836:P53/6/0/46/15; 
+!!FU836:P2106/350/0/47/0; 
+
+;Inferno 
+!!FU836:P1003/46/3/48/0; 
+!!FU836:P1006/52/6/49/0; 
+!!FU836:P1004/48/4/50/0; 
+!!FU836:P1001/42/1/51/0; 
+!!FU836:P2106/350/0/52/0; 
+!!FU836:P1002/44/2/53/0; 
+!!FU836:P2008/0/0/54/0; 
+!!FU836:P1005/50/5/55/0; 
+!!FU836:P2012/0/0/56/0; 
+!!FU836:P29/10/0/57/14; 
+!!FU836:P2013/10/0/58/0; 
+!!FU836:P45/6/1/59/16; 
+!!FU836:P2103/1/0/60/0; 
+!!FU836:P43/6/0/61/14; 
+!!FU836:P2010/0/0/62/0; 
+!!FU836:P29/10/0/63/14; 
+
+;Necropolis 
+!!FU836:P1002/58/2/64/0; 
+!!FU836:P1002/62/2/65/0; 
+!!FU836:P1005/64/5/66/0; 
+!!FU836:P1003/60/3/67/0; 
+!!FU836:P1006/66/6/68/0; 
+!!FU836:P2016/0/0/69/0; 
+!!FU836:P2106/350/0/70/0; 
+!!FU836:P1001/56/1/71/0; 
+!!FU836:P47/8/1/72/15; 
+!!FU836:P15/14/1/73/0; 
+!!FU836:P2010/0/0/74/0; 
+!!FU836:P2011/0/0/75/0; 
+!!FU836:P54/6/1/76/17; 
+!!FU836:P46/6/0/77/17; 
+!!FU836:P2016/0/0/78/0; 
+!!FU836:P2001/0/0/79/0; 
+
+;Dungeon 
+!!FU836:P1002/72/2/80/0; 
+!!FU836:P2008/0/0/81/0; 
+!!FU836:P1005/78/5/82/0; 
+!!FU836:P1003/74/3/83/0; 
+!!FU836:P2106/350/0/84/0; 
+!!FU836:P2000/0/0/85/0; 
+!!FU836:P1006/80/6/86/0; 
+!!FU836:P1001/70/1/87/0; 
+!!FU836:P54/6/1/88/17; 
+!!FU836:P2013/10/0/89/0; 
+!!FU836:P2010/0/0/90/0; 
+!!FU836:P54/6/1/91/17; 
+!!FU836:P2011/0/0/92/0; 
+!!FU836:P15/14/1/93/0; 
+!!FU836:P2104/1/0/94/0; 
+!!FU836:P46/6/0/95/17; 
+
+;Stronghold 
+!!FU836:P1006/94/6/96/0; 
+!!FU836:P2008/0/0/97/0; 
+!!FU836:P1003/88/3/98/0; 
+!!FU836:P1005/92/5/99/0; 
+!!FU836:P1001/84/1/100/0; 
+!!FU836:P1004/90/4/101/0; 
+!!FU836:P2005/0/0/102/0; 
+!!FU836:P1002/86/2/103/0; 
+!!FU836:P2010/0/0/104/0; 
+!!FU836:P1004/90/4/105/0; 
+!!FU836:P2000/0/0/106/0; 
+!!FU836:P53/6/0/107/15; 
+!!FU836:P28/7/0/108/15; 
+!!FU836:P2005/0/0/109/0; 
+!!FU836:P2011/0/0/110/0; 
+!!FU836:P2105/1/0/111/0; 
+
+;Fortress 
+!!FU836:P1004/106/4/112/0; 
+!!FU836:P1001/98/1/113/0; 
+!!FU836:P1002/100/2/114/0; 
+!!FU836:P2004/0/0/115/0; 
+!!FU836:P1005/102/5/116/0; 
+!!FU836:P1003/104/3/117/0; 
+!!FU836:P2008/0/0/118/0; 
+!!FU836:P1006/108/6/119/0; 
+!!FU836:P45/6/1/120/16; 
+!!FU836:P2013/10/0/121/0; 
+!!FU836:P2002/0/0/122/0; 
+!!FU836:P2009/0/0/123/0; 
+!!FU836:P46/6/0/124/14; 
+!!FU836:P2010/0/0/125/0; 
+!!FU836:P2012/0/0/126/0; 
+!!FU836:P2011/0/0/127/0; 
+
+;Conflux 
+!!FU836:P1006/120/6/128/0; 
+!!FU836:P1005/113/5/129/0; 
+!!FU836:P1004/114/4/130/0; 
+!!FU836:P1003/115/3/131/0; 
+!!FU836:P1006/120/6/132/0; 
+!!FU836:P1005/113/5/133/0; 
+!!FU836:P1004/114/4/134/0; 
+!!FU836:P1003/115/3/135/0; 
+!!FU836:P27/6/0/136/17; 
+!!FU836:P53/6/0/137/15; 
+!!FU836:P15/14/1/138/0; 
+!!FU836:P46/6/0/139/17; 
+!!FU836:P43/6/0/140/14; 
+!!FU836:P47/8/1/141/15; 
+!!FU836:P2106/350/0/142/0; 
+!!FU836:P2106/350/0/143/0; 
+
+;Others 
+!!FU836:P2007/0/0/144/0; 
+!!FU836:P2015/0/0/145/0; 
+!!FU836:P1000/6/4/146/0; 
+!!FU836:P2205/0/0/147/0; 
+!!FU836:P2004/0/0/148/0; 
+!!FU836:P2200/0/0/149/0; 
+!!FU836:P2201/0/0/150/0; 
+!!FU836:P2203/0/0/151/0; 
+!!FU836:P1000/6/4/152/0; 
+!!FU836:P2203/0/0/153/0; 
+!!FU836:P1000/90/4/154/0; 
+!!FU836:P2202/0/0/155/0; 
+
+!?FU836; 
+!!IF:Wx4; 
+!!VRw28:Sx1; 
+!!VRw29:Sx2; 
+!!VRw29&w28>=0/w28<1000: Sx2 *3 :2;
+!!VRw30:Sx3; 
+!!HEx4&w28>0/w28<1000:Mw28/1; //give spell 
+!!VRw31&w28>0/w28<1000:S0; 
+!!VRw32&w28>0/w28<1000:Sx5; 
+
+!!UN:P3/?v430; 
+!!FU803&w28>=1000/w28<2000:Px4/0; //monster specialists boost 
+
+!!COx4&w28=2012/x4>=0:B1/12/1; //commanders of Intellegince heroes have DeathStare 
+!!COx4&w28=2008/x4>=0:B1/4/1; //commanders of Ballista heroes can shoot 
+!!COx4&w28=2002/x4>=0:B1/8/1; //commanders of Navigation heroes can fly 
+
+!!FU806:Px4/0; //init hint for speciality 
+!!UN:G2/x4/2/405; 
+
+---------------------------Hero level increasing-------------------------------- 
+!?HL-1&429; 
+!!UN:P39/?v425; 
+!!HE-1:N?v426; 
+!!HL:S?v427/?v428/?v429; //next level check 
+
+!!VRv428:S0; 
+!!VRv428&v427=0:S1; 
+!!VRv428&v427=1:S2; 
+!!FU803:Pv426/v428; 
+
+!!IF:Wv426; //Mysticism and Resistance 
+!!VRw29&w28=2013:+3; 
+!!VRw29&w28=2014:+3; 
+
+-------------------------Monsters specialists boost----------------------------- 
+;x1 = number of hero 
+;x2 = next level advance (1 = attack will +1, 2 = defence will +1 see HL-1 trigger code above) 
+;do not change v426 and v427 
+!?FU804; 
+!!HEx1:F?v430/?v431/?v432/?v433/1; //set v430 and v431 as attack|defence 
+!!VRv430&x2=1:+1; //take account of next level advances 
+!!VRv431&x2=2:+1; 
+
+!!HEx1:E?v429/?v428; //v428=level of hero 
+
+!!VRw30:Sv428*3+12; //Additional percent to HP = 12+3*level of hero 
+!!VRw30|w29=62/w29=56:S0; 
+!!VRw31:Sv430; 
+!!VRw32:Sv431; 
+!!MA:Lw29/?v430; 
+!!VRv429:S8-v430; 
+!!VRw28:Sv428:v429+1; 
+!!VRw28|w29=62/w29=56:S0; 
+!!HEx1:X4/w29/w31/w32/w28; 
+!!VRw28:+1000; 
+
+!?FU803; 
+!!VRx3:Sx1; 
+!!VRx1&x1<0:Sx16; 
+!!IF:Wx1; 
+!!FU804&w28>=1000/w28<2000:Px1/x2; //check that hero is monster spec 
+!!VRx1:Sx3; 
+
+-------------------------------After battle------------------------------------- 
+!?BA1&429; 
+
+!!BA:H0/?v426; //set v426 is number of left hero - used in BG section 
+!!BA:H1/?v427; //set v427 is number of right hero - used in BG section 
+
+!!IF&v426>=0:Wv426; 
+!!HEv426&w28=2013/v426>=0:I?v433/1; //mysticism 
+!!VRv433&v433>w30/w28=2013/v426>=0:Sw30; 
+!!HEv426&w28=2013/v426>=0:Iv433/1; 
+
+!!IF&v427>=0:Wv427; 
+!!HEv427&w28=2013/v427>=0:I?v433/1; 
+!!VRv433&v433>w30/w28=2013/v427>=0:Sw30; 
+!!HEv427&w28=2013/v427>=0:Iv433/1; 
+
+---------------------------------Before 
+battle--------------------------------- 
+!?BF&429; 
+!!VRv444: *8; //v444 = random value generator 
+!!BH0:N?v426; //set v426 is number of left hero - used in BG section 
+!!HEv426&v426>=0:F?v438/?v439/?v442/?v431; ;set variables of attack and defence (v438-441) 
+!!BH1:N?v427; //set v427 is number of right hero - used in BG section 
+!!HEv427&v427>=0:F?v440/?v441/?v443/?v431; //v442 - spellpower of attacker v443 -spellpower of defender
+
+!!IF&v426>=0:Wv426; 
+!!DO851/0/19/1&w28=2011/v426>=0:P0/v426; //eagle eye 
+!!DO837/0/19/1&w28>=1000/w28<2000/v426>=0:P0/v426/0; //monster specs add bonuses 
+!!COv426&w28=2012/v426>=0:B1/12/1; //commanders of Intellegince heroes has DeathStare 
+!!COv426&w28=2008/v426>=0:B1/4/1; //commanders of Ballista heroes can shoot
+!!COv426&w28=2002/v426>=0:B1/8/1; //commanders of Navigation heroes can fly
+
+
+!!IF&v427>=0:Wv427; 
+!!DO851/20/40/1&w28=2011/v427>=0:P1/v427; 
+!!DO837/20/40/1&w28>=1000/w28<2000/v427>=0:P1/v427/0; 
+!!COv427&w28=2012/v427>=0:B1/12/1; 
+!!COv427&w28=2008/v427>=0:B1/4/1; 
+!!COv427&w28=2002/v427>=0:B1/8/1; 
+
+;Code below - Mysticism and Resistance 
+!!IF&v426>=0:Wv426; 
+!!HEv426&w28=2013/v426>=0:I?v433/1; //mysticism 
+!!VRw30&w28=2013/v426>=0:Sv433; //w30 contains initial mana's amount 
+!!VRv433&v426>=0:+w29; 
+!!HEv426&w28=2013/v426>=0:Iv433/1; 
+
+!!IF&v427>=0:Wv427; 
+!!HEv426&w28=2014/v426>=0/v427>=0:I?v433/1; //resistance 
+!!VRv433&v427>=0:-w29; 
+!!VRv433&v433<0/v427>=0:S0; 
+!!HEv426&w28=2014/v426>=0/v427>=0:Iv433/1; 
+
+!!IF&v427>=0:Wv427; 
+!!HEv427&w28=2013/v427>=0:I?v433/1; 
+!!VRw30&w28=2013/v427>=0:Sv433; 
+!!VRv433&v427>=0:+w29; 
+!!HEv427&w28=2013/v427>=0:Iv433/1; 
+
+!!IF&v426>=0:Wv426; 
+!!HEv427&w28=2014/v427>=0/v426>=0:I?v433/1; 
+!!VRv433&v427>=0:-w29; 
+!!VRv433&v433<0/v427>=0:S0; 
+!!HEv427&w28=2014/v427>=0/v426>=0:Iv433/1; 
+
+;FirstSpellings
+!!IF&v426>=0:Wv426; 
+!!DO850/0/20/1&v426>=0/w28=2006:P44/5; 
+!!DO850/0/20/1&v426>=0/w28=2009:P46/5; 
+!!DO850/21/41/1&v426>=0/w28=2010:P52/5; 
+!!DO850/21/41/1&v426>=0/w28=2015:P42/5; 
+!!IF&v427>=0:Wv427; 
+!!DO850/21/41/1&v427>=0/w28=2006:P44/5; 
+!!DO850/21/41/1&v427>=0/w28=2009:P46/5; 
+!!DO850/0/20/1&v427>=0/w28=2010:P52/5; 
+!!DO850/0/20/1&v427>=0/w28=2015:P42/5; 
+
+!?FU850; 
+!!BMx16:Mx1/x2/x2; 
+------------------------When next turn of battle started------------------------ 
+!?BR&429; 
+!!IF:V428/0; 
+
+!!BH0:N?v426; //set v426 is number of left hero - used in BG section 
+!!BH1:N?v427; //set v427 is number of right hero - used in BG section 
+
+!!IF&v997>=0:V428/1; //if tactics phase finished and script is enabled set 
+flag428=1 
+
+-----------------------When next monster gain control--------------------------- 
+;v426 is number of left hero - initialized in BR section above 
+;v427 is number of right hero - initialized in BR section above 
+;v426 and v428 do not change in code for CM trigger 
+;All v429-... can be modified outside later 
+;flag428 must be set in BR section above if script enabled and tactics turn finished 
+;flag429 must be set in BF section to set up first spells procedures 
+;v432 do not change in BG sections. 
+!?BG&429; 
+
+!!BG:A?v429; //v429=type of action
+
+!!VRv444: Sd1; //random value randomizing 
+!!VRv444&v444<0: S0;
+!!BG&428:Q?v425; //v425 is attacking side 
+!!VRv433&v425=0:Sv426; //v433 is number of casting hero 
+!!VRv433&v425=1:Sv427; 
+!!IF&428/v433>=0:Wv433; 
+!!VRv429&v425=0:Sv442; //init v429 as power of current active side
+!!VRv429&v425=1:Sv443; //init v429 as power of current active side
+!!FU805&428/v433>=0/w28>0/w28<1000:Pv429/v425; //call spellcaster procedure if hero is spellcaster 
+
+!!BG:A?v429; //v429=type of action
+!!VRv425:S0; 
+!!BG&v429=1:S?v425; 
+!!VRv425&v429=10/v433>=0/v433<=15:S37; 
+!!BG&v425=37:E?v429; 
+!!BG:Q?v436; 
+
+----------------------------When Cure spell was casted--------------------------
+
+;v429=dest monster stack
+;After action 
+!?BG1&429/v425=37; 
+
+!!DO837/v429/v429/1&v436=0/v429>=0:P0/v426/1; 
+!!DO837/0/20/1&v436=0/v429=-1:P0/v426/1; 
+!!DO837/v429/v429/1&v436=1/v429>=0:P1/v427/1; 
+!!DO837/21/41/1&v436=1/v429=-1:P1/v427/1; 
+
+-------------------------------Spell Casters------------------------------------ 
+;v433=hero spell-caster
+;x1=spellpower
+;x2=hero side
+!?FU805; 
+!!VRv428&x2=0/w30=0:S0; //v428 is side which will under spell 
+!!VRv428&x2=0/w30=1:S1; 
+!!VRv428&x2=1/w30=0:S1; 
+!!VRv428&x2=1/w30=1:S0; 
+
+!!VRv437:Sv444 %11;
+!!VRv430:Sv428*20 +v437; //v430 - target monster 
+!!BMv430:N?v429; //v429 - number of monsters 
+!!BMv430:T?v435; 
+!!VRv429&v435>=145/v435<=149:S0; //tower arrows and ballistas cannot be targetted 
+!!VRv437&v429<=0: Sd3 %11; 
+!!VRv430&v429<=0:Sv428*20 +v437; 
+!!BMv430&v429<=0:N?v429; 
+!!BMv430:T?v435; 
+!!VRv429&v435>=145/v435<=149:S0; 
+!!VRv437&v429<=0: Sd3 %11; 
+!!VRv430&v429<=0:Sv428*20 +v437; 
+!!BMv430&v429<=0:N?v429; 
+!!BMv430:T?v435; 
+!!VRv429&v435>=145/v435<=149:S0; 
+!!VRv437&v429<=0: Sd3 %11; 
+!!VRv430&v429<=0:Sv428*20 +v437; 
+!!BMv430&v429<=0:N?v429; 
+!!BMv430:T?v435; 
+!!VRv429&v435>=145/v435<=149:S0; 
+!!VRv437&v429<=0: Sd3 %11; 
+!!VRv430&v429<=0:Sv428*20 +v437; 
+!!BMv430&v429<=0:N?v429; 
+!!BMv430:T?v435; 
+!!VRv429&v435>=145/v435<=149:S0; 
+
+!!VRv431:S0; //v431 - position to cast if 0 then do not cast 
+!!BMv430&v429>0:P?v431; 
+
+!!VRv432&v431>0:Sv444 %w29; //randomize v432 
+
+!!HEv433:I?v429/1; 
+!!HEv433:I100/1; 
+!!HEv433:Sw32/?v435; 
+!!HEv433:Sw32/0; 
+!!BHx2:M?v434; 
+
+!!BG:A?v430; //if hero or monster casts spell do not randomly spell 
+!!VRv432|v430=1/v430=10:S2; 
+
+!!BG:N?v430;
+!!BMv430&v432=1/v431>0:Cw28/v431/0/x1/1;
+
+!!VRw31&v432=1/v431>0/w28>0/w28<1000:+w29; //if hero casts spell then w31 increasing by w29 value 
+!!VRw31|v432<>1/v431<=0/w28>0/w28<1000:-1; //w43 keeps addition value that added to w29. w31 decrement every turn and the chance is increasing 
+
+!!BHx2:Mv434; 
+!!HEv433:Sw32/v435; 
+!!HEv433:Iv429/1; 
+
+------------------------------Eagle eye flying---------------------------------- 
+;do not change v432 
+!?FU851; 
+!!VRv434:S-1; 
+!!BMx16:T?v434; 
+!!BMx16:I?v431; 
+!!MA&v434>=0/x1=v431:Lv434/?v435; 
+!!BMx16&v434>=0/x1=v431:F?v430; 
+!!VRv433&v435>=0/x1=v431/v435<=1/v434>=0:Sv430|2; 
+!!BMx16&v435>=0/x1=v431/v435<=1/v434>=0:Fv433; 
+
+-------------------------Monster specs add bonuses------------------------------ 
+;do not change v432 
+;x1=side 
+;x2=number of hero 
+;x3=1 if non first call of the function 
+!?FU837; 
+!!VRv430&x1=0:Sv438; //restore hero parameters 
+!!VRv431&x1=0:Sv439; 
+!!VRv430&x1=1:Sv440; 
+!!VRv431&x1=1:Sv441; 
+!!BMx16:T?v434; //v434=type of creature 
+!!BMx16:I?v435; //v435=left or right 
+
+;Standard 
+!!FU852&w29=v434/x1=v435:Px16/v434/v430/v431/x3; 
+;Non-confluxers upgraded creatures 
+!!VRv433:Sv434-1; 
+!!FU852&w29=v433/x1=v435/w29<>112/w29<>113/w29<>114/w29<>115:Px16/v434/v430/v431/x3;
+
+;Conflux upgraded 
+!!FU852&w29=112/v434=127/x1=v435:Px16/v434/v430/v431/x3; 
+!!FU852&w29=113/v434=125/x1=v435:Px16/v434/v430/v431/x3; 
+!!FU852&w29=114/v434=129/x1=v435:Px16/v434/v430/v431/x3; 
+!!FU852&w29=115/v434=123/x1=v435:Px16/v434/v430/v431/x3; 
+
+!?FU852; 
+;x1=monster place ID 
+;x2=monster type 
+;x3=hero attack skill 
+;x4=hero defence skill 
+;x5=1 if non first call of the function 
+!!BMx1&x5<>1:Sd1; //speed +1 
+!!MA:Px2/?v433; //hitpoints 
+!!VRv433:*w30:100; 
+!!BMx1:Hdv433; 
+!!MA:Ax2/?v433; //attack for each specified monster = Standard+HeroBonus+CleanHeroBonus 
+!!VRv433:+x3+w31; 
+!!BMx1:Av433; 
+!!MA:Dx2/?v433; //defence 
+!!VRv433:+x4+w32; 
+!!BMx1:Dv433; 
+
+-----------------------Right mouse click in battle info------------------------- 
+;VRv425-428 cannot touch! 
+!?CM4&429; 
+!!CM:F?v433; //check for right button 
+!!VRv433:&512; 
+!!CM:A?v429/?v430; 
+
+!!VRv431:S-1; 
+!!VRv431&v429>0/v429<58/v430>16/v430<90:S0; 
+!!VRv431&v429>739/v429<800/v430>16/v430<90:S1; 
+!!CM&v426>=0/v431=0/v433=512:R0; //disable standard handling 
+!!CM&v427>=0/v431=1/v433=512:R0; 
+
+!!FU806&v426>=0/v431=0/v433=512:Pv426/1; 
+!!IF&v426>=0/v431=0/v433=512:M1/405; //show message 
+!!FU806&v427>=0/v431=1/v433=512:Pv427/1; 
+!!IF&v427>=0/v431=1/v433=512:M1/405; 
+
+-----------------------Hero screen specialization click------------------------- 
+!?CM2&429; 
+!!HE-1:N?v426; 
+!!CM:I?v431; 
+!!FU806&v426>=0/v431=118:Pv426/0; 
+!!UN&v426>=0/v431=118:G2/v426/2/405; //reset spec description 
+
+-----------------------------Setting heroes info-------------------------------- 
+;sets to z405 text for hero's info 
+;x1 = hero number 
+;x2 = 1 if was called from battle 
+!?FU806; 
+!!IF:Wx1; 
+!!HEx1:B0/?z406; 
+!!VRz405:S^{Hero Specialization Boost is activated:} 
+{^+z406+^ } 
+^; 
+!!HEx1:R2/?v432; 
+!!VRz406&v432=0:S^ he ^; 
+!!VRz406&v432=1:S^ she ^; 
+
+;Spellcasters 
+!!VRz405&w28>0/w28<1000:+^Additionally and randomly in a battle ^+z406+^can cast spell ^; 
+!!FU807&w28>0/w28<1000:Px1; 
+;Monstermasters 
+!!VRz405&w28>=1000/w28<2000:+^In battles^+z406+^greatly improves parameters of all {^; 
+!!FU808&w28>=1000/w28<2000:Px1/x2; 
+;Logistics 
+!!VRz405&w28=2000:+^Specialist in Logistics. 
+Receives +5% per level bonus to {Logistics} skill percentage. No additional bonuses^+z406+^receives^; 
+
+;AntiScouting 
+!!VRz405&w28=2001:+^Mobile Veil of Darkness. 
+When the hero moves, the shroud is replaced in a circle around him for all players who are not allies. 
+No additional bonuses^+z406+^receives^; 
+
+;Navigators 
+!!VRz405&w28=2002:+^Specialist in Navigation. 
+Receives +5% per level bonus to {Navigation} skill percentage. 
+{Commander} of this hero has {Flying} ability^; 
+
+;Estates 
+!!VRz405&w28=2003:+^Specialist in Estates. 
+Receives +5% per level bonus to {Estates} skill percentage. 
+No additional bonuses^+z406+^receives^; 
+
+;Armorer 
+!!VRz405&w28=2004:+^Specialist in Armorer. 
+Receives +5% per level bonus to {Armorer} skill percentage. 
+No additional bonuses^+z406+^receives^; 
+
+;Offence 
+!!VRz405&w28=2005:+^Specialist in Offence. 
+Receives +5% per level bonus to {Offence} skill percentage. 
+No additional bonuses^+z406+^receives^; 
+
+;Archery 
+!!VRz405&w28=2006:+^Specialist in Archery. 
+Receives +5% per level bonus to {Archery} skill percentage. In the beginning of any battle^+z406+^casts {Precision} spell on all allied units^; 
+
+;Sir Mullich 
+!!VRz405&w28=2007:+^Specialist in Speed. 
+All creatures receive +2 speed 
+No additional bonuses^+z406+^receives^; 
+
+;Ballista 
+!!VRz405&w28=2008:+^Specialist in Ballistas. 
+{Commander} of this hero {Can Shoot}^; 
+
+;First Aid 
+!!VRz405&w28=2009:+^Specialist in First Aid. 
+In the beginning of any battle^+z406+^ casts {Stone skin} spell for all allied units^; 
+
+;Sorcery 
+!!VRz405&w28=2010:+^Specialist in Sorcery. 
+Receives +5% per level bonus to {Sorcery} skill percentage. 
+In the beginning of each battle^+z406+^casts {Misfortune} spell on all enemy units^; 
+
+;Eagle Eye 
+!!VRz405&w28=2011:+^Specialist in Eagle Flying. 
+Receives +5% per level bonus to {Eagle Eye} skill percentage. All 1st and 2nd level creatures additionally receive flying ability.^; 
+
+;Intelligent 
+!!VRz405&w28=2012:+^Specialist in Intelligence. 
+Receives +5% per level bonus to {Intelligence} skill percentage. 
+{Commander} of this hero has {DeathStare} ability^; 
+
+;Mysticism 
+!!VRz405&w28=2013:+^Specialist in Mysticism. 
+Receives +5% per level bonus to {Mysticism} skill percentage. 
+In the beginning of each battle^+z406+^adds %W29 mana. Amount of added mana will grow by 3 mana for each level of hero^; 
+
+;Resistance 
+!!VRz405&w28=2014:+^Specialist in Resistance. 
+Receives +5% per level bonus to {Resistance} skill percentage. 
+In the beginning of each battle^+z406+^reduces %W29 mana of enemy hero. Amount will grow by 3 mana for each level of hero^; 
+
+;Fire Magic 
+!!VRz405&w28=2015:+^Specialist in Fire Magic. 
+Starts with expert level of Fire Magic secondary skill. 
+In the beginning of each battle^+z406+^casts {Curse} on all enemy units^;
+
+;Necromancy 
+!!VRz405&w28=2016:+^Specialist in Necromancy. 
+Receives +5% per level bonus to {Necromancy} skill percentage. 
+No additional bonuses^+z406+^receives^; 
+
+;Resource 
+!!VRz405&w28=2100:+^Specialist in Resource. 
+Increases kingdom's wood production by 1 per day. 
+No additional bonuses^+z406+^receives^; 
+!!VRz405&w28=2101:+^Specialist in Resource. 
+Increases kingdom's mercury production by 1 per day. 
+No additional bonuses^+z406+^receives^; 
+!!VRz405&w28=2102:+^Specialist in Resource. 
+Increases kingdom's ore production by 2 per day. 
+No additional bonuses^+z406+^receives^; 
+!!VRz405&w28=2103:+^Specialist in Resource. 
+Increases kingdom's sulfur production by 1 per day. 
+No additional bonuses^+z406+^receives^; 
+!!VRz405&w28=2104:+^Specialist in Resource. 
+Increases kingdom's crystal production by 1 per day. 
+No additional bonuses^+z406+^receives^; 
+!!VRz405&w28=2105:+^Specialist in Resource. 
+Increases kingdom's gem production by 1 per day. 
+No additional bonuses^+z406+^receives^; 
+!!VRz405&w28=2106:+^Specialist in Resource. 
+Increases kingdom's income by 350 per day. 
+No additional bonuses^+z406+^receives^;
+;Behemoths 
+!!VRz405&w28=2200:+^Specialist in Behemoths. 
+All {Behemoths} gets +5 Attack, +5 Defence and +10 Damage^; 
+;Black Knights 
+!!VRz405&w28=2201:+^Specialist in Black Knights. 
+All {Black Knights} gets +5 Attack, +5 Defence and +10 Damage^; 
+;Devils 
+!!VRz405&w28=2202:+^Specialist in Devils. 
+All {Devils} gets +5 Attack, +5 Defence and +10 Damage^; 
+;Dragon 
+!!VRz405&w28=2203:+^Specialist in Dragons. 
+All {Dragons} gets +5 Attack, +5 Defence^; 
+;Gelu 
+!!VRz405&w28=2203:+^Specialist in SharpShooters. 
+Can upgrade {Elves} and {Archers} to {Sharpshooters}^; 
+;Enchanter 
+!!VRz405&w28=2203:+^Specialist in Enchanters. 
+Can upgrade {Monks} and {Magi} to {Enchanters}^; 
+!?FU807; //spell 
+!!VRz405&w28=15:+^{Magic Arrow}^; 
+!!VRz405&w28=16:+^{Ice Bolt}^; 
+!!VRz405&w28=17:+^{Lightning Bolt}^; 
+!!VRz405&w28=27:+^{Shield}^; 
+!!VRz405&w28=28:+^{Air Shield}^; 
+!!VRz405&w28=29:+^{Fire Shield}^; 
+!!VRz405&w28=37:+^{Cure}^; 
+!!VRz405&w28=41:+^{Bless}^; 
+!!VRz405&w28=43:+^{Bloodlust}^; 
+!!VRz405&w28=45:+^{Weakness}^; 
+!!VRz405&w28=46:+^{Stone Skin}^; 
+!!VRz405&w28=47:+^{Disrupting Ray}^; 
+!!VRz405&w28=48:+^{Prayer}^; 
+!!VRz405&w28=51:+^{Fortune}^; 
+!!VRz405&w28=53:+^{Haste}^; 
+!!VRz405&w28=54:+^{Slow}^; 
+!!VRz405&w28=55:+^{Slayer}^; 
+!!VRz405&w28=60:+^{Hypnotize}^; 
+!!VRv432:Sw29+w31; 
+!!VRz405:+^ at no cost. 
+Average chance to cast is 1 of %W29.^; 
+!?FU808; //monsters 
+!!UN:N3/406/w29/1; 
+!!VRz405:+z406+^} ^; 
+!!VRz405&w31>0:+^ 
+Additional attack: +%W31^; 
+!!VRz405&w32>0:+^ 
+Additional defence: +%W32^; 
+!!VRv432:Sw28-1000; 
+!!UN:N3/406/w29/0; 
+!!VRz405&v432>0:+^ Each {^+z406+^} give additional damage: +%V432^; 
+!!VRz405&w30>0:+^ In battles health of each {^+z406+^} increased by %W30%^; 
+!!VRz405&x1<128:+^ Additional speed: +1^; 
+!!VRz405:+^ 
+Additional values will increased with level and skills of hero.^; 
+-----------------------------------Init-----------------------------------------
+!#UN:P39/?v425; 
+!#IF&v425=1:V429/1; //flag 429 - if script enabled 
+!#VRv436:S255; 
+!#VRv436&429:S0; //on first battle of the player message appears 
+!#FU838&429:P; //initialize of heroes w28-w32
+</script>
+<a name="s5"></a></font></font></td>
+  </tr>
+  <tr>
+<td width="19%" height="20"><b><font face="Arial" color="#000080">Script:</font><font color="#FFFFFF" face="Arial">
+</font></b></td>
+<td width="81%" background="../images/fond.gif" height="20"><span lang="de"><b>
+<font face="Times New Roman" color="#D6C579">TEMPLE OF MIGHT</font></b><font face="Times New Roman" size="4" color="#D6C579"><b>
+</b>(</font><font face="Times New Roman" size="4" color="#FFFFFF">wolfmah</font><font face="Times New Roman" size="4" color="#D6C579">, 
+untested)</font></span></td>
+  </tr>
+  <tr>
+<td width="100%" height="19" colspan="2">
+<script type="erm">
+ZVSE</font><font size="1"> 
+AUTO_PoweredBy=ERM Script Editor v.1.2.6.32 
+*/ Temple of Might ERM script v1.1 --- wolfmah 
+*/ Requires WOG 3.53 or later 
+*/ 
+*/ This script will allow you to use one of the hero that have a creature
+
+*/ speciality and when he visit one of the temple (the object below the big
+
+*/ Icy Mushroom) place on the map and got some Peasants with him, he will be
+
+*/ able to upgrade them into his speciality. The cost will be the difference
+
+*/ between the Peasant and the creature. In other word, it works just like 
+the 
+*/ Hill Fort, except it only work with hero that have a creature speciality 
+and 
+*/ Peasants on them. 
+*/ 
+*/ To use this script, copy and paste it in a global event on a map, set it 
+to 
+*/ never happen (minimum of 500 day) and uncheck all colours. 
+*/ 
+*/ Variable and Function used : 
+*/ Q100 - 101 - 111 - 113 - 115 - 117 - 119 - 121 - 123 - 125 - 128 - 129 - 
+130 
+*/ z10 
+*/ v110 - 111 - 112 - 113 - 114 - 115 - 116 - 117 - 118 - 119 - 120 - 121 -
+
+*/ 122 - 123 - 124 - 125 
+*/ FU1 - 2 
+
+*/ Set up hint text for &quot;Temple of Might&quot; objects 
+!#VRz09:S^Temple of Might^; 
+!#HT63/05:T09; 
+
+!?OB63/05; */ Triggers when any Temple of Might is visited 
+
+!!IF:V111/0; */ Will be use to know if the hero got at least 1 Peasant 
+!!IF:V113/0; 
+!!IF:V115/0; 
+!!IF:V117/0; 
+!!IF:V119/0; 
+!!IF:V121/0; 
+!!IF:V123/0; 
+
+!!IF:M^You enter the Temple of Might and hear a voice...^; 
+!!IF:M^Hi there traveller! This is the Temple of Might. In this place, all 
+heroes who have creature speciality, can transform their peasants, thanks to 
+my magic, into there speciality. Now, let me check if you're worth my 
+time.^; 
+
+!!HE-1:N?v110; */ Get the number of the hero 
+!!HE-1:C0/0/?v111/?v112; */ Slot 1 
+!!HE-1:C0/1/?v113/?v114; */ Slot 2 
+!!HE-1:C0/2/?v115/?v116; */ Slot 3 
+!!HE-1:C0/3/?v117/?v118; */ Slot 4 
+!!HE-1:C0/4/?v119/?v120; */ Slot 5 
+!!HE-1:C0/5/?v121/?v122; */ Slot 6 
+!!HE-1:C0/6/?v123/?v124; */ Slot 7 
+
+!!IF&v111=139:V111/1; */ Check which slot got Peasants 
+!!IF&v113=139:V113/1; 
+!!IF&v115=139:V115/1; 
+!!IF&v117=139:V117/1; 
+!!IF&v119=139:V119/1; 
+!!IF&v121=139:V121/1; 
+!!IF&v123=139:V123/1; 
+
+!!VRv125:S0; */ The sum of all the Peasants in each slot 
+!!VRv125&111:+v112; 
+!!VRv125&113:+v114; 
+!!VRv125&115:+v116; 
+!!VRv125&117:+v118; 
+!!VRv125&119:+v120; 
+!!VRv125&121:+v122; 
+!!VRv125&123:+v124; 
+
+!!IF&v125=0:M^If you don't have at least 1 Peasant, there is nothing to do 
+here, so please, leave.^; 
+
+*/ Check the hero and asign the right parameters 
+*/ Knight- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=146/v125>0:P6/v125; */ Catherine - Swordsmen 
+!!FU1040&v110=2/v125>0:P4/v125; */ Edric - Griffins 
+!!FU1040&v110=152/v125>0:P6/v125; */ Roland - Swordsmen 
+!!FU1040&v110=5/v125>0:P6/v125; */ Sorsha - Swordsmen 
+!!FU1040&v110=7/v125>0:P10/v125; */ Tyris - Cavaliers 
+!!FU1040&v110=1/v125>0:P2/v125; */ Valeska - Archers 
+*/ Cleric- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=12/v125>0:P8/v125; */ Ingham - Monks 
+*/ Ranger- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=22/v125>0:P24/v125; */ Clancy - Unicorns 
+!!FU1040&v110=21/v125>0:P18/v125; */ Ivor - Wood Elves 
+!!FU1040&v110=19/v125>0:P22/v125; */ Ryland - Dendroids Guards 
+!!FU1040&v110=17/v125>0:P16/v125; */ Ufretin - Dwarves 
+*/ Druid - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=31/v125>0:P20/v125; */ Aeris - Pegasi 
+*/ Alchemist - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=37/v125>0:P38/v125; */ Fafner - Nagas 
+!!FU1040&v110=39/v125>0:P36/v125; */ Iona - Genies 
+!!FU1040&v110=34/v125>0:P32/v125; */ Josephine - Stone Golems 
+!!FU1040&v110=32/v125>0:P30/v125; */ Piquedram - Stone Gargoyles 
+!!FU1040&v110=33/v125>0:P36/v125; */ Thane - Genies 
+*/ Wizard- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=44/v125>0:P34/v125; */ Theodorus - Magi 
+*/ Demoniac- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=53/v125>0:P44/v125; */ Calh - Gogs 
+!!FU1040&v110=48/v125>0:P46/v125; */ Fiona - Hell Hounds 
+!!FU1040&v110=51/v125>0:P42/v125; */ Ignatius - Imps 
+!!FU1040&v110=50/v125>0:P48/v125; */ Marius - Demons 
+!!FU1040&v110=55/v125>0:P50/v125; */ Nymus - Pit Fiends 
+!!FU1040&v110=49/v125>0:P52/v125; */ Rashka - Efreet 
+!!FU1040&v110=155/v125>0:P54/v125; */ Xeron - Devils (1 mercury) 
+*/ Death Knight- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=67/v125>0:P60/v125; */ Charna - Wights 
+!!FU1040&v110=71/v125>0:P56/v125; */ Galthran - Skeletons 
+!!FU1040&v110=150/v125>0:P66/v125; */ Lord Haart - Black Knights 
+!!FU1040&v110=66/v125>0:P64/v125; */ Moandor - Liches 
+!!FU1040&v110=64/v125>0:P58/v125; */ Straker - Walking Dead 
+!!FU1040&v110=68/v125>0:P66/v125; */ Tamika - Black Knights 
+!!FU1040&v110=65/v125>0:P62/v125; */ Vokial - Vampires 
+*/ Overlord- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=83/v125>0:P74/v125; */ Ajit - Beholders 
+!!FU1040&v110=82/v125>0:P78/v125; */ Dace - Minotaurs 
+!!FU1040&v110=80/v125>0:P72/v125; */ Lorelei - Harpies 
+!!FU1040&v110=151/v125>0:P82/v125; */ Mutare - Red Dragons (1 sulfur) 
+!!FU1040&v110=153/v125>0:P82/v125; */ Mutare Drake - Red Dragons (1 sulfur)
+
+!!FU1040&v110=87/v125>0:P70/v125; */ Shakti - Troglodytes 
+!!FU1040&v110=86/v125>0:P80/v125; */ Synca - Manticores 
+*/ Barbarian - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=154/v125>0:P90/v125; */ Boragus - Ogres 
+!!FU1040&v110=100/v125>0:P84/v125; */ Gretchin - Goblins 
+!!FU1040&v110=98/v125>0:P88/v125; */ Jabarkas - Orcs 
+!!FU1040&v110=149/v125>0:P96/v125; */ Kilgor - Behemoths 
+!!FU1040&v110=101/v125>0:P90/v125; */ Krellion - Ogres 
+!!FU1040&v110=99/v125>0:P92/v125; */ Shiva - Rocs 
+!!FU1040&v110=103/v125>0:P86/v125; */ Tyraxor - Wolf Riders 
+!!FU1040&v110=96/v125>0:P94/v125; */ Yog - Cyclopes 
+*/ Battle Mage - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=105/v125>0:P90/v125; */ Vey - Ogres 
+*/ Beastmaster - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=116/v125>0:P102/v125; */ Alkin - Gorgons 
+!!FU1040&v110=119/v125>0:P108/v125; */ Broghild - Wyverns 
+!!FU1040&v110=112/v125>0:P106/v125; */ Bron - Basilisks 
+!!FU1040&v110=113/v125>0:P98/v125; */ Drakon - Gnolls 
+!!FU1040&v110=117/v125>0:P104/v125; */ Korbac - Serpent Flies 
+!!FU1040&v110=114/v125>0:P100/v125; */ Wystan - Lizardmen 
+*/ Planeswalker- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - 
+!!FU1040&v110=133/v125>0:P113/v125; */ Erdamon - Earth Ele. 
+!!FU1040&v110=134/v125>0:P114/v125; */ Fiur - Fire Ele. 
+!!FU1040&v110=130/v125>0:P114/v125; */ Ignissa - Fire Ele. 
+!!FU1040&v110=135/v125>0:P115/v125; */ Kalt - Water Ele. 
+!!FU1040&v110=131/v125>0:P115/v125; */ Lacus - Water Ele. 
+!!FU1040&v110=132/v125>0:P120/v125; */ Monere - Psychic Ele. 
+!!FU1040&v110=128/v125>0:P120/v125; */ Pasis - Psychic Ele. 
+!!FU1040&v110=129/v125>0:P113/v125; */ Thunar - Earth Ele. 
+********************************************************************************
+
+!?FU1040; 
+*/ Calculate the amount of gold/mercury/sulfur the upgrade will cost 
+*/ 
+*/ x1 = Hero's monster speciality picture 
+*/ x2 = Total of Peasants 
+*/ 
+*/ y1 = Amount of gold of the owner 
+*/ y2 = Upgrade cost 
+*/ y3 = Amount of money the Peasant would have cost (substract to y2) 
+*/ y4 = Amount of gold the creature cost 
+*/ y5 = Amount of mercury the creature cost 
+*/ y6 = Amount of mercury of the owner 
+*/ y7 = Amount of sulfur the creature cost 
+*/ y8 = Amount of sulfur of the owner 
+*/ y9 = Cost of Peasant 
+*/ y10 = Total of Mercury/Sulfur for the upgrade 
+
+!!IF:V125/0; 
+!!IF:Q130/21/x1/2^Would you like to train your Peasants into^; 
+
+*/ Get the total amount of gold/mercury/sulfur of the owner and the 
+speciality creature 
+!!OW&130:R-1/6/?y1 R-1/1/?y6 R-1/3/?y8; 
+!!MA&130:Cx1/6/?y4 Cx1/1/?y5 Cx1/3/?y7 C139/6/?y9; 
+
+*/ Calculate the amount of mercury/sulfur it will cost 
+!!VRy10&130/y5>0/y7=0:Sx2 *y5; 
+!!IF&130/y5>0/y7=0:V128/1 V129/0; 
+!!VRy10&130/y5=0/y7>0:Sx2 *y7; 
+!!IF&130/y5=0/y7>0:V128/0 V129/1; 
+!!VRy10&130/y5=0/y7=0:Sx2 *0; 
+!!IF&130/y5=0/y7=0:V128/0 V129/0; 
+
+*/ Calculate the amount of gold it will cost 
+!!VRy2&130:Sx2 *y4; 
+!!VRy3&130:Sx2 *y9; 
+!!VRy2&130:-y3; 
+
+*/ If something's wrong 
+!!IF&130/y1<y2:V125/0 V130/0 M^Sorry, but you don't have enough gold.^; 
+!!IF&130/128/y6<y10:V125/0 V130/0 M^Sorry, but you don't have enough 
+mercury.^; 
+!!IF&130/129/y8<y10:V125/0 V130/0 M^Sorry, but you don't have enough 
+sulfur.^; 
+
+*/ If everything's right 
+!!IF&130/-128/-129/y1>y2:V125/1 M^Upgrade cost : %Y2 gold.^; 
+!!IF&130/128/y6>y10:V125/1 M^Upgrade cost : %Y2 gold 
+and %Y10 mercury.^; 
+!!IF&130/129/y8>y10:V125/1 M^Upgrade cost : %Y2 gold 
+and %Y10 sulfur.^; 
+
+!!FU2040&125:Py1/y2/x1/y5/y6/y7/y8/y10; 
+********************************************************************************
+
+!?FU2040; 
+*/ Substract the amount of gold/mercury/sulfur the upgrade have cost and 
+change 
+*/ the Peasants into the respective creature 
+*/ 
+*/ x1 = Amount of gold of the player 
+*/ x2 = Cost of the upgrade 
+*/ x3 = Hero's monster speciality number 
+*/ x4 = Mercury the creature cost 
+*/ x5 = Mercury of the owner 
+*/ x6 = Sulfur the creature cost 
+*/ x7 = Sulfur of the owner 
+*/ x8 = Total of Mercury/Sulfur for the upgrade 
+*/ 
+*/ y11 - y24 = Get the type and number of creatures in each of the 7 slots 
+on the hero 
+
+*/ Substract the gold 
+!!VRx1:-x2; 
+!!OW:R-1/6/x1; 
+
+*/ Substract the mercury 
+!!VRx5&128:-x8; 
+!!OW&128:R-1/1/x5; 
+
+*/ Substract the sulfur 
+!!VRx7&129:-x8; 
+!!OW&129:R-1/3/x7; 
+
+*/ Change Peasants that lies in any slots into the speciality creature 
+!!HE-1:C0/0/?y11/?y12 C0/1/?y13/?y14 C0/2/?y15/?y16 C0/3/?y17/?y18 
+C0/4/?y19/?y20 C0/5/?y21/?y22 C0/6/?y23/?y24; 
+!!HE-1&y11=139:C0/0/x3/y12; */ Slot 1 
+!!HE-1&y13=139:C0/1/x3/y14; */ Slot 2 
+!!HE-1&y15=139:C0/2/x3/y16; */ Slot 3 
+!!HE-1&y17=139:C0/3/x3/y18; */ Slot 4 
+!!HE-1&y19=139:C0/4/x3/y20; */ Slot 5 
+!!HE-1&y21=139:C0/5/x3/y22; */ Slot 6 
+!!HE-1&y23=139:C0/6/x3/y24; */ Slot 7 
+</script>
+<a name="s6"></a></font></font></td>
+  </tr>
+  <tr>
+<td width="19%" height="20"><b><font face="Arial" color="#000080">Script:</font><font color="#FFFFFF" face="Arial">
+</font></b></td>
+<td width="81%" background="../images/fond.gif" height="20"><span lang="de"><b>
+<font face="Times New Roman" color="#D6C579">FLEA MARKET</font></b><font face="Times New Roman" size="4" color="#D6C579"><b>
+</b>(</font><font face="Times New Roman" size="4" color="#FFFFFF">Dieter 
+Averbeck</font><font face="Times New Roman" size="4" color="#D6C579">, 
+untested)</font></span></td>
+  </tr>
+  <tr>
+<td width="100%" height="19" colspan="2"><script type="erm">ZVSE
+
+AUTO_PoweredBy=ERM Script Editor v.1.2.6.32 
+** [Flea Market] 
+** Flea Market Script 1.1 - Dieter Averbeck 
+** This Script opens a flea market on every Saturday and Thursday, 
+** the first visiting heroe can deal with the market man. 
+** The Market Man offers a resource, if you have enough money 
+** You don`t get a resource every time most something better, 
+** sometimes something worse. 
+** To use this script, just copy and paste it into a timed 
+** event, that not will be shown. 
+** For example Day 500. Then place one or more of the object 6 
+** on the map (It`s the 5th building after the towns). That`s it! 
+** Variables used: TM15,TM16,TM17,TM18, z151, v151-y157, 
+** FU153, Flag156, 158 
+
+** on saturday (6th day of a week set var to 1) 
+!#TM15:S6/999/7/255; 
+!?TM15; 
+!!VRv152:S1; 
+
+** on sunday (last day of a week set var to 0) 
+!#TM16:S7/999/7/255; 
+!?TM16; 
+!!VRv152:S0; 
+!!VRv155:S0; ** Set Seller after visiting 
+
+** on wednesday (3rd day of a week set var to 1) 
+!#TM17:S3/999/7/255; 
+!?TM17; 
+!!VRv152:S1; 
+
+** on thursday (4th day of a week set var to 0) 
+!#TM18:S4/999/7/255; 
+!?TM18; 
+!!VRv152:S0; 
+!!VRv155:S0; ** Set Seller after visiting 
+
+!#VRz151:S^Flea Market^; 
+!#VRv151:S0; 
+!#HT63/7:V151/0/151; 
+
+!?OB63/7; 
+!!OW:R-1/6/?v160; ** Check Money of visiting player 
+
+!!IF&1000/v152=0:M^The Flea Market opens only on Thursdays and Saturdays^;
+
+!!IF&1000/v152=1/v160<1000/v155<3:M^You don`t have enough Money to deal with the sellers. They ignore you!^; 
+!!IF&1000/v152=1/v155>2:M^You have anything of your interest bought. Try it again next week^; 
+!!FU153&v152=1/v160>1000/v155<3:P; 
+
+!?FU153; 
+!!VRv154:S0 R6; ** just the offer pic 
+
+!!IF&1000:Q156/v154/1/2^The market man offers you something that looks like a resource, but perhaps it could be something valuable^; 
+
+!!IF&1000/-156:M^Come back later^; 
+
+!!VRv157:S0 R6; ** Random Var 
+
+!!VRy11:S7; ** Random Atifakt 
+!!VRy10:S0 R 78; 
+!!VRy11:+y10; 
+!!VRy11&y11=72:+1; 
+!!VRy12:S0 R9; **Pay Price Var 
+!!VRy12:+1; 
+!!VRy12:*100; 
+!!VRy13:Sv154; ** Get a random Resource Bless 
+!!VRy13:+15; 
+!!VRy14:S0 R3; ** Random Primary Skill 
+!!VRy14:+31; 
+!!VRy15:S0 R46;** Random Spellscroll until Titans Lightning Bold 
+!!VRy16:Sy15; 
+!!VRy15:+1010; 
+!!VRy16:+9; 
+
+
+** Get nothing Seller steals 1000 gold 
+!!IF&156/v157=0:Q158/6/-1000/1^The seller steals some of your gold^; 
+!!OW&156/v157=0:R-1/6/d-1000; 
+
+** Pay if the seller doesn`t steal 
+!!IF&156/v157>0:Q158/6/y12/1^You pay the dealer price^; 
+
+** Get an random Artifakt 
+!!IF&156/v157=1:Q158/8/y11/1^You look at what you've bought and recognize that it was more than a piece of resource^; 
+!!HE-1&156/v157=1:Ay11; 
+!!VRv160&156/v157=1:-y12; 
+!!OW&156/v157=1:R-1/6/v160; 
+
+** Get what you saw - 1 random resource 
+!!IF&156/v157=2:Q158/v154/1/1^You get just what you saw^; 
+!!OW&156/v157=2:R-1/v154/d1; 
+!!VRv160&156/v157=2:-y12; 
+!!OW&156/v157=2:R-1/6/v160; 
+
+** Get a random Resource Bless; 
+!!IF&156/v157=3:Q158/v154/1/1^You look at what you've bought and notice how to produce more of it in the following week.^; 
+!!HE-1&156/v157=3:Yy13/1/7/1; 
+!!VRv160&156/v157=3:-y12; 
+!!OW&156/v157=3:R-1/6/v160; 
+
+** Get a random primary skill 
+!!IF&156/v157=4:Q158/y14/1/1^You look at what you've bought and feel that you have learned something.^; 
+!!HE-1&156/v157=4/y14=31:Fd1/d/d/d; 
+!!HE-1&156/v157=4/y14=32:Fd/d1/d/d; 
+!!HE-1&156/v157=4/y14=33:Fd/d/d1/d; 
+!!HE-1&156/v157=4/y14=34:Fd/d/d/d1; 
+!!VRv160&156/v157=4:-y12; 
+!!OW&156/v157=4:R-1/6/v160; 
+
+** Get a random Spellscroll 
+!!IF&156/v157=5:Q158/9/y16/1^You look at what you've bought, suddenly it changes and you`ve got a spell scroll.^; 
+!!HE-1&156/v157=5:Ay15; 
+!!VRv160&156/v157=5:-y12; 
+!!OW&156/v157=5:R-1/6/v160; 
+
+** Get a Stone ;) 
+!!IF&156/v157=6:M^You just got a stone to throw away.^; 
+!!VRv160&156/v157=6:-y12; 
+!!OW&156/v157=6:R-1/6/v160; 
+
+!!VRv155&156:+1; </script></td>
+  </tr>
+  <tr>
+<td width="100%" height="19" colspan="2">&nbsp;</td>
+  </tr>
+</table>
+
+</body>
+
+<script src="./erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="./erm.css"/>
+</html>

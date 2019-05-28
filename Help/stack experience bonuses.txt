@@ -1,0 +1,683 @@
+Stack Experience Bonuses  v2.2 - July 14, 2004
+
+GAINING STACK EXPERIENCE
+After winning a battle lead by a hero, each surviving creature stack gains experience.
+Stacks without heroes will not gain experience. Experience is equal to the experience gained by the Hero for each battle. Thus, each creature gains an equal amount of experience from the same battle. Creatures never gain experience from Learning Stones, Chests or similar objects.
+
+COMBINING EXPERIENCED STACKS
+If two stacks with different levels of experience are combined, their experience is averaged. For example, if you have a stack of 10 creatures with 10000 experience and combine it with a stack of 20 creatures with 1000 experience, the resulting stack of 30 creatures will have 4000 experience each: (10 * 10000 + 20 * 1000) / 30 = 4000.
+
+STACK EXPERIENCE SCREEN
+To see a stack's experience detail screen (current and future bonuses), click or double-click (as needed) on the stack to bring up the creature information dialogue and then right-click on the creature portrait. You can do this in the hero screen, in the garrison or on the battlefield.
+
+Note: a stack's statistic bonuses won't be visible (other than in the experience details screen) except in combat, and special ability bonuses are not displayed in the normal creature ability window.
+
+
+EDITING STACK EXPERIENCE DEFAULTS
+There are two text files that govern stack experience:
+  Crexpmod.txt - set experience needed to go up a rank and experience lost when upgrading.
+  Crexpbon.txt - set all stat and special ability bonuses gained at each rank.
+
+The text files must be placed in the Heroes3\Data folder to work.
+
+The easiest way to edit the files is to open them in the latest ERM Scripter.
+
+To do this, open the file normally and then press Ctrl-Alt-Q (or click on the arrow-head next to the blue-circle-arrow icon) to reopen the file in "table mode" so that you can easily edit the columns.
+
+Once it's open in table mode, click on the arrow-head next to the icon with the double-arrow and "A" above it. This will autosize all columns.
+
+
+CREXPMOD.TXT
+This file may have one line for each creature if you wish, or you can have fewer lines and use default values instead.
+
+Column 1 : Creature type (use the Format C number in ERM Help). Alternatively you can use values of -1 through -7 to apply the settings for that line to all creatures of the specified level: -1 : all level 1 creatures, -2 : all level 2 creatures, etc. This is based on the creature's internal level value, so creatures higher than level 7 will be treated as level 7. And finally, you can use a value of -8 to apply the line to all creatures in the game. Lines for specific creatures will override the defaults.
+
+Column 2 : Multiplier for experience calculation. This lets one creature more or less experience from a battle than another. 1.0 is the default.
+
+Column 3 : Multiplier for experience correction when the stack is upgraded. 0.5 is the default but we're currently using 0.75, meaning that stacks lose 25% of their experience when they upgrade.
+
+Column 4 : Full Rank 10 Experience. This value is equal to total experience at Rank 10. The values for each lower rank are calculated from this value. The values we're currently using let low level creatures gain ranks much faster than high level creatures to compensate for the higher attrition and growth rates of lower level creatures.
+
+Column 5 : Experience cap per battle. This is a percentage of a stack's total maximum experience that can be gained from a single battle. For example, a value of 40 means that a stack could gain no more than 40% of total (Rank 10) experience from one battle, regardless of how much experience it would normally have received. This prevents stacks going from rank 0 all the way to rank 10 after a large battle. If you prefer not to have an experience cap, simply set this number to 100.
+
+Column 6 : Rank 11 Experience. This is extra experience that a stack can gain after reaching Rank 10. It's basically an experience "reserve" so that you can add some new recruits without immediately dropping back down to Rank 9. Current values give level 1 troops a 70% reserve, level 2 troops, a 60% reserve and so on, with level 7 troops having only a 10% "Rank 11" reserve.
+
+Column 7 : Comments. This can be any text to remind you what the line means (the creature name for example).
+
+
+CREXPBON.TXT
+This file may have multiple lines for each creature if you wish, or you can have fewer lines and use default values instead. The exact number of lines will depend on how many bonuses are given.
+
+Column 1 : Creature type (use the Format C number in ERM Help). Alternatively you can use values of -1 through -7 to apply the settings for that line to all creatures of the specified level*: -1 : all level 1 creatures, -2 : all level 2 creatures, etc. This is based on the creature's internal level value, so creatures higher than level 7 will be treated as level 7. And finally, you can use a value of -8 to apply the line to all creatures in the game. Specific ability lines for specific creatures will override the associated default line.
+
+* Note: flagged special abilities (bonus type f) can't be set with the defaults.
+
+Column 2 : Type of bonus. This may be a statistic bonus, a flagged special ability or some other type of special ability. Note: the letter code is case-sensitive, so 'A' is different from 'a'. An empty entry for this column means the line is ignored.
+
+Column 3 : Modifier. This varies depending on the type of bonus set in Column 2. Possible modifiers include: +, :, %, #xx (where "xx" may be a creature or spell number).
+
+Columns 4..14 : Value of Bonus gained at the corresponding rank (0%..100%). This varies depending on the type of bonus set in Column 2 and/or the modifier set in column 3. If you set a value for 0% it means the stack will have this bonus at the start of the game.
+Note: Bonuses at different ranks are NOT cumulative. Only the bonus for the current rank is given to the stack.
+
+Column 15 : Comments. You can put anything you like here to describe the bonus line.
+
+Note: If setting or checking a bonus line with ERM, use the number in angle brackets < > instead of the letter. For example, if setting Attack, use 65 for the third parameter of the ERM command.
+
+Statistic Bonuses (Column 2):
+  A : Attack <65>
+  D : Defense <68>
+  H : Health <72>
+  S : Speed <83>
+  m : Minimum Damage <109>
+  M : Maximum Damage <77>
+  O : Number of Shots (Ammo) <79>
+  P : Number of Spells to Cast per Combat.  <80> This only applies to creatures that already cast spells: e.g., Archangels casting Resurrection, Master Genies casting random beneficial spells.
+
+
+In Column 3, for Statistics you can set:
+  + : <43> Fixed Bonus to a Statistic. e.g., + 10 adds 10 to the creature's current stat.
+  = : <61> Absolute Statistic. e.g., = 10 sets the creature's stat to 10 (even if normally higher).
+  % : <37> Percent Bonus to a Statistic. e.g., % 10 increases the creature's current stat by 10%. Note: .4 is rounded down and .5 is rounded up, so 10% of 14 = 1.4 (rounded to +1) and 10% of 16 = 1.6 (rounded to +2).
+
+In Columns 4..14, for Statistics you can set:
+  Any integer value from 0..254.
+
+
+Special Ability Bonuses (Column 2):
+
+The following special abilities may be given and are described in more detail below this list.
+1. Cast Expert/Mass version of Spell After Attack (a) <97> [See below for details]
+2. Reduce Target Defense (b) <98>
+3. Block (B) <66>
+4. Cast Non-Direct Damage Spell or Effect (c) <99> [See below for list]
+5. Reduce Casting Cost (C) <67>
+6. Defending Bonus (d) <100>
+7. Double Damage Death Blow (e) <101>
+8. Death Stare (E) <69> [Only works to adjust bonuses of Mighty Gorgon and Nightmare]
+9. Flagged Abilities 1 (f) [Fly (F) <70>, Shoot (S) <83>, Breath (B) <66>, Alive (L) <76>,
+    <102>               King 1..King 3 (1..3) <49..51>, Immune to Mind Spells (P) <80>,
+                        No Melee Penalty (E) <69>, Immune to Fire (I) <73>,
+                        Double Strike (D) <68>, No Retaliation (R) <82>, No Morale (M) <77>,
+                        Undead (U) <85>, Attack All Around (A) <65>, Dragon Nature (G) <71>]
+10. Flagged Abilities 2 (f) [Strike & Return (b) <98>, Champion Charge (c) <99>,
+     <102>               Fearless (f) <102>, Always Positive Morale (m) <109>,
+                         Rebirth (r) <114>, Shoot when Adjacent (s) <115>,
+                         Unicorn Aura of Resistance (u) <117>]
+11. Fear (F) <70>
+12. Golem Based Spell Damage Resistance (g) <103>
+13. Additional Santa Gremlin Guards (G) <71> [Only for Santa Gremlins]
+14. Hatred Damage (h) <104>
+15. No Range Penalty (i) <105>
+16. Cast Basic version of Spell Before Attack (j) <106> [See below for details]
+17. Cast Advanced version of Spell Before Attack (J) <74> [See below for details]
+18. Cast Basic version of Spell After Attack (k) <107> [See below for details]
+19. Cast Advanced version of Spell After Attack (K) <75> [See below for details]
+20. Summon Clone (l) <108>
+21. Deflect (L) <76>
+22. No Obstacle Penalty (o) <111>
+23. Cast Expert/Mass version of Spell Before Attack (p) <112> [See below for details]
+24. Regeneration (r) <114>
+25. Extra Retaliations (R) <82>
+26. Enchant with Spell (s) <115> [See below for list]
+27. Summon Stack only once (u) <117>
+28. Summon Stack multiple times (U) <85>
+29. Spell Immunity (w) <119> [See below for list]
+30. Magic Resistance (W) <87>
+
+
+1. a : <97> Cast expert/mass version of Spell or Effect on Target *after* the Attack.
+  [See also abilities (p) <112>, (c) <99>, (j) <106>, (J) <74>, (k) <107>, and (K) <75> that are similar.]
+
+After any melee attack, there's a percent chance that this spell or effect will be cast upon the target at Expert level for 3 rounds unless they have immunity to the spell/effect. If it's a spell with a mass effect, it will be cast upon all enemy or friendly stacks (depending on whether the spell is beneficial or hostile), unless they have immunity.
+
+Note 1: This ability will NOT work for a ranged attack. However, if a shooting creature makes a melee attack it should work. You will have to use (p), (c), (j) or (J) to have a spell cast when making a ranged attack.
+
+Note 2: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. If you have 3 spells at 50% chance each, any one of them (or even a small chance of none) may be cast after a given attack. If you need to have more spells cast, you will have to also use the (c), (p), (j), (J), (k) or (K) abilities. They may all be combined for multiple effects.
+
+In Column 3, for a you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+
+Almost all combat spells are available for this ability including spells such as Quicksand and Fire Wall and the Elemental Summoning spells. Friendly enchantments (e.g., Shield) will be cast as a Mass Shield on all friendly troops each time this unit attacks an enemy but if the spell has no mass version (e.g., Anti-Magic, Magic Mirror, Fire Shield) it will be cast on the enemy target stack instead. The Clone spell (#65) will create a clone of the enemy creature under your control, but be careful not to give it at Rank 0 because the game will crash if Clone is cast by a side without a Hero. Bind (#72) is rather interesting too because the binding appears to be permanent and the target isn't released when the attacker moves or dies.
+
+Spells that can't be used and will crash the game or do nothing include Resurrection, Animate Dead, Sacrifice, Death Cloud, Thunderbolt and Death Stare. Teleport works but makes the combat unwinnable for that player -- the target stack "vanishes" but is still in the combat. It can't move or attack in melee (or be attacked) since it's not actually on the map, but if it's a shooter it can still shoot. Two useful spell effects not listed in Format SP include Paralyze (#74) and Petrification (#70).
+
+In Columns 4..14, for a you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+2. b : <98> Reduce Target Defense. This is the same as the Behemoth ability.
+
+In Column 3, for b you can set:
+  = : <61> Percent that target's Defense is reduced for this attack.
+
+In Columns 4..14, for b you can set:
+  Any integer value from 0..100. This is the percent that the target's Defense is reduced for this attack. For Behemoths, Ancient Behemoths and Ghost Behemoths, you can change their bonus for this ability up or down. If you don't set this bonus line for a creature, it uses its normal default (40 for Behemoth, 80 for Ancient Behemoth, 100 for Ghost Behemoth).
+Example of increasing Ancient Behemoth's bonus:  97  b  =  80  82  85 ...
+
+
+3. B : <66> Block a Melee or Ranged Attack Completely.
+
+In Column 3, for B you can set:
+  + ( or = ) : <43> (or <61>) Percent chance (0..100) for the ability to work.
+
+In Columns 4..14, for B you can set:
+  Any integer value from 0..100. This is the percent chance of the block working.
+
+
+4. c : <99> Cast Non-Direct Damage Spell or Effect on Target After Attack.
+  [See also abilities (p) <112> and (a) <97>, (j) <106>, (J) <74>, (k) <107>, and (K) <75> that are similar.]
+
+After any attack (melee or ranged), there's a percent chance that this spell or effect will be cast upon the target creature for 3 rounds unless it has immunity to the spell/effect or already has the spell affecting it.
+
+Note: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. This includes effects that a creature normally starts with such as the Black Knight's Curse, Dragon Fly's Weakness or Zombie's Disease. If you have 3 spells at 50% each, only the first spell ability will ever work (unlike the other abilities where any one of them may work). If you need to have more spells cast, you will have to also use the (p), (j), (J), (a), (k) or (K) abilities. They may all be combined for multiple effects.
+
+In Column 3, for c you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+  The following spells and effects are available:
+    xx = 78 : Dispel Beneficial Spells
+    xx = 42 : Curse
+    xx = 45 : Weakness
+    xx = 47 : Disrupting Ray
+    xx = 50 : Sorrow
+    xx = 52 : Misfortune
+    xx = 54 : Slow
+    xx = 59 : Berserk
+    xx = 60 : Hypnotize
+    xx = 61 : Forgetfulness
+    xx = 62 : Blind
+    xx = 71 : Poison
+    xx = 73 : Disease
+    xx = 75 : Age
+    xx = 80 : Acid Breath
+
+In Columns 4..14, for c you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+5. C : <67> Reduce Casting Cost. Reduces the casting cost of allied spells by one or more spell points.
+
+In Column 3, for C you can set:
+  + : <43> Fixed Bonus to Casting Cost Reduction. For Magi and Arch Magi, the default value is 2. For other creatures it's 0. So if you set it to + 5 it would be 7 for Magi or Arch Magi and 5 for others.
+  = : <61> Set Casting Cost Reduction. E.g., = 4 would set the spell point reduction to 4 regardless of creature type.
+  % : <37> Percent Bonus to Reduction. For Magi/Arch Magi this adds a percentage of their default value (e.g., % 50 adds 50% of 2 which is 1). For other creatures, the default is 0 so this has no effect.
+
+In Columns 4..14, for C you can set:
+  Any integer value from 0..255.
+
+
+6. d : <100> Defending Bonus. You may add or set a bonus to the creature's Defense if it takes the "defend" action.
+
+In Column 3, for d you can set:
+  + : <43> Fixed Bonus added to normal Defense bonus when defending.
+  = : <61> Fixed Defense bonus when defending. You can set the bonus lower or higher than normal.
+  % : <37> Percent Bonus to Defense when defending. e.g., if a stack has Defense 20, a 75% bonus would add 15 to Defense when defending.
+
+In Columns 4..14, for d you can set:
+  Any integer value.
+
+
+7. e : <101> Death Blow (same as Dread Knight). Attack has a chance of doing double damage. This works for both melee and ranged attacks.
+
+In Column 3, for e you can set:
+  + : <43> Add Fixed Bonus to Death Blow Chance as a percentage (0..100). Dread Knights have a base 20% chance, all others have a base of 0.
+  = : <61> Set Death Blow Chance (0..100).
+  % : <37> Percent Bonus to Death Blow Chance. For Dread Knights this adds a percentage of their default value (i.e., For Dread Knights, % 50 adds 50% of 20 which is 10, giving them a total of 30% chance of doing a Death Blow). For other creatures, the default is 0 so % has no effect.
+
+In Columns 4..14, for e you can set:
+  Any integer value from 0..255
+
+
+8. E : <69> Death Stare. You may only set this for Mighty Gorgons and Nightmares. If you give a bonus to these creatures, you need to set the complete line starting with a default chance to work.
+
+In Column 3, for e you can set:
+  + ( or = ) : <43> (or <61>) Percent chance (0..100) for the ability to work.
+
+In Columns 4..14, for e you can set:
+  Any integer value from 0..100
+
+
+9. f : <102> Flagged Special Abilities 1 (creature bits). The specific ability is set in Column 3 (see below).
+
+In Column 3, for f you can set:
+  F : <70> Fly. If a creature has no flying animation it will simply walk through obstacles, e.g., Ghost Behemoth.
+  S : <83> Shoot. If a creature has no shooting animation, this will do nothing. Currently, the only creatures that don't normally shoot but have a shooting animation are Centaurs and Centaur Captains. Use only 0 and 1 for them, not 2.
+  B : <66> Breath Attack. This gives a creature's melee attack a range of 2 hexes like dragon breath.
+  L : <76> Alive.
+  1 : <49> King 1. Creatures with King 1 are vulnerable to Basic Slayer.
+  2 : <50> King 2. Creatures with King 2 are vulnerable to Advanced Slayer.
+  3 : <51> King 3. Creatures with King 3 are vulnerable to Expert Slayer.
+  P : <80> Immune to Mind Spells.
+  E : <69> No Melee Penalty for shooting creatures.
+  I : <73> Immune to Fire Spells.
+  D : <68> Double Strike. This works for both ranged and melee attacks.
+  R : <82> No Retaliation. Creatures can't retaliate against this creature's melee attack.
+  M : <77> Unaffected by Morale. The creature won't get the effects of good or bad morale in combat.
+  U : <85> Undead. Undead creatures can be resurrected with the Animate Dead spell. "Immune to Mind Spells" and "Unaffected by Morale" must be set separately.
+  A : <65> Attack All Around. The creature attacks all adjacent creatures. Set "No retaliation" separately.
+  G : <71> Dragon. The creature will get bonuses from the Vial of Dragon Blood and similar things.
+
+In Columns 4..14, for f you can set:
+  0 : No Ability. The creature doesn't have the ability and if it did have it, it's removed.
+  1 : Has Ability. The creature is given the ability if it didn't already have it.
+  2 : Does Not Change Ability. If the creature had an ability already, it still has it. If it didn't have the ability before, it still doesn't.
+
+
+10. f : <102> Flagged Special Abilities 2. The specific ability is set in Column 3 (see below). These are the same as the Flagged Special Abilities 1 in basic format.
+
+In Column 3, for f you can set:
+  b : <98> Strike and Return. This causes any creature that moves and makes a melee attack to return to its starting hex after making the attack (like Harpies). Note: You cannot remove this ability from Harpies, Harpy Hags or Darkness Dragons.
+  c : <99> Champion Charge. This adds 5% damage for each hex travelled to creatures attacked (just like the Champion).
+  f : <102> Fearless. Creature is unaffected by the Fear ability.
+  m : <109> Always Positive Morale.
+  r : <114> Rebirth. 20% of stack will resurrect after all creatures are killed.
+For this ability you must also set the # of spells with the 'P' ability.
+e.g., to let Pikemen "Rebirth" 99 times:
+0  f  r  1  1  1 ...
+0  P  =  99  99  99 ...
+  s : <115> Shoot when Adjacent. This lets a creature use its ranged attack even if an enemy creature is adjacent to it.
+  u : <117> Unicorn Aura of Resistance. This adds 20% to the Magic Resistance of all creatures adjacent to the stack with this ability.
+
+
+In Columns 4..14, for f you can set:
+  0 : No Ability. The creature doesn't have the ability and if it did have it, it's removed.
+  1 : Has Ability. The creature is given the ability if it didn't already have it.
+  2 : Does Not Change Ability. If the creature had an ability already, it still has it. If it didn't have the ability before, it still doesn't.
+
+
+11. F : <70> May Cause an Enemy Stack to Freeze in Fear (so it misses its turn).
+
+In Column 3, for F you can set:
+  + ( or = ) : <43> (or <61>) Give the Fear ability or not.
+Note: You can't take away the Fear ability from creatures that have it to begin with (e.g., Azure Dragon).
+
+In Columns 4..14, for F you can set:
+   0 (Don't give Fear ability)
+or 1 (Give Fear ability).
+
+
+12. g : <103> Golem Based Spell Damage Resistance.
+   [See also (w) <119> and (W) <87> for other spell resistance abilities]
+
+This reduces the amount of damage a creature takes from direct damage spells. If you set this modifier to a creature that already has this ability (i.e., Golems), you need to set it correctly for all levels. Example for Gold Golem (takes only 15% damage), you should set the line to:  116  g  %  85  90  95 ...
+Or if you wanted to reduce its resistance you could try:  116  g  %  80  85  90 ...
+If you do not set this bonus line for a creature that has this kind of resistance, it will use its normal default.
+
+In Column 3, for g you can set:
+  % : <37> Percentage of damage resistance.
+
+
+13. G : <71> Additional Santa Gremlin Guards.
+
+Use this to increase the number of guards that appear in each stack surrounding a Santa Gremlin, or change the guards to the upgraded version instead (e.g., Halberdiers for a Castle hero, Master Gremlins for a Tower hero, etc.).
+
+Note: This ability can NOT be used with any other creature, only Santa Gremlins.
+
+In Column 3, for G you can set:
+  = : <61> Use to upgrade the guards.
+  + : <43> Use to add a fixed number of additional guards.
+  % : <37> Use to increase the number of guards by a percentage.
+
+In Columns 4..14, for G you can set:
+  For '=' in Column 3, use 0 or 1. 1 will upgrade the guards.
+  For '+', use any integer number from 0..255. This is the number of extra guards in each stack.
+  For '%', use any integer number from 0..255. This is a percentage of additional guards in each stack.
+
+
+14. h : <104> Do Extra (hatred) Damage to a Specific Creature. You can also set reduced instead of extra damage but the combat message text will not change to reflect this.
+
+In Column 3, for h you can set:
+  #xx : Do extra/reduced damage to creature number xx (Format C in ERM Help).
+
+In Columns 4..14, for h you can set:
+   1..200 (10% extra damage per 1)
+or 201..210 (10% less damage per 1)
+  Example:
+    -1 h #52 5 ...
+     This means that all level 1 (-1) creatures hate (h) Efreet (#52) and
+     do 50% additional damage (5*10)
+    -2 h #43 203 ...
+     This means that all level 2 (-2) creatures "hate" Efreet Sultans and
+     do 30% LESS damage ((200-203)*10)
+
+
+15. i : <105> No Range Penalty. A ranged attack will do full damage at any distance.
+
+In Column 3, for i you can set:
+  + ( or = ) : <43> (or <61>) Give the No Range Penalty ability or not.
+Note: You can't take away the No Range Penalty ability from creatures that have it to begin with (e.g., Sharpshooters).
+
+In Columns 4..14, for i you can set:
+   0 (Don't give No Range Penalty ability)
+or 1 (Give No Range Penalty ability).
+
+
+16. j : <106> Cast Basic version of Spell or Effect on Target *before* the Attack.
+  [See also (a) <97>, (c) <99>, (J) <74>, (k) <107>, (K) <75>, (p) <112> and (s) <115> for similar abilities]
+
+Before any attack (melee or ranged), there's a % chance that this spell or effect will be cast upon the target for 3 rounds unless they have immunity to the spell/effect.
+
+Note: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. If you have 3 spells at 50% chance each, any one of them (or even a small chance of none) may be cast after a given attack. If you need to have more spells cast, you will have to also use the (c), (p), (J), (a), (k) or (K) abilities. They may all be combined for multiple effects.
+
+In Column 3, for j you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+
+Almost all combat spells are available for this ability including spells such as Quicksand and Fire Wall and the Elemental Summoning spells. Friendly enchantments (e.g., Shield) will also be cast on the enemy target stack so should usually be avoided. The Clone spell (#65) will create a clone of the enemy creature under your control, but be careful not to give it at Rank 0 because the game will crash if the Clone spell is cast by a side without a Hero. Bind (#72) is rather interesting too because the binding appears to be permanent and the target isn't released when the attacker moves or dies.
+
+Spells that can't be used and will crash the game or do nothing include Resurrection, Animate Dead, Sacrifice, Death Cloud, Thunderbolt and Death Stare. Teleport works but makes the combat unwinnable for that player -- the target stack "vanishes" but is still in the combat. It can't move or attack in melee (or be attacked) since it's not actually on the map, but if it's a shooter it can still shoot. Some spells like Paralyze (#74), Petrification (#70) or Blind (#62) have little use with the j ability as they're effects are immediately cancelled by the attack: use them with the a ability if possible.
+
+In Columns 4..14, for j you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+17. J : <74> Cast Advanced version of Spell or Effect on Target *before* the Attack.
+  [See also (a) <97>, (c) <99>, (j) <106>, (k) <107>, (K) <75>, (p) <112> and (s) <115> for similar abilities]
+
+Before any attack (melee or ranged), there's a % chance that this spell or effect will be cast upon the target for 3 rounds unless they have immunity to the spell/effect.
+
+Note: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. If you have 3 spells at 50% chance each, any one of them (or even a small chance of none) may be cast after a given attack. If you need to have more spells cast, you will have to also use the (c), (p), (j), (a), (k) or (K) abilities. They may all be combined for multiple effects.
+
+In Column 3, for j you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+
+Almost all combat spells are available for this ability including spells such as Quicksand and Fire Wall and the Elemental Summoning spells. Friendly enchantments (e.g., Shield) will also be cast on the enemy target stack so should usually be avoided. The Clone spell (#65) will create a clone of the enemy creature under your control, but be careful not to give it at Rank 0 because the game will crash if the Clone spell is cast by a side without a Hero. Bind (#72) is rather interesting too because the binding appears to be permanent and the target isn't released when the attacker moves or dies.
+
+Spells that can't be used and will crash the game or do nothing include Resurrection, Animate Dead, Sacrifice, Death Cloud, Thunderbolt and Death Stare. Teleport works but makes the combat unwinnable for that player -- the target stack "vanishes" but is still in the combat. It can't move or attack in melee (or be attacked) since it's not actually on the map, but if it's a shooter it can still shoot. Some spells like Paralyze (#74), Petrification (#70) or Blind (#62) have little use with the J ability as they're effects are immediately cancelled by the attack: use them with the a ability if possible.
+
+In Columns 4..14, for J you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+18. k : <107> Cast Basic version of Spell or Effect on Target *after* the Attack.
+  [See also abilities (a) <97>, (p) <112>, (c) <99>, (j) <106>, (J) <74>, and (K) <75> that are similar.]
+
+After any melee attack, there's a percent chance that this spell or effect will be cast upon the target for 3 rounds unless they have immunity to the spell/effect.
+
+Note 1: This ability will NOT work for a ranged attack. However, if a shooting creature makes a melee attack it should work. You will have to use (p), (c), (j) or (J) to have a spell cast when making a ranged attack.
+
+Note 2: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. If you have 3 spells at 50% chance each, any one of them (or even a small chance of none) may be cast after a given attack. If you need to have more spells cast, you will have to also use the (c), (p), (j), (J), (a) or (K) abilities. They may all be combined for multiple effects.
+
+In Column 3, for k you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+
+Almost all combat spells are available for this ability including spells such as Quicksand and Fire Wall and the Elemental Summoning spells. Friendly enchantments (e.g., Shield) will will also be cast on the enemy target stack so should usually be avoided. The Clone spell (#65) will create a clone of the enemy creature under your control, but be careful not to give it at Rank 0 because the game will crash if Clone is cast by a side without a Hero. Bind (#72) is rather interesting too because the binding appears to be permanent and the target isn't released when the attacker moves or dies.
+
+Spells that can't be used and will crash the game or do nothing include Resurrection, Animate Dead, Sacrifice, Death Cloud, Thunderbolt and Death Stare. Teleport works but makes the combat unwinnable for that player -- the target stack "vanishes" but is still in the combat. It can't move or attack in melee (or be attacked) since it's not actually on the map, but if it's a shooter it can still shoot. Two useful spell effects not listed in Format SP include Paralyze (#74) and Petrification (#70).
+
+In Columns 4..14, for k you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+19. K : <75> Cast Advanced version of Spell or Effect on Target *after* the Attack.
+  [See also abilities (a) <97>, (p) <112>, (c) <99>, (j) <106>, (J) <74>, and (K) <107> that are similar.]
+
+After any melee attack, there's a percent chance that this spell or effect will be cast upon the target for 3 rounds unless they have immunity to the spell/effect.
+
+Note 1: This ability will NOT work for a ranged attack. However, if a shooting creature makes a melee attack it should work. You will have to use (p), (c), (j) or (J) to have a spell cast when making a ranged attack.
+
+Note 2: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. If you have 3 spells at 50% chance each, any one of them (or even a small chance of none) may be cast after a given attack. If you need to have more spells cast, you will have to also use the (c), (p), (j), (J), (a) or (k) abilities. They may all be combined for multiple effects.
+
+In Column 3, for K you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+
+Almost all combat spells are available for this ability including spells such as Quicksand and Fire Wall and the Elemental Summoning spells. Friendly enchantments (e.g., Shield) will will also be cast on the enemy target stack so should usually be avoided. The Clone spell (#65) will create a clone of the enemy creature under your control, but be careful not to give it at Rank 0 because the game will crash if Clone is cast by a side without a Hero. Bind (#72) is rather interesting too because the binding appears to be permanent and the target isn't released when the attacker moves or dies.
+
+Spells that can't be used and will crash the game or do nothing include Resurrection, Animate Dead, Sacrifice, Death Cloud, Thunderbolt and Death Stare. Teleport works but makes the combat unwinnable for that player -- the target stack "vanishes" but is still in the combat. It can't move or attack in melee (or be attacked) since it's not actually on the map, but if it's a shooter it can still shoot. Two useful spell effects not listed in Format SP include Paralyze (#74) and Petrification (#70).
+
+In Columns 4..14, for K you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+20. l : <108> Summon Clone.
+   [See also (u) <117> for summoning a stack and (U) <85> for summoning multiple times]
+
+This will summon a cloned stack of creatures to the battlefield at the start of round 2 and again every round thereafter if an empty space next to the stack is available. The number of creatures in the cloned stack is calculated as a percentage of the summoning stack's number.
+
+The summoned stack may be located at:
+
+ .#.
+ .X#
+ .#.
+
+. = empty hex
+# = possible location for summoned stack
+X = stack with Summoning ability
+
+The summoned stack may not appear over an obstacle but may appear over a dead stack.
+
+In Column 3, for U you can set:
+  #xx : xx = the creature type to summon (see Format C in ERM Help). A creature can summon its own type or any other type.
+
+In Columns 4..14, for U you can set:
+  Any integer number 0..255. This is the number of creatures that will appear in the summoned stack as a percentage of the summoning stack's size. So if you set 25, and the summoning stack has 12 creatures, the summoned stack will have 3 (25% of 12 = 3).
+
+
+21. L : <76> Deflect damage. This is an alternative type of Block that will stop some of the damage from a physical attack (ranged or melee).
+
+You can set it up either of two ways:
+  1) Fixed damage reduction with variable percentage chance of working;
+  2) Fixed percentage chance of working with variable damage reduction.
+
+For the first method, the modifier should be from 0 to 99 and is the damage percentage minus 1. So #33 means that the damage will be reduced by 34%. The rank bonus is the percentage chance of the ability working against an attack.
+
+For the second method, the modifier should be from 100 to 200 and is the percentage to work out minus 100. So #133 means that the ability will have a 33% of working against an attack. The rank bonus is the percentage of damage reduction.
+
+  Example:
+ L #33 0 10 20 ...
+   means that a 33% damage Deflect will work out with 0% at rank 0, with 10% at rank 1, and so on.
+
+ L #133 0 10 20 ...
+   means that the chance to work out is 33% and it will Deflect 0% damage at rank 0, 10% at rank 1, and so on ...
+
+You may use only one type of Deflect for a creature, not both, but a creature may also have the complete Block ability in addition to the Deflect.
+
+In Column 3, for L you can set:
+  #xx : xx = the damage percentage minus one if 0..99.
+  #xx : xx = the chance for the ability to work minus 100 if 100..200.
+
+In Columns 4..14, for L you can set:
+  Any integer number 0..100. For method one, this is chance for the ability to work. For method two, this is the damage reduction percentage.
+
+
+22. o : <111> No Obstacle Penalty. A ranged attack will do full damage to creatures behind castle walls.
+
+In Column 3, for o you can set:
+  + ( or = ) : <43> (or <61>) Give the No Obstacle Penalty ability or not.
+Note: You can't take away the No Obstacle Penalty ability from creatures that have it to begin with (e.g., Arch Magi).
+
+In Columns 4..14, for o you can set:
+    0 (Don't give No Range Penalty ability)
+ or 1 (Give No Range Penalty ability).
+
+
+23. p : <112> Cast expert/mass version of Spell or Effect on Target *before* the Attack.
+  [See also (a) <97>, (c) <99>, (j) <106>, (J) <74>, (k) <107>, and (K) <75> for similar abilities]
+
+Before any attack (melee or ranged), there's a % chance that this spell or effect will be cast upon the target, or for a mass version upon all friends or enemies (depending on whether it's a beneficial or hostile spell) for 3 rounds unless they have immunity to the spell/effect.
+
+Note: If you give this ability multiple times (with the same or different spells), a maximum of one spell will be cast per action. If you have 3 spells at 50% chance each, any one of them (or even a small chance of none) may be cast after a given attack. If you need to have more spells cast, you will have to also use the (c), (j), (J), (a), (k) or (K) abilities. They may all be combined for multiple effects.
+
+In Column 3, for p you can set:
+  #xx : Cast spell/effect number xx (Format SP in ERM Help).
+
+Almost all combat spells are available for this ability including spells such as Quicksand and Fire Wall and the Elemental Summoning spells. Friendly enchantments (e.g., Shield) will be cast as a Mass Shield on all friendly troops each time this unit attacks an enemy but if the spell has no mass version (e.g., Anti-Magic, Magic Mirror, Fire Shield) it will be cast on the enemy target stack instead. The Clone spell (#65) will create a clone of the enemy creature under your control, but be careful not to give it at Rank 0 because the game will crash if Clone is cast by a side without a Hero. Bind (#72) is rather interesting too because the binding appears to be permanent and the target isn't released when the attacker moves or dies.
+
+Spells that can't be used and will crash the game or do nothing include Resurrection, Animate Dead, Sacrifice, Death Cloud, Thunderbolt and Death Stare. Teleport works but makes the combat unwinnable for that player -- the target stack "vanishes" but is still in the combat. It can't move or attack in melee (or be attacked) since it's not actually on the map, but if it's a shooter it can still shoot. Some spells like Paralyze (#74), Petrification (#70) or Blind (#62) have little use with the p ability as they're effects are immediately cancelled by the attack: use them with the a ability if possible.
+
+In Columns 4..14, for p you can set:
+  Any integer value from 0..100. This is the percent chance of the spell working.
+
+
+24. r : <114> Regeneration. This ability lets you set a percentage chance for a creature to regenerate lost health each round. You can also choose the maximum health to be restored (up to 255 points).
+
+In Column 3, for r you can set:
+  #xx : xx = the percentage chance (0..100) for the creature to regenerate lost health each round.
+
+In Columns 4..14, for r you can set:
+  Any integer number 0..255. This is the maximum amount of health that will be regenerated in a round if regeneration occurs.
+
+
+25. R : <82> Extra Retaliations. This lets a creature retaliate multiple times in one round.
+
+In Column 3, for R you can set:
+  + : <43> Add to the number of retaliations allowed each round (e.g., +1 for Griffins would give them 3 retaliations per round).
+  = : <61> Set the number of retaliations allowed each round.
+
+In Columns 4..14, for R you can set:
+  Any integer number 0..254. (Use 254 for effectively unlimited retaliations.)
+
+
+26. s : Enchant Stack with Spell for Duration of Combat.
+   [See also (a) <97>, (c) <99>, (p) <112>, (j) <106>, (J) <74>, (k) <107>, and (K) <75> for other spell abilities]
+
+This puts a spell on the stack (e.g., Slayer) for the duration of the combat (999 rounds). Note: the spell can be dispelled.
+You can also set spells to affect ALL creatures on your side (e.g., put Mass Bless on the entire army).
+
+In Column 3, for s you can set:
+  #xx : Put spell number xx on Stack (Format SP in ERM Help).
+  Any spell can be put on a stack, even ones that make no sense like Summon Boat or Lightning.
+  However, only the following will normally be useful:
+    xx = 27 : Shield
+    xx = 28 : Air Shield
+    xx = 29 : Fire Shield
+    xx = 30 : Protection from Air
+    xx = 31 : Protection from Fire
+    xx = 32 : Protection from Water
+    xx = 33 : Protection from Earth
+    xx = 34 : Anti-Magic
+    xx = 36 : Magic Mirror
+    xx = 41 : Bless
+    xx = 43 : Bloodlust
+    xx = 44 : Precision
+    xx = 46 : Stone Skin
+    xx = 48 : Prayer
+    xx = 49 : Mirth
+    xx = 51 : Fortune
+    xx = 53 : Haste
+    xx = 55 : Slayer
+    xx = 56 : Frenzy
+    xx = 58 : Counterstrike
+
+In Columns 4..14, for s you can set:
+  0 : No spell cast.
+  1 : Cast at Basic effect.
+  2 : Cast at Advanced effect.
+  3 : Cast at Expert effect but "Mass" spells only affect this stack.
+  4 : Cast at Expert effect on entire army. Spell immunity is ignored.
+  5 : Cast at Expert effect on entire army except creatures that are immune.
+  6 : Cast at Expert effect on entire army except creature that are immune. However, spell immunity is ignored for the stack with this ability.
+
+27. u : <117> Summon Stack only once.
+   [See also (U) <85> for summoning multiple times]
+
+This will summon a stack of creatures to the battlefield at the start of round 2 if an empty space next to the stack is available. The number of creatures is calculated as a percentage of the summoning stack's number.
+
+The summoned stack may be located at:
+
+ .#.
+ .X#
+ .#.
+
+. = empty hex
+# = possible location for summoned stack
+X = stack with Summoning ability
+
+The summoned stack may not appear over an obstacle but may appear over a dead stack.
+
+In Column 3, for u you can set:
+  #xx : xx = the creature type to summon (see Format C in ERM Help). A creature can summon its own type or any other type.
+
+In Columns 4..14, for r you can set:
+  Any integer number 0..255. This is the number of creatures that will appear in the summoned stack as a percentage of the summoning stack's size. So if you set 25, and the summoning stack has 12 creatures, the summoned stack will have 3 (25% of 12 = 3).
+
+
+28. U : <85> Summon Stack multiple times.
+   [See also (u) <117> for summoning only once]
+
+This will summon a stack of creatures to the battlefield at the start of round 2 and again every rounds thereafter (i.e., rounds 2, 6, 10, 14, etc.), if an empty space next to the stack is available. The number of creatures is calculated as a percentage of the summoning stack's number.
+
+The summoned stack may be located at:
+
+ .#.
+ .X#
+ .#.
+
+. = empty hex
+# = possible location for summoned stack
+X = stack with Summoning ability
+
+The summoned stack may not appear over an obstacle but may appear over a dead stack.
+
+In Column 3, for U you can set:
+  #xx : xx = the creature type to summon (see Format C in ERM Help). A creature can summon its own type or any other type.
+
+In Columns 4..14, for U you can set:
+  Any integer number 0..255. This is the number of creatures that will appear in the summoned stack as a percentage of the summoning stack's size. So if you set 25, and the summoning stack has 12 creatures, the summoned stack will have 3 (25% of 12 = 3).
+
+
+29. w : <119> Spell Immunity.
+   [See also (g) <103> and (W) <87> for other types of spell resistance]
+
+This gives immunity to a particular spell, to all spells of a particular level and lower (e.g., all level 1 spells, or all level 4, 3, 2 and 1 spells), or to all spells of a specific school of magic (e.g., all water spells). There are also several groups of spells that immunity can be given to (e.g., Lightning Immunity or Fire Damage immunity).
+
+In Column 3, for w you can set:
+  0 : <48> Remove all immunity to beneficial spells "Receptive". You may use this ability with other immunities to give, for example, Black Dragons with no resistance to friendly spells except Water school spells. Use first '0' and then a specific resistance.
+  Example:
+83 w 0 1 1 1 1 ...
+83 w w 1 1 1 1 ...
+  1 : <49> Immune to all Level 1 spells except beneficial spells.
+  2 : <50> Immune to all Level 1 and 2 spells except beneficial spells.
+  3 : <51> Immune to all Level 1, 2 and 3 spells except beneficial spells.
+  4 : <52> Immune to all Level 1, 2, 3 and 4 spells except beneficial spells.
+  5 : <53> Immune to all Level 1, 2, 3, 4 and 5 spells except beneficial spells.
+  6 : <54> Immune to all Level 1 spells including beneficial spells.
+  7 : <55> Immune to all Level 1 and 2 spells including beneficial spells.
+  8 : <56> Immune to all Level 1, 2 and 3 spells including beneficial spells.
+  9 : <57> Immune to all Level 1, 2, 3 and 4 spells including beneficial spells.
+  : : <58> Immune to all Level 1, 2, 3, 4 and 5 spells including beneficial spells.
+  B : <66> Immune to Blind.
+  C : <67> Immune to Cold spells (Ice Bolt and Frost Ring).
+  D : <68> Immune to All Direct Damage spells.
+      The specific spells are: Magic Arrow, Lightning Bolt, Chain Lightning, Meteor Shower,
+      Implosion, Fireball, Armageddon, Fire Shield damage, Inferno, Ice Bolt, and Frost Ring.
+  H : <72> Immune to Hypnotize.
+  I : <73> Immune to Implosion.
+  K : <75> Immune to Berserk.
+  L : <76> Immune to Lightning spells: Lightning Bolt, Titan's Lightning Bolt,
+      Chain Lightning.
+  m : <109> Immune to Blind, Berserk, Sorrow, Hypnotize and Forgetfulness.
+  M : <77> Immune to Meteor Shower.
+  N : <78> Immune to Dispel Beneficial Spells (e.g., Dragonfly's Dispel)
+  O : <79> Immune to all Fire Damage spells (but not Magic Arrow).
+      The specific spells are: Fire Wall, Fireball, Land Mine, Armageddon, Fire Shield damage,
+      and Inferno.
+  p : <112> Immune to hostile Dispel.
+  P : <80> Immune to any Dispel.
+  R : <82> Immune to Armageddon.
+  S : <83> Immune to Slow.
+  A : <65> Immune to all Air School spells except beneficial spells.
+  E : <69> Immune to all Earth School spells except beneficial spells.
+  F : <70> Immune to all Fire School spells except beneficial spells.
+  W : <87> Immune to all Water School spells except beneficial spells.
+  a : <97> Immune to all Air School spells including beneficial spells.
+  e : <101> Immune to all Earth School spells including beneficial spells.
+  f : <102> Immune to all Fire School spells including beneficial spells.
+  w : <119> Immune to all Water School spells including beneficial spells.
+
+In Columns 4..14, for w you can set:
+  0 : Doesn't have immunity.
+  1 : Has immunity.
+
+
+30. W : <87> Magic Resistance (Dwarf-style).
+   [See also (g) <103> and (w) <119> for other types of spell resistance]
+
+This gives a chance of completely avoiding the effects of any hostile spell. This also includes area effect spells like Meteor Shower if the stack isn't the direct target (exception: it doesn't work for Chain Lightning unless the stack is directly targeted).
+
+In Column 3, for W you can set:
+  + : <43> Add Fixed Bonus to Resistance Chance as a percentage (0..100).
+  = : <61> Set Resistance Chance (0..100).
+  % : <37> Percent Bonus to Resistance Chance. For creatures with natural resistance this adds a percentage of their default value (e.g., For Dwarves, % 50 adds 50% of 20 which is 10, giving them a total of 30% Resistance). For other creatures, the default is 0 so this has no effect.
+
+In Columns 4..14, for W you can set:
+  Any integer value from 0..255.
+

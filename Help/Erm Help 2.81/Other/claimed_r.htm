@@ -1,0 +1,944 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+  <p align="center"><strong><span lang="de"><font size="6">L</font><font size="5">IST 
+  OF THE</font><font size="6"> C</font><font size="5">LAIMED<br>
+&nbsp;</font></span></strong><p align="left"><tt><font face="Arial" size="2">
+  Timers, Functions, Macros and Dialogs used, Variables and Flags used<span lang="de">
+  </span>permanently<span lang="de">.</span></font></tt></p>
+
+  <p align="left"><tt><font face="Arial" size="2">
+  <span lang="de"><b>Note:</b> If you want to build up 
+  your own script </span></font></tt>
+  <span style="font-size: 10.0pt; font-family: Courier New">
+  <tt style="font-family: Arial">and <b>use </b>any of the team's 
+  scripts</tt></span><tt><font face="Arial" size="2"><span lang="de">, please avoid the values below that are not in paranthesis. 
+  The ones in paranthesis should be used only as temporary variables, because, 
+  if not, your values would be overwritten at some point by another of the Team's scripts. </span></font></tt>
+  <span lang="de"><font size="2">
+  <span style="font-family: Arial"><br>
+  T</span></font></span><tt style="font-family: Arial"><span style="font-size: 10.0pt">hese 
+  variables are only claimed for *WoGify* scripts -- if <span lang="de">you</span> 
+  want</span></tt><span style="font-size: 10.0pt; font-family: Courier New"><tt style="font-family: Arial"><span lang="de">
+  </span>to write scripts for a custom map and <b>not use </b>any of the 
+  team's scripts,<span lang="de"> you</span>'re free to use any variables
+  <span lang="de">you</span> 
+  want.</tt></span></p>
+
+  <p align="left"><tt><font face="Arial" size="2">WoGify Scripts for Wake of Gods 3.58 (Updated October 25, 2004)
+<br>
+  (Temporary variables also shown in parenthesis as well as in a separate list 
+  below)</font></tt></p>
+
+  <p align="left"><tt><font face="Arial" size="2">
+  <a name="v"></a><b>Normal Variables (v1-v10000):</b><br>
+  (v1-v10), v11-v12, (v13-v14), v15-v23, (v24-v34), v35-v36, v40-v45, (v50-v54), v70-v71,
+(v76), v88-v93, (v94-v95), v100, (v101-v111), v119-v142, (v143), v144-v147, v150, v157-v200,
+v205, v210-v250-v257, v266-v284, v295-v299, (v300-v308), v310-v312, v320-v359,
+(v360-v370), v372-v373, v381-v386, v388-v389, v400-v422, v424-v444, v450, (v451-v469),
+v487-v503, v508, v510-v559, (v564-v571), v572-v579, v587-v599, (v600-v739), v700-v761,
+v777, v800, v803-v844, v846-v883, v898-v899, (v900-v916), (v920-v934), v950-v966,
+v975-v976, (v991-v993), (v997-v1000), v1100-v1118, v1200-v1210, (v1211), v1212-v1214,
+v1218-v1220, v1222-v1257, v1260-v1265, v1270-v1275, v1300-v1327, v1332-v1336, v1340-v1359,
+v1400-v1412, v1600-v1983, v2000-v2074, v2100-v2135, v2200-v2207, v2300-v2408, v2550-v2561,
+v2600-v2622, v3300-v3314, v3320-v3407, v3500, v4101-v4136, v4500-v4603, v4740-v4756,
+*v5000-v5999*, v7000-v7015, v7018-v7089, v7118-v7119, v7130-v7132, v7177-v7178,
+v7180-v7183, v7185-v7199, v7206-v7217, v7220-v7236, v7300-v7310, v7401-v7456, v8033,
+v8038-v8043, v9001-v9007, v9300<br>
+  <br>
+  <br>
+  <a name="z"></a><b>Strings (z1-z1000):</b><br>
+(z1-z10), z11-z21, (z22-z44), z45-z46, (z47-z61), z62-z77, (z78-z90), z91-z140, (z141-z142),
+z143-z176, z190-z199, z201-z239, z241, (z242-z248), z250-z269,
+(z270-z279), z280-z299, (z300-z303), (z310-z319), (z326-z331), z332-z354, (z360-z366),
+z368-z383, (z390-z393), z400, z402-z406, z410-z439, z444, z448-z461, z469, (z470-z472),
+(z480-z492), z493-z495, z500-z698, z700-z708, z710-z729, z732-z745, z747-z752, z760-z768,
+z770-z786, z790-z791, z793-z798, z804-z841, z849-z850, *z850-z859*, z860-z876, z890,
+z904-z907, z910-z937, z960-z989, z1000<br>
+  <br>
+&nbsp;<br>
+  <br>
+  <a name="ertz"></a><b>ERT Z Variables (not updated yet)</b><br>
+  116000-116037, 127000-127003, 128000-128076, 134001-134025, 135000-135177, 136000-136058 <br>
+  <br>
+  <br>
+  <a name="w"></a><b>Hero Variables (w1-w200):</b><br>
+w1-w18, w20-w33 w38-w43, w45, w47-w59, w61-w84, w90-w94, w110-w119, *w150-w175* <br>
+  <br>
+  <a name="fu"></a><b>Functions (1-30000): </b><br>
+  FU1-FU47, FU49-FU63, FU100, FU141-FU148, FU160-FU176, FU180-FU184, FU200-FU301, FU451,
+FU463-FU481, FU491-FU493, FU599-FU613, FU620-FU627, FU631-FU638, FU640-FU641, FU649-FU651,
+FU653-FU668, FU670-FU686, FU690-FU726, FU730-FU816, FU819-FU863, FU865-FU870, FU900-FU927,
+FU950, FU1000-FU1003, FU1100-FU1110, FU1400-FU1409, FU1872-FU1876, FU2300-FU2406, FU2826,
+FU3300-FU3321, FU3333-FU3334, FU3610-FU3619, FU3620-FU3630, FU3633-FU3638, FU3724-FU3733,
+FU4444, FU4850-FU4853, FU5000-FU5037, FU5200-FU5211, FU5219-FU5229, FU5244-FU5246,
+FU5248-FU5253, FU5260-FU5262, FU5300-FU5312, FU5400-FU5411, FU6100-FU6107, FU6200-FU6212,
+FU6300-FU6304, FU6664-FU6670, FU7000-FU7026, FU7030-FU7039, FU7050-FU7053, FU7060-FU7074,
+FU7100-FU7109, FU7120-FU7126, FU7795-FU7826, FU8000, FU8150-FU8166, FU8168, FU8170-FU8227,
+FU8230-FU8231, FU8700-FU8705, FU9600-FU9603, FU10799-FU10816, FU10850-FU10862,
+FU10900-FU10910, FU10920-FU10938, FU13500-FU13507, FU13520-FU13527, FU14000-FU14011,
+FU14800-FU14806, FU14900-FU14901, FU18001-FU18005, FU19000,FU20001-FU20008, FU20220-FU20230,
+FU20521-FU20523, FU20690-FU20701, FU21000-FU21014, FU22000-FU22001, FU22300-FU22343,
+*FU29000-FU29999* <br>
+  <br>
+  <br>
+  <a name="tm"></a><b>Timers (1-100): </b><br>
+  TM1-TM3, TM10-TM11, TM13-TM14, TM18-TM19, *TM20-TM25*, TM26, TM28, TM30-TM32, TM34, TM38,
+TM41-TM42, TM48, TM50-TM51, TM58, TM61-TM64, TM74-TM80, TM82, TM84-TM85 TM90, TM98-TM99<br>
+  <br>
+  <a name="flag"></a><b>Flags (1-1000): </b><br>
+  System Flags (should be checked only): 996-1000 (990-995 reserved)<br>
+(1-10), 21, 27, 32-37, 41-43, 49, 56-57, 74-79, 130-131, 140, 145-147,
+160-162, 170-172, 209, 211, 230-239, 266-271, 298-299, 341-366, (400-408), 409-410,
+412, 428-433, 490, *500-599*, 600-603, 710-714, 781-791, 800-801, 870-874, 902-907, [990-1000] <br>
+  <br>
+  <br>
+  <a name="macro"></a><b>Macros: </b><br>
+$AI$, $aknow$, $aname$, $apower$, $ban$, $cday$, $color$, $day$, $done$, $hcolour$, $he-she$,
+$hisher$, $hname$, $hnumber$, $hpower$, $hrname$, $hsex$, $lpos$, $man-woman$, $month$,
+$once$, $pithnum$, $pithy$, $pgold$, $sicon$, $skillnum$, $skname$, $slevel$, $spell$,
+$week$, $weekday$, $weeks$, $xpos$, $ypos$
+$red$, $blue$, $tan$, $green$, $orange$, $purple$, $teal$, $pink$
+$monday$, $tuesday$, $wednesday$, $thursday$, $friday$, $saturday$, $sunday$ <br>
+  <br>
+  <br>
+  <br>
+  <a name="dialog"></a><b>Dialogs (1-100): </b><br>
+  </font></tt><font face="Arial" size="2">1, 3-4, 7-11, 14-15, 20-22, 30-32, *50-59*, 88, 100<br>
+&nbsp;</font></p>
+
+  <p align="left"><font face="Arial" size="2"><b><a name="wogoption"></a>ERM WoG 
+  Option Numbers</b>:<br>Hard Coded Options: 0-10, 900-906 [907-1000 reserved]<br>
+  ERM Scripts: 11-77, [78-99 reserved for new scripts], 100-245<br>
+  </font><tt><font size="2" face="Arial"><span lang="de"><b>Note:</b> </span>
+  This is the number that's set to 1 when you turn on the WoG Option for that 
+  script in the WoG Options screen, and 0 when you turn it off.</font><br>
+  <font face="Arial" size="2">
+  <br>
+  <a name="temp"></a><b>Temporary variables and flags (may also be used by other 
+  scripts):</b><br>
+  v1-v10, v13-v14, v24-v34, v50-v54, v76, v94-v95, v101-v111, v143, v300-v308, 
+  v360-v370, v451-v469, v564-v571, v600-v739, v900-v916, v920-v934, 
+  (v998-v1000), v12117, v4711-v4712, z1-z9, z22-z44, z47-z61, z78-z90, 
+  z141-z142, z242-z248, z270-z279, z300-z303, z310-z319, z326-z331, z360-z366, 
+  z390-z393, z470-z472, z480-z492 (x1-x16), i-n<br>
+  Flags: 1-10, 400-408, (1000)<br>
+  <br>
+  <br>
+<br><br>  <b><a name="po"></a>PO Numbers used (by object):<br>
+  </b>
+<pre><font size=2>Adventure Cave (Type 63, Subtype 57): H, N, O, S, T
+ Altar of Summoning (Type 63, Subtype 20): N
+ Artificer (Type 63, Subtype 52): N
+ Creature Banks (Type 16, 24, 25, 84, 85): S
+ Creature Dwelling (Type 17, Subtype 93 - Natural Calamity): V3
+ Death Chamber (Type 63, Subtype 15): N
+ Emerald Tower (Type 63, Subtype 65): N
+ Garrisons (Types 33 and 219, Subtype 0 and 1): N
+ Living Skull (Type 63, Subtype 50): N, O, V0
+ Mine: N, S, V3
+ Mirror Portal (Type 63, Subtype 66): N
+ Mystical Garden: N
+ Obelisk: S, T
+ Resource Pile: N
+ Sign: S
+ Stone Circle (Type 63, Subtype 21): N
+ Universities: N
+ War Machine Factory: H, O
+ Warlord's Banner artifact (Type 5, Subtype 156): O
+ Water Wheel: N
+ Windmill: N
+ Town: B0, B1, H, O, S, T
+ Town (Conflux, day 1 only - temporary use): N
+ Town (1 square *above* trigger square): N
+ Trees: B0, B1</pre>
+  </b>
+  <br>
+  <br>
+  <p>&nbsp;<font face="Arial"><center><b><a name="scripts"></a>START OF SCRIPT LISTING</b></font><font size="2" face="Arial"> <br></center>
+<style> 
+pre {font:12px arial}
+</style>
+<pre>
+--------> WOGIFY (script00.erm)
+Author: Donald
+ERM WoG Option Numbers: 132-133, 137-143, 165, 195, 196, 224, 239 (Warlord's Banners), 
+241 (Dragonheart), 242 (Ghost replacement), 245 (Level 7+ troops only gain 50% experience), 
+248 (Display WoGification Messages)
+Object: none, although many are replaced with object for use by other scripts
+and chest and external dwelling values may be modified
+PO Numbers:  Warlord's Banner artifact (Type 5, Subtype 156): O
+Variables: v508, v600-v705, v950-v966, v3339, v3500
+Flags: 9,870 (used by Anders' Mithril script section), 995
+Functions: FU670-FU686, FU5209, FU22000-FU22001 (Set AI/Human Experience multipliers),
+           FU8-FU9 (Passable Terrain compatibility), FU3333-FU3334 (Bit Conversion),
+           FU25-FU28 (banner artifacts placement), FU7777-FU7779 (Random Spell),
+           FU29 (set 50% Exp. Multiplier for Level 7+ creatures)
+Macros: $bit$, $spell$
+Macros for Universal Timer: $month$,$weeks$,$week$,$day$,$weekday$,$AI$,$color$,$once$,
+ $red$,$blue$,$tan$,$green$,$orange$,$purple$,$teal$,$pink$,
+ $monday$,$tuesday$,$wednesday$,$thursday$,$friday$,$saturday$,$sunday$
+Dialogs: DG1, DG15
+Timers: TM19, TM79
+
+--------> MAP RULES (script01.erm)
+Author: Donald
+ERM WoG Option Numbers: 101, 111-130, 230
+Object: none, although several are used as trigger squares for rogues
+Variables: z280-z299, z326-z328, z332-z354, v1-v4, v549-v559, v564-v579, v600-v602,
+v610-v639, v700-v739, v1219, v1262, z680, z681-z697 (reserved for future rules!)
+Flags: 1-3
+Functions: FU690-FU726
+Timers: TM84
+Variables: v549-v559, v572-v579, z280-z299, and z332-z354 must not be
+modified by other programs!
+
+--------> ARTIFACT BOOST (script02.erm)
+Author: Donald
+ERM WoG Option Numbers: 102
+Object: the following artifacts are enhanced: Bird of Percention (63),
+Pendant of Life (103), Pendant of Death (104), Targ of the Rampaging Ogre (16),
+Dead Man's Boots (56), Pendant of Total Recall (107), Emblem of Cognizance (65),
+Stoic Watchman (64), Pendant of Second Sight (101), Pendant of Holiness (102),
+Boots of Polarity (59), Garniture of Interference (57), Pendant of Dispassion (100),
+Pendant of Free Will (105), Diplomat's Ring (67), Surcoat of Counterpoise (58),
+Orb of Vulnerability (93), Sphere of Permanence (92), Statesman's Medal (66),
+Orb of Inhibition (126)
+Variables: v600-v628, v630-v631, v640-v648, z326-z331, z410-z428, i-l, w33
+Flags: 1, 2, 5, 710-714
+z410-z428 must not be modified by other programs!
+The other variables may be used elsewhere but will be trashed by this code.
+Functions: FU599-FU609, FU612-FU613
+Timers: TM85
+
+--------> SECONDARY SKILLS BOOST (script03.erm)
+Author: Donald
+ERM WoG Option Numbers: 103, 215-218
+Variables: v35-v36, v487-v489, v587-v589, v900-v916, v920-v934, w43,
+z70-z73, z390-z391,  z430-z431, z470-z472
+Flags: 2, 270-271
+v487-v489 and v587-v589 and z430-z431 must not be modified elsewhere!
+Flags 270-271 are shared with other scripts that use Fnord's network detection function.
+The other variables may be used elsewhere but will be trashed by this code.
+Use caution; this code may take place in the middle of another script, if a hero gains a level
+or a battle is provoked
+Functions: FU649-FU651, FU653-FU668, FU8166
+Timers: TM74
+
+--------> ARCANE TOWER (script04.erm)
+Author: Donald
+ERM WoG Option Numbers: 104
+Object: Type 63, Subtype 9 (Thin Tower)
+Variables: v590, v600-v617, v618, z403
+Flags: 2-5
+z403 must not be changed in other programs!
+v590 must always be 0! Some of my other scripts also use it as 0 for hint indexing.
+The other variables may be used elsewhere but will be trashed by this code.
+Functions: FU620-FU627
+
+--------> BANK (script05.erm)
+Author: Donald
+ERM WoG Option Numbers: 105 (Loan Bank), 181 (Transfer all resources), 225 (Mithril Trading)
+Object:
+Variables: v493-v500, v592-v599
+v592-v599, z401 must be untouched by other ERM programs!
+v590 must be 0! Some of my other scripts also use it as 0 for hint indexing.
+The other variables may be used elsewhere but will be trashed by this code.
+Functions: FU631-FU638, FU14800-FU14801 (transfer all resources)
+Dialogue: DG4
+Timers: TM75
+
+--------> HOURGLASS OF ASMODEUS (script06.erm)
+Author: Timothy
+ERM WoG Option Numbers: 106
+Object: enhances Hourglass of the Evil Hour artifact (85)
+Flags in this Script: 1, 266-271
+Variables in this Script: v234, v247, v266-284, v1255-v1256, v4600 
+(used in conjunction with Metamorphs script), v9300, z266-z269, z444
+Functions in this Script: FU6664-FU6670
+Macro Names in this Script: $xpos$, $ypos$, $lpos$, $hpower$, $apower$, $hsex$, 
+$hnumber$, $aknow$, $hcolour$, $aname$, $hrname$, $hisher$
+
+--------> FISHING WELL (script07.erm)
+Author: Timothy
+ERM WoG Option Numbers: 107
+Object: enhances Magic Well (Object 49)
+Flags in this Script: 1-6
+Variables in this Script: v300-v305, v308, v998-v1000, z1-z2, z300-z303
+Functions in this Script: FU1100-FU1110, FU14000
+Dialogues: DG7-DG9
+
+--------> JUNK MERCHANT (script08.erm)
+Author: Donald
+ERM WoG Option Numbers: 108
+Object:  Type 63, Subtype 8 (Windmill with Barrels)
+Variables: v590, v600-v612, z326-z330, z400
+Flags: 2
+v590 must always be 0! Some of my other scripts also use it as 0 for hint text indexing.
+z400 must not be changed by other programs!
+The other variables may be used elsewhere but will be trashed by this code.
+Functions: FU640-FU641
+
+--------> MARKET OF TIME (script09.erm)
+Author: Timothy
+ERM WoG Option Numbers: 109
+Object:  Type 63, Subtype 51 (Market of Time)
+Flags: 1-4, 1000
+Variables: v50-v54, v451-v469, w45, z1, z47-z61, z241-z248
+Functions: FU451
+Dialogs: DG14
+Macros: @hsex@, @slevel@, @pgold@, @sicon@, @cday@, @skillnum@, @pithnum@, @skname@, 
+@hname@, @he-she@, @man-woman@, @pithy@
+
+--------> MAGIC MUSHROOMS (script10.erm)
+Author: Bruno
+ERM WoG Option Numbers: 110
+Object: Type 63, Subtypes: 14 (Air Mushroom), 18 (Water Mushroom), 23 (Earth Mushroom),
+and 29 (Fire Mushroom)
+Variables: v1-v3 just for local use, w20-w27 to track hero visits to mushrooms and 
+previous skill levels, z11-z17 and z159 for hint texts
+Functions: FU10-FU12
+
+--------> PALACE OF DREAMS (script11.erm)
+Author: Timothy
+ERM WoG Option Numbers: 11
+Object:  Type 63, Subtype 33 (Big Turretted Palace)
+Flags: 1-3
+Variables: v1-v2, v101-v111, z1, z3-z6, z450
+Functions: FU777-FU779
+
+--------> LIVING SKULL (script12.erm)
+Author: Timothy
+ERM WoG Option Numbers: 12
+Object:  Type 63, Subtype 50 (One-eyed Living Skull)
+PO Numbers: N, O, V0
+Flags in this script: 1, 21, 27
+Variables in this script: v1-v4, v24-v34, v94, v95, z1, z22-z44, z454
+Function numbers in this script: FU20-FU24, FU14900-FU14901
+Extended Dialogue Box numbers in this script: 20-21
+Variables that MUST be preserved outside this script: z454
+
+--------> TAVERN GAMBLING GAME (script13.erm)
+Author: Timothy
+ERM WoG Option Numbers: 13
+Object: enhances Tavern (Object 95)
+Functions in this code: FU1-FU2
+Flags in this code: 1, 400-408
+Variables in this code: v400-v420, z201-z205, w41-w42
+
+--------> ALTAR OF TRANSFORMATION (script14.erm)
+Author: Timothy
+ERM WoG Option Numbers: 14
+Object:  Type 63, Subtype 20 (Lightning Altar: Type 63, Subtype 20)
+PO Numbers: N (for object 63/20)
+Flags in this Script: 1, 209-211
+Variables in this Script: v88-v95, v991-v993, x16, z451-z453
+Functions in this Script: FU18001-FU18005
+Timers in this Script: TM80
+
+--------> MYSTERIOUS CREATURE DWELLING (script15.erm)
+Author: Dieter
+ERM WoG Option Numbers: 15
+Object:  Type 63, Subtype 3 (Broken Tower)
+Variables: v141-v143, z141-z143, w14
+Flags: 140,141
+Functions: FU141-FU145, FU148
+Timers: TM14
+Variables v141, z142, z143 and w14 must not be modified by other programs!
+
+--------> BATTLE ACADEMY (script16.erm)
+Author: Anders
+ERM WoG Option Numbers: 16
+Object: Type 63, Subtype 32 (Light-coloured Fort with Small, Dark Turrets)
+Flags: 1-10
+Variables: (v1-v2), v320-v342, v381-v383, v388 z382 (may not be used in other scripts),
+z1-z4, w38, [z116000-z116037]
+Functions: FU3610-FU3619, FU8165-FU8167
+Timers: TM30
+
+--------> POTION FOUNTAINS (script17.erm)
+Author: Bruno
+ERM WoG Option Numbers: 17
+Object: Type 63, Subtypes 48 (Kneeling Man statue),
+Type 63, Subtype 2 (Lady with Jug statue), and enhances Fountain of Fortune (Object 30)
+Variables: v1-v12, v40-v41, v1260-v1261, w10-w12, z1-z3, z18-z21
+Flags: 1, 902-907
+Functions: FU800-FU802, FU810-FU816
+
+--------> ALMS HOUSE (script18.erm)
+Author: Donald
+ERM WoG Option Numbers: 18
+Object: Type 63, Subtype 24 (Small Snow-covered Stone building)
+Variables: v590, v600-v606, z120, z326, z402, w13
+z402 must not be changed elsewhere!
+v590 must always be 0! Some of my other scripts also use it as 0 for hint indexing
+The other variables may be used elsewhere but will be trashed by this code.
+Functions: FU610-FU611
+
+--------> MASTERS OF LIFE (script19.erm)
+Author: Sir Four
+ERM WoG Option Numbers: 19
+Variables: none
+Functions: FU100
+Timers: TM2 (Univerversal Timer)
+
+--------> WEEK OF MONSTERS (script20.erm)
+Author: Timothy
+ERM WoG Option Numbers: 20, 134, 135, 136, 172, 200
+Flags in this Script: 1, 56, 170-172, 412
+v Variables: v1-v7, v166-200, v205, v361-v367, v372-373, v1200-1210,
+z Variables: z190-z199, z495
+Functions: FU180-FU184, FU5300-FU5310, FU8000
+Timers in this script: TM61-TM63
+
+--------> FREELANCERS GUILD (script21.erm)
+Author: Timothy
+ERM WoG Option Numbers: 21
+Object: enhances Freelancer's Guild (Object 213)
+Variables: z1-z5, v210-247, v249-257, v3405, z210-z231
+Flags: 49-51
+Functions: FU1400-FU1409
+Dialogues: DG30-DG32
+Timers: TM64
+
+--------> MONSTER MUTTERINGS (script22.erm)
+Author: Timothy
+ERM WoG Option Numbers: 22
+Object: with Monster stacks (Type 54)
+Variables: v1212-v1214, z119-z141, z469, (z480-z492)
+Flags: 2,57
+Functions: FU2826
+
+--------> SORCERY SKILL ENHANCEMENT (script23.erm)
+Author: Timothy
+ERM WoG Option Numbers: 23
+Object: none, but used with many objects (resource piles, treasure chests, windmills,
+water wheels, star axes, gardens of revelation, mystical gardens, learning stones, artifacts,
+warrior's tombs, wagons, skeletons, sea chests, shipwreck survivors, flotsam, ocean bottles,
+signs, scholars, universities, camp fires, pyramids, witches' huts, shrines, trees of knowledge)
+PO Numbers: N (for resource piles), N [check only] for Water Wheels & Windmills to
+see if Mithril script has upgraded them.
+Flags in this Script: 1-3, 410, 872
+Variables in this Script: v1-v4, v310-v312, z1-z5
+Functions in this Script: FU849, FU5000-FU5037
+Timer: TM18
+
+--------> ENHANCED DWELLING HINT TEXT (script24.erm)
+Author: Timothy
+ERM WoG Option Numbers: 24
+Object: none, but used with external dwellings
+Flags in this Script: 1-3,58
+Variables in this Script: v1,v94-v95,z1-z3
+Functions in this Script: FU2400-FU2406
+
+--------> MAP OPTIONS (script25.erm)
+Author: Timothy
+Scriptlets include: Remove Forts, Replace Cartographers, Spell Banning, Artifact Banning,
+Town Renaming, Buy All Creatures, Universal Creature Upgrades, Extended Creature Upgrades, 
+Hero Renaming, Display Hidden Skills, Display Hero Spell Points, Rewritable Signs and 
+Right-click Sign Display, Message Disabling, Choose Commander Class, Enable Extension Heroes,
+Disable Autosave option, Select Neutral Town Types, Build Twice per Day, Quick Combat option
+ERM WoG Option Numbers: 25, 100, 131, 144-148, 150-164, 166-169, 173-180, 182-187, 220-223,
+226-228, 233, 234, 236-238, 240, 241, 243-244, 246-247
+Object: Signs (enhanced)
+PO Numbers: Universal Upgrading: O, B0, B1, S (used for Towns), S (used for Signs)
+Variables: v975-v976, v1-v5, z1-z4
+v3300-v3303, v3310-v3312 (universal creature upgrade), v3320-v3330 (message disabling),
+v3393-v3402 (quick combat), v3341 (check for banned spells)
+No longer used but reserved (for script25): v3304-v3308, v3334-v3336, v3406-v3407
+Temp variables: v600-v646, z22-z31
+Flags: 1-4
+Functions: FU10799-FU10816   (FU10815 no longer used but reserved for script25)
+  FU10920-FU10931 (buy all)
+  FU10932 (check for banned spells)
+  FU3300-FU3303 (universal creature upgrade)
+  FU14802-FU14806 (display hero's skills and swap hidden/display skills)
+  FU18 (choose Commander Class)
+  FU3304 (enable extension heroes)
+  FU50-FU53 (select neutral town types)
+  FU54-FU56 (build twice a day in towns)
+  FU57 (quick combat battle options)
+  FU10933-FU10936 (warlord's banner: quick select)
+  FU41-FU42 (hero list reordering)
+  FU10937 (rename hero)
+  FU10938 (message disabling)
+Macros: $ban$
+Dialogue Box numbers: DG17, DG25
+Timers: TM34
+
+--------> ARTIFICER (script26.erm)
+Author: Dieter
+ERM WoG Option Numbers: 26
+Object: Type 63, Subtype 52 (Red roofed building with fence)
+PO Numbers: N (for Artificer object)
+Variables: v157-v164, v4101-v4136, z160-z166,
+Functions: FU160-FU176
+Flags: 160-162
+Timers: TM26
+
+--------> SPELL BOOK (script27.erm)
+Author: Anders
+ERM WoG Option Numbers: 27
+Object: spell book artifact (0)
+Variables: (v1-v4), (v600-v611), (z1-z9), [z127000-z127003]
+Functions: FU3633-FU3638
+
+--------> SCHOOL OF WIZARDRY (script28.erm)
+Author: Anders
+ERM WoG Option Numbers: 28
+Object: Type 63, Subtype 62 (Blue Tower)
+Flags: (1-10)
+Variables: v384-v386, v389, z383, w38 (may not be used in other scripts),
+(v1-v5), (z1-z4), [z128000-z128076]
+Timers: TM30
+Functions: FU3620-FU3630, FU8165-FU8167
+
+--------> CHEST (script29.erm)
+Author: Donald
+ERM WoG Option Numbers: 29
+Object: new Chest (Type 101, Subtype 1)
+Variables: w63, w80, z326, v550-v559, v600-v646
+Flags: 2
+v550-v559 are a bit table used by several scripts. It must not be changed but may be used.
+w63 is from the Adventure Cave script and may not otherwise be modified.
+w80 must not be modified by other scripts.
+The other variables may be used elsewhere, but get trashed by this code.
+Functions: FU840-FU848
+
+--------> ADVENTURE CAVE (script30.erm)
+Author: Donald
+ERM WoG Option Numbers: 30
+Object: Type 63, Subtype 57 (Cave with Spider Web and Skulls )
+PO Numbers: H, N, O, S, T (for Adventure Cave: Type 63, Subtype 57)
+Variables: z326-z330, z360-z366, z368-z379, z404, v150, v510-v548, v550-v559, v600-v669,
+v1263-v1265, w61-w78, i
+v510-v548, w61-w74, and z404 must not be changed elsewhere!
+v550-v559 is a bit table also used by map rules. It must not be changed but may be used.
+The other variables may be used elsewhere but will be trashed by this code.
+Flags: 2, 600-603
+Functions: FU730-FU776, FU780-FU799, FU820-FU835
+Timers: TM90
+
+--------> TREASURE CHEST 2 (script31.erm)
+Author: Timothy
+ERM WoG Option Numbers: 31
+Object: new Chest (Type 101, Subtype 5)
+Flags: 1-2, 409, 1000
+Variables: v1-v6, z1-z5, w52-w54, w64 (check only)
+Functions: FU5200-FU5208, FU5210-FU5211
+Timers: TM28
+
+--------> SUMMONING STONES (script32.erm)
+Author: Timothy
+ERM WoG Option Numbers: 32
+Object: Type 63, Subtype 21 (Stone Circle)
+PO Numbers: N (for Stone Circle: Type 63, Subtype 21)
+Variables: v1-9, v234, 247, v360-370, v998-1000, v1211 z1-4, z480-494
+All variables may be reused except z493 and z494 which store the hint text.
+Flags: 1,2,4, 57 ("Monster Mutterings" flag)
+Functions: FU5219-FU5229
+Timers: TM98
+
+--------> LIVING SCROLLS (script33.erm)
+Author: Timothy
+ERM WoG Option Numbers: 33
+Object: enhances Spell Scrolls (Object 93)
+Variables: v1-v6, z1-z2, v1218, v1220, v1222-v1235, v1257, v9300
+Functions: FU5244-FU5426, FU5248-FU5255, FU5260-FU5262
+
+--------> CARDS OF PROPHECY (script34.erm)
+Author: Matthew
+ERM WoG Option Numbers: 34
+Object: enhances Cards of Prophecy artifact (47)
+Flags: 270,271
+z-variable usage: z698, [z134001-z134025]
+v-variable usage: v1300-v1327, v1332-v1336,
+                 (also: v3393-v3400 from Quick Combat script)
+Function usage: FU13500-FU13507
+
+--------> MYSTICISM SKILL ENHANCEMENT (script35.erm)
+Author: Anders
+ERM WoG Option Numbers: 35
+Variables: (v1-v10), (z1-z9), [z135000-z135177]
+Flags: (1-10), 56, 172, 173, 412
+Functions: FU8150-FU8165, FU8230-FU8231
+Timers: TM30
+
+--------> MITHRIL ENHANCEMENTS (script36.erm)
+Author: Anders
+ERM WoG Option Numbers: 36, 149, 170, 171
+Object: Mithril resource (Type 79, Subtype 7) and also used with towns, mines, windmills,
+shipyards, liths, and water wheels.
+PO Numbers: N (for Mines, Mystical Gardens, Water Wheels, University and Windmills)
+and also S and O for Mines (O used for compatibility with future Mithril Melting script).
+Variables: (v1-v6), v70-v71, (z1-z9), z429, z805-z815, z919, [z136000-z136084]
+Flags:  (1, 9, 10), 172, 410, 870-874
+Timers: TM99
+Functions: FU709, FU8170-FU8189
+Sets up PO:N numbers at Mine, Water Wheel and Windmill entrance squares.
+
+--------> REBALANCED FACTIONS (script37.erm)
+Author: Steven
+ERM WoG Option Numbers: 37, 198, 199
+Flags: None
+Variables: v1, v1400-v1412, z860-z876
+Functions: FU4850-FU4853
+Timers: TM31-TM32
+
+--------> KARMIC BATTLES (script38.erm)
+Author: Dieter
+ERM WoG Option Numbers: 38
+Variables: v490-v492, w49
+Flags: 490
+Functions: FU491-FU494
+Variables v490,v491 and Flag 490 must not be modified by other programs!
+
+--------> HERO SPECIALIZATION BOOST (script39.erm)
+Author: Alexis
+ERM WoG Option Numbers: 39
+Variables: v425-v444, v9001, w28-w32, z405-z406
+Functions: FU803-FU808, FU836-FU838, FU850-FU852
+Flags: 428, 429, 430
+Timers: TM77
+
+--------> FIRST MONEY (script40.erm)
+Author: Alexis
+ERM WoG Option Numbers: 40
+Variables: v428-v429
+Timers: TM78
+
+--------> BATTLE EXTENDER (script41.erm)
+Author: Alexis
+ERM WoG Option Numbers: 41
+Variables: v425-v427
+Functions: FU809,839
+
+--------> GARRISONS (script42.erm)
+Author: Timothy
+ERM WoG Option Numbers: 42
+Object: Garrisons (Types 33 and 219, Subtypes 0 and 1)
+PO Numbers: N (Garrisons: Types 33 and 219, Subtype 0 and 1)
+Variables: v1-v9, z1-z5, v1236-v1239, v1253-v1254
+Functions: FU10850-FU10862
+Timers: TM19 (shared with WoGify), TM48
+Dialogues: DG88
+
+--------> OBELISK RUNES (script43.erm)
+Author: Timothy
+ERM WoG Option Numbers: 43
+Variables: none (local only)
+Functions: FU5311-FU5312
+PO Number: S, T (for Obelisk object)
+
+--------> EMERALD TOWER (script44.erm)
+Author: Timothy
+ERM WoG Option Numbers: 44
+Object:  Type 63, Subtype 65 (Golden-green roofed Tower)
+PO Numbers: N (for Golden-green roofed Tower: Type 63, Subtype 65)
+Permanent Variables: z816-z841, v1240-v1252 (v1255 used by script06.erm), v1270-v1271,
+Temporary Variables: v1-v6, v360-v369, z1-z5, z480-z490
+Functions: FU10900-FU10910
+Timers: TM38
+Dialogues: DG3
+
+--------> CASTLE UPGRADING (script45.erm)
+Author: Alexis
+ERM WoG Option Numbers: 45
+Object: none, but used inside towns (Object 98)
+Variables: v424-v429, v1600-v1983
+Flags 432, 433
+Functions: FU819, FU859-FU863, FU865-FU869
+Timers: TM82
+
+--------> BERSERKER FLIES (script46.erm)
+Author: Timothy
+ERM WoG Option Numbers: 46
+Permanent Variables: v295-v299, v4740-v4748, v4750-v4756, z940-z941
+Temporary Variables: v1-v6
+Flags: 2, 298, 299
+Functions: FU19000
+
+--------> CREATURE RELATIONSHIPS (script47.erm)
+Author: Matthew
+ERM WoG Option Numbers: 47
+Variables: v1340-v1359
+Flags: 130-131
+Timers: TM13
+Functions: FU13520-FU13527
+
+--------> ENHANCED SECONDARY SKILLS (script48.erm)
+Author: Arstahd
+ERM WoG Option Numbers: 48, 201-214
+Variables: s, r, j
+V Variables: v7018-v7056, v7186-v7199
+Z Variables: z1-z3, z700-z706, z722-z725
+Y Variables: y1-y11
+W Variables: w4-w9
+Functions: FU7000-FU7026
+Timers: TM50, TM51
+Flags: 1, 2
+
+--------> HENCHMEN (script49.erm)
+Author: Arstahd
+ERM WoG Option Numbers: 49
+Variables: w117-w119, v7181, v7206-v7217, z1-z9, z910-z918
+Function: FU7100-FU7109
+Timer: TM19 (from WoGify script00)
+
+--------> ENHANCED MONSTERS (script50.erm)
+Author: Arstahd
+ERM WoG Option Numbers: 50
+Variables: i-m, y1-y12, v7000-v7015, v7183, z2, z500-z679
+Flags: 74, 75, 77, 78
+Functions: FU7050-FU7053, FU7060-FU7069
+Timers: TM50
+
+--------> ENHANCED COMMANDERS (script51.erm)
+Author: Arstahd
+ERM WoG Option Numbers: 51
+Variables:  v7080-v7119, v7177, v7185, y1-y9
+Functions: FU7070-FU7074
+
+--------> MIRROR OF THE HOME-WAY (script52.erm)
+Author: Sir Four
+ERM WoG Option Numbers: 52
+Object: Type 63, Subtype 66 (large new mirror portal)
+PO Numbers: N (for Mirror Portal: Type 63, Subtype: 66)
+Variables: v1-6, v234, v247, v360-v370, v729-v730, z1-z4, z480-z494, z729
+All variables may be reused except z729 which stores the hint text.
+Flags: 1, 2
+Functions: FU20521-FU20523
+
+--------> DUNGEON OF THE DRAGONMASTER (script53.erm)
+Author: Hermann the Weird
+ERM WoG Option Numbers: 53
+Objects: enhances Dragon Utopia
+Variables: v8033, v8035-v8043, z455-z461
+Functions: FU20001-FU20008
+
+** Uses FU709 from script01 (map rules) to determine the strength of the DOTDM.
+** Compatible with script57 (neutral units).
+
+--------> ENHANCED WAR MACHINES I (script54.erm)
+Author: Overlord
+ERM WoG Option Numbers: 54
+Version 0.9 Variables: TM41, v591, v2000-v2074, FU900-FU927, w81-w83, (z1-z4)
+Version 2.3 Variables (?): w110-w116, v2550-v2561, (z1-z2), FU21000-FU21014
+
+--------> ENHANCED WAR MACHINES II (script55.erm)
+Author: Arstahd
+ERM WoG Option Numbers: 55
+Objects: none
+Variables: y1-y10, v7180, v7220-v7236, z790-z791
+Flags: 79
+Functions: FU7120-FU7126
+
+--------> METAMORPHS (script56.erm)
+Author: Timothy
+ERM WoG Option Numbers: 56
+Permanent Variables: v4500-v4603, z206-z209
+Temporary Variables: v1-v10, v13-v14, v24
+Functions: FU9600-FU9603
+
+--------> NEUTRAL UNITS (script57.erm)
+Authors: Alexandru Balahura, Timothy Pulver and Thomas Franz (samot)
+ERM WoG Option Numbers: 57, 231, 232, 235
+PO Numbers: S (for creature banks: type 16, 24, 25, 84, 85)
+Variables: v100, v296, z745
+Functions: FU1000-FU1001-FU1003, FU5400-FU5411
+
+--------> ESPIONAGE (script58.erm)
+Author: Petyo
+ERM WoG Option Numbers: 58
+PO Numbers: N (1 square *above* Town trigger square)
+Variables: v2100-v2135, v2200-v2207
+(z1-z7), (z200), z250-z265, z582-z584, z770-z786
+w50-w51,w55-w59, f-q
+Flags: 32-36
+Functions: FU463-FU481
+Dialogues: DG11
+
+--------> PIERCING SHOT (script59.erm)
+Author: Petyo
+ERM WoG Option Numbers: 59
+Variables: (v51), v2600-v2622, z66-z69
+Flags: 341-366
+Functions: FU31-FU33
+
+--------> FORGOTTEN SHRINE (script60.erm)
+Author: Petyo
+ERM WoG Option Numbers: 60
+Objects: Type 63, subtype 22 (black spell shrine)
+Variables: v15-v23, v1100-v1118, z167-z168, w18
+Temporary Variables: m-o
+Flags: 37
+Functions: FU12-FU16
+
+--------> PROTECTION FROM THE ELEMENTS (script61.erm)
+Author: Petyo
+ERM WoG Option Numbers: 61
+Variables: v15-v18, v2400-v2408
+Flags: 41-43
+Functions: FU1872-FU1876
+
+--------> SPLIT DECISION (script62.erm)
+Author: Timothy
+ERM WoG Option Numbers: 62
+Variables: v3309, v3313-v3314, v3342-v3392, v3403-v3404, z1-z3
+Flags: 1, 3-4
+Functions: FU43-FU49, FU60-FU61
+
+--------> PASSABLE TERRAIN (script63.erm)
+Author: Timothy
+ERM WoG Option Numbers: 63
+Object: temporarily employs sign posts (Type 91)
+PO Numbers: B0, B1 (Trees)
+Permanent Variables: v1270, v1272-v1275, w79
+Temporary Variables: v1-v4, z1
+Functions: FU14001-FU14011
+
+--------> TOBYN'S SCRIPTS (script64.erm)   (2004 September 19)
+Author: Tobyn
+Scriptlets:
+ (Universal Timer), Tobyn Library Functions, Advanced Witch Huts, Transfer Owner,
+ Estates Enhanced, First Aid Enhanced, Warfare, Conflux/Rampart Monster Change
+ERM WoG Option Numbers: 64, 188-194
+Flags: 230-239 claimed                               (and 236-239 used)
+Permanent Variables: w47, w48, v2300-v2399 claimed   (and v2301-v2334, v2360-v2399 used)
+Temporary Variables: m-t, flag 1, v248
+Timers: TM1, TM2 (both together with script00.erm form the Universal Timer)
+Functions: FU2300-FU2399 claimed                     (and FU2333-FU2345 used)
+Strings: z232-z239 claimed                           (and z237-239 used)
+Macros: $month$,$weeks$,$week$,$day$,$weekday$,$AI$,$color$,$once$,
+        $red$,$blue$,$tan$,$green$,$orange$,$purple$,$teal$,$pink$,
+        $monday$,$tuesday$,$wednesday$,$thursday$,$friday$,$saturday$,$sunday$
+
+--------> MONOLITH COSTS (script65.erm)
+Author: Steven
+ERM WoG Option Numbers: 65
+Objects: enhances Monoliths (objects 45 and 43)
+
+--------> COMMANDER WITCH HUTS (script66.erm)
+Author: Donald
+ERM WoG Option Numbers: 66
+Objects: enhances Witch Huts (object 113)
+Variables: v600-v627, z326, w40
+w40 may not be modified elsewhere!
+The other variables may be used elsewhere, but get trashed by this code.
+Functions: FU6300-FU6304
+Dialogues: 10
+
+--------> NEUTRAL TOWN (script67.erm)
+Author: Donald and Jonas
+ERM WoG Option Numbers: 67
+PO Numbers: Type 17, Subtype 93 (Natural Calamity): V3
+Variables: v501, z169-z176, z707-z708
+(v501, z169-z176 and z707-z709 must not be modified elsewhere)
+Functions: FU6100-FU6107
+Timers: TM2 (Universal Timer)
+
+--------> NEW BATTLEFIELDS (script68.erm)
+Author: Donald with additions by Robert and Jonas
+ERM WoG Option Numbers: 68
+Temporary Variables: v1
+Functions: FU62
+
+--------> CUSTOM ALLIANCES (script69.erm)
+Author: Sir Four
+ERM WoG Option Numbers: 69
+Variables: v1-v10, v13, v777, z1-v9, z1000
+All variables may be reused except z1000 which stores set of teams.
+Flags: 1,2
+Functions: FU20690-FU20701
+Timers: TM11
+
+--------> DEATH CHAMBER (script70.erm)
+Author: Rich Reed
+ERM WoG Option Numbers: 70
+Object:  Type 63, Subtype 15 (Skull Pile)
+PO Numbers: N (for object 63/15)
+Variables: z849-z850, z890, v803-v844, w39
+Flags: 3, 800, 801
+
+--------> ENHANCED ARTIFACTS (script71.erm)
+Author: Arstahd
+ERM WoG Option Numbers: 71, 219
+Objects: various artifacts are enhanced
+Variables: i, y1-y10, v7178, v7182, v7057-v7079,  v7130-v7132, z1-z4,  z920-z937, z960-z989
+Flags: 76
+Functions: FU7030-FU7039
+Timers: TM51
+
+--------> RANDOM HERO (script72.erm)
+Author: Bonizag
+ERM WoG Option Numbers: 72
+Object: enhances monster stacks (object 54)
+Variables: v846, v849, v851, v855-v856, v867 for long term,
+z1-z3, z78-z90 temporarily, w81-w83 (note: also used by Robert's War Machine script)
+Flags: 781, 783, 786 for long term
+Functions: FU7797-FU7798, FU7825-FU7826
+
+--------> ENHANCED WAR MACHINES III (script73.erm)
+Author: Bonizag
+ERM WoG Option Numbers: 73
+Object: enhances monster stacks (object 54)
+PO Numbers: H, O (War Machine Factory), H, T (Towns)
+Variables: v847, v850-v859, v862-v880, v883 for long term, v1-v3, v7800-v7956 temporarily,
+z1-z3, z78-z90 temporarily, w81-w83 (note: also used by Robert's War Machine script)
+Flags: 781, 783-790 for long term, 2,3,4 temporarily
+Functions: FU7795-FU7820
+Timers: TM41
+
+--------> SUMMON ELEMENTALS (script74.erm)
+Author: Bonizag
+ERM WoG Option Numbers: 74
+Variables: w84, v848, v860-v861, v881-v882, v7600-v7756, v1 temporarily, z1-z5 temporarily
+Flags: 791
+Functions: FU7821-FU7824
+Timers: TM42
+
+--------> SECONDARY SKILL TEXT (script75.erm)
+Author: Hermann the Weird
+ERM WoG Option Numbers: 75
+Variables: Eagle Eye: z318, z270-z272; Scouting: z319, z273-z275;
+Resistance: z390, z276-z278; Learning: z391, z279, z310, z311; Tactics: z904-z907;
+Artillery: z738, z719-z721; Estates: z739, z741-z743; First Aid: z740, z716-z718;
+Luck: z747, z726-z728; Mysticism: z748, z710-z712; Navigation: z749-z752;
+Pathfinding: z713, z732-z734; Scholar: z714, z735-z737; Sorcery: z715, z796-z798;
+Armorer: z744, z793-z795
+Brief Descriptions variables: Archery: z45, z46, z74; Logistics: z75-77; Diplomacy: z91-93;
+Leadership: z94-96; Wisdom: z97-99; Ballistics: z110-112; Necromancy: z113-115;
+Fire Magic: z116-118; Air Magic: z144-146; Water Magic: z147-149; Earth Magic: z150-152
+Offense: z153-155; Intelligence: z156-158
+Functions: FU17, FU19
+
+--------> COMMANDER SANCTUARY (script76.erm)
+Author: Timothy
+ERM WoG Option Numbers: 76
+Objects: enhances Sanctuaries (object 80)
+Variables: none (local variables only)
+Functions: none
+
+--------> WOG CHEAT MENU (script77.erm)
+Author: Timothy
+ERM WoG Option Numbers: 77
+Flags: (1..9)
+Variables: v9002-v9007, (z1..z9)
+Functions: FU22300-FU22343
+
+------------------------------------------------------------------------------------------
+script81.erm and script82.erm are reserved for Alexandru Balahura for 3.59 along with 
+Function 870.
+------------------------------------------------------------------------------------------
+script78.erm, script79.erm, script80.erm are reserved for Perfecto
+script83.erm though script85.erm (inclusive) are also reserved for Perfecto
+------------------------------------------------------------------------------------------
+script91.erm through script96.erm (inclusive) are reserved for Thomas.
+------------------------------------------------------------------------------------------
+script97.erm and script98.erm are reserved for Timothy.
+==========================================================================================
+==========================================================================================
+
+</pre>
+</body>
+</html>

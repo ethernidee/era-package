@@ -1,0 +1,83 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b>
+<font face="Times New Roman CE" size="6">MP3 C</font><font face="Times New Roman CE" size="5">ONTROLLER</font><font face="Times New Roman CE" size="6"> 
+(MP)</font><font face="Arial" size="2"><br>
+</font><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b>
+</p>
+
+<p><b>
+
+<font class="Helvetica32" face="Arial" size="2">
+  <font color="#333333">Used to change in-game predefined music</font></font></b></p>
+
+  <table border="2" bordercolorlight="#000000" bordercolordark="#000000" width="100%">
+      <tr>
+        <td width="143" height="16" nowrap><b><font face="Arial" size="2"><font class="Helvetica32" color="#FF0000">!!MP</font><font color="red" size="2" class="Helvetica32">:<font color="darkmagenta">XXXX</font>;</font></font></b></td>
+        <td width="100%" height="16">
+
+<p><b>MP3 control receiver</b></p>
+
+        </td>
+      </tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+  <tr>
+    <td width="13%" valign="top"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="S"></a>S</font></b><b><font face="Arial" size="2"><font color="#8B008B">#1</font><font color="#FF0000">/</font><font color="#800080">$</font><font color="red" size="2" class="Helvetica32">;<br>
+    </font></font></b><b>
+    <font face="Arial" size="2" color="#FF0000">S</font></b><b><font face="Arial" size="2"><font color="#8B008B">#1</font><font color="#FF0000">/</font><font color="#800080">^filename^</font><font color="red" size="2" class="Helvetica32">;</font></font></b></td>
+    <td width="87%"><font class="Helvetica32" face="Arial" size="2"><b>Sets a 
+    custom MP3 file to play instead of predefined or user defined game music.</b><br>
+      &nbsp;</font><font face="Arial" size="2"><font color="#800080">#</font> 
+    is from 1..199. (see <a href="../format/fmmp.htm">Format MP</a>)</font><font class="Helvetica32" face="Arial" size="2"><br>
+    
+      </font><font face="Arial" size="2"><font color="#800080">&nbsp;$</font> 
+    is the index of a z variable&nbsp; <br>
+    <br>
+    <b>Comments: </b><br>
+    Do not include the extension &quot;.mp3&quot;. This is added automatically.</font><p>
+    <font face="Arial" size="2"><b><font color="#0000FF">Example</font></b> 
+    of setting a custom music file named &quot;Sample.mp3&quot;:</font><br>
+    <br>
+	<script type="erm">ZVSE
+!?OB6/6/0; visit something at 6/6/0
+!!MP:S1/^..\data\Sample^; Set Castle music to Sample.mp3 in DATA folder
+!!MP:S1/^Sample^; If you put an mp3 file in the mp3 folder, you do not need to mention mp3 folder itself
+!!MP:S1/^..\maps\Sample^; if you have a file in the maps folder</script></td>
+  </tr>
+  
+  
+  
+  
+  <tr>
+    <td width="13%" valign="top"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="S"></a>C</font></b><b><font face="Arial" size="2"><font color="#800080">$</font><font color="red" size="2" class="Helvetica32">;<br>
+    </font></font></b><b>
+	</td>
+    <td width="87%"><font class="Helvetica32" face="Arial" size="2"><b>Set/Get current playing theme.</b><br>
+	  $ - sound ID. See <a href="../format/fmmp.htm">Format MP</a><br>.
+      Note:<br>
+	1.&nbsp;This must be used in !?MP trigger to work.<br>
+    </td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="S"></a>P</font></b><b><font face="Arial" size="2"><font color="#8B008B">^^</font><font color="red" size="2" class="Helvetica32">;<br>
+    </font></font></b><b>
+    <font face="Arial" size="2" color="#FF0000">P</font></b><b><font face="Arial" size="2"><font color="#8B008B">1</font><font color="#FF0000">/</font><font color="#800080">$</font><font color="red" size="2" class="Helvetica32">;</font></font></b></td>
+    <td width="87%"><font class="Helvetica32" face="Arial" size="2"><b>play specified mp file now</b><br>
+      </font>
+      Note:<br>
+	1.&nbsp;This must be used in !?MP trigger to work.<br>
+	2.1&nbsp;If you specify filename directly, you don't need to add .mp3 extension<br>
+	2.2&nbsp;$ is sound ID. See <a href="../format/fmmp.htm">Format MP</a> for list of sound file IDs.<br>
+    </td>
+  </tr>
+</table>
+
+</body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

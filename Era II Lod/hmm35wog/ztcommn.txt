@@ -1,0 +1,5 @@
+Common parameters	for Castle demolition			
+Demolitions per day	4			
+Cost for next	0	1000	2000	5000
+Lost hero movement	500			
+Dismantling of Grail	10000			

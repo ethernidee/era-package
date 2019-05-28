@@ -1,0 +1,218 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<base target=_parent><p align=center><font face=Times New Roman CE>
+<b><font size=6>T<font size=5>RIGGERS</font></font></font><font size=2 face=Arial><br>
+<font color=#333333>List and Definition of New ERA Triggers. 
+</font></b><br>
+For original WOG triggers see <a href='triggers.htm'>Triggers page</a><br>
+<nobr><a target=principal href=#list>Jump to Triggers List</a></nobr></p>
+<font class=bnotes>Introduction</font><br>
+<br>
+All new events use functions' numbers. Script writer should use functions' triggers accordingly.<br>
+
+<b>Explanation of "!!SN:..." commands internal work.</b><br>
+All Era commands understand only two variants of passing arguments: get or set.<br>
+*&nbsp;<b>Set</b>. For integers (numbers) it means "put the value of var/constant into buffer cell".
+&nbsp;&nbsp;For strings: "put the address of var into buffer cell".<br>
+*&nbsp;<b>Get</b>. For all vars it means the same: "put the address of var into buffer cell".<br>
+<br><br>
+
+"!!SN:X" works a bit different.<br>
+*&nbsp;<b>Get</b>. The engine will take the value of the buffer cell and treat it as:<br>
+&nbsp;&nbsp;<u>for integers</u>: as value to assign to var. Example: !!SN:X?v1; <br>
+&nbsp;&nbsp;<u>for strings</u>: as address of source string that should be copied to the specified var. Example: !!SN:X?z1; <br>
+*&nbsp;<b>Set</b>. The same as Get for "!!SN:...". Example: !!SN:Xv1/z1;<br>
+
+<b>Complex example with explanations:</b>
+<script type="erm">!!SN:X1/2; buffer contents: 1/2
+!!SN:X?y1/?y2; y1 = 1, y2 = 2
+!!SN:Xz1/0; buffer contents: 9597928 (address of z1 in memory) / 0
+!!SN:X?z3; z3 = z1, buffer was not changed
+!!SN:Xz1; buffer contents: 9597928 (address of z1 in memory)
+!!SN:X?v1; v1 = 9597928
+!!SN:X0; buffer contents: 0
+!!SN:X?z1; do not execute this code! 0 is incorrect address for string and an attempt to load string from this address will kill the game</script>
+ 
+<br>
+<nobr><a name=list></a></nobr><b>TRIGGERS LIST:</b>
+<table border=2 bordercolorlight=black bordercolordark=black width=100% cellspacing=1 cellpadding=2>
+<tr>
+ <td align=middle valign=top><b>Syntax</b></td>
+ <td align=middle valign=top><b>Triggers</b></td>
+</tr> 
+
+<tr>
+ <td valign=top><nobr><a name=70000></a></nobr><font class=ermtext>!?FU70000;</font></td>
+ <td valign=top><b>Before Saving Game</b><br>
+ Parameters (1): Replace the save game name?<br>
+<b>Note: </b><br>
+If you set the parameter to TRUE (1) then variable z1 must keep a new name.
+
+Example:
+<script type="erm">!?CM5; left mouse button click on the adventure map
+!!CM:I?y1; store location of the click in y1
+!!FU&y1<>12:E; exit if the location is not "end turn" button
+!!IF:V800/1; set autosave flag to true
+
+!?FU70000&800; event "Before SaveGame" if autosave flag is true
+!!IF:V800/0; reset the flag
+!!VRz1:S^%c end^; set new autosave name to "[current day] end"
+!!SN:X1; replace default savegame name</script>
+
+The example script will make the game to name autosaves not "AUTOSAVE.GM1" but "1 end.GM1", "2 end.GM1"..."100 end.GM1".
+
+ </td>
+ </tr>
+<tr>
+ <td valign=top><nobr><a name=77001></a></nobr><font class=ermtext>!?FU77001;</font></td>
+ <td valign=top><b>Save Game: Write Extra Data</b><br>
+You can save extra data in savegame and load it later.<br>
+Useful in-game function:<br>
+GZipWrite(Source: POINTER; Count: INTEGER); CDECL; ABSOLUTE $704062 (7356514)<br>
+Example:
+<script type="erm">!?FU77001;
+!!VRz1:S^Hello^;
+!!SN:Xz1; put address of z1 into events's parameters buffer
+!!SN:X?v1; load adrress to v1 as a number
+!!SN:E7356514/1/v1/6; save 6 bytes of string z1 in savegame
+; (5 bytes is the size of the string and the sixth one is string terminating char)</script>
+ 
+</td>
+ </tr>
+<tr>
+ <td valign=top><nobr><a name=77002></a></nobr><font class=ermtext>!?FU77002;</font></td>
+ <td valign=top><b>Load Game: Read Extra Data</b><br>
+It's possible to read data from savegame that was earlier written.<br>
+Useful in-game function:<br>
+GZipRead(Destination: POINTER; Count: INTEGER); CDECL; ABSOLUTE $7040A7 (7356583)<br>
+Example:
+<script type="erm">!?FU77002;
+!!VRz1:S^1234567890^; filling z1 with rubbish, just for test
+!!SN:Xz1; put address of z1 into events's parameters buffer
+!!SN:X?v1; load adrress to v1 as a number
+!!SN:E7356583/1/v1/6; load 6 bytes to string z1
+!!IF:M^%Z1^; show contents of z1</script>
+
+
+
+
+The example will show a message with text "hello" if you use an example code above to save the data in savegame.
+ 
+</td>
+ </tr>
+<tr>
+ <td valign=top><a name=77003></a><font class=ermtext>!?FU77003;</font></td>
+ <td valign=top><b>Whenever the player presses any key, this event is triggered.</b><br>
+Parameters (2): Key code / Block default reaction? (0 - no, 1 - block) <br>
+Example:
+<script type="erm">!?FU77003;
+!!SN:X?v1; get key code to v1
+!!IF:M^You have pressed key with code %V1^;</script>
+
+<b>Note:</b>
+To determine in which window we are now, use function GetGameState.
+Since this event occurs in all the game dialogue, do not use shared global variables between dialogs are shown, as any event in the dialogue
+can mess your script up.
+</td>
+ </tr>
+<tr>
+ <td valign=top><a name=77004></a><font class=ermtext>!?FU77004;</font></td>
+ <td valign=top><b>Event occurs when player tries to view hero screen.</b><BR>
+You can change hero's stats, arts etc. before the screen will be shown.<br>
+
+Example:<br>
+The example will set current hero stats to 99/99/99/99 when you try to open hero screen.
+<script type="erm">>!?FU77004;
+!!HE-1:F99/99/99/99; </script>
+<br>
+ </td>
+</tr>
+<tr>
+ <td valign=top><a name=77005></a><font class=ermtext>!?FU77005;</font></td>
+ <td valign=top><b>The same as 77004, only for existing.</b><br>
+
+Example:
+<script type="erm">!?FU77005;
+!!HE-1:F1/1/1/1; reset hero stats on exit</script>
+</td>
+</tr>
+<tr>
+ <td valign=top><a name=77006></a><font class=ermtext>!?FU77006;</font></td>
+ <td valign=top>
+ <b>Decision on what stack will move now.</b><br>
+Parameters (2): Side (0 - left, 1 - right) / Stack number (0..41)<br>
+Example:<br>
+<script type="erm">!?FU77006;
+!!SN:X0/0; only 1-st stack of left player will gain move in the battle.</script>
+</td>
+</tr>
+<tr>
+ <td valign=top><font class=ermtext><a name=77007></a>!?FU77007;</font></td>
+ <td valign=top><b>Battle: Before Action</b><br>
+Phase before transferring control to player/AI. Trolls regenerate, for example, in this phase.<br>
+Parameters (3): Stack number / Pointer to TBattleMonster / Block regeneration? (1 - yes, 0 - no)<br>
+
+Example:
+<script type="erm">!?FU77007;
+!!SN:X?y1/?y2/1; block regeneration, y1 - stack number
+!!BMy1:M41/99/0; cast bless upon stack instead of regeneration ability</script>
+
+Now all stacks will be blessed and won't regenerate.
+ 
+</td>
+</tr>
+<tr>
+ <td valign=top><a name=77008></a><font class=ermtext>!?FU77008;</font></td>
+ <td valign=top><b>After Saving Game</b><br>
+Event occurs after the game was saved.<br>
+
+Example:
+<script type="erm">!?FU77008;
+!!IF:M^Now, when the game is saved, I propose you to turn off the computer and have a rest :-)^;
+!!UN:C0/4/1; generate game crash</script>
+ 
+</td>
+</tr>
+<tr>
+ <td valign=top><a name=77009></a><font class=ermtext>!?FU77009;</font></td>
+ <td valign=top><b>Save Game Dialog <font color = 'red'> (Deprecated in era 1.9+)</font></b><br>
+This dialog appears when you select "Save Game" in options for example, or press "L" key.<br>
+Parameters (1): Block dialog? (1 - yes, 0 -no)<br>
+
+Example:
+<script type="erm">!?FU77009;
+!!SN:X1;
+!!IF:M^Sorry, but on my map you can save game only in special places^;</script>
+ 
+</td>
+</tr>
+
+
+<tr>
+ <td valign=top><a name=77010></a><font class=ermtext>!?FU77010;</font></td>
+ <td valign=top><b>Before hero encounter</b><br>
+This trigger works when heroes encounter each other<br>
+Parameters (2): hero initiator, hero receiver<br>
+The interaction can be heroes encounter a player, allied heroes, or the attack on the enemy.
+
+
+ 
+</td>
+</tr>
+<tr>
+ <td valign=top><a name=77011></a><font class=ermtext>!?FU77011;</font></td>
+ <td valign=top><b>After hero trade</font></b><br>
+This trigger works after heroes encounter each other<br>
+Parameters (2): hero initiator, hero receiver<br>
+This trigger works after closing trade window and after the end of combat.
+
+ 
+</td>
+</tr>
+</table>
+
+
+<script src="./erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="./erm.css"/>
+</html>

@@ -1,0 +1,202 @@
+Mapmaker Tools  August 16, 2004
+
+This document describes tools and techniques that may be useful to custom WoG mapmakers
+and ERM script writers:
+
+  1. Auto-Loading a Customized Set of WoG Options for your Map.
+  2. Creating and Including Custom Hero Portraits in your WoG Map.
+  3. Enabling the Built-in Cheat Menu.
+  4. Using the Built-in Cheat Codes.
+  5. Enabling the WoG "Cheat" Menu, for Map and Script Testing.
+
+
+Auto-Loading a Customized Set of WOG Options for your Map
+---------------------------------------------------------
+Now, with WoG 3.58 it's easier than ever to include a custom selection of WoGify scripts
+and options in a map--and it doesn't even require copying and pasting!
+
+Just follow these simple instructions:
+
+ a) Open the WoG Options menu and select the options you wish to use.
+ b) Save the file to the Maps folder with a custom file name. It's generally simplest to
+    use a name similar to your map name. So if your map is named "Conquer the World.h3m",
+    you might call this "Conquer the World.dat".
+ c) Create a timed event in your map (you can name it anything).
+ d) Set the event so it won't trigger for any players and set the event day to 600.
+ e) In the event body, put the following (assuming you used "Conquer the World.dat"):
+
+    ZVSE
+    !#UN:J3/^maps\Conquer the World.dat^;
+
+ f) Click OK to save the event.
+ g) Save your map.
+ h) When you zip your map to email to someone (or to upload to a web site), be sure to
+    include your custom wog options file too (e.g., Conquer the World.dat).
+
+Now whenever anyone plays the map it will automatically load your customized WoGify Options
+file and will use those options for your map instead of whatever options the player normally
+plays with.
+
+==============================================================================================
+
+Creating and Including Custom Hero Portraits in your WoG Map
+------------------------------------------------------------
+Even if you aren't an ERM script writer, you may wish to include custom hero portraits in
+your WoG map. The following are some simple instructions for doing so.
+
+ a) First you need to create a large and small portrait of the correct size and graphic type.
+
+  A portrait consists of two differently-sized graphics files in PCX format (256 colours only)
+so you will need a graphics program capable of exporting files in this format. One file is
+used for the larger portrait picture, and the other for the smaller one (such as the one that
+appears in the list of heroes opposite the list of towns on the main display).
+
+  The large file must be 58x64 (58 pixels wide and 64 pixels high).
+  The small file must be 48x32 (48 pixels wide and 32 pixels high).
+
+  Both files should have names that are a maximum of 8 characters long plus the extension.
+
+  Place both files in your Heroes3\Data folder and zip them together with your map before
+  sharing it with other WoG players or sending it to a web site. Make sure you include a note
+  telling players to copy the files to the Data folder! (You may even wish to put a reminder
+  into a Day 1 Event in the map so that nobody accidentally misses it.)
+
+  For this example, we'll name the large file "sylvia.pcx" and the small file "sylvia-s.pcx"
+
+ b) Create a timed event in your map (you can name it anything).
+ c) Set the event so it won't trigger for any players and set the event day to 600.
+ d) Look up the Internal Hero Number of the hero whose portrait you'll be customizing.
+    There's a list called "Format H" in the ERM Help. Hero numbers go from 0 through 155.
+    For this example, we'll use Sylvia, whose hero number is 3. This number goes immediately
+    after the !#HE command and before the colon, e.g,. !#HE3:L1^sylvia-s.pcx^;
+    If the hero number was 17, we would put !#HE17: instead.
+ e) In the event body, put the following (assuming we're changing Sylvia's portrait):
+
+    ZVSE
+    !#HE3:L1^sylvia-s.pcx^;  [Set small portrait for Sylvia]
+    !#HE3:L2^sylvia.pcx^;    [Set large portrait for Sylvia]
+
+ f) Click OK to save the event.
+ g) Save your map.
+
+If you want to set multiple custom portraits, you can add additional lines to the event.
+You only need a single "ZVSE" at the top of the event.
+
+Important: If you edit a hero that will be using a custom-designed portrait image, do NOT
+click on "customize" next to the portrait as that will override the ERM command and your
+customized portrait will not be used.
+
+==============================================================================================
+
+Enabling the Built-in Cheat Menu
+--------------------------------
+Heroes III comes with a built-in cheat menu that can be enabled by adding a code word to the
+shortcut that starts the game. In RoE, AB and SoD, the code word used was "/nwcgrail".
+In WoG, this code word has been changed to "/zvssveta".
+
+The code word should be added after the full path and file name in the shortcut. For example,
+if you have WoG installed on the F drive in a folder named "Wake of Gods", your shortcut will
+look something like this:
+
+  "F:\Wake of Gods\h3wog.exe"
+
+Simply add "/zvssveta" to the end of it, so now it will look like this:
+
+  "F:\Wake of Gods\h3wog.exe" /zvssveta
+
+If you're playing WoG in window mode, the cheat menu will be in the upper-left corner of the
+screen as soon as you start the game.
+
+If you're playing WoG in full screen mode, press the F4 key on your keyboard to temporarily
+switch to window mode. The cheat menu will appear in the upper-left corner of the screen.
+Press F4 again to return to full screen mode.
+
+The built-in cheat menu may be used on the adventure screen or the combat screen and
+functions a bit differently for each.
+
+Note: if the "Disable Cheat Codes and Menus" option is enabled, the Built-in Cheat Menu will
+be disabled. The menu will still appear, but clicking any of the menu options does nothing.
+
+==============================================================================================
+
+Using the Built-in Cheat Codes
+------------------------------
+Heroes III comes with a list of built-in cheat codes that can be accessed by pressing the TAB
+key, typing the code and pressing Enter.
+
+The original codes (for RoE, AB and SoD) were all preceded by "nwc". In WoG 3.58, this prefix
+has been changed "wog".
+
+The codes for RoE are based on lines from the movie "Monty Python and the Holy Grail". AB
+codes are based on the "Star Wars" (Episode 1) movie and SoD codes are based on the original
+"Matrix" movie.
+
+The codes for WoG are also based on a popular movie, The Lord of the Rings.
+
+These are the codes for the following adventure map cheats:
+
+ - build all buildings in your castle.......................WOGMINASTIRITH
+ - hero gets 5 archangels in each free troop slot...........WOGGALADRIEL
+ - hero gets all war machines...............................WOGOLIPHAUNT
+ - hero gains a level.......................................WOGGANDALFWHITE
+ - hero receives unlimited movement.........................WOGSHADOWFAX
+ - reveals puzzle map.......................................WOGPALANTIR
+ - reveals entire world map.................................WOGEYEOFSAURON
+ - player receives 100,000 gold plus 100 of each resource...WOGISENGARD
+ - hero gets all spells plus 999 spell points...............WOGSARUMAN
+ - hero gains up to 50 death knights........................WOGPATHOFTHEDEAD
+ - player automatically loses scenario......................WOGDARKLORD
+ - player automatically wins scenario.......................WOGONERING
+ - hero gains maximum luck..................................WOGBILBO
+ - replaces the shroud over the entire map..................WOGMORDOR
+ - hero gains maximum morale................................WOGFELLOWSHIP
+ - increases colour saturation..............................WOGSARUMANOFMANYCOLORS
+
+In addition, there are three cheat codes that may be used in the combat screen:
+
+ - automatically win the combat.............................WOGFRODO
+ - automatically lose the combat............................WOGDENETHOR
+ - hero gets all spells plus 999 spell points...............WOGGANDALF
+
+Note: if the "Disable Cheat Codes and Menus" option is enabled, entering the cheat codes
+does nothing.
+
+==============================================================================================
+
+Enabling the WoG "Cheat" Menu, for Map and Script Testing
+---------------------------------------------------------
+A scripted "Cheat" menu has been added to WoGify.
+
+To enable this menu in a map, follow these simple instructions:
+
+ a) Create a timed event in your map (you can name it anything).
+ b) Set the event so it won't trigger for any players and set the event day to 600.
+ c) In the event body, put the following:
+
+    ZVSE
+    !#UN:P77/1;
+
+ d) Click OK to save the event.
+ e) Save your map.
+
+Or you could instead put this into an unused WoGify script (e.g., script99.erm) if you want
+the menu always active for all maps.
+
+To use the WoG Cheat Menu, hold down the ALT key and click the mouse on any of the following
+objects:
+
+ a) A hero on the map (yours or another player's);
+ b) A hero in your hero list;
+ c) A town on the map (yours or another player's);
+ d) A town in your town list.
+
+A menu will appear and you may choose from the options given.
+
+In addition, you can hold down the ALT key and click in the Hero screen. Doing so will bring
+up a context-sensitive cheat option or menu. For example, if you want to change a hero's
+attack skill, hold down ALT and click the mouse on the Attack skill. Or if you want to give
+the hero an artifact, hold down ALT and click on one of the artifact slots.
+
+Note: if the "Disable Cheat Codes and Menus" option is enabled, the WoG Cheat Menu will also
+be disabled.
+

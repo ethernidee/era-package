@@ -1,0 +1,137 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align=center>
+<b><font face=Times New Roman CE size=6>M<font size=5>ONSTER</font> A<font size=5>TTRIBUTES</font>( MA )<br></font><font color=#333333 face=Arial size=2>RECEIVER</font>
+</p>
+<p><font face=Arial size=2><font color=#333333>Used to modify all creatures of a given type.</font></b></p>
+<table border=2 bordercolorlight=black bordercolordark=black>
+<tr>
+ <td nowrap><font class=ermtext>!!MA:<font class=param>XXXX</font>;<br>!#MA:<font class=param>XXXX</font>;</font></td>
+ <td valign=top>Globally changes the characteristics of a monster type for all monsters on the map of that type.<br>
+              All commands allow also to get and check values</td>
+</tr>
+<tr><td colspan=2 align=center class=rowforoptions><br><b>OPTIONS</b><br><br></td></tr>
+<tr>
+ <td height=19 valign=top><a name=A></a><font class=ermtext>A<font class=param>#</font>/<font class=param>$</font></font></td>
+ <td><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has an Attack of $.</b></td>
+</tr>
+<tr>
+ <td valign=top><a name=B></a><font class=ermtext>B<font class=param>#</font>/<font class=param>$</font></font></td>
+ <td><b>Monster # (<a href=../format/fmc.htm>Format C</a>) with spell can cast it $ times per combat.</b></td>
+</tr>
+<tr>
+ <td valign=top><font class=ermtext><a name=C></a>C<font class=param>#1</font>/<font class=param>#2</font>/<font class=param>$</font></td>
+    <td><b>Monster #1 (<a href=../format/fmc.htm>Format C</a>) Costs resource #2 (<a href=../format/fmr.htm>Format R</a>) to buy.</b><br>
+    <font class=notes>Note</font>:<br>
+    &nbsp;&nbsp;You must not set cost of gold (resource number 6) to 0.<br>
+    &nbsp;&nbsp;If you set more than one other resource (0...5) the <i>only the first one</i> will be used.<br>
+    &nbsp;&nbsp;If you want to change a second resource (in addition to gold) from one to another, set the previous resource to 0.<br>
+    <font class=example>Example</font>:<br>
+	<script type="erm">!#MA:C1/2/3; set Ore to 3 (gold+ore)
+!#MA:C1/2/0;
+!#MA:C1/0/5; set Wood to 5 and Ore to 0 (gold+wood)</script></td>
+</tr>
+<tr>
+ <td valign=top><font class=ermtext><a name=D></a>D<font class=param>#</font>/<font class=param>$</font></td>
+ <td><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Defence of $.</b></td>
+  </tr>
+  <tr>
+    <td valign=top><font class=ermtext><a name=E></a>E<font class=param>#</font>/<font class=param>$</font></td>
+    <td><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Damage High of $.</b></td>
+  </tr>
+  <tr>
+    <td valign=top><font class=ermtext><a name=F></a>F<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Fight value of $.</b></td>
+  </tr>
+  <tr>
+    <td valign=top><font class=ermtext><a name=G></a>G<font class=param>#</font>/<font class=param>$</font></td>
+    <td><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Grow rate of $.</font>
+    </td>
+  </tr>
+  <tr>
+    <td valign=top><a name=H></a><font class=ermtext>H<font class=param>#</font>/<font class=param>$</td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has an Adventure Map High of $</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=I><font class=ermtext>I<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has an AI value of $.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=L></a><font class=ermtext>L<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) is now considered a Level $ monster (0-6).</b><br>
+    Monster level is always one <i>less </i>than the actual level, so a level 1 monster is 
+    represented by a value of 0 and a level 7 with a value of 6. Monsters above level 7 will also 
+    have a value of 6.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=M></a><font class=ermtext>M<font class=param>#</font>/<font class=param>$</td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Damage Low of $.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=N><font class=ermtext>N<font class=param>#</font>/<font class=param>$</td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has $ Number of Shots.
+    </td>
+  </tr>
+  <tr>
+    <td valign=top><a name=O></a><font class=ermtext>O<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) belongs to Town $ type (<a href=../format/fmt.htm>Format T</a>).</b><br>
+                 <font class=notes>Note</font>: a value of -1 means &quot;neutral&quot; (no town type).</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=P></a><font class=ermtext>P<font class=param>#</font>/<font class=param>$</td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has $ Hit Points.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=R></a><font class=ermtext>R<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Growth H of $.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=S></a><font class=ermtext>S<font class=param>#</font>/<font class=param>$</td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has a Speed of $.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=U></a><font class=ermtext>U<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>)  will be upgraded to a monster $ (<a href=../format/fmc.htm>Format C</a>).</b><br>
+       If $=-2, monster cannot be upgraded, if $=-1, use the default upgrade.<br>
+       Monsters can be upgraded to any other monster at a hill fort (or hill fort dialogue box) 
+       or at any town where that monster could normally be upgraded.<br><br>
+ <font class=notes>Comments:</font><br>
+&nbsp;You can set a sequence to upgrade:<br>
+<script type="erm">!#MA:U0/1;
+!#MA:U1/2;
+!#MA:U2/3;
+!#MA:U3/4;
+...</script></font><br>
+ &nbsp;It looks funny and you can upgrade them all. If you set a circled sequence of 
+ the same level creatures, the player can choose the best creature set (town) to 
+ play with. You can use a loop (it's fast) to go through all creatures and set 
+ an upgrade for each (to the next) in sequence.<br>
+ &nbsp;In a town, you can only upgrade what you could normally upgrade. So you could
+ set Pikemen to be upgraded to any other creature but they can only be upgraded
+ in a Castle town or at a hill fort. If you set Halberdiers to be upgraded to
+ another creature, this will only work at a hill fort since there's no normal
+ town upgrade allowed for them.<br>
+ &nbsp;To make an upgrade cost nothing, change each monster's level to a value of 0
+ (level 1 monster) and then you have no cost at a hill fort.</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=V></a><font class=ermtext>V<font class=param>#</font>/<font class=param>$</td>
+    <td valign=top><b>Monster # (<a href=../format/fmc.htm>Format C</a>) has an Adventure Map Low of $</td>
+  </tr>
+  <tr>
+    <td valign=top><a name=X></a><font class=ermtext>X<font class=param>#</font>/<font class=param>$</font></td>
+    <td valign=top><b>Set flags (<a href=../format/fmfl.htm>Format FL</a>) to $ for monster # (<a href=../format/fmc.htm>Format C</a>).</b><br>
+Use the $ Bits with BIG care:<br>
+<br>
+<font class=example>Example</font>:<br>
+<script type="erm">!?OB3/6/0;  there must be an archer at 3/6/0
+!!IF:M^Set Archer to shoot twice^;
+!!MA:X2/?i;<br>
+!!VRi:|32768;<br>
+!!MA:X2/i;</script></td>
+  </tr>
+</table></body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

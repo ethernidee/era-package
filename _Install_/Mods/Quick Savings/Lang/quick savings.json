@@ -1,0 +1,7 @@
+{
+  "eqs.this_day_savegame_name": "@day@_@player@",
+  "eqs.end_turn_autosave_name": "@day@_@player@_End",
+  "eqs.quicksave_name":         "@day@_@player@_Quick",
+  "eqs.saved_msg":              "Saved!",
+  "eqs.quicksaved_msg":         "Quicksaved!"
+}

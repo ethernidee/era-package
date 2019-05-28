@@ -1,0 +1,17 @@
+<?
+function pre ($matches)
+{
+  //return '<script type="erm">'.preg_replace('/^\t*/si', "", $matches[1]).'</script>';
+  //return preg_replace('/\r\n\s*/si', "\r\n", $matches[0]);
+  //return '<script type="erm">'.preg_replace('/^\s*/si', "", $matches[1]).'</script>';
+}
+
+$dir = scandir('Receiver');
+array_splice($dir, 0, 2);
+for ($i = 0; $i < count($dir); $i++)
+{
+  $f = file_get_contents('Receiver/'.$dir[$i]);
+  $f = preg_replace_callback('/\<script type=\"erm\"\>(.*?)\<\/script\>/si', 'pre', $f);
+  file_put_contents('Receiver/'.$dir[$i], $f);
+}
+?>

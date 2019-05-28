@@ -1,0 +1,55 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b><font face="Times New Roman CE" size="6"><span lang="de">
+H</font><font face="Times New Roman CE" size="5">ERO</font><font face="Times New Roman CE" size="6"> 
+L</font><font face="Times New Roman CE" size="5">EVEL</font><font face="Times New Roman CE" size="6"> 
+(</font></span><font face="Times New Roman CE" size="6">HL</font><span lang="de"><font face="Times New Roman CE" size="6">)</font><font face="Arial" size="2"><br>
+</font></span><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b>
+</p>
+
+<p><font color="#333333"><b><font face="Arial" size="2">Lets you control what skills (primary and secondary) 
+  a hero may choose when gaining a new level. It must be used with the <a href=../other/triger_r.htm#hl target=principal>!?HL trigger</a>.</font></b>
+</font> 
+</p>
+<table border="2" bordercolorlight="#000000" bordercolordark="#000000" width="100%">
+      <tr>
+        
+    <td width="75" height="32" nowrap valign="top"><b><font color="red" size="2" class="Helvetica32" face="Arial"><span lang="de"><b><font face="Arial" size="2"><font color="#FF0000">!!HL:</font><font color="#8B008B">XXXX</font><font color="#FF0000">;</font></font></b></span></font></b></td>
+        
+    <td width="647" height="32" valign="top"> <span lang="de">
+    <font size="2" face="Arial">Hero 
+      level controlle</font></span><font face="Arial" size="2">r</font></td>
+      </tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+  <tr>
+    <td width="14%" valign="top"><b><font size="2" face="Arial" color="#FF0000"><a name="S">S</a></font><font size="2" face="Arial" color="#800080">$1</font><font size="2" face="Arial" color="#FF0000">/</font><font size="2" face="Arial" color="#800080">$2</font><font size="2" face="Arial" color="#FF0000">/</font><font size="2" face="Arial" color="#800080">$3</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td valign="top"><font size="2" face="Arial"><b>Set primary and secondary skills that a hero can take.</b><br>
+     &nbsp;&nbsp; <font color="#8B008B"><b>$1</b></font> = Set/check/get a +1 primary skill (0...3)
+    <a href="../format/fmpk.htm">Format
+     PK</a>.<br>
+     &nbsp;&nbsp; <b><font color="#8B008B">$2</font></b> = Set a next level of left second skill (-2,-1.0..27)
+    <a href="../format/fmss.htm">Format
+     SS</a><br>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; -2 = do not change<br>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; -1 = not allowed to choose (no skill)<br>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0... = number of secondary skill<br>
+     &nbsp;&nbsp; <b><font color="#8B008B">$3 </font></b>= Set a next level of right second skill (-2,-1.0..27)
+    <a href="../format/fmss.htm">Format
+     SS</a><br>
+     <b><u>
+      Comments:</u></b><br>
+     This receiver may be used only inside !?HL trigger and takes
+     effect for the current level gain only.<br>
+     <b><font color="#0000FF">
+      Example:</font>
+	  <script type="erm">!?HL-1; every hero who gains a new level
+!!HL:S0/-1/-1; set Attack+1 and no choice for secondary skills</script>
+	 </font></td>
+  </tr>
+</table>
+
+</body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

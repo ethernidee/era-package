@@ -1,0 +1,35 @@
+{
+	"caption": {
+		"Cn_Simp": "",
+		"en_US": "In The Wake Of Gods",
+		"ru_RU": "Во Имя Богов"
+	},
+	"description": {
+		"full": {
+			"Cn_Simp": "",
+			"en_US": "description.txt",
+			"ru_RU": "description_rus.txt"
+		},
+		"short": {
+			"Cn_Simp": "",
+			"en_US": "Major and obligatory mod, introducing new heroes, artifacts, creatures, scripted options, graphics and much more.",
+			"ru_RU": "Основной и обязательный мод, привносящий в игру новые героев, артефакты, существ, заскриптованные опции, графику и многое другое."
+		}
+	},
+	"author": "WoG Team",
+	"homepage": "http://wforum.heroes35.net/",
+	"icon": {
+		"file": "wog.ico",
+		"index": 0
+	},
+	"mod_version": "1.0",
+	"priority": 0,
+	"compatibility": {
+		"class": "all",
+		"entries": {}
+	},
+	"platform": "era",
+	"info_version": "1.0",
+	"plugins": {},
+	"category": "gameplay"
+}

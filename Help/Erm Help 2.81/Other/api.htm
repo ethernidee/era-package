@@ -1,0 +1,139 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><strong><font face="Times New Roman CE" size="6">API</font></strong>
+<p align="left"><strong>
+  <font color="#333333" face="Arial" size="2">This page describes API functions that can be used for making mods that require complex functionality
+  </font></strong></font>
+  <table border='1'>
+  <tr>
+  <td>PROCEDURE WriteAtCode (Count: INTEGER; Src, Dst: POINTER); STDCALL;</td>
+  <td>Copies 'Count' bytes from 'Src' address to 'Dst' address.</td>
+  </tr>
+<tr>
+  <td> PROCEDURE Hook (HandlerAddr: POINTER; HookType: INTEGER; PatchSize: INTEGER; CodeAddr: POINTER); STDCALL;</td>
+  <td>Universal function for adding software hooks in the code. Most convenient mode: HookType = HOOKTYPE_BRIDGE, in which the low-level conversion
+  for high-level functions will be generated automatically.
+
+An example of a high-level function:<br>
+PROCEDURE Hook_X (Context: PHookHandlerArgs): LONGBOOL; STDCALL;<br>
+<br>The function returns a flag that the it is needed to perform iced interceptor code by default. This code should not contain jumps, but can
+contain any commands to work with the stack. The high-level interceptor may modify the registers by reference to the structure THookHandlerArgs.
+Through it is also possible to modify the return address in original code.</td>
+ </tr>
+
+<tr>
+<td>PROCEDURE KillThisProcess; STDCALL;</td>
+<td>Silently kills the process.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE FatalError (Err: PCHAR); STDCALL;</td>
+<td>Shows fatal error message and kills the application.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE RegisterHandler (Handler: TEventHandler; EventName: PCHAR); STDCALL;</td>
+<td>Registers a handler for the specified event. The handlers are called in the same order as they were registered. The event list can be viewed 
+in the file "Tools\Era\SDK\triggers.txt". Two key events, in which the initialization code of modules and registration of handlers must be
+located are: "OnBeforeWoG", "OnAfterWoG".</td>
+</tr>
+
+<tr>
+<td>PROCEDURE FireEvent (EventName: PCHAR; {n} EventData: POINTER; DataSize: INTEGER); STDCALL;</td>
+<td>Generates an event and informs about it to all registered handlers. EventData points to block of parameters of the event (if any), 
+and DataSize defines the size of the block. Through this mechanism useful information about the event can be passed to the handlers.</td>
+</tr>
+
+<tr>
+<td>FUNCTION LoadTxt (Name: PCHAR): {n} PTxtFile; STDCALL;</td>
+<td>Loads a text table used by game.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE ForceTxtUnload (Name: PCHAR); STDCALL;</td>
+<td>Forces an unloading of text file. Use with caution!</td>
+</tr>
+
+<tr>
+<td> PROCEDURE ExecErmCmd (CmdStr: PCHAR); STDCALL;</td>
+<td>Executes ERM command. Use it without header (XX:X; not !!XX:X;).<br>
+
+Example:<br>
+<font face="courier">ExecErmCmd('IF:L^Hello, World!^;');</font></td>
+</tr>
+
+<tr>
+<td> PROCEDURE ReloadErm; STDCALL;</td>
+<td>Reloads ERM scripts. Same as F12 key</td>
+</tr>
+
+<tr>
+<td> PROCEDURE ExtractErm; STDCALL;</td>
+<td>Extracts ERM scripts to "Data\s\ExtractedScripts".</td>
+</tr>
+
+<tr>
+<td> PROCEDURE FireErmEvent (EventID: INTEGER); STDCALL;</td>
+<td>Generates a new ERM event by calling ERM function with the specified number. Such a call does not keep the negative z-variables. The authors
+of plug-ins should the previous event parameters (!!SN:X) through the function SaveEventParams before calling FireErmEvent and restore through 
+function RestoreEventParams after the call, so each new event has its own set SN: X - parameters.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE ClearIniCache; STDCALL;</td>
+<td>Removes all loaded ini files from memory.</td>
+</tr>
+
+<tr>
+<td> FUNCTION ReadStrFromIni (Key, SectionName, FilePath, Res: PCHAR): BOOLEAN; STDCALL;</td>
+<td>Reads a value from the specified ini-file into a buffer Res. At the first reading of the ini-file is analyzed, cached, and further requests 
+are routed to values in an associative array. Such reading is very quick and does not access the hard drive.</td>
+</tr>
+
+<tr>
+<td> FUNCTION WriteStrToIni (Key, Value, SectionName, FilePath: PCHAR): BOOLEAN; STDCALL;</td>
+<td>Writes a value to ini file. Each time data is written to hard disk.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE NameColor (Color32: INTEGER; Name: PCHAR); STDCALL;</td>
+<td>Allows to give custom names for color codes and later reuse them in dialog texts <br>
+Example:<br>
+<font face="courier">NameColor($000000, 'bl')</font><br>
+allows to use ^{~bl}...{~}^ for black text</td>
+</tr>
+
+<tr>
+<td> PROCEDURE WriteSavegameSection (DataSize: INTEGER; {n} Data: POINTER; SectionName: PCHAR); STDCALL;</td>
+<td>Function must be called in the event "OnSavegameWrite" and is used for recording user data in a file named section. 
+Allows only serial recording in the same section.</td>
+</tr>
+
+<tr>
+<td> FUNCTION ReadSavegameSection (DataSize: INTEGER; {n} Dest: POINTER; SectionName: PCHAR): INTEGER; STDCALL;</td>
+<td>Reads the specified section from save game. Must be called at event "OnSavegameRead". Returns number of bytes read.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE GetGameState (VAR GameState: TGameState); STDCALL;</td>
+<td>Gets the current state of play as a pair of dialogue IDs: the main parent and current. 0 - dialogues do not yet exist. This is useful to 
+determine in which window is the key pressed.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE SaveEventParams; STDCALL;</td>
+<td>Saves SN:X parameters in an array on stack.</td>
+</tr>
+
+<tr>
+<td> PROCEDURE RestoreEventParams; STDCALL;</td>
+<td>restores SN:X parameters from stack.</td>
+</tr>
+</table>
+
+</table>  
+</body>
+<script src="./erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="./erm.css"/>
+</html>

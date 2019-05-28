@@ -1,0 +1,35 @@
+{
+	"caption": {
+		"Cn_Simp": "",
+		"en_US": "Yona",
+		"ru_RU": "Йона"
+	},
+	"description": {
+		"full": {
+			"Cn_Simp": "",
+			"en_US": "description.txt",
+			"ru_RU": "description_rus.txt"
+		},
+		"short": {
+			"Cn_Simp": "",
+			"en_US": "New battle log hint, displaying average damage and kill count.\r\nNew abilities:\r\n-  pikemen (double damage to cavalry);\r\n-  marksmen (aimed shot - ESC to switch to targeting mode. 300% damage at targeted hex)\r\n-  cavaliers (20% damage bonus per hex);\r\n-  swordsmen (ignore 50% of physical damage in defense state);\r\n-  orcs (damage depends on distance);\r\n-  dwarfs (+33% damage till battle end for each strike at enemy, killing 10%+ of enemy stack HP)\r\n",
+			"ru_RU": "Новая подсказка в журнале боя по урону/смертям.\r\nНовые способности:\r\n-  копейщики (удвоенный урон кавалерии);\r\n-  арбалетчики (прицельный выстрел - ESC, чтобы перейти в режим прицеливания. 300% урон по прицельной клетке)\r\n-  кавалеристы (20% бонус к урону за клетку);\r\n-  мечники (игнорирование 50% физического урона в состоянии защиты);\r\n-  орки (урон зависит от расстояния).\r\n-  гномы (+33% урон до конца битвы за каждый удар по отряду, которому нанёс 10%+ потерь)\r\n"
+		}
+	},
+	"author": "Berserker",
+	"homepage": "http://wforum.heroes35.net/showthread.php?tid=3517",
+	"icon": {
+		"file": "yona.ico",
+		"index": 0
+	},
+	"mod_version": "6.0",
+	"priority": 0,
+	"compatibility": {
+		"class": "all",
+		"entries": {}
+	},
+	"platform": "era",
+	"info_version": "1.0",
+	"plugins": {},
+	"category": "gameplay"
+}

@@ -1,0 +1,232 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b><span lang="de"><font face="Times New Roman CE" size="6">
+C</font><font face="Times New Roman CE" size="5">ASTLE</font><font face="Times New Roman CE" size="6">
+A</font><font face="Times New Roman CE" size="5">TTRIBUTES</font><font face="Times New Roman CE" size="6">
+(CA)</font><font face="Arial" size="2"><br>
+</font></span><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b></p>
+
+<p align="left">
+
+  <b>
+  <font class="Helvetica32" face="Arial" size="2" color="#333333">
+  Used to check or modify the attributes of a town, including name, owner,
+  available creatures and internal
+  structures.</font></b></p>
+
+  <table border="2" bordercolorlight="#000000" bordercolordark="#000000" width="100%">
+      <tr>
+        <td width="143" height="1" nowrap valign="top"><b><font face="Arial" size="2"><font color="#FF0000">!!CA</font><font color="#800080">x</font><font color="#FF0000">/</font><font color="#800080">y</font><font color="#FF0000">/</font><font color="#800080">l:XXXX</font><font color="#FF0000">;</font></font></b></td>
+        <td width="100%" height="1" valign="top">
+
+<font face="Arial" size="2"> Town settings for town at x/y/l coordinates.<br>
+(Towns are Type 98. See <a href="../format/fmt.htm">Format
+T</a>)</font>
+
+        </td>
+      </tr>
+      <tr>
+        <td width="143" height="1" nowrap valign="top"><b><font face="Arial" size="2"><font color="#FF0000">!!CA</font><font color="#800080">#:XXXX</font><font color="#FF0000">;</font></font></b></td>
+        <td width="100%" height="1" valign="top">
+
+<font face="Arial" size="2">Indirect reference to town at x=v[#], y=v[#+1], l=v[#+2]<br>
+(Towns are Type 98. See <a href="../format/fmt.htm">Format
+T</a>)</font>
+
+        </td>
+      </tr>
+      <tr>
+        <td width="143" height="1" nowrap valign="top"><b><font face="Arial" size="2"><font color="#FF0000">!!CA</font><font color="#800080">0/#:XXXX</font><font color="#FF0000">;</font></font></b></td>
+        <td width="100%" height="1" valign="top">
+
+<font face="Arial" size="2">Town with<span lang="de"> </span>&nbsp;town number of #<span lang="de"> on the map list</span> (see U option below).<br>
+(Towns are Type 98. See <a href="format/format_t.htm">Format
+T</a>)</font>
+      <tr>
+        <td width="143" height="1" nowrap valign="top"><b><font face="Arial" size="2"><font color="#FF0000">!!CA-1</font><font color="#800080">:XXXX</font><font color="#FF0000">;</font></font></b></td>
+        <td width="100%" height="1" valign="top">
+
+<font face="Arial" size="2">The current town.<br>
+  Be careful for you can use it only in Town screen.</font>
+
+        </td>
+      </tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="B">B</a>1/</font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Build the $ structure<span lang="de">
+    </span></b><span lang="de">(see <font color="#0000FF"><a href=../format/fmcbl.htm>
+    <i>number</i> in Building list</a></font>)</span></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000">B2/</font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Demolish the $ structure<span lang="de">
+    </span></b><span lang="de">(see <font color="#0000FF"><a href=../format/fmcbl.htm>
+    <i>number</i> in Building list</a></font>)</span></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000">B3/</font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Check if the $ structure built (in flag 1)<span lang="de">
+    </span></b><span lang="de">(see <font color="#0000FF"><a href=../format/fmcbl.htm>
+    <i>number</i> in Building list</a></font>)</span></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000">B4/</font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Enable to build the $ structure<span lang="de">
+    </span></b><span lang="de">(see <font color="#0000FF"><a href=../format/fmcbl.htm>
+    <i>number</i> in Building list</a></font>)</span></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000">B5/</font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Disable to build the $ structure<span lang="de">
+    </span></b><span lang="de">(see <font color="#0000FF"><a href=../format/fmcbl.htm>
+    <i>number</i> in Building list</a></font>)</span></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000">B6/</font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Build in town using an internal function<span lang="de">
+    </span></b><span lang="de">(see <font color="#0000FF"><a href=../format/fmcbl.htm>
+    <i>number</i> in Building list</a></font>)</span></font><br>
+<font face=arial size=2>Builds a building in a town using an internal function.
+The syntax and the meaning is the same as for <font color=red><b>CA:B1/<font color=darkmagenta>#</font></b></font> but because it uses an internal function, buildings with multiple levels will be built correctly, and mage guilds will have spells automatically added (although you can still change them).
+</td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b>
+	<font color="#FF0000"><a name="G">D</a></font><font color="#800080">#1</font></font><font color="#FF0000">/</font><font color="#800080">#2</font></font><font color="#FF0000">/</font><font color="#800080">$3</font></font><font color="#FF0000">/</font><font color="#800080">$4</font></font><font color="#FF0000">/</font><font color="#FF0000">;</font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Setup a multiple creature recruitment window in town dwellings (up to 4)</b></font><br>
+	<font color="#8B008B"><b>#1</b></font> = Level of dwelling (0...6)<br>
+	<font color="#8B008B"><b>#2</b></font> = Creature slot (0...3)<br>
+	<font color="#8B008B"><b>$3</b></font> = Creature type <br>
+	<font color="#8B008B"><b>$4</b></font> = Amount of creatures<br>
+	To remove a creature, set it's type to -1 and amount to 0. To leave the slot unchanged, set creature type to -2 or less and amount to any value.
+	<br>
+	<b>Note</b>: This command works only in ERA, with plug-in Battery.dll, by Master of Puppets
+	
+	</td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="G">G</a></font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check a level of magic guild (in spells screen)</b></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><b><font face="Arial" size="2"><font color="#FF0000">G</font><font color="#800080">$1</font><font color="#FF0000">/</font><font color="#800080">$2</font><font color="#FF0000">;</font></font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check a number of available spells ($2) in $1 level</b></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><b><font face="Arial" size="2"><font color="#FF0000">G</font><font color="#800080">$1</font><font color="#FF0000">/</font><font color="#800080">$2</font><font color="#FF0000">/</font><font color="#800080">$3</font><font color="#FF0000">;</font></font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check a specific spell ($3) in slot $2, level
+      $1.</b><br>
+      See <a href="../format/fmsp.htm">Format SP</a>.</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font size="2" face="Arial"><b><font color="#FF0000"><a name="H">H</a></font><font color="#8B008B">#</font><font color="#FF0000">/</font><font color="#8B008B">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><b><font face="Arial" size="2">Se</font></b><font face="Arial" size="2"><b>t/get/check
+      heroes in Town garrison or visitor</b></font><font size="2" face="Arial"><br>
+      &nbsp;&nbsp; <b><font color="#8B008B">#</font></b> = 0 - hero in the town garrison<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>#</b></font> = 1 - hero - a town visitor<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$</b></font> - the number of hero (-1 = no one). See
+    <a href="../format/fmh.htm">Format
+      H</a><br>
+  You can get/check or set heroes. If you set it, do not forget to<br>
+      move the previous to somewhere.<br>
+    <br>
+    <span lang="de"><b>Note</b>: </span>one should be
+    careful with the H command, for checking garrison heroes- if there isn't a
+    specific check for whether it returns -1 or not, and just a check on
+    something else on the hero, it will check the current hero, which might not
+    be to good</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><a name="I"></a><b><font face="Arial" size="2">
+    <span lang="de"><font color="#FF0000">I</font><font color="#8B008B">$; </font></span></font>
+    <td width="84%" valign="top"><b><span lang="de"><font face="Arial" size="2">
+    S</font></span></b><font face="Arial" size="2"><b>et the external appearance
+    of a town</b><br>
+    Command Syntax:<br>
+    !!CA:I# - sets the external town appearance. You can use only set syntax.
+    Others make no sense.<br>
+    <br>
+    Values for #:<br>
+    0 = default (synchronizes the look with built structures, e.g., a Fort or
+    Capitol)<br>
+    -1 = completely destroyed<br>
+    1 = destroyed a bit<br>
+    2 = destroyed more<br>
+    3 = destroyed a lot</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><b><font face="Arial" size="2"><font color="#FF0000"><a name="M">M</a>1/</font><font color="#800080">$1</font><font color="#FF0000">/</font><font color="#800080">$2</font><font color="#FF0000">/</font><font color="#800080">$3</font><font color="#FF0000">;</font></font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check a number of available monsters<br>
+      </b> ($2- not upgraded creature and $3- upgraded) of level $1.<br>
+	  If you have an upgraded building, the $3 is used, otherwise $2.</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><b><font face="Arial" size="2"><font color="#FF0000">M2/</font><font color="#800080">$1</font><font color="#FF0000">/</font><font color="#800080">$2</font><font color="#FF0000">/</font><font color="#800080">$3</font><font color="#FF0000">;</font></font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check a number of guards&nbsp;</b><br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$1</b></font> - Position&nbsp;<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$2</b></font> - Type<span lang="de">
+    </span>See <a href="../format/fmc.htm">Format <span lang="de">C</span></a><br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$3</b></font> - Number</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="N">N</a>^</font><font color="#800080">text</font><font color="#FF0000">^, NzVar</font></b></font></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get a name of a Town.</b></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="O">O</a></font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check an owner.</b> &nbsp;<br>
+ See <a href="../format/fme1.htm">Format
+      E1</a></font><br>
+    <br>
+    <span lang="de"><font size="2" face="Arial"><b>Note</b>:</font></span><font face="Arial" size="2"><span lang="de"> that if you want to set/get/use neutral as owner, see that neutral value
+    is -1<br>
+    To check if the owner is neutral, use
+    <b><font color="#800000"><br>
+    !!CAx/y/l:O?variable; </font></b>or<font color="#800000"><b><br>
+    !!CA#:O?variable; </b></font><br>
+    </font></b>and check if<font color="#000080"> </font><font color="#800000">
+    <b>variable</b></font><font color="#000080"> </font>is -1 (replace <font color="#800000"> variable</font><font color="#000080"> </font>with ERM variable type. See <font color="#000080">
+    <a target="principal" href="../other/vars_r.htm">Flag&amp;Variable</a>, <a href="revr_r.htm" target="principal">VR</a>
+    and <a href="refu_r.htm" target="principal">FU</a> </font>sections.<b><font color="#800000"><br>
+    </font></b>
+    <br>
+    </font><b>Note</b>:<i><font color="#000080"> </font></i>Please note that if owner is neutral (value for object owner is -1), there
+    is no need to get alliance team. <br>
+    &nbsp;If however you do so, the resulted team number is shown as 0 (which in most
+    cases is the same alliance number for human red player)</span></font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="P">P</a></font><font color="#800080">?$1</font><font color="#FF0000">/</font><font color="#800080">?$2</font><font color="#FF0000">/</font><font color="#800080">?$3</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Get/check a Town position.<br>
+      &nbsp;&nbsp; </b><font color="#8B008B"><b>$1</b></font> = x<br>
+      <b>&nbsp;&nbsp; </b><font color="#8B008B"><b>$2</b></font> = y<br>
+      <b>&nbsp;&nbsp; </b><font color="#8B008B"><b>$3</b></font> = Level</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="r">R</a><font color=darkmagenta>$</font>;
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Control town building flag.<br></b>
+Check or set if a player can build this turn in a town.
+<b><font color=red>!!CA...:R<font color=darkmagenta>$</font>;</font></b><br>
+&nbsp;&nbsp;  $ = 0 if player/AI may build this turn<br>
+&nbsp;&nbsp;  $ = 1 if player/AI may not build this turn (already did)<br>
+<b><i>Comments:</i></b><br>
+&nbsp;&nbsp;  You may use R0 any number of times during the turn and thus build any number of buildings in a town. 
+
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="T">T</a></font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Set/get/check a type of a Town (only inside).</b>
+      &nbsp; <a href="../format/fmt.htm"><br>
+      See Format T</a>.</font></td>
+  </tr>
+  <tr>
+    <td width="16%" valign="top"><font face="Arial" size="2"><b><font color="#FF0000"><a name="U">U</a></font><font color="#800080">$</font></b></font><b><font color="#FF0000">;</font></b></td>
+    <td width="84%" valign="top"><font face="Arial" size="2"><b>Get/check
+    <span lang="de">the </span>number of a Town<span lang="de"> </span></b><span lang="de">on the map list (not hero list)</span>.&nbsp;<br>
+ You can also set it but I do not recommend
+:-)</font></td>
+  </tr>
+</table>
+</body></html>

@@ -1,0 +1,1096 @@
+------ Rebuild All started: Project: t1b, Configuration: Release Win32 ------
+
+Deleting intermediate files and output files for project 't1b', configuration 'Release|Win32'.
+Compiling...
+zzzz.cpp
+womo.cpp
+ File : 7
+      == 0
+Point::MakeLine
+Map
+FindNearestHero
+FindNearestTown
+FindWay
+MakeWay
+MakeWay
+FindStep
+FindStep
+ClearWM
+      == 10
+FindWM
+AddWM
+DelWM
+WoMoPlace
+PlaceWoMoInternal
+RemDraw
+WoMoMove
+MakeWoMoPos
+MakeWoMo
+WhereTo
+      == 20
+CallWMKilled
+CallWMDest
+AutoWoMo
+CompleteWoMo
+DaylyWoMo
+SaveWM
+ResetWM
+LoadWM
+wogsetup.cpp
+ File : 13
+      == 0
+GetList
+CheckDepend
+MyListener
+BuildAll
+AddItem
+InitWoGSetup
+ProcessAll
+Prepare2Show
+Prepare2Close
+_CallWoGSetup
+      == 10
+LoadSetupParam
+txtfile.cpp
+ File : 17
+      == 0
+LoadTXT
+UnloadTXT
+ITxt
+timer.cpp
+ File : 18
+      == 0
+MPProcessTimeAndRemind
+PauseTimer
+ContinueTimer
+ERM_TL
+LoadLTimer
+SaveLTimer
+string.cpp
+ File : 14
+      == 0
+StringSet::Clear
+StringSet::GetText
+StringSet::Load
+StringSet::Save
+sound.cpp
+ File : 10
+      == 0
+ResetMP3
+SaveMP3
+LoadMP3
+MP3Process
+SoundProcess
+service.cpp
+ File : 3
+      == 0
+Service_FreeLibrary
+Service_GetForegroundWindow
+Service_timeGetTime
+Service_DialogBox
+Service_GetFileAttributes
+Service_SetExcFilter
+Service_GetCurProc
+StartDLLService
+StopDLLService
+BeforeDialog
+      == 10
+AfterDialog
+CommonDialog
+ChooseCastle
+FindFreeCData
+FindCData
+FindItem
+HasText
+LoadCustomTxt
+AddExtCMDPic
+AddExtCMDRequest
+      == 20
+CustomHPic
+CustomReq
+QuickDialog
+LoadSphinxTXT
+CheckAnswer
+SphinxReq
+MultiCheckReq
+MultiCheckReqInt
+CustomPic
+PrepareDP
+      == 30
+ShowDiplom
+ShowCurse
+ShowNPC
+ShowWoGSetup
+ShowRadio
+SaveSetupState
+LoadSetupState
+ChooseFileDlg
+ChooseIconDlg
+ReadIntINI
+      == 40
+ReadStrINI
+WriteIntINI
+WriteStrINI
+ShowUpgradeDlg
+WoGMessage
+PicDlg
+PicDlg_Int
+GetFolder
+DoesFileExist
+SaveCustom
+      == 50
+LoadCustom
+npc.cpp
+ File : 12
+      == 0
+NPC::FindSpecBonusBmp
+NPC::GetAvailableSpecBon
+NPC::GetNextLevel
+NPC::CalculateSkills
+NPC::MayNextSkill
+NPC::CalcSkill
+NPC::AddExp
+NPC::Init
+NPC::ArtCalcSkill
+NPC::PrepareArtText
+      == 10
+NPC::ToText
+NPC::ToHint
+_NPC_AddExpo
+NPC_AddExpo
+ResetNPCExp
+EnableNPC
+DisableNPC
+IsNPCDead
+GetMPos
+PutStack
+      == 20
+PlaceNPC2
+SetMonInitPars
+SetMonInitAfter
+IsNPCNotCreature
+ApplyCmdMonChanges
+GetNPCMagicPower
+PlaceNPCAtBattleStart2
+FormMonList
+StoreFired
+RemoveCreatureDistant
+      == 30
+AddCreatureBack
+CheckForAliveNPCAfterBattle
+NPCAttack0
+NPCAttack
+NPC_Resist
+AddMagic2NPC
+CanNPCRegenerate
+NPC_Paralize
+HasNPCFear
+NPCReduceDefence
+      == 40
+NPCDeathStare
+NPCChampion
+NPCBalistaControl
+NPC2Castle
+ProcessArt
+ProcessArtAI
+CommanderArtsAI
+NPCNoShootPenalty
+CommanderBlock
+RealClickNPC
+      == 50
+ShowBFNPCInfo
+_ClickNPC
+SendNPC
+ReceiveNPC
+CrossOverNPC
+HeroHasCommander
+HeroHasAliveCommander
+AdjastCommanderStat
+SaveNPC
+BackupNPC
+      == 60
+ResetNPC
+LoadNPC
+LoadNPCParam
+Monsters.cpp
+ File : 6
+      == 0
+LoadGhostParam
+_MonsterKickBack
+MonsterKickBack
+AddMonOnMap
+CheckCreature2Leave
+PlaceCreature
+E2MCheck2Kill
+_E2MWoMoNoBattle
+E2MWoMoNoBattle
+Enter2Monster
+      == 10
+Enter2Monster2
+DoesHeroHas
+DoesHeroGot
+AddGod
+RemGod
+RemGodBack
+BackupGodBonus
+_CrossOverGodBonus
+GetGodBonus
+DaylyGodsBonus
+      == 20
+IsGodMon
+M2MCheck
+M2MCheckAfter
+M2MRequest
+M2MCrExp
+M2MSmooth
+M2MCombine
+M2MStack
+M2MSwap
+_M2MHero2TownBefore
+      == 30
+_M2MHero2Town
+M2MHero2Town
+_M2MHero2TownAutoWoG
+M2MDismiss
+Enter2Bank
+EnterOutOfBank
+G2B_Prepare
+SGBonus
+G2B_After
+CheckForCompleteAI
+      == 40
+Get2Battle
+M2B_GetMonStr
+M2B_GetMonNum
+M2B_IsAutoMonstr
+M2B_FindPos
+M2B_GetPosCode
+M2B_CheckPosCode
+M2B_GetMonAtCode
+SCastSpell
+_Monster2Battle
+      == 50
+ERM_MAction
+MakeSGGuards
+_NoMoreTactic
+AppearWithoutTacktic
+NoMoreTactic
+NoMoreTactic1
+_MonsterAfterBattle
+Monster2Battle
+ShowMagicBookMouse
+ReduceDefence
+      == 60
+ManaAdd2Hero
+BalistaControl
+Random4DeathStare
+ParalizeChance
+IsChampion
+MagicResist
+_MagicDwarfResistance
+MagicDwarfResistance3
+ShooterPower
+IsTroll
+      == 70
+ExpoHarpy
+IsHarpy
+_SetUpBeforeBattle
+_SetUpBeforeBattle2
+PlaceNPC2
+SetUpBeforeBattle
+_SetUpNewRound
+ChechPosition
+QuickSand
+LandMine
+      == 80
+TowerShot
+Fear1
+Fear2
+ThroughWall
+DaylyMonstr
+WeeklyDwellingGrow
+DaylySG
+SaveMapMon
+ResetMonTable
+LoadMapMon
+      == 90
+ResetMapMon
+PrepareBF
+ChooseMonAttack
+ReceiveMonOfWeek
+SendExpo1
+ReceiveExpo1
+SendExpo2
+ReceiveExpo2
+SendExpo3
+ReceiveExpo3
+      == 100
+SendExpo4
+ReceiveExpo4
+CheckMpWoGVersion
+SendExpo5
+ReceiveExpo5
+Add2Send
+Get4Receive
+Prepare2Send
+Send2Defender
+Receive4Attacker
+      == 110
+Add2Defender
+Get4Defender
+Check2Def2
+Prepare2Defender
+Send4Defender
+R4D_Check4Ours
+Receive4DefenderAfter
+R4D_Check4Ours2
+Receive4DefenderAfter2
+AdjustSSShow
+      == 120
+_ShowExpo
+_ExpDetailedInfo
+ExpDetailedInfo
+ShowExpo
+ShowExpoPrep
+ShowExpoPrepUnknown
+ShowExpoPrepBattle
+_ShowNumberMid
+SH_PrepIt
+_ShowHint
+      == 130
+SmoothPassInternalFun
+_UpgrHill
+_UpgrInd
+_ApplyDamage
+ApplyDamage
+CheckSpellCostReduction
+_DefenseBonus
+_DeathBlowChance
+_DeathBlow
+_DeathBlowChanceRnd
+      == 140
+_PersonalHate
+_SetUpRandomCreatures
+HasDragoHeartArt
+MinotourMoral
+UnicornAura
+UnicornAura2
+WereWolf
+Check4DragonHeartArt
+FixNoHero4SpellPower
+FixNoHero4SpellDuration
+      == 150
+FixShowBFPopUpMonInfo
+TownWrongExpoFix
+lod.cpp
+ File : 19
+      == 0
+Lod::Lod
+Lod::~Lod
+Lod::LoadIt
+LodTypes::Add2List
+LodTypes::Del4List
+LodTypes::RemoveItemFromTree
+herospec.cpp
+ File : 2
+      == 0
+InitHeroLocal
+PutBackHeroInfo
+ChangeHeroPicN
+RefreshHeroPic
+PrepareSpecWoG
+MapSetup
+_SpecPicture
+_SpecPictureS
+_SpecPictureC
+_SpecText
+      == 10
+_NextHeroChoosen
+CalcHideArea
+HeroCheck
+MakeDarkness
+NewSpecPrepare
+NewSpecPrepare2
+_NewSpecShow
+ChooseArt
+NewSpecShow
+_NewSpecDescr
+      == 20
+NewSpecDescr
+FillCurseStruct
+DoesHeroHas
+DoesHeroHasVisitCurse
+GetHeroCurse
+_AddCurse
+_DelCurse
+AddCurse
+DaylyCurse
+SaveCurse
+      == 30
+LoadCurse
+ResetCurse
+_CarryOverHero
+erm.cpp
+ File : 1
+      == 0
+DumpERMVars
+CountERMScripts
+GetERMScripts
+_LoadERMScript
+_LoadERTScript
+LoadERMScript
+LoadERMTXT
+Call_Function
+ReParseVal
+GetVarValIndex
+      == 10
+GetVarVal
+SetVarVal
+GetVarValF
+SetVarValF
+StepWater
+PathOverWater
+CheckPlace4Hero
+IsObjectType
+CalcObjects
+FindObjects
+      == 20
+FindNextObjects
+ClearVarUsedList
+WriteVarUsed
+LogERMVarNumParse
+LogERMVarUsed
+LogTriggerConditions
+LogERMFunctionTrigger
+LogERMTimerTrigger
+LogERMAnyReceiver
+FindObj
+      == 30
+FindObjExt
+AddObj
+DelObj
+DelObjPos
+GetDinMixPos
+FindQuest
+AddQuest
+DelQuest
+GetQuest
+InitEnters
+      == 40
+VNCopy
+GetCmpCode
+MakeSpec
+FindHeroSpecIcon
+SetMes
+AddCommand
+ProcessDisable
+CheckFlags
+GetVal
+ProcessCmd
+      == 50
+ResetWoG356
+ResetWoG357
+ResetWoG358_357
+ResetCustomSettings
+FindERM
+InitERM
+FindERMn
+ProcessERM
+FUCall
+_PostInstrCall
+      == 60
+COCall
+BACall
+TLCall
+DlgCallBack
+TriggerIP
+BACall2
+MP3Call
+SoundCall
+AdvMagicCastCall
+BACall3
+      == 70
+MRCall
+MFCall
+BFCall
+IsDisabled
+ERM2Object
+HeroMove
+GainLevel
+GainLevelSSkill
+EventERM
+RunTimer
+      == 80
+CheckObjHint
+HintWindow
+ApplySphinx
+MagicWonder
+_MakeQuestLog
+FindArtHint
+ERMDebug
+FOH_CanBeUpgraded
+FOH_UpgradeTo
+_MouseClick
+      == 90
+GetRealItem
+_MouseClickTown
+_MouseOverTown
+_EnterTownHall
+MouseClickHero
+_MouseClick2Hero
+_MouseClickBattle
+_MouseMoveBattle
+GameSaveLoadTR
+ClearQuestLog
+      == 100
+ClearScriptFile
+ArtifactOnOff
+Check4NewSpecPic
+SendERMVars
+ReceiveERMVars
+DaylyMonChanged
+CrIsChanged
+SendCreatures
+ReceiveCreatures
+ResetSSNames
+      == 110
+ResetMonNames
+ResetHSpec
+SaveERM
+LoadERM
+ResetERM
+dlg.cpp
+ File : 20
+      == 0
+HDlg::Initialize
+HDlg::SetADef
+HDlg::SetVideo
+HDlg::AddItem
+HDlg::BuildPcx
+HDlg::BuildDef
+HDlg::BuildDef2
+HDlg::BuildTxt
+HDlg::BuildTxtSB
+HDlg::BuildTxtED
+      == 10
+HDlg::LoadAllItems
+HDlg::FindItemByID
+HDlg::EnableItem
+HDlg::Show
+HDlg::Kill
+HDlg::iActivate
+HDlg::iDisactivate
+HDlg::iFunction1
+HDlg::iFunction2
+HDlg::AddHint
+      == 20
+HDlg::GetHint
+HDlg::Find
+HDlg::LoadFromText
+crexpo.cpp
+ File : 15
+      == 0
+Exp2String
+Exp2String2
+Upgraded
+CrExpo::operator`='
+CrExpo::Check4Max
+CrExpo::RealType
+CrExpo::RealNum
+CrExpo::SetN
+CrExpo::Clear
+CrExpo::RecalcExp2RealNum
+      == 10
+CrExpo::Validate
+CrExpoSet::FindIt
+CrExpoSet::Find
+CrExpoSet::Del
+CrExpoSet::Clear
+CrExpoSet::Load
+CrExpoSet::Save
+CrExpoSet::FindEmpty
+CrExpoSet::SetN
+CrExpoSet::Set
+      == 20
+CrExpoSet::GetExp
+CrExpoSet::GetExpM
+CrExpoSet::AddExpo
+ApplyExpo
+CrExpoSet::Modify
+CrExpoSet::HMove
+CrExpoSet::HComb
+CrExpoSet::FindType
+CrExpoSet::FindType
+CrExpoSet::FindType
+      == 30
+LoadExpTXT
+CrExpMod::Load
+CrExpMod::Save
+CrExpMod::Clear
+CrExpBon::Load
+CrExpBon::Save
+CrExpBon::FindBon
+CrExpBon::FindThisBonLineInd
+CrExpBon::Clear
+CrExpBon::SetBonLine
+      == 40
+CrExpBon::GetBonLine
+CrExpBon::GetStackExpo
+ApplyMod
+Prepare
+Prepare2
+CrExpBon::Apply
+CrExpBon::Apply2
+CrExpBon::DefenceBonus
+CrExpBon::StackBlock
+CrExpBon::StackBlockPartial
+      == 50
+CrExpBon::Fear
+CrExpBon::Fearless
+CrExpBon::Rebirth
+CrExpBon::DeathStare
+CrExpBon::DwarfResist
+CrExpBon::DwarfResistFriendly
+CrExpBon::NoDistPenalty
+CrExpBon::NoObstPenalty
+CrExpBon::StackSubSpCost
+CrExpBon::DeathBlow
+      == 60
+CrExpBon::PersonalHate
+CrExpBon::CastSpell
+CrExpBon::IntCastMassSpell
+CrExpBon::CastMassSpell
+CrExpBon::CastMassSpell2
+CrExpBon::ApplySpell
+CrExpBon::IsHarpy
+CrExpBon::ReduceDefence
+CrExpBon::Champion
+CrExpBon::GolemResist
+      == 70
+CrExpBon::DispellResist
+CrExpBon::Regenerate
+CrExpBon::MinotourMoral
+CrExpBon::UnicornAura
+CrExpBon::ShootAnyTime
+CrExpBon::SGBonus
+Bon2Str
+SetIconText
+CrExpBon::PrepareInfo
+CrExpBon::ShowInfo
+      == 80
+CrExpBon::ShowInfo
+SpecButtonPush
+OnControlClick
+CrExpoSet::DropArt2Stack
+FixAllDblHeroes
+StoreAllHeroExp
+CrExpoSet::DaylyAIExperience
+CrExpBon::ApplyBFBonus
+ParseAIExpErt
+CrExpoSet::StartAllBF
+      == 90
+CrExpoSet::StopAllBF
+common.cpp
+ File : 4
+      == 0
+Alloc
+Free
+MesMan
+Message
+a2i
+i2a
+f2a
+a2a
+GetPlayerSetup
+GetResPo
+      == 10
+GetRes
+CheckRes
+AddRes
+SetRes
+Request0
+Request
+RequestPic
+Request2Pic
+Request3Pic
+GetCurDate
+      == 20
+SetCurDate
+Copy
+Random
+StrCmp
+StrNCmp
+StrSkipLead
+StrSkipTrailer
+StrWordEnd
+StrCmpExt
+Serch4Substring
+      == 30
+StrLen
+StrCopy
+StrCanc
+ToUpper
+HexToUpper
+ToLower
+CutWord
+SetMem
+LoadFile16k
+CurrentUser
+      == 40
+QuickBattle
+SetQuickBattle
+MakeLine
+GetMapItem
+GetMapItem2
+GetMapItemModif
+GetMapItem0
+GetMapSize
+GetMapLevels
+LoadPCX
+      == 50
+EmptyPlace
+EmptyPlaceWater
+EmptyPlaceAny
+EmptyPlace2
+Hero2Town
+Town2Hero
+Town2Hero0
+GetHeroStr
+FindHeroNum
+KillHero
+      == 60
+LoadCrTraits
+IsAI
+IsThis
+CurrentUserSecond
+SetAI
+ThisIs
+GetTeam
+SetTeam
+IsTeam
+GetCastleBase
+      == 70
+GetCastleNum
+FindCastle
+IsCastleSetup
+GetDwellingBase
+GetDwellingNums
+FindDwelling
+PosMixed
+Map2Coord
+MixedPos
+HideHero
+      == 80
+ShowHero
+JumpHero
+Zsprintf2
+Zsprintf3
+Terminate
+_Error
+_MError
+_TError
+DumpMessage
+HideArea
+      == 90
+ShowArea
+GetHIBase
+GamerStruc
+RedrawMap
+RedrawRes
+RedrawTown
+ShowTSHint
+GetMineStr
+AddExp
+_PlaceObject
+      == 100
+PlaceObject
+DelObject
+DelFirstObjectPic
+FixStr
+FindEnterShift
+GetArtResBase
+GetArtResNum
+GetSwellingBase
+GetDwellingNum
+GetCrBankBase
+      == 110
+GetCrBankNum
+GetMineBase
+GetMineNum
+GetHornBase
+GetHornNum
+GetMonsterBase
+GetMonsterNum
+GetSignBase
+GetSignNum
+GetUniverBase
+      == 120
+GetUniverNum
+GetEventBase
+GetEventNum
+CoorectMonsterRadius
+AddStrObject
+SetMonMagic
+SetMonMassMagic
+DoBattle
+FindDwellStr
+HeroHasArt
+      == 130
+CheckForCreature
+GetArtName
+GetSpellName
+GetBuildName
+GetMonName
+TimeRandom
+GetSSkillName
+CrChangeDialog
+SetKeyMaster
+GetKeyMaster
+      == 140
+SammonCreatureEx
+SammonCreature
+SammonCreatureIfPossible
+ArtDisabled
+ArtDisabledSet
+GetArtBase
+FortOnHill
+MonInTownBase
+AddGlbEvent
+DoesExist
+      == 150
+GetPositionBase
+GetPositionNum
+GetTownBase
+GetTownNum
+ShowThis
+WeekOf
+MonthOf
+MonthOf2
+GetHOTableBase
+GetHHTableBase
+      == 160
+IsPlayerKilled
+PlaceObstacle
+HitMonster
+RedrawBF
+CastSpell
+GetHexStr
+MapSmPos
+GetVisability
+SetVisability
+IsStartUp
+      == 170
+Int
+RemoveCreature
+AddCreature
+RedrawHeroScreen
+GetObel
+SetObel
+SpellDisBase
+AddMon2Hero
+GetCurHero
+EquipArtifact
+      == 180
+CastAdvSpell
+ChooseAdvSpell
+GetExpo
+GetLimitLvl
+SetLimitLvl
+MusicVolume
+EffectVolume
+GameLevel
+SetGameLevel
+SplitPath
+MakePath
+Strtok
+Strerror
+Itoa
+Atoi
+Atof
+GetDelay
+SetDelay
+GetAutoSave
+SetAutoSave
+Display8Dialog
+FindMine
+FindHorn
+GenArt
+GetMerchArt
+SetMerchArt
+WinerIs
+MonIndex
+MonPos
+MonPos2
+SetMouseCursor
+ZHideCursor
+ZShowCursor
+DelayIt
+SetActiveStack
+BuildTownStruct
+DoPhysicalDamage
+CleanUpCombo
+BuildUpCombo
+SummonCreatures3
+GetVisabilityPosByXYL
+AdjustAllIfPassDwell
+getTime
+IsThisGamer2
+ChooseCrToAnimDlg
+casdem.cpp
+ File : 5
+      == 0
+PrepareCastle
+GetCastleNumber
+FindCastleStr
+MakeCheck
+CastleCheck
+CastleServiceRedraw
+CastleSkipDemolition
+SetBonRes
+CastleCheckDemolition
+CastleExit
+      == 10
+DaylyCastle
+NextTowerState
+SetTowerBunus
+SendCastleState
+CastleTowers
+AIStartBuilding
+Enter2Castle
+FindDwellInfo
+AddDwellInfo
+IsFirstDay
+      == 20
+Enter2Dwelling
+EnterOutOfDwelling
+ProcessC2H
+SaveCasDem
+LoadCasDem
+LoadTXTCasDem
+ResetDwellings
+ResetCastles
+InitCastles
+ResetNewTownStruct
+      == 30
+AdjustNewTownStructures
+SaveNewTown
+LoadNewTown
+artifact.cpp
+ File : 16
+      == 0
+CloseCastleGate
+DaylyCastleKey
+AdjustSquarePassability
+ResetA160
+LoadA160
+SaveA160
+animdlg.cpp
+anim.cpp
+ File : 9
+      == 0
+Touch
+Infection
+InfectIt
+ChangeState
+AnimateAll
+GetFreeOAnim
+InitAllAnimation
+StartAnimation
+GlbAnimation
+ProvokeAnimation
+      == 10
+SaveAnimations
+LoadAnimations
+Generating Code...
+Compiling...
+ai.cpp
+ File : 11
+      == 0
+MapAI
+FindWayAI
+MakeAIWay
+FindStep
+AIRGetThis
+AIRGetAny
+AIRGoNextActive
+AIRAddThis
+AIRDelThis
+AIRDelAll
+      == 10
+ERM_AIRun
+SearchForObject
+GetDist
+Way2Object
+ToOtherSide
+NearestSTway
+Find2M
+Nearest2Mway
+Nearest1Mway
+GetNearestWay
+      == 20
+SaveAI
+ResetAI
+LoadAI
+_B1.cpp
+ File : 8
+      == 0
+ResetAll
+InitAllTXT
+TxtOutOfExe
+FileLoader
+Saver
+Loader
+AddNonZipped
+DelNonZipped
+WriteNonZipped
+GZOpen
+      == 10
+GZClose
+GZWrite
+CheckDiff
+BuildSoDDiff
+BuildWoGDiff
+FindSignature
+BuildAllDiff
+SaveSignature
+LoadSignature
+SaveManager
+      == 20
+LoadManager
+FindManager
+CalledBeforeTurn1New
+CalledBeforeTurnNew
+LoadProtected
+AddMithrillAuto
+Enter2H4Obj
+CorrectDwellings
+Enter2Object
+ShowSmallSymbol
+      == 30
+AIthinkAboutRes
+AIMapGoal
+ShowIntro
+ShowVersion
+DropGame1
+DropGame2
+DropGame3
+DropGame4
+SaveB1
+LoadB1
+      == 40
+ResetB1
+GetInd
+CheckCheat
+BuildUpNewComboArts
+Generating Code...
+Linking...
+
+Build log was saved at "file://g:\_Zvs\ZVS_!!!\addons\wog359\Release\BuildLog.htm"
+t1b - 0 error(s), 0 warning(s)
+
+
+---------------------- Done ----------------------
+
+    Rebuild All: 1 succeeded, 0 failed, 0 skipped
+
+

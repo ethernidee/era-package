@@ -1,0 +1,59 @@
+.erm-container
+{
+  margin:           0;
+  padding:          0;
+  border:           0px;
+  background-color: #d4d0c8;
+}
+
+.erm-code
+{
+  line-height:  1;
+  font:         10pt monospace, Courier New;
+  color:        black;
+  white-space:  pre;
+}
+
+.erm-line
+{
+  background-color: #c6b7a4;
+}
+
+.erm-trigger
+{
+  color:        red;
+  font-weight:  bold;
+}
+
+.erm-cmd
+{
+  color:        purple;
+  font-weight:  bold;
+}
+
+.erm-posttrigger
+{
+  color:        teal;
+  font-weight:  bold;
+}
+
+.erm-var, .erm-flag
+{
+  color:  navy;
+}
+
+.erm-comment
+{
+  color: green;
+}
+
+.erm-string
+{
+  color: maroon;
+}
+
+.erm-instr
+{
+  color: olive;
+  font-weight:  bold;
+}

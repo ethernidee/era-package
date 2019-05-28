@@ -1,0 +1,20 @@
+Positions of battle					Leave the dwelling
+Type	x	y	level	ABS/rel	Cost (gold) for one
+Level 1	0	0	0	0	40
+Level 2	0	0	0	0	60
+Level 3	0	0	0	0	80
+Level 4	0	0	0	0	150
+Level 5	0	0	0	0	300
+Level 6	0	0	0	0	550
+Level 7	0	0	0	0	800
+Level 1+	0	0	0	0	50
+Level 2+	0	0	0	0	75
+Level 3+	0	0	0	0	100
+Level 4+	0	0	0	0	200
+Level 5+	0	0	0	0	400
+Level 6+	0	0	0	0	650
+Level 7+	0	0	0	0	1000
+					
+					
+-----------	------------	------------	------------	------------	-----------
+if ABS/rel	=1, then x,y,l	 - absolute,	otherwise	relative to castle entrance	

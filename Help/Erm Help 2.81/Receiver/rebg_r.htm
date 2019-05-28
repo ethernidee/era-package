@@ -1,0 +1,76 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center">
+<b><font face="Times New Roman CE" size=5;><font size=6>B</font>ATTLEGROUND  <font size="6">A</font>CTIONS <font size=6>(BG)</font></font><br>
+<font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b></p>
+<p><b><font size="2" face="Arial"><font color="#333333">During combat, you may check/set/get parameters on actions taken by a monster stack.
+These receivers may be used/called only in the !?BG trigger section.</font></font></b></p>
+<p><font face="Arial" size="2"><font class=bnotes>Note: </font>Now a usage of !!BG, !!BM, !!BH, !!BU, !!BF in complete AI battle is controlled in the ERM interpreter and you will get the corresponding error message.</font></p>
+<table border="2" width="100%" bordercolorlight="#000000" bordercolordark="#000000"><tr>
+<td><nobr><b> <font size="2" face="Arial" color="#FF0000">!!BG:</font><font size="2" face="Arial" color="#800080">XXXX</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+<td><font size="2" face="Arial">During combat, you may check/set/get parameters on taken action</font></td></tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+  <tr>
+    <td height="128" valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial">      <a name="A">      A</a></font><font color="#800080" size="2" face="Arial">$</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td height="128"><font face="Arial" size="2"><b>Type of an action:</b><br>
+<table cellspacing=0 cellpadding=0 border=0>
+<tr><td align=right> 0</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Cancel Action (the stack can do a different action now but it may still be impossible to force it to do most actions through ERM).</td></tr>
+<tr><td align=right> 1</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Hero casts a spell</td></tr>
+<tr><td align=right> 2</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Walk</td></tr>
+<tr><td align=right> 3</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Defend</td></tr>
+<tr><td align=right> 4</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Retreat from the battle</td></tr>
+<tr><td align=right> 5</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Surrender</td></tr>
+<tr><td align=right> 6</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Walk and Attack</td></tr>
+<tr><td align=right> 7</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Shoot</td></tr>
+<tr><td align=right> 8</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Wait</td></tr>
+<tr><td align=right> 9</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Catapult</td></tr>
+<tr><td align=right>10</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>Monster casts a spell (f.e. Faerie Dragons) i.e <font class=ermtext>!!BG:A10;</font> will make current stack cast a spell set with <font class=ermtext>!!BG:S$;</font></td></tr>
+<tr><td align=right>11</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>First Aid Tent Heal</td></tr>
+<tr><td align=right>12</td><td>&nbsp;=&nbsp;</td><td><font size=2 face=arial>No action (can be to disable stack for this round)</td></tr></table>
+</font></td></tr>
+  <tr>
+    <td height="16" valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial"><a name="D">D</a></font><font color="#800080" size="2" face="Arial">$</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td height="16"><font face="Arial" size="2"><b>Destination position</b> (magic to monster, walk or attack to)</font></td>
+  </tr>
+  <tr>
+    <td height="32" valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial"><a name="E">E</a></font><font size="2" face="Arial" color="#800080">$</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td height="32"><font face="Arial" size="2"><b>Get a destination monster stack</b> (destination position           is used).&nbsp;<br>
+ -1 if no monster stack at that position</font></td>
+  </tr>
+  <tr>
+    <td height="16" valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial"><a name="H">H</a></font><font size="2" face="Arial" color="#800080">$</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td height="16"><font face="Arial" size="2"><b>Number of a hero owner</b> (-1=no hero)</font></td>
+  </tr>
+  <tr>
+    <td valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial"><a name="N"></a>N</font><font color="#800080" size="2" face="Arial">$</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td><font face="Arial" size="2"><b>Number of current stack </b> (0...41)</font></td>
+  </tr>
+  <tr>
+    <td height="32" valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial"><a name="Q">Q</a></font><font color="#800080" size="2" face="Arial">?$</font><font size="2" face="Arial" color="#FF0000">;</font><font color="#800080" size="2" face="Arial">&nbsp;</font></b></td>
+    <td height="32"><font face="Arial" size="2"><b>Current attacking side</b> (0=left or 1=right)<br>
+      Check only!</font></td>
+  </tr>
+  <tr>
+    <td height="64" valign="top" nowrap><b><font color="#FF0000" size="2" face="Arial">      <a name="S">      S</a></font><font color="#800080" size="2" face="Arial">$</font><font size="2" face="Arial" color="#FF0000">;</font></b></td>
+    <td height="64"><font size="2" face="Arial"><b>Number of a Spell to Cast</b> (See
+    <a href="../format/fmsp.htm">Format
+      SP</a>)<br>
+      <u>     <b>     Comments:</b></u><br>
+      If a monster casts a spell before an action (enchanter magic or Troll resurrection), it goes before trigger.</font><br>
+	  <b>Note:</b><br>
+	  Spell number returned for creature spellcast is always -1.
+	  <script type="erm">!!BG:A1; Hero casts a spell
+!!BG:S?v1; v1 now contains spell number
+~~~~~~~~~~~~~~~~~~~~~
+!!BG:A10; Monster casts a spell
+!!BG:S?v1; v1 is always -1</script>
+	  </td>
+  </tr>
+</table></body></html><script>
+document.write("<table cellspacing=0 cellpadding=0 width=100% border=0><tr><td align=right><font face=arial size=1>"
++"Last update:"+document.lastModified+"</font></td></tr></table>");
+</script>
+
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>

@@ -1,0 +1,509 @@
+Version 2.8.1
+------------------------
+[+] Option CPUPatch was replaced by CpuTargetLevel (value 0..100), defining desired level of CPU load. Real CPU loading decrease is usually
+    greater than option value. 0 (almost not CPU loading in idle mode, but with possibly a bit not responsive interface or jerky mouse movement).
+    100% — regular game mode (waste of CPU time and battery).
+[+] Added event 'OnReportVersion' for important plugins and Era. Added void ReportPluginVersion(char* VersionLine) API to era.dll.
+    It's now possible to view Era and important plugin versions via right mouse button on Credits button in main menu.
+[+] Added option 'Debug.DumpVirtualFileSystem'. If true, all virtual file system mappings are written in log.txt on game start.
+[*] Added support for 'modlist' command line argument to map editor.
+[*] Restored obligatory mod list report in log.
+[*] Updated 'numeric creature stats.era' plugin by igrik. No more dependency on VC++ Redistributable anymore.
+[-] Fixed bug: not all virtual files and directories were correctly mapped. Updated vfs.dll to 1.0.2 version.
+
+Version 2.8.0
+------------------------
+[+] Fully redesigned and rewritten Virtual File System code, the core of Mods system. Added full concurrency and Unicode support.
+    Developed with Windows XP, 7, 10 and Wine in mind. Lua's 'script not found' problem is solved.
+[*] (Internal code) Wrote patch/assembling module, implementing 70-80% of core patcher_x86 features, but with thread-safety. Fixes real crashes in parallel mod in game and map editor.
+[*] (Internal code) Improved Era's logger implementation: added better concurrency support and recursion protection. Reduces potentional crashes.
+[*] (For plugin makers) DisableThreadLibraryCalls is no more called for plugins.
+[*] Era is now compiled in optimized mode.
+[-] Fixed bug: Named functions (FU(XXX)) dictionary was not cleaned on new map start, but function automatical ID used to be reset. Thus any further scripts reloading via F12 used to create function ID collisions if scripts contained new function names.
+[-] Fixed bug: Era's memory manager worked in single-thread mode (IsMultiThread = false), which could cause unpredictable crashes in all previous Era versions.
+[-] Fixed crash if Debug\Era directory was not created or could not be created.
+
+Version 2.7.7
+------------------------
+[+] Included WoG 2005 sources in Tools\WoG Sources.
+[-] Fixed WoG bug, causing many crashes (invalid underground detection), when HD mod was enabled. MixedPos function will now drop higher order bits and not treat them as underground flag.
+
+Version 2.7.6
+------------------------
+[-] Fixed WoG bug: !?BA0 and !?OB54 could return level 1 (underground) for ground from time to time. Many scripts used to crash because of it.
+[-] Fixed WoG bug: double !?OB54 event generation when attacking without moving due to Enter2Object + Enter2Monster2 calling.
+
+Version 2.7.5
+------------------------
+[-] Fixed lua scripts search path settings.
+
+Version 2.7.4
+------------------------
+[-] Small fixes in installer and game engine.
+
+Version 2.7.3
+------------------------
+[-] Temporarily disabled WoG Native Dialogs mod until further testing and stability improvements.
+[-] Temporarily turned off Unicode support for VFS due to crash reports and performance degradation in Map Editor.
+
+Version 2.7.2
+------------------------
+[+] Added more Unicode API support for virtual file system.
+[*] Updated patcher_x86 to the latest version from HD mod.
+[*] Added heroes3.ini support for map editor.
+
+Version 2.7.1
+------------------------
+[-] Fixed 2.7.0 nightly build bugs. It's recommended to delete manually Big Spellbook mod and install the updated one from wakeofgods.org/mods/ if Era is installed over previous 2.6.X version.
+
+Version 2.7.0
+------------------------
+[+] (***) Added early support for Lua scripts (luajit engine). The API is [EXPERIMENTAL] and is subject to be changed. (***)
+ERM will be fully supported, but is considered DEPRECATED from now. No new ERM commands (except integrating existing plugins)
+are planned. Further development is binded to Lua. Single language can be used to write ordinary and plugins-like scripts.
+
+[+] Added early support for loading any image as ingame pcx.
+[+] Added support for kernel32.OpenFile function in virtual file system module. Fixed bug with black battlefield backgrounds.
+[+] Added 'OnAfterCreateWindow' event for plugins.
+[+] Added 'dfault24.pcx' to hmm35wog.pac, default image for missing pcx16 resources.
+[-] Updated WoG Native Dialogs plugin. Fixed cursor disappearing in IF:G dialogs. Author: igrik.
+[-] Big Spellbook mod by MoP is updated and extracted from main package.
+[-] Fixed broken un44.def.
+
+Version 2.6.6
+------------------------
+[*] Updated WoG Native Dialogs mod by igrik: removed VC++ dependencies, fixed a few bugs, added WoG-like radio/checkbox-buttons for IF:G.
+[*] Removed VC++ dependencies from Game Bug Fixes plugin. Plugin renamed to *.dll version to prevent crashes at game start.
+[-] Fixed bug with crashes during sound playing in WoG dialogs. patcher_x86 thread-unsafe hook replaced with native Era hook.
+[-] Assertion messages were not displayed, only files and lines used to be reported.
+
+Version 2.6.5
+------------------------
+[+] Integrated igrik's plugin, displaying numeric value of moral/luck bonuses and spells duration in view creature dialog. 
+[+] Improved "wog native dialogs" plugin by igrik. IF:G radio/checkbox dialog is now implemented via native ingame dialogs system.
+[+] Added "fast upgrade stacks in town.dll" plugin by igrik in the off state. Plugins allows to use A+LMB combination to instantly upgrade single stack or all stacks (click on hero portrait) in town without any confirmations.
+[-] Fixed bug in Mod Manager, not allowing to run executables with space in name like "h3era HD.exe".
+[-] Fixed bug with crash in commander's dialog on skill selection during level-up.
+
+Version 2.6.4
+------------------------
+[+] Updated igrik's "Native WoG Dialog" mod, fixed bugs in creature info display in battles, optimized defs.
+[+] Refactored Map Editor, fixed crashes on exit.
+[+] Added Visual C++ Redistributable libraries msvcr[90..120].dll to allow plugins to be executed on all systems.
+
+Version 2.6.3
+------------------------
+[+] Integrated "Microsoft Visual Basic 6.0 Common Controls" in order to solve problems of people, running editor without required libraries installed.
+[+] Integrated igrik's WoG Native Dialogs mod, replacing commander and creature experience dialogs with native dialogs (fast, no blinking, HD mod support, ALT+F4 support, resources in pac, etc.).
+New lines were added to "zcrexp.txt" and "znpc00.txt". They need to be translated and added to localization mods, such as WoG Polish or WoG Rus.
+[+] Updated "Quick Savings" mod: exposed named functions and events to outer world. Mods over the mod can be made now.
+[+] Added visible errors notification, like invalid json files.
+[*] Replaced Era Start Menu icon.
+[-] Removed all graphical elements, ported from Hota.
+
+Version 2.6.2
+------------------------
+[+] Added localization support for ERM scripts. All Lang\*.json files are loaded and merged into single dictionary of key => value pairs with language data.
+Json files must be saved in UTF-8 encoding with preferably Unix line endings (#10 = 0x0A). The format is the following:
+
+{
+  "unique global key": "translation",
+  "another key": "another translation"
+}
+
+During file loading text is converted from UTF-8 (Unicode, i.e Russian, Polish, Chinese and any other language is supported) into ANSI-encoding, used by player's operational system, ex. Windows-1251.
+Thus you may ship the translation, other people may open and edit it without loss and characters, not representable on particular PC, will be replaced with "?".
+
+Real example:
+
+{
+  "eqs.this_day_savegame_name": "@day@_@player@",
+  "eqs.end_turn_autosave_name": "@day@_@player@_End",
+  "eqs.quicksave_name":         "@day@_@player@_Quick",
+  "eqs.saved_msg":              "Saved!",
+  "eqs.quicksaved_msg":         "Quicksaved!"
+}
+
+It's recommended to prefix each key with string, unique for mod or author, like "pm." for "Phoenix Mod".
+
+Translations may have parameters in the form of "@parameter name@". Those parameters are replaced with actual values during translation.
+New ERM command !!SN:T is used to translate strings by key.
+!!SN:T(key)/?(z-variable to place result to)/(parameter name 1)/(parameter value 1)/(parameter name 2)/(parameter value 2)...;
+
+Example:
+
+!!OW:R-1/6/?y1; y1 - player's gold amount
+!!SN:T^test.gold_amount_report^/?z2/^gold^/y1;
+!!IF:M^%Z2^; prints "You have 12850 gold left. Not bad!"
+
+my test.json:
+
+{
+  "test.gold_amount_report": "You have @gold@ gold left. Not bad!"
+}
+
+[+] Added possibility to set secondary skills texts without z-variables dependence. SN:H^secskill^/skill 0..27/0 (name) or skill level/new hint.
+[+] Added GET-syntax for all SN:H commands, allowing to get previously set hint for objects or current skill/specialty texts for heroes.
+[+] v1-v10 and z1 will be restored after (OnKeyPress) event to the value, they had before event.
+[+] Added fixes by Algor for 30 wog - enhanced secondary skills.erm, 75 wog - secondary skills boost.erm and 78 wog - wogify.erm. No more hardcoded numbers, !!SS is used instead.
+[+] "Quick Saving" script is converted into default standalone mod, using named functions, unique SN:W variables and Era 2.6.2 localization means. Mod is now compatible with almost any other mod.
+[+] Added msvcr90.dll (Microsoft Visual C++ Redistributable 2009) to support plugins, written with this dependency.
+[+] Added meaningful messages to many asserts in code, making assertion crashes easier to understand.
+[*] Each *.bin patch obtains unique name prefix, no more conflicts with 'no hota maps.bin', shipped with HD mod.
+[*] Yona creature abilities are now off by default and need to be manually switched on via mod ini file.
+[-] Fixed bug: SN:H^object^/x/y/z/hint didn't update hint.
+[-] Removed Jim Vogan's scripts from WoG mod.
+
+Version 2.6.1
+------------------------
+[+] Added latest Mod Manager by SyDr, updated default mods.
+[+] Added no hota maps.bin patch, fixing crash when Hota is installed in the same Heroes 3 directory.
+[+] Added "game bug fixes.era" plugin by RoseCavalier:
+- AI can't cast Town Portal on Cursed Ground;
+- AI can't cast Fly if they don't have it;
+- Show Subterranean Gates / Monoliths icons on 'View World' and 'View Air';
+- 65535 objects patch by AlexSpl;
+- AI split divide by 0 fix;
+- Repair Arena Cancel button;
+- Show Forcefield Shadow;
+- AI Resurrection-freeze bug;
+- > 32767 creatures patch.
+[+] Integrated Big Spellbook mod by MoP.
+
+Version 2.6
+------------------------
+[+] Added default values for most of heroes3.ini parameters. No crashes anymore on missing values or even missing heroes3.ini.
+[+] Added 'default era settings.ini', which values are used if corresponding parameters are missing in heroes3.ini.
+[+] Backported saved game sections debugging capabilities with "Debug.DumpSavegameSections" ini option.
+[+] New directory "Debug\Era" must exist in order for debug functions to work (is automatically created and game start).
+[+] Backported dump event list, dump patches, dump erm memory and dump PE modules capabilities from 2.5x branch (F11 key).
+On calling Era.GenerateDebugInfo (no parameters), pressing F11 or game crash Debug\Era folder is filled with various files,
+containing full necessary debug information. Report generation can be carried out on demand:
+
+!!SN:L^era.dll^?y1 Ay1/^GenerateDebugInfo^/?y2 Ey2/0/0; generate debug information, including ERM tracking info
+
+[+] Functions can now have names. Any time you use "(something)"" inside commands, a new function number from 95000+ range is associated with text inside brackets and brackets with name are replaced by that number. If the name already has associated function number, existing number is used instead. Use SN:W to get number of named function by name. Unnamed functions are deprecated, but still working.
+
+Example: !!FU(OnHenchmanHire); call function which maybe does not exist, but script users will be able to handle the event.
+Example: !?FU(Phoenix.FindFreeSlot);
+
+Please, don't forget that names are global. Prefix function names with mod abbreviation: (BattleLib.RessurectStack).
+Function names are replaced with numbers during map initialization stage, so this feature has no impact on performance.
+
+[+] Added labels support. Label is command ordinal number inside current trigger starting from 0. [:LabelName] defines local label. [LabelName] means replace label with command number. Labels are used with SN:G command to implement loops and conditions.
+
+Example of simple loop:
+
+!!VRy1:S0; initialize counter
+[:loop]; loop is label name inside current trigger (!?XX until next !?XX of the same file)
+!!IF:L^Echoed %Y1 times^; echo message
+!!VRy1:+1; increase counter
+!!SN&y1<7:G[loop]; jump to loop label if not echoed 7 times
+
+Example 2:
+!?CM2; archangel in every slot
+!!VRy1:S0;
+[:loop]
+!!HE-1:C0/y1/13/1;
+!!VRy1:+1;
+!!SN&y1<=6:G[loop];
+
+[+] Added elseif syntax to !!el command. If !!el has condition and condition evaluates to false, the engine proceeds to the next !!el command until finds the right one or meets !!en.
+[+] Added !!SN:O command. Get object entrance. SN:O?$/?$/?$
+Initialize any three variables with object square coordinates. Pass them to command to update coordinates with right object entrance square. Thanks to gamecreator.
+
+!?CM0;
+!!CM:R0 P?y1/?y2/?y3;
+!!VRv2:Cy1/y2/y3;
+!!SN:O?y1/?y2/?y3;
+!!IF:M^%V2 %V3 %V4 => %Y1 %Y2 %Y3^;
+
+[+] Added function names for default ERM events without parameters and new Era triggers. Ex.: !?FU(OnBattleRegeneratePhase)
+!?FU77001 = !?FU(OnSavegameWrite)
+!?FU77002 = !?FU(OnSavegameRead)
+!?FU77003 = !?FU(OnKeyPressed)
+!?FU77004 = !?FU(OnOpenHeroScreen)
+!?FU77005 = !?FU(OnCloseHeroScreen)
+!?FU77006 = !?FU(OnBattleStackObtainsTurn)
+!?FU77007 = !?FU(OnBattleRegeneratePhase)
+!?FU77008 = !?FU(OnAfterSaveGame)
+!?FU77010 = !?FU(OnBeforeHeroInteraction)
+!?FU77011 = !?FU(OnAfterHeroInteraction)
+!?FU77012 = !?FU(OnStackToStackDamage)
+!?FU77013 = !?FU(OnAICalcStackAttackEffect)
+!?FU77014 = !?FU(OnChat)
+!?FU77015 = !?FU(OnGameEnter)
+!?FU77016 = !?FU(OnGameLeave)
+
+[+] Added SN:H command for setting hints, descriptions, names without z-vars. Currently only the following variants are supported:
+SN:H^object^/x/y/z/hint;
+SN:H^object^/obj_type or -1/obj_subtype or -1/hint;
+
+[+] Fixed !!FU:P?x[n] bug. Now this syntax works ok.
+
+[+] Added SN:H subcommand "spec" for applying custom hero specialty names.
+SN:H^spec^/hero/short name (0), full name (1) or description (2)/hint
+
+[+] Added ability to delete hints set up by SN:H. Just add "-" prefix to the first argument.
+SN:H^-object^/...
+
+[+] Better support for modern HD mod and x86_patcher:
+- included x86 patcher v4.3 with debug map file;
+- 95% of Era's patches use x86_patcher, each *.bin file creates its own patcher instance;
+- x86_patcher patches are dumped to "Debug\Era\x86 patches.txt" during debug info generation.
+
+[+] Implemented support for multiple UnhandledException handlers, now both HD and Era handlers do their job.
+
+[+] Implemented fully featured ERM tracking support: track all executed triggers and commands in order to defeat bugs and learn game mechanics.
+See Debug.ErmTracking.* options in "Heroes 3\default era settings.ini".
+
+All ERM triggers and commands are recorded during execution (tracked) and are dumped to single "Debug\Era\erm tracking.erm" file in the order of execution.
+Comments after each trigger show flags and v-variables state on trigger start/end.
+Comments after each receiver show exact file, line and position of command.
+
+Tracking report file is generated on F11 press or on game crash.
+
+[+] Improvated named functions support. Added programmatical ability to get function name by ID.
+
+[+] Improved multiplayer support:
+- The whole packed saved game is sent on end of turn, difference file is not generated.
+- Added object creation immediate synchronization between servers and clients.
+- "SavedGameExtraBlockSize" ini setting is dropped.
+
+As a result, playing game with script, that support multiplayer, can be performed without crashes.
+WoGification and quick saving scripts work.
+  
+[+] Released ERM Hooker v2.0 plugin with support of multiple handlers at the same address. It support Era 2.46,
+but is DEPRECATED in advance, because the same functionality without memory leaks will be ported to Era in
+future versions.
+
+[+] F11/crash dumps loaded mods to "Era\Debug\modlist.txt".
+
+[+] Added support for compiled debug maps for dll/exe files and basic set of compiled maps. Map files are used to find corresponding name of function/variable/class by address in executable code. This feature allows to display human readable crash report in terms of source code items, not meaningless addresses.
+
+Use Tools\ExeMapsCompiler\compile.phc to convert Borland map files to *.dbgmap binary files, used by Era.
+The tool requires PHP interpreter v7.1+ to run. C++ maps support is planned to be added soon.
+Place *.dbgmap file with the same name, as executable/dll but with capital first letter to Heroes 3\DebugMaps directory.
+Debug maps are loaded automatically during debug information generation.
+
+[+] Implemented generation of detailed crash report on game crash, including data analysis.
+
+[+] Updated Yona mod: added "Hammer Crush" ability for dwarfs.
+
+[*] Ported igrik's code to fix SN:D in heroes meeting screen.
+[*] Removed deprecated triggers from Era as long as deprecated RecallAPI function.
+[-] Fixed bug with combined artifact (# > 143) dismounting in heroes meeting screen.
+[-] UN:J3 patch rollbacked for backwards compatibility reasons.
+[-] Fixed ERM MR:N bug. !?MR1/2 return valid stack number or -1.
+[-] Fixed bug with dispell in enemy spellbook and 1-turn spell durations of friendly hero.
+[R] (Removed) UN:J3 command does not reset commanders anymore. If value ":clear:" is passed as file name, all WoG options are dropped to zero and option #101 (Map Rules) is set to 2 ("use selected below").
+
+...and more...
+
+
+Version 2.47.0  May, 08 (2015)
+------------------------
+[*] Improved !!PO command stability, fixed bugs.
+[*] ExecErmCmd can process multiple commands, separated by ';'. Semicolon in the end of passed string is optional now.
+[+] Changing final physical damage, received by battle stack, via MF:F is now correctly displayed in battle log (including damage from towers, moat, fire shield, etc).
+[+] Added possibility for global and local MP3 tracks redirection. Simply specify file name with mp3 extension as resource or *.mp3 mask to redirect all tracks.
+[+] Added possibility to redirect resources globally via JSON files.
+Data\Redirections\*.json
+
+Format:
+{
+  "old resource name": "new resource name",
+  "old resource name": "new resource name"...
+}
+
+Folder "Data\Redirections\Missing\*.json" works in similar way, but redirections are only applied to missing resources.
+For instance, we can now delete z*-pictures from WoG and redirect them to original names without prefixes. You can also supply safe alternative to third-party resources, if your mod depends on any graphical mod.
+
+[+] Added OnGameEnter (77015) and OnGameLeave (77016) events. The first one occures when game is started or loaded and user gains control over mouse cursor. The second one occurs, when user exits to main menu or desktop.
+
+This pair of trigger is handy to set/unset UN:C hacks, which are specific for map or mod.
+
+
+====== The development was split into 2.4X and 2.5X series ======
+
+
+Version 2.55  October, 13 (2013)
+------------------------
+[+] Routine producing ERM error report was completely rewritten. New dialog uses colored text and displays full error command, ERM file name and line in file. Default choice is skipping the error, not making ERM memory dump. There are no more duplicate or senseless error popups.
+[+] Routine making ERM memory dump was completely rewritten for better error diagnostics and supports apart from all associative variables (SN:W) and dynamical arrays (SN:M).
+[*] Error in any Era command (SN:) does not lead to leaving trigger anymore.
+[*] Era commands now obey error suppression rules (UN:P904) and do not change z1 variable on error.
+[+] ExecErmCmd can now execute several commands at once.
+[+] Added event "OnBeforeClearErmScripts". It occurs right before scripts are unloaded.
+[+] WoG built-in code tracing mechanisms were removed because of being slow and useless.
+[+] e- and y- are considered deprecated and are subject to remove in the future.
+[*] "r" color name now stands for light red, suitable for default dialog backgrounds. "g" color name now stands for game native gold color.
+[*] Internal code refactoring.
+[+] Added comprehensive exception handling with various contexts dumping.
+[-] Fixed ERM MR:N bug. !?MR1/2 return valid stack number or -1.
+[-] Fixed Era 2.5 bug. Event "OnBeforeErmInstructions" didn't occur.
+
+
+Version 2.5  October, 2 (2013)
+------------------------
+[*] No more "wogification" notion on code level. Every map is WoG map. Scripts are loaded the same way for any map/campaign. WoG option #5 is free. Wogification settings (option #5) are ignored.
+[*] Map/campaign built-in scripts are not interpreted.
+[-] Bug with garbage triggers from previously run map with built-in scripts is gone.
+[*] Maps\[map name].erm is not loaded.
+[-] Bug with memory corruption when both [map name].erm and built-in scripts presented is gone.
+[-] Bug of Maps\[previously run map].erm script loading on campaign start is gone.
+[*] UN:J3 command does not reset commanders anymore. If value ":clear:" is passed as file name, all WoG options are dropped to zero and option #101 (Map Rules) is set to 2 ("use selected below").
+[+] WoG default storage for ERM scripts is not used anymore. No restriction on 100 script names remains. Scripts are loaded and interpreted after all WoG data is loaded but before "OnSavegameRead" event occurs. As a result, Era 2.5 cannot handle saved games of previous versions.
+[+] Each script is stored in saved game with additional information: file name, file size and CRC32 checksum. No scripts interpretation occurs on game loading if the same script subset is already in memory. It means that game loading speed was significantly increased.
+[+] Files "Data\s\*.erm", "Data\s\*.ert" and "Data\s\load only these scripts.txt" in Maps\[map name] or Maps\[campaign name]_[campaign map index] folder override the appropriate files in "Data\s" and "Mods\[any mod]\Data\s" only when this particular map/campaign is started. It means that every map, including maps in campaigns, can have unlimited number of own scripts and can flexibly control the script and language file subset which will be used.
+[*] The order of file names in "load only these scripts.txt" does not matter. If file names contain priority prefixes, they are taken into account.
+[+] "*.sys.erm" scripts are called System scripts and loaded always regardless "load only these scripts.txt" settings. System scripts usually provide support for critically important game aspects and should not contain any code which can be used optionally depending on custom map demands or player's preferences.
+[*] Maps\[map name].cmd is not loaded.
+[*] WoG.ini option "Alternative Scripts Location" is not used.
+[+] Scripts preprocessing is not used. Invalid ERM receivers in form of "!!XX" remain. New option "IgnoreInvalidReceivers" was added to heroes3.ini. If it's on, invalid receivers are silently ignored. Otherwise new diagnostics message appears with the following information: invalid receiver, file name, linear offset in file, error context.
+[+] Added new triggers OnGameEnter (77015) and OnGameLeave (77016). The first one occurs when map is loaded and player gets mouse control. The latter occurs when player leaves current game. This event can be use to revert special changes in game memory (like UN:C hacks).
+[+] Implemented redirection support for *.mp3 files using functions "RedirectFile" and "GlobalRedirectFile". This mechanism should be used instead of deprecated !!MP commands. Calling redirection functions with first argument "*.mp3" forces playing only one mp3 track in all game dialogs.
+
+
+Version 2.46  July, 10.
+------------------------
+[+] Era can be installed on SoD/Complete/WoG/Era.
+[+] Almost full WoG Editor support for Era mod system.
+[+] Added new Mod Manager by SyDr. Install mods safely using buttons "Add new" or simply by drag-n-drop.
+[+] Added full color Chinese GB font support.
+[+] Added animated trees patch by Valery.
+[+] Added patcher_x86.dll and wog_patcherizer plugin by baratorch.
+[+] Era tries to automatically turn DEP off if possible.
+[+] ERM trigger CM3 now handles all clicks.
+[+] Added SN:D command. It's used to redraw hero, heroes meeting, adventure map and town screens.
+[+] Added new modifier syntax for SN command parameters:
+  SN:X$ (without &), SN:M#/$, SN:M#/#/$, SN:W#/$.
+  Traditional "d" adds 0 or empty string, d[...] is equivalent to d+.
+  d+, d-, d*, d:, d& (string concatenation).
+  Example: !!SN:W^Gold^/y1 W^Gold^/d-500 W^Gold^/d*11 W^Gold^/d:10; Gold = y1 -500 * 1.1
+
+[+] Added option "UseOnlyOneCpuCore". By default Era uses as many processor cores as possible.
+[+] Added option "FixGetHostByName" to heroes3.ini. If it's on, Era tries to select best external IP for network gaming.
+[+] Added option "SavedGameExtraBlockSize" to heroes3.ini. Set it to high enough value to reduce network crashes.
+[+] SMACKW32.DLL was updated to version 4.04e.
+[+] Added "stack experience bonuses.txt" from WoG 3.58f to Help folder.
+[*] Virtual file system was improved for better stability and compatibility with Windows 7+ and Linux (Wine). All hooks are now optional (heroes3.ini).
+[*] Applied fixes for WoG mod by Algor.
+[*] Numerous small changes in the package.
+[-] MP3 trigger was removed from ERM due to concurrency bugs.
+[-] Applied fix by MoP to "transfer last stack.bin" patch. From now the last stack does not lose experience when being transfered.
+
+
+Version 2.4  August, 31.
+------------------------
+[+] GrayFace's patch for editor was updated. Passability editing dialog now understands mod system.
+[+] Fixed battle hint and log for modified by ERM damage from towers, moat and magic.
+[+] Added fix for handling of negative offsets in fonts. Author - Sav.
+[+] Added ERM scripts preprocessing. A sequence of three and more exclamation characters is treated as a comment and cut from source code at loading. Old WoG maps will not show error dialog at start.
+[+] Added fixes for fire elemental and hell baron by Bes.
+[+] Added "all war machines in blacksmith.dll.off" plugin by baratorch. It allows to buy all machines of war in blacksmith.
+[+] Fixed WoG campaign error.
+[+] Updated ERM UN:V command. WoG version is 400 now, ERM version is Era version * 1000.
+[+] MMArchive was updated by Chinese programmer to support *.pac extension.
+[+] File "era.h" was updated and now supports MSVC 9. Author - Sav.
+[+] Added text tables editor by GrayFace.
+[+] Commanders and emissaries are displayed in editor.
+[*] Mod list generation mechanism was changed to a fully portable variant. Game loads mod list from file "Mods\list.txt" now. The lower the mod is in the list, the higher its priority is. Duplicates and blanks are ignored, as well as not existent items. Mods which are not mentioned in the list are considered disabled.
+[*] Mod manager, plugin manager and Era Start Menu were updated.
+[*] Jim Vogan's scripts were updated, some of them received options in WoG menu.
+[*] Emerald tower can be visited only once, as it was in original 3.58f.
+[*] InstallMod was updated to satisfy the requirements.
+[-] Fixed a critical bug in era.dll. If any mod folder had attributes, it was not added to mod list at game start.
+[-] Fixed OnBattleMouseHint event. If player has detailed statistics off in battle options, damage arguments are set to -1.
+[-] Fixed and improved logging.
+[-] Fixed problem with Yona and "0 (0)" battle hint.
+[-] Fixed Era 1.81..Era 2.4 code used to modify memory blocks.
+[-] Fixed bug in text scanner. No more hangs because of colored strings if the form of "{~...}...{~".
+[-] Fixed bug in secondary skills boost. Credits: Valery.
+
+
+Version 2.3  June, 10.
+----------------------
+[+] Added support for negative z, e, y variables to all Era commands.
+[+] Added DL-Dialogs editor by GrayFace. It's tool #16 in Era Start Menu.
+[+] Added fixed snow objects for adventure map.
+[+] Added updated lakes by Darkloke.
+[+] Added support for "no secondary skills limit" patch to "battle academy" and "school of wizardry" scripts.
+    Author: majaczek.
+[*] Era Start Menu now displays current page number in title.
+[*] If duplicates are found in zeobjts files, map editor reports error instead of crashing.
+[*] Plugin "all war machines in blacksmith.dll.off" is considered deprecated and was removed.
+[-] Fixed avwattak.def which caused rare crashes.
+
+
+Version 2.2  May, 29.
+---------------------
+[+] Added Era Start Menu tool (Tools\Era Start Menu\start.exe). It allows to open most used game executables, utilities and help files via single mouse click.
+[+] Added functions for resource files redirection (fnt, pcx, txt, def, etc.). Local redirections are stored in saved games
+and applied on loading. Global redirections affect the game until its next run.
+
+Era.dll
+  RedirectFile        (OldName, NewName); STDCALL;
+  GlobalRedirectFile  (OldName, NewName); STDCALL;
+
+Use empty NewName parameter to delete redirection. Pass both arguments empty to delete all redirections.
+
+[+] Added support for packages of map objects. Instead of releasing the whole zeobjts.txt, create new txt with
+only new items and place it under unique name in Mods\YourMod\Data\Objects folder.
+  Example:
+    Mods\YourMod\Data\Objects\new objects pack.txt
+
+[+] Implemented memory blocks redirection. Era plugins which extend original structures should register each
+relocation using the following function: "RedirectMemoryBlock (OldAddr, BlockSize, NewAddr)". To obtain real address of
+memory block call "GetRealAddr (OldAddr)" function. UN:C command was modified to work with redirections and thus no manual call to GetRealAddr is necessary when using UN:C.
+
+[+] Added Chinese loader support. {~color}...{~} is transformed to {...} before passing text to Chinese handler.
+[+] Added option "CPUPatch" in heroes3.ini because of rare negative reports about this feature (used to slow down interface responsiveness).
+[+] Added Pikeman, Orc, Dendroid Soldier and path markers from HotA project.
+[+] Added alternative font editor. Credits: forum.gamevn.com.
+[+] Added Autoit3 tool (Tools\Autoit\autoit.exe) and shortcut.bat for installers.
+[+] Added several fixed files to hmm35wog.pac by Bes.
+[+] Added apply.bat for BinMagic. Arguments: [Patch], [File] to apply to.
+
+[*] cranim.txt was redone from scratch to allow a smoother animation and was moved to a separate mod named
+"Fast Battle Animation". The mod also contains many traditionally long battle sounds which were shorted.
+
+[*] Jim Vogan's patch for displaying primary skills over 99 is modified. The limit is +127 now.
+[*] Mistakes in *.btn files do not lead to crashes, but produce error messages instead.
+[*] Era SDK for Pascal was modified for better compatibility with Free Pascal Compiler. Credits: AVS.
+[*] Added SaveIni function to SDK, because all write operations on ini files are cached.
+[*] Improved FindClose function support. No more dangling handles opened via FindFirstW.
+
+[-] Logging does not consume memory now.
+[-] Fixed ini saving bug. ERM commands for writing in ini files updated values only in memory.
+[-] Fixed y-variables corruption caused by Era engine.
+[-] Fixed 4 WoG 3.58f scripts. Credits: Jim Vogan, SyDr.
+[-] Fixed zmess00.txt from original WoG package.
+[-] Fixed Era's bug for HE:A3 command.
+
+
+Version 2.1  April, 2.
+----------------------
+[+] Added fixed catapult def by Valery (Salamandre). Fixes crashes when using
+catapult as war machine in battle.
+
+[+] Added fixed animated and regular WoG objects by totkotoriy.
+[+] Added Plugins Manager by SyDr. "Tools\Plugins Manager".
+[+] Added Mods Manager by SyDr. "Tools\Mods Manager".
+[+] Fixed towers damage (defense, petrifaction and air shield bonuses).
+"Mods\WoG\EraPlugins\AfterWoG\fix towers damage.bin".
+
+[+] Added patch for displaying primary skills with over 99 values by Jim Vogan.
+"Mods\WoG\EraPlugins\AfterWoG\display primary skills over 99.bin".
+[+] Added 2 Era functions for checking plugins/patches existance:
+  FUNCTION PluginExists (Name: STRING): BOOLEAN; STDCALL;
+  FUNCTION PatchExists  (Name: STRING): BOOLEAN; STDCALL;
+  
+  Example:
+    !!SN:L^era.dll^/?y1 Ay1/^PluginExists^/?y2 Ey2/1/^yona^;
+    !!IF&v1=0:M^Plugin "yona" is not loaded!^;
+
+[*] The patch "no real time trigger" is now off by default.
+[*] Secondary skills scrolling mod scrolls skills to top on exit.   
+[*] Era won't load plugins with zero size and patches with size <= 4.
+[-] Fixed mistakes in triggers list. Era SDK/API/Sources were updated.

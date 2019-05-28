@@ -1,0 +1,26 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<center><b>
+<font face="Times New Roman CE"><font size=6>M<font size="5">ACROS</font> (MC)</font><br>
+<font color="#333333" face="Arial" size="2">RECEIVER</font></b></center><br><br>
+<table border="2" bordercolorlight="#000000" bordercolordark="#000000"><tr><td nowrap><b><font face="Arial" size="2"><font color="#FF0000">!!MC<font color=black>var</font>:S</font><font color="#8B008B">@name@</font><font color="#FF0000">;</font></font></b></td><td><font size=2 face=arial>Sets up macros. You can use a text name <b>$name$</b> for variable <b>var</b>. Applicable to all variables.Not applicable for flags</td></tr></table>
+<font class=bnotes>Notes:</font><br><font size="2" face="Arial">
+First you should set up the macro before first using of macro name:<br>
+<font class=ermtext>!#MC<font color=black>v100</font>:S<font class=param>@Var 100@</font>;</font><br>
+Variable v100 has now a second name &quot;Var 100&quot;. The length of a
+macro name is limited by 8 chars. You can use longer names but only first 8 characters will be used to find a variable by name.<br>
+You can change a macro name. Then you can use a macro name at any place where you can use a variable. It must be enclosed in '$' signs.</font><br>
+<font class=example>Examples:</font><br>
+<script type="erm">!!HE-1:P?$Var 100$/?v1000/0;
+!!IF&$Var 100$=v1000/v100=5:...; </script>
+
+<script type="erm">!!IF:M^This is %$players$ and this is %$value$.^;</script><br>
+Macro name is inside $$ and has a % sign before.
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+
+<script>document.write("<table cellspacing=0 cellpadding=0 width=100% border=0><tr><td align=right><font face=arial size=1>Last update:"+document.lastModified+"</font></td></tr></table>");</script>
+</body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

@@ -1,0 +1,249 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<center><img border="0" src="../images/erm.gif" width="350" height="60"><br>
+<font face=arial><b><font size=2>for WoG v</font>3.58f<font size=2> and </font>ERA<font size=2>, explaining ERM - Event Related Model v</font>2.8.1<br>
+<font size=2>Please check the latest <a href="../other/lastinf.htm">info and changes</a><br><br></b><br></center><br>
+
+<font size=3><b><u><a name="intro"></a>Introduction</u></b><br></font>
+<b>ERM</b> stands for <b>Event Related Model</b> and is dedicated to <b>Heroes3: Shadow of Death</b> game and add-on.<br>
+<b>ERM</b> is a new technology that makes possible dynamically changing the map objects' properties as a result of certain player's (including 
+computer) actions. It essentially offers scripting (programing) posibility. Some default script files ensure <b>WoG</b> enhancements as described 
+in the latest version info, but <b>ERM</b> also gives the basic game user access to creating its own scripts to add his own imagination and flavor 
+to the game. It would be a good idea to start with the <a target=sommaire href="../other/tutor.htm">tutorials</a><br><br>
+<b>Does WoG work in multiplayer?</b><br>
+Yes! In earlier versions, there was no network support (only single player and hotseat) but now <b>WoG</b> fully supports Network play including 
+<b>TCP/IP</b>. The only exception is that scripts dealing directly with battle commands may not function correctly in a human vs. human battle 
+online, however there are <b>ERM</b> commands now to check and adjust or disable the script accordingly.<br><br><br>
+<font size=3><b><u><a name="ver"></a>Latest Version Changes<br><br></u></font> ERM Help</b> Version: 2.8.1<br><br>
+
+<table width="100%">
+  <tr>
+    <td align="left" valign="top">
+      <b><font face="Arial" size="2"><font color="#333333">Overall</font></td>
+    <td width="100%" align="left" valign="top">
+    <font face="Arial" size="2">- Moved the files around, made some new folders and cleaned up the main folder. You can find the <i>index.htm</i>
+    file quite easy now&nbsp; :))<br>
+    - Added the files for the new receivers and formats. <br>
+- Modified the files for existing/upgraded receivers, triggers, formats, etc.<br>
+- Added the new logo gifs for the new receivers.<br>
+- Added the missing gifs for the receivers and new icon for ERA-specific information.<br>
+- Included Jim Vogan's notes.<br>
+- Added documentation of  UN:C, CA:D (by MoP) and SN:# commands, added in ERA.<br>
+- Added syntax highlighting.<br>
+</td>
+  </tr><tr><td colspan=2><hr width=100% height=1 color=black></td></tr>
+  <tr>
+    <td align="left" height="1" valign="top">
+      <b><font face="Arial" size="2" color="#333333">Design</font></b></span>
+	  <b><font face="Arial" size="2"><font color="#B5A284">.<br>
+&nbsp;</font></span></font></b></td>
+    <td width="100%" align="left" height="1" valign="top">
+    <font face="Arial" size="2">- Added a column to the &quot;Keyboard&quot; top frame to accomodate the new receiver glyphs. <br>
+    - Moved the Receivers glyphs around to keep alphabetical order while adding the glyphs for the new receivers. Also <br>
+    - Replaced ERM Formats (former top right) gliph with a couple of receivers glyphs and moved <i>formats</i> link rightside to <i>Index</i>. <br>
+    - Repainted the &quot;side menus&quot; left frame back to original value. (no more holes except for the main page)
+&nbsp;</font></span></td>
+  </tr><tr><td colspan=2><hr width=100% height=1 color=black></td></tr>  <tr>
+    <td align="left" valign=top><b><font face="Arial" size="2" color=#333333>Variables<br>
+<center><img src=../images/new.gif>
+</font></b></span></td>
+    <td width="100%" align="left" valign="top">
+    <font face="Arial" size="2">Trigger-based local variables:<br>
+<a href=vars_r.htm#newlocalvar> 
+    y-1...y-100 are integer vars<br>
+    e-1...e-100 are floating point vars<br></a>
+<a href=vars_r.htm#hero2> 
+    New hero variables (now there's 200): w101..w200<br></a>
+</td>
+  </tr>
+<tr><td colspan=2><hr width=100% height=1 color=black></td></tr>
+  <tr>
+    <td align="left" valign=top>
+<b><font face="Arial" size="2" color=#333333>Triggers<br>
+<center><img src=../images/new.gif></font></b></span></td>
+    <td width="100%" align="left" valign="top">
+    <font face="Arial" size="2">
+<a href=triger_r.htm#cm5>Left-click on the adventure map</a><br>
+<a href=triger_r.htm#gm>Game loading and saving trigger</a><br>
+<a href=triger_r.htm#mf>Monster taking physical damage trigger</a><br>
+<a href=triger_r.htm#mg>Pre- and post- triigers for casting on the adventure map</a><br>
+<a href=triger_r.htm#mm0>Message appearing on combat scroll field trigger</a><br>
+<a href=triger_r.htm#mm15>Mouse moving in a town screen trigger</a><br>
+<a href=triger_r.htm#mr>Golem- or Dwarf- style of magic resistance trigger</a><br>
+<a href=triger_r.htm#pi>Post-instruction trigger</a><br>
+<a href=triger_r.htm#sn>Sound playing trigger</a><br>
+<a href=triger_r.htm#th>Town Hall enter and leave trigger</a><br>
+</td>
+  </tr>
+<tr><td colspan=2><hr width=100% height=1 color=black></td></tr>
+ <tr>
+    <td align="left" valign=top>
+<b><font face="Arial" size="2" color=#333333>Receivers<br>
+<center><img src=../images/new.gif></font></b></td>
+    <td width="100%" align="left" valign="top"><font face="Arial" size="2">
+<a href=receiver.htm#ea>Experience support in ERM</a><br>
+<a href=receiver.htm#ip>Multiplayer extended support</a><br>
+<a href=receiver.htm#mf>Set up deflecting damage</a><br>
+<a href=receiver.htm#mm>Combat log receiver</a><br>
+<a href=receiver.htm#mp>MP3 sound playing receiver</a><br>
+<a href=receiver.htm#mr>Set up stack magic resistance</a><br>
+<a href=receiver.htm#sn>WAV or 82M sound playing receiver</a><br>
+<a href=receiver.htm#dl>Custom dialog support</a><br>
+<center><b>And also lots of new commands for these receivers:</b></center><br>
+<a href=../receiver/reba_r.htm>BA</a>,
+<a href=../receiver/rebm_r.htm>BM</a>,
+<a href=../receiver/rebu_r.htm>BU</a>,
+<a href=../receiver/reCA_r.htm>CA</a>,
+<a href=../receiver/reCO_r.htm>CO</a>,
+<a href=../receiver/reCM_r.htm>CM</a>,
+<a href=../receiver/reDO_r.htm>DO</a>,
+<a href="../receivers/receivers_objects_r.htm#monster dwelling">DW</a>,
+<a href=../receiver/reFU_r.htm>FU</a>,
+<a href=../receiver/reHE_r.htm>HE</a>,
+<a href=../receiver/reIF_r.htm>IF</a>,
+<a href=../receiver/reLE_r.htm>LE</a>,
+<a href=../receiver/reOW_r.htm>OW</a>,
+<a href=../receiver/reTR_r.htm>TR</a>,
+<a href=../receiver/reUN_r.htm>UN</a>,
+<a href=../receiver/reVR_r.htm>VR</a>,
+<!--<table><tr><td><font face=arial size=2 color=red><b>
+</td><td><font face=arial size=2>
+</td></tr></table>-->
+</td>
+  </tr>
+  </table>
+
+    <p align="center"><u><b><font face="Arial"><br><a name="team"></a>Wog Team and Who we are<br>
+    </font></b></u><b><font face="Arial">(all in alphabetical order)</font></b></span></p>
+
+  <p align="center"><font face="Arial"><font color="#333333"><b>
+  ERM Idea:</b></font><br>
+  Slava Salnikov<br>
+  <br>
+  <br>
+  <font color="#333333"><b>Programmers:</b></font><br>
+  Alexander Karpeko<br>
+  Alexander Trifonov<br>
+  Slava Salnikov<br>
+  <br>
+  <br>
+  <font color="#333333"><b>Lead Artists:</b></font><br>
+  Alexey Pischoulin<br>
+  Alexey Vasiliev (Darkloke)<br>
+  Bruno<br>
+  Dieter Averbeck<br>
+  Mathias Launhardt<br>
+  Pete Alekseyev (Arstahd)<br>
+  <br>
+  <br>
+  <font color="#333333"><b>Artists:</b></font><br>
+  Alexander Karpeko<br>
+  Artem Garanin<br>
+  Bianor<br>
+  Jerry Kowalczyk (Treupp)<br>
+  Jonas Gustafsson<br>
+  Konstantin Nochev (Dutch)<br>
+  Mandi (Kitten Angel)<br>
+  Sergey Vahrameev<br>
+  Slava Salnikov<br>
+  Viktoria Kalinina (Candy)<br>
+  <br>
+  <font color="#333333"><b>ERM Programmers and/or<br>
+  Level Designers:</b></font><br>
+  Alexander Karpeko<br>
+  Alexander Trifonov<br>
+  Alexandru Balahura<br>
+  Alexey Pischoulin<br>
+  Alexis Koz<br>
+  Anders Jonsson<br>
+  Andrei Adutskevich (Perfecto)<br>
+  Bruno<br>
+  COX<br>
+  Dieter Averbeck<br>
+  Dmitry Lelikov<br>
+  Donald X.Vaccarino<br>
+  Jack Stebaev (AsPiN)<br>
+  Marc Lasch<br>
+  Pete Alekseyev (Arstahd)<br>
+  Petyo Georgiev (Petronius)<br>
+  Qurqirish Dragon<br>
+  Rich Reed (Space8999)<br>
+  Robert Bergerfjall (Overlord)<br>
+  Sir Four<br>
+  Slava Salnikov<br>
+  Steven Lynch<br>
+  Thomas Franz (samot) <br>
+  Timothy Pulver<br>
+  Tobyn<br>
+  <br>
+  <font color="#333333"><b>WoG &amp; ERM Documentation:</b></font><br>
+  Alexey Pischoulin<br>
+  Bruno<br>
+  Ennin<br>
+  Darkloke<br>
+  George Toganel (Pushtiu')<br>
+  Jack Stebaev (AsPiN)<br>
+  Kamil Belau (Acid Dragon)<br>
+  Marcus the Red<br>
+  Slava Salnikov<br>
+  Timothy Pulver<br>
+  <br>
+  <font color="#333333"><b>Lead ERM Testers:</b></font><br>
+  Donald X.Vaccarino<br>
+  Gangrail<br>
+  Jonas Gustafsson<br>
+  Roland Rollig (Rasputin)<br>
+  Stefan Pavlov (Ste)<br>
+  Steve Hanna (ByteBandit)<br>
+  Timothy Pulver<br>
+  <br>
+  <font color="#333333"><b>Testers:</b></font><br>
+  All of us<br>
+  and<br>
+  <a href=http://www.yahoogroups.com/wakeofgods title="You can send a message to WakeOfGods fan group's coordinator and request for adding you to 
+  the group. But think if you *can* be useful for us first" style=text-decoration:none target=_blank> <font color=black>WakeOfGods fan group</a><br>
+  <br>
+  <font color="#333333"><b>Webmaster:</b></font><br>
+  Alexey Pischoulin<br>
+  <br>
+  <font color="#333333"><b>Web Artists:</b></font><br>
+  Alexey Pischoulin<br>
+  Dmitry Lelikov<br>
+  <br>
+  <font color="#333333"><b>Special Thanks:</b></font><br>
+  Alex 2k<br>
+  Alexander the Artist<br>
+  Alexander Bass<br>
+  Alexey Kruchkov (GreyMage)<br>
+  Andrew Svietlichnyy<br>
+  Andrew Yang<br>
+  Angelspit<br>
+  Dan Lind<br>
+  Glover<br>
+  Paul Lipka (Lipa)<br>
+  Psycomonkee<br>
+  Sergey Gorbanyov<br>
+  Simon Mooncalf<br>
+  Slaim Master<br>
+  Theo van Bekkum<br>
+  Xerobull <br>
+&nbsp;</font></span></p>
+
+  <p align="left"><font face="Arial"><b><u><a name="contacts">
+  </a>Contacts:<br>
+  </u></b><font size="2">If you have further questions related to this document please use one of the
+  following email addresses to contact us:</font></font></span></p>
+
+    <table border="0" cellspacing="1" width="100%" id="AutoNumber1">
+      <tr>
+        <td width="45%"><font face="Arial" size="2">Ennin</td>
+        <td width="55%"><font face="Arial" size="2">
+<script language=JavaScript><!--
+function cd(){var z6="@"; z6=z6+"ramble"; z6="in"+z6; z6=z6+"r.ru"; z6="enn"+z6; return z6}; function n95n7(){return "?Subject=SPAM%20attacks!"}; function jk(){status="mailto:"+cd()+n95n7()}; function p60b(){status=""}; function y8419(){this.location="mailto:"+cd()+n95n7(); return false}; document.write("<a href='mailto:ennin@hotmail.ru' onMouseOver='jk()' onMouseLeave='p60b()' onClick='return y8419()'>"+cd()+"</a>");
+//--></script><noscript>ennin&reg;rambler&middot;ru</noscript>
+<br><br>
+
+</td></tr></table>
+You can also visit <a href=http://heroescommunity.com/>Heroes Community</a> WoG forum and ask for help at the community.
+<table width=100%><tr><td align=right width=100%><font size=1>Last Update: <script>document.write(document.lastModified);</script></body></html>

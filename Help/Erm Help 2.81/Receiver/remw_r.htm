@@ -1,0 +1,130 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=_self></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b><font face="Times New Roman CE" size="6"><span lang="de">
+M</font><font face="Times New Roman CE" size="5">ONSTERS,</font><font face="Times New Roman CE" size="6"> 
+W</font><font face="Times New Roman CE" size="5">ANDERING</font><font face="Times New Roman CE" size="6"> 
+(</font></span><font face="Times New Roman CE" size="6">MW</font><span lang="de"><font face="Times New Roman CE" size="6">)</font><font face="Arial" size="2"><br>
+</font></span><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b>
+</p>
+
+<p align="left"><font color="#333333"><b><font class="Helvetica32" size="2" face="Arial">
+  Used to enable/disable interaction with wandering monsters.</font></b> </font>
+</p>
+
+  <table border="2" bordercolorlight="#000000" bordercolordark="#000000" width="100%">
+      <tr>
+        <td width="129" nowrap valign="top">
+          <font face="Arial" size="2"><b><font color="#FF0000">!!MW</font></b><b><font color="#FF0000">#</font></b><b><font color="red" class="Helvetica32">:<font color="darkmagenta">XXXX</font></font><font class="Helvetica32" color="#FF0000">;</font></b></font>
+        </td>
+        <td width="531" valign="top">
+
+<font face="Arial" size="2"># is a number of Wandering </font><font face="Arial" size="2">Monster&nbsp;</font>
+
+        </td>
+      </tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+  <tr>
+    <td width="5%" height="13" valign="top"><b><font face="Arial" size="2" color="#FF0000"><a name="A">A</a>1/</font><font face="Arial" size="2" color="#8B008B">x</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">y</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">l</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font></td>
+    <td width="95%" height="13"><b><font face="Arial" size="2">Get/check/set (jump) a Wandering Monsters to x/y/l position.</font></b></td>
+  </tr>
+  <tr>
+    <td width="5%" height="48" valign="top"><b><font face="Arial" size="2" color="#FF0000">A2/</font><font face="Arial" size="2" color="#8B008B">x</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">y</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">l</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font></td>
+    <td width="95%" height="48"><font face="Arial" size="2"><b>Get/check/set a destination point for WM</b><br>
+      <u><b> Comments:</b></u><br>
+      For WM that searches for hero x means a number of hero to search.</font></td>
+  </tr>
+  <tr>
+    <td width="5%" height="208" valign="top"><b><font face="Arial" size="2" color="#FF0000">A3/</font><font face="Arial" size="2" color="#8B008B">$1</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">$2</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">$3</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">$4</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">$5</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">$6</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">$7</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font></td>
+    <td width="95%" height="208"><font face="Arial" size="2"><b>Manage Wandering Monsters</b><br>
+      &nbsp;&nbsp; <b><font color="#8B008B">$1</font></b> - get/check/set
+      a flag: to call <a href="../other/triger_r.htm#MW0" target="_self"> !?MW0</a> or not when reaches a destination point/before
+      attacking a searched Hero<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$2</b></font> - get/check/set a flag: to call <a href="../other/triger_r.htm#MW1" target="_self"> !?MW1</a> or not when monster
+      is killed (when a WM is killed it has no more a number and this number may be set for another monster when created)<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$3</b></font> - get/check/set a flag: go to a destination point<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$4</b></font> - get/check/set a flag: search for a specific hero<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$5</b></font> - get/check/set a flag: Stand still after reached point/hero or for a free monster.
+	  For now a monster, that reached a destination point or caught, attacked and killed a searched for Hero, becomes a free monster. If you set
+	  this flag, you will force it to stand still until get new command. For free WM this means the same - stand still.<br>
+      &nbsp;&nbsp;&nbsp;<font color="#8B008B"><b>$6</b></font> - set/check/get a flag: search for a specific player (colour).<br>
+ This flag is used only for free WM. If it is set, the destination x coordinate should keep a colour of player. If it is not -1 (all colours),
+ this free WM will search for heroes and towns of this current player only.<br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>$7</b></font> - set/check/get a flag:<br>
+      move over land and/or water. </font>&nbsp;<font face="Arial" size="2"><br>
+      If you set it to 0 (default), it will go over the land only. If you set it to 1, it will go over water only. If you set it to 2,
+	  it will go over land  and water.&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="5%" height="16" valign="top"><b><font face="Arial" size="2" color="#FF0000">A4/</font><font face="Arial" size="2" color="#8B008B">radius</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font></td>
+    <td width="95%" height="16"><font face="Arial" size="2"><b>Get/check/set a radius for searching (default is 20)</b></font></td>
+  </tr>
+  <tr>
+    <td width="5%" valign="top"><b><font face="Arial" size="2" color="#FF0000"><a name="C">C</a></font><font face="Arial" size="2" color="#8B008B">x</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">y</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">l</font><font face="Arial" size="2" color="#FF0000">/?</font><font face="Arial" size="2" color="#8B008B">var</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;
+      </font></b></font>
+      &nbsp;</td>
+    <td width="95%"><font size="2" face="Arial"><b>Check for a WM at a specified position.</b><br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>x/y/l </b></font> - the location to check for a wandering monster<br>
+      &nbsp;&nbsp;&nbsp;var that receives the number of a WM (1...) or 0 if there is no WM at that position
+      </font></td>
+  </tr>
+  <tr>
+    <td width="5%" height="38" valign="top"><b><font face="Arial" size="2"><font color="#FF0000"><a name="E">E</a></font><font color="#8B008B">?$</font></font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font>
+    </td>
+    <td width="95%" height="38"><font face="Arial" size="2"><b>Check for existence of this WM number #&nbsp;</b><br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>1</b></font> = If there is a WM number # otherwise $=0</font></td>
+  </tr>
+  <tr>
+    <td width="5%" height="128" valign="top"><b><font face="Arial" size="2" color="#FF0000"><a name="M">M</a></font><font face="Arial" size="2" color="#8B008B">x</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">y</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">l</font><font face="Arial" size="2" color="#FF0000">/?</font><font face="Arial" size="2" color="#8B008B">var</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font>
+    </td>
+    <td width="95%" height="128"><font size="2" face="Arial"><b>Make an ordinary
+      monster a WM.</b><br>
+      &nbsp;&nbsp; <font color="#8B008B"><b>x/y/l </b></font> - the location of existing ordinary monster<br>
+      &nbsp;&nbsp;&nbsp;var receive a number of WM (this monster become WM)<br>
+ If var gets a value 0 (the same as for MW:P command), that means that WM was not created by any reason.<br>
+      <u><b>Comments:</b></u><br>
+      </font><font face="Arial" size="2">You can also set up monster through <a href="remo_r.htm" target="_self"> MO receiver</a>
+(by position) after generating a WM with !!MW:P</font></td>
+  </tr>
+  <tr>
+    <td width="5%" height="96" valign="top">
+<b>
+<font face="Arial" size="2" color="#FF0000"><a name="P">P</a></font><font face="Arial" size="2" color="#8B008B">x</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">y</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">l</font><font face="Arial" size="2" color="#FF0000">/</font><font face="Arial" size="2" color="#8B008B">type</font><font face="Arial" size="2" color="#FF0000">/?</font><font face="Arial" size="2" color="#8B008B">var</font></b><font face="Arial" size="2"><b><font class="Helvetica32" color="#FF0000">;</font></b></font></td>
+    <td width="95%" height="96"><font face="Arial" size="2"><b>Set (generate a monster at
+      position)</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#8B008B"><b>type</b></font> - monster type (<a target=annexe href="../format/fmc.htm">Format
+      C</a>)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#8B008B"><b>var</b></font> - receives a number of MW (to operate
+      later)<br>
+      <u><b>Comments:</b></u> <br>
+      For this command # a number of MW is not needed (it is not known yet)</font></td>
+  </tr>
+</table>
+
+<p align="left"><font face="Arial" size="2"><b><u>Comments:</u></b><br>
+WM has a radius 20 for searching (or as set with A4 command) . At
+the start of every turn, WM decide where to move/attack. But he will make a real
+move/attack at a turn of a player that is an owner of a hero/town to move to.</font><br>
+</p>
+<p><b><font face="Arial" size="2" color="#0000FF">Example:</b>
+</font><br>
+<script type="erm">ZVSE
+!#TM1:S1/1/1/2;
+!?TM1;
+!!MW:P4/8/0/9/?v100; random monster at positon 4/8/0
+!!IF:M^v100:%V100^;
+!!MWv100:A2/0/0/0A3/1/1/0/1/1/0;
+!!MW:P1/8/0/10/?v110; random monster at positon 1/8/0
+!!IF:M^v110:%V110^;
+!!MWv110:A2/10/10/0;set destination point for second monster to 10/10/0
+!!MWv110:A3/1/1/1/0/1/0;
+!?MW0;
+!!IF:M^MW0:%V997^;
+!?MW1;
+!!IF:M^MW1:%V997^;</script>
+</p>
+
+</body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

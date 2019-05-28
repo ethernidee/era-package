@@ -1,0 +1,450 @@
+<html><head><LINK href=../other/styles.css rel=stylesheet type=text/css><base target=annexe></head>
+<script src=../other/scripts.js></script>
+<body background=../images/intile.jpg bgproperties=fixed>
+<p align="center"><b><font face="Times New Roman CE" size="6">S</font><font face="Times New Roman CE" size="5">OUND </font>
+<font face="Times New Roman CE" size="6">S</font><font face="Times New Roman CE" size="5">UPPORT </font>
+<font face="Times New Roman CE" size="6">&nbsp;(</span>SN)</span></font><font face="Arial" size="2"><br>
+</font></span></span><font face="Arial" size="2"><font color="#333333">RECEIVER</font></font></b>
+</p>
+
+<p><b><font face="Arial"><font size="2" color="#333333">The SN Receiver lets you play external or internal sound files at almost any type.<br>
+</font><font size="2" color="#FF0000">Attention!</font></font><font size="2" color="#333333"><font face="Arial"> 
+If you try to play a sound, </b><a href="../other/triger_r.htm#sn">SN trigger</a><b> will occur. So you can substitute even 
+a sound played by ERM.</b></font></font></p>
+
+<p><font face="Arial" size="2">There are some limitations. First, sound files cannot be longer than <b>10 seconds</b>. Longer sound files will 
+only play the first 10 seconds of sound. Second, when the game tries to play a sound it checks whether it is already being played now. If yes, 
+it just runs another copy. If no, it loads the sound again. To search for the name it uses only the first 12 characters, assuming that the file 
+is DOS based 8.3 and is loaced in the DATA folder. So if you expect that the sound is played rarely, it is not a problem at all, otherwise check 
+it first.</font><b><font size="2" color="#333333"><br>
+</font></b></p>
+
+<b><font face="Arial" size="3">Functionality added in ERA</font></b><br>
+New commands were introduced by expanding the functionality of receiver "SN". All commands can accept the following ERM parameters:<br>
+- Positive and negative numeric constants;<br>
+- Set syntax (without the modifier "d") and get ("?") values;<br>
+- Variables y +, v, w, x, z +, f..t, e;<br>
+- String constants in the form of  ^...^ specifiers %Y, %V, %W, %X, %Z, %E with positive indices.<br>
+
+ERA commands can set integers (4 bytes each). For strings and get syntax, the number is the address of variable. (Variable address is a numeric
+value that describes the location of the data in memory). Maximum number of command parameters: 64.<br><br>
+
+<b>Example:</b>
+<script type="erm">!!SN:Xv1; Set the number in v1 
+!!SN:X?v1; Get address of v1 
+!!SN:Xz1; pass the address of z1 
+!!SN:X^text^; Save text and pass it's address</script>
+
+
+<b><font face="Arial" size="3">New variables added in ERA 1.9</font></b>
+ERM variables are static and limited in number. Static makes it impossible to organize dynamic data structures (eg lists), that require the 
+function allocate and free memory, and a limited number of leads to the need for strict accounting of the index without the possibility to go 
+beyond them. Moreover, the ERM-strings (z-variables) take exactly 512 bytes each, regardless of their actual length (it also means you can't have
+a string, longer than 512 symbols.<br>
+Era 1.9 allows the programmer to use 2 billion slots array of new variables (numeric or string). Array sizes can be modified with ERM. Since the
+work with dynamic structures involves automatic selection of slot numbers, such a possibility exists. Slots positive indices are designed for 
+mapmakers/modmakers, and the negative are used for internal data storage.
+
+
+<b><font face="Arial" size="3">Associative memory (ERA 1.9+)</font></b>
+It is often necessary to have variables for specific characters, specific cells or map objects at the request of the player.
+Static memory allocation for all the characters, all objects or all of the cells has significant drawbacks: excessive consumption of memory, 
+slowing down the process of saving the game, limited size. These problems can be solved when working with a global repository of pairs of type: 
+Key - Value, similar to structure of INI files. Each key can correspond to a numeric and a string value. 0/pusto values are not written to savegame,
+to save space. When you request a nonexistent key will be returned 0/pusto, depending on the type of receiver.
+
+
+  <table border="2" bordercolorlight="#000000" bordercolordark="#000000" width="100%">
+      <tr>
+        <td width=100 height="16" nowrap><b><font face="Arial" size="2"><font class="Helvetica32" color="#FF0000">!!SN</font>
+		<font color="red" size="2" class="Helvetica32">:<font color="darkmagenta">XXXX</font>;</font></font></b></td>
+        <td height="16">
+
+<p><b>Receiver lets you play sound files and access new functions from ERA</p>
+
+        </td>
+      </tr>
+<tr><td align=center colspan=2 class=rowforoptions><font face=Arial size=2><br><b>OPTIONS</b><br><br></font></td></tr>
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="A"></a><b>
+    <font face="Arial" size="2" color="#FF0000">A</font><font face="Arial" size="2" color="#800080"> #1/#2/?$</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15">
+	<b>Get Function Address</b><br>
+	<font face="Arial" size="2">
+    #1 = dll ID<br>
+	#2 = z-var with function name (that is exported by dll)<br>
+	?$ = integer (v, y, x) var to store function address<br><br>
+	Examples:
+	<script type="erm">!!VRz1:S^angel.dll^; store dll name
+!!SN:Lz1/?v2; load dll
+!!VRz1:S^ResetEra^; store function name
+!!SN:Av2/z1/?v3; get function address to v3</script>
+	<script type="erm">;This example works only in era 1.9+
+!!SN:L^kernel32.dll^/?y1; load library and store it's ID in y1'
+!!SN:Ay1/^lstrcpyA^/?y2; get function address to y2</script>
+	</font></td>
+  </tr>
+  
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="C"></a><b>
+    <font face="Arial" size="2" color="#FF0000">C</font><font face="Arial" size="2" color="#800080">#1/#2;</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">Call</b><br>
+    #1 = destination trigger address (you can obtain the address using SN:C0/#1/?$ command)<br>
+	#2 = start command to execute (the same as in Goto)<br><br>
+	Important note: trigger is not really "called" (when old state of local vars is saved and so on). Instead you just jump to a piece of code
+	of another trigger. It's extremely fast (meanwhile function call is a slow operation) and variables are not changed.
+	<br><br>Example:<br>
+	<script type="erm">!?FU90000;
+!!VRz-1:S^Hello, ^+z1; #0
+!!IF:M^%Z-1^; #1
+!!SN:R; #2
+!!VRz-1:S^Bye, ^+z1; #3
+!!IF:M^%Z-1^; #4
+!!SN:R; #5
+!?CM0; right mouse button click on the adventure map
+!!CM:R0; disable default reaction
+!!VRz1:S^Hero^; store text "Hero" in z1
+!!SN:C0/90000/?v1; get address of trigger with id 90000 (it's function)
+!!SN:Cv1/0; call trigger, starting with command # 0
+!!SN:Cv1/3; call trigger, starting with command # 3</script>
+	The example will show two messages: "Hello, Hero" and "Bye, Hero".
+	</font></span><font face="Arial" size="2">
+    </font></td>
+	
+  </tr>
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="C0"></a><b>
+    <font face="Arial" size="2" color="#FF0000">C0</font><font face="Arial" size="2" color="#800080">/ # / ?$</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">Get trigger address</b><br>
+    # = Trigger ID. For functions 1..30000 (default functions' numbers), and 40000..76999, 80000..2^31-1<br>
+?$ = integer (v, y, x) var to store the result (address)<br><br>
+Example:<script type="erm">!!SN:C0/25000/?v1; store address of "FU25000" trigger in v1</script>
+</font></span><font face="Arial" size="2">
+    
+    </font></td>
+  </tr>
+  <tr>
+    <td width="13%" valign="top" height="15"><a name="E"></a><b>
+    <font face="Arial" size="2" color="#FF0000">E</font><font face="Arial" size="2" color="#800080"> #1 / #2 / ... up to 62 parameters</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">Execute external function</b><br>
+    #1 = function address<br>
+	#2 = calling conversion<br><br>
+	0 - Pascal (use for all Angel.dll functions) <br>
+	1 - Cdecl or Stdcall (use for WinAPI and the majority of other functions) <br>
+	2 - ThisCall (use it only if you know, what you are doing) <br>
+	3 - FastCall (the same as above, try to avoid) <br>
+	<br><br>
+	Examples:<br><script type="erm">!!SN:Ev3/0; call function with address stored in v3 using Pascal conversion. No params specified
+!!SN:Ev3/1/v4/?z2; call function with address stored in v3 using Cdecl/Stdcall conversion, the first parameter is number and the second is the address of z2 (the function must return something to it).</script>
+	
+	<script type="erm">!!SN:L^kernel32.dll^/?y1;
+!!SN:Ay1/^lstrcpyA^/?y2;
+!!SN:Ey2/1/z1/z2; copies value of from z2 to z1. ERM function equivalent !!VRz1:Sz2;</script>
+	</font></span><font face="Arial" size="2">
+    
+    </font></b><font face="Arial" size="2">(see also <a href="../format/functions.htm">Useful functions</a>)</span></font></td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top" height="15"><a name="G"></a><b>
+    <font face="Arial" size="2" color="#FF0000">G</font><font face="Arial" size="2" color="#800080">#1</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">GoTo</b><br>
+    #1 = Command number, starting from 0<br><br>
+	Example:<br>
+	<script type="erm">!?CM0; right mouse button click on the adventure map.
+!!CM:R0; disable default reaction. #0
+!!SN:G3; go to the 4-th command. #1
+!!IF:M^Back off!^; #2
+!!IF:M^Greetings, Hero!^; #3</script>
+	Note: numbers of commands (#0..#3) are used only for comfortable reading and understanding of the script.<br>
+	The example will show message "Greetings, Hero!". "Back off" will not be shown.
+	</font></span><font face="Arial" size="2">
+    
+    </font></td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="K"></a>K</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/?$</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Get size of a string</b><br>
+    #1 = z-var number or a string <br>
+	?$ = Var number to store result<br>
+	<br><br>
+	Example:<br>
+	<script type="erm">!!VRz1:S^123^;
+!!SN:Kz1/?y1; y1 = 3</script>
+	</font></td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="K"></a>K</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/$1/$2</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Get/Set symbols in string</b><br>
+    #1 = z var number<br>
+	?$1 - character number (starting from 0)<br>
+	?$2 - Symbol value or var to receive value<br>
+	<br><br>
+	Example:<br>
+	<script type="erm">!!VRz1:S^abc^;
+!!SN:Kz1/2/^d^; replaces 2nd character to ? "d"
+!!IF:M^%Z1^; prints "abd"</script>
+	</font></td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="K"></a>K</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/$1/$2/$3</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Copy memory</b><br>
+    #1 = Number of bytes<br>
+	$1 - Source address<br>
+	$2 - Target address<br>
+	$3 - Dummy parameter<br>
+	<br><br>
+	Example:<br>
+	<script type="erm">!!SN:K12/?v1/?y1/1; copy 12 bytes (3 variables of 4 bytes) from v1, v2, v3 to y1, y2, y3
+!!VRv1:C1/2/3; v1 = 1, v2 = 2, v3 = 3
+!!SN:K12/?y1/?v1/1; restore values of v1, v2, v3</script>
+	</font></td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="L"></a>L</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/?$</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Load library</b><br>
+    #1 = z-var with dll path <br>
+	?$ = integer (v, y, x) var to store the result (dll ID)<br>
+	<br><br>
+	Examples:<br>
+	<script type="erm">!!VRz1:S^Angel.dll^; store dll name
+!!SN:Lz1/?v2; now v2 holds dll ID</script>
+	
+	<script type="erm">!!SN:L^kernel32.dll^/?y1; load library kernel32.dll and store it's address in vat y1' (ERA 1.9 only)</script>
+ 
+</span></font></td>
+  </tr>
+
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="M"></a>M</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Clear memory slot</b><br>
+    #1 = slot number <br><br><br>
+	Example:<br>
+	<script type="erm">!!SN:M5; Clear memory slot 5</script>
+	</script>
+ 
+</span></font></td>
+  </tr>
+
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="M"></a>M</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/$1</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Set/Get size of array at slot #1</b><br>
+    #1 = slot number <br>
+	$1 - number of elements in slot<br><br>
+	Example:<br>
+	<script type="erm">!!SN:M2/5; Create an array at slot 2 of size 5.
+!!SN:My1/?y2; Get size of slot whose number is stored in y1 to y2.</script>
+	</script>
+ 
+</span></font></td>
+  </tr>
+
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="M"></a>M</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/$1/$2</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Set/Get value of element $1 in array at slot #1</b><br>
+    #1 = slot number <br>
+	$1 - number of element in array (starting from 0)<br>
+	$2 - value of array element<br><br>
+	Example:<br>
+	<script type="erm">!!SN:M1/3; Create aray of 3 elements at slot 1
+!!SN:M1/0/111 M1/1/222 M1/2/333; set array 1 to {111, 222, 333}
+!!SN:M1/1/?y5; y5 — value of element 1 from first array
+!!IF:M^%Y5^; shows message "222"</script>
+	</script>
+ 
+</span></font></td>
+  </tr>
+
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="M"></a>M</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/?$1/$2</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Get address of element $2 in array at slot #1</b><br>
+    #1 = slot number <br>
+	?$1 - variable to store the returned address<br>
+	$2 - number array element<br><br>
+	Example:<br>
+	<script type="erm">!!SN:M1/?y1/2; y1 contains address of element 2 from array 1</script>
+	</script>
+ <b>Note</b><br>
+ If you delete a slot or change it's size, the address will be invalidated.
+ 
+</span></font></td>
+  </tr>
+  
+
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="M"></a>M</font></b></span><b><font face="Arial" size="2"><font color="#800080">#1/$1/$2/$3</font><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>Create a new array of $1 elements of type $2 at slot #1</b><br>
+    #1 = slot number <br>
+	$1 - Number of elements<br>
+	$2 - Type of elements (0: numbers, 1: string)<br>
+	$3 - Save the slot's contents in savegame (1: yes, 0: no)<br><br>
+	Example:<br>
+	<script type="erm">!!SN:M0/4/1/1; Creates string array of 4 elements at slot 0. Saves it in savegame
+!!SN:M0/2/^Hello^; Store string 'Hello' at array element 2
+!!SN:M0/3/^world^; Store string 'world' at array element 3
+!!SN:M0/2/?z1; get value of 2nd element in 0th array to z1
+!!SN:M0/3/?z2; get value of 3rd element in 0th array to z2
+!!IF:M^%Z1 %Z2^; Shows message 'Hello world'
+!!SN:M0; delete slot 0 
+!!SN:M-1/0/0/0; Select unused slot for temporary storage
+!!VRy1:S1
+!!VRy1:R6; Generate random number [1; 6]
+!!SN:Mv1/y1; Make an array of random size
+!!VRy1:-1; y1 — index of last element in slot
+!!SN:Mv1/y1/777; set the value of last slot to 777</script>
+	</script>
+ <b>Note</b><br>
+ 
+</span></font></td>
+  </tr>
+  
+  <tr>
+    <td width="13%" valign="top" height="18"><b>
+    <font face="Arial" size="2" color="#FF0000"><a name="S"></a>S</font></b></span><b><font face="Arial" size="2"><font color="#800080">$</font><font color="red" size="2" class="Helvetica32">;</font></font></b></td>
+    <td width="87%" height="18"><font face="Arial" size="2"><b>
+    Get/Check/Set the sound file name to a z variable.</b></span></font></td>
+  </tr>
+  <tr>
+    <td width="13%" valign="top" height="15"><a name="p"></a><b>
+    <font face="Arial" size="2" color="#FF0000">Pz</font><font face="Arial" size="2" color="#800080">#</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">
+    Play a sound file now named z#.</font></span><font face="Arial" size="2">
+    
+    </font></b><font face="Arial" size="2">(see <a href="../format/fmsn.htm">Format SN</a>)</span></font></td>
+  </tr>
+      <tr>
+    <td width="13%" valign="top" height="15"><a name="R"></a><b>
+    <font face="Arial" size="2" color="#FF0000">R</font><font face="Arial" size="2" color="#800080"></font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">
+    Return from trigger call. </font></span><font face="Arial" size="2"></b><br>
+	
+	<b>Example</b>
+    <script type='erm'>!?FU40000;
+0; !!IF:M^Bye^;
+1; !!IF:M^Hellp^;
+2; !!SN:R;
+!?CM0;	RMBclick on adventure map
+!!SN:C0/40000/?y1; y1 — address of function 40000
+!!SN:Cy1/1;	call instruction 1 at function 40000
+!!IF:M^World^;</script>
+	This will show two messages: 'Hello' and 'World'. The lines are numbered for convenience only.
+<br>	
+	<b>Important note:</b><br>
+	You can make another call from first call, but make sure the amount of returns is the same as amount of calls made.
+    </font></td>
+  </tr>
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="Q"></a><b>
+    <font face="Arial" size="2" color="#FF0000">Q</font><font face="Arial" size="2" color="#800080"></font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">
+    Quit The Event (other triggers of the same type will not be executed)</b><br>
+	
+	
+	<font color="#FF0000">Example:</font><br>
+	</font>
+	<script type="erm">!?CM0; right mouse button click on the adventure map
+!!CM:R0; disable default reaction
+!!CM:Q; quit event "mouse click"
+!!IF:M^This message wont be shown^;
+!?CM0;
+!!IF:M^Stupid message^; this message will not be shown either</script>    
+    </font></td>
+  </tr>
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="W"></a><b>
+    <font face="Arial" size="2" color="#FF0000">W</font><font face="Arial" size="2" color="#800080"></font>
+	<font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">#1;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">
+   Clear the variable #1</b><br>
+   #1 - name of variable
+		
+	</td>
+  </tr>
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="W"></a><b>
+    <font face="Arial" size="2" color="#FF0000">W</font><font face="Arial" size="2" color="#800080"></font>
+	<font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">#1/$1;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">
+   Working with variable #1</b><br>
+   #1 - name of variable<br>
+   $1 - values of variable<br>
+   Example:
+   <script type='erm'>!?CM0;
+!!CM:R0
+!!CM:P?y1/?y2/?y3;
+!!SN:W^Map%Y1/%Y2/%Y3^/?y4;
+!!IF:L^{~gold}You clicked this square %Y4 times{~}^;
+!!VRy4:+1;
+!!SN:W^Map%Y1/%Y2/%Y3^/y4;</script>
+	
+	This example will show a message displaying how many times a map square was clicked
+		
+	</td>
+  </tr>
+    <tr>
+    <td width="13%" valign="top" height="15"><a name="X"></a><b>
+    <font face="Arial" size="2" color="#FF0000">X</font><font face="Arial" size="2" color="#800080">$1/../$16;</font><font face="Arial" size="2"><font color="red" size="2" class="Helvetica32">;</font></font></b><img src="../images/era.gif" border=0 width=28 height=11></td>
+    <td width="87%" height="15"><b><font face="Arial" size="2">Access new events parameters</b><br>
+    This command is used to set/get new events' parameters.
+	For example event "Key pressed" has two parameters: key code / disable default reaction?<br><br>
+	Example:<br>
+	<script type="erm">!!SN:X?y1/?y2; Get first two parameters
+!!SN:Xz1; first parameter is now address of variable z1
+!!SN:X?y1; y1 — address of variable z1</script>
+	</font></span><font face="Arial" size="2"></td>
+  </tr>
+</table>
+
+<p><font face="Arial" size="2">Here is a short tour of how to change sounds for objects.<br>
+For example, we may want to change a sound when we visit a learning stone.<br>
+First we need a file with a new sound. We'll use a sound file named 1.wav in this example. Then we need a &quot;silent&quot; file to avoid 
+&quot;resource not found&quot; message (you may find the ZQUIET.WAV file in the data folder).<br>
+Now place some learning stones on the map and add an ERM script:<br>
+***************<br>
+<script type="erm">ZVSE
+!?OB100; visit learning stone
+!!VRz10:S^..\data\1.wav^; external WAVE or 82M file
+!!SN:Pz10; Play it now
+!?SN; sound trigger
+!!SN:S?z-10; store a sound file name
+!!VRi:S0;
+!!VRz-9:S^Gazebo.wav^;
+!!VRi&z-10=z-9:S1; learning stone?
+!?SN&i=1; continue if learning stone
+!!VRz-10:S^ZQUIET.WAV^; nothing just silence
+!!SN:Sz-10; shut up !</script>
+<p>&nbsp;</p>
+<p><font face="Arial" size="2">Some sounds won't trigger !?SN, however, such as:<br>
+<br>
+- casting Adventure Map spells other than View Air and View Earth<br>
+- building a building in a town,<br>
+- digging (for the Grail)<br>
+- start of combat<br>
+- combat screen battle sounds<br>
+- activating a cheat code<br>
+- being *near* a dwelling (e.g., monastery chanting, guardhouse ruckus, etc.) or 
+ANY other object (e.g., a windmill) where you can hear a sound file playing<br>
+[BTW, most of the AB dwelling (e.g., Enchanters, Rust Dragons), and the WoG 
+dwellings (even level 8) all have the same sound as the Barracks from what I can 
+tell from listening.]<br>
+- monolith teleport sound<br>
+- horse movement<br>
+- button clicking (e.g., clicking the Kingdom Overview button)</font></p>
+
+</body>
+<script src="../other/erm.js"></script> 
+<link rel="stylesheet" type="text/css" href="../other/erm.css"/>
+</html>

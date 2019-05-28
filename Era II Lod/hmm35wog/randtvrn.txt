@@ -1,0 +1,354 @@
+Beware the death gaze of the Nightmare for she is a horse without a soul.
+I've heard that the dazzling scales of the Diamond Dragon are bright enough to blind an unwary foe.
+From the deepest pits of Hell comes the Antichrist and he will take your soul.
+In an Arcane Tower lives a ghost who can help you realize your combat or magical potential. But, there's a price; with every gain comes a corresponding loss.
+The vampiric Blood Dragon will drain a victim's life to replenish its own.
+In the dead of night, the fearsome Darkness Dragon swoops down upon its prey, searing it with black flame and then flies away again in the blink of an eye.
+The Cover of Darkness can be used to elude your enemies as can the Hero Nagash and the Darkness Dragon.
+The flames of the Sacred Phoenix will burn any who engage it in combat.
+When a town has been completely destroyed, only the Ghosts remain.
+Ghosts will increase their number from the souls of those they kill.
+Elemental Messengers of Fire, Air, Earth and Water are tough to kill and highly resistant to magic of their own element.
+The terrifying Gorynych resembles a Hydra but has the wings of a dragon!
+The best offense is a legion of Azure Dragons!
+Did you ever hear the one about the bunny who dreamed of being a carrot... and then became one?
+Hidden among the desert dunes are giant Sphinxes. Answer their riddle correctly and you'll be blessed but answer wrong and you'll be cursed.
+The water of Valhalla's Fountain temporarily boosts the luck and skill of a hero in combat but suppresses all magical powers until the effect wears off.
+In isolation, the War Zealots have mastered their fighting skills and trained their minds to repel magic.
+Arctic Sharpshooters are able to hide in snow-covered places, which allows them to be better protected from missile fire.
+Lava Sharpshooters get their name from the bottles of fiery lava in which they dip their arrows. In close combat they can be used to burn their assailants.
+Representatives of the Gods have been sent to help restore balance in Erathia.
+An Emissary of War will grant an increase to a Hero's attack skill every week.
+An Emissary of Peace will grant an increase to a Hero's defense skill every week.
+An Emissary of Mana will grant an increase to a Hero's power skill every week.
+An Emissary of Lore will grant an increase to a Hero's knowledge skill every week.
+Monsters around these parts are crazy! Have you heard the nonsense they mutter about?
+If you destroy a town, you must wait awhile for the dust to settle before rebuilding.
+The fabled Golden Arrow relic will protect an army from a castle's arrow tower defenses.
+Arrow Towers shoot faster when the fabled Golden Arrow relic is in the hands of a Hero defending a castle against siege.
+A Supreme Archangel's attack is simply devastating. Nothing can stand against it!
+I've heard that Ghost Behemoths can walk straight through a castle wall as if it weren't there!
+I've heard that a Lord of Thunder tosses thunderbolts twice as fast as any Titan.
+I've heard that Hell Hydras regenerate their lost heads.
+Ancient Tomes of Knowledge will help you master a skill. These scholarly volumes can sometimes be found locked away in chests.
+If your mind is cluttered with useless knowledge, visiting the monks at the Market of Time will help you free it to learn new things.
+Whether you seek powerful artifacts or valuable commodities, a visit to the Palace of Dreams is the place to go to win!
+I heard of a hero who went fishing in a Magic Well. He hauled up a chest full of riches!
+If you're feeling lucky, pull up a chair at the tavern down the road and join in a game of cards. You could double or even triple your stake!
+Groups of freelance creatures can be hired at the Freelancer's Guild for a very reasonable price. They'll work alone but won't betray you.
+I heard of a man who came upon a giant living skull. It spoke to him, and for a small fee it told him where he could find a powerful artifact!
+Altars of Transformation are mysterious and very old. Nobody knows who built these arcane structures, but their power can transform an entire army.
+The mystical Summoning Stones are used by heroes to fortify their armies with reinforcements when they're far from home.
+Those who drink the water from the fountain of Venus receive her blessing. In combat it bolsters their morale and boosts their luck.
+Nothing hits the spot quite like my famous Barbecued Werewolf Steaks.  No?  Well how about some Wild Boar stuffed with chopped Goblin Rider?
+Heroes with Eagle Eye always seem to know more spells than they could have learned in battle.
+A good Commander is an asset to any Hero.
+Dungeon Commanders sell the dead bodies of their enemies for gold.
+A Rampart Commander will make sure your First Aid Tent is better than new.
+Inferno Commanders can charm troops from an enemy army to their side before the battle begins.
+Fortress Commanders have excellent attack and defense in combat.
+Tower Commanders have learned how to replenish their Hero's mana during combat.
+Castle Commanders learn quicker than all others.
+Necropolis Commanders are as dead as the armies they command but can reanimate their fallen comrades.
+When you take the cards of prophecy into battle they may give you luck or give you misfortune. Usually it's luck though which is a pretty good deal.
+Rogues will often seek out and join a Hero who is proficient in the ways of Scouting.
+Many heroes tell tales of the fabulous Adventure Caves, and the wise hermits, bountiful treasures and great danger they have found in their depths.
+If you're lacking basic training or badly in need of gold or resources, visit the kindly folks at an Alms House for some help.
+An eccentric old guy runs a Junk Merchant's shop and will buy your more useless artifacts from you. He'll generally give you a pretty good deal.
+If you need some money to develop a town or finance that new army, stop by the Bank. They're always willing to give a loan to new customers with good credit.
+Sometimes, if you're lucky, you can find a Mysterious Creature Dwelling where a ready-made army can be yours if can afford them.
+Ever wish your magic shield was more magic or your magic sword had more slaying power? Visit a friendly Artificer; for a small fee he'll upgrade your artifacts.
+If you're in need of combat training or perhaps a good sword or shield, visit the Battle Academy and sign up for classes.
+Need to bone up on some magic skills? Visit the School of Wizardry and sign up for lessons today!
+Heroes who excel at Learning may find their combat and magic skills advancing even faster than they expect.
+Bizarre as it may sound, Heroes who study the art of magic Resistance, will sometimes "resist" the advanced training of enemy troops.
+A Hero skilled in Artillery may be able to pick off a few enemies before the armies even engage in battle.
+A Hero proficient in First Aid can sometimes bring mortally wounded creatures back to life after a battle.
+Santa Gremlins are always surrounded by their loyal bodyguards.
+Beware the Santa Gremlins! They may look cute but they hurl magical daggers of ice in combat.
+Royal Griffins will seek out and serve any Hero who carries a Bird of Perception.
+Sprites will seek out and serve any Hero who carries a Pendant of Life.
+Zombies will seek out and serve any Hero who carries a Pendant of Death.
+Beware the Rampaging Ogre for he'll stop at nothing to get back his shield!
+I've heard that a certain pair of boots is haunted by a ghost of a dead cobbler. Every week he'll make a new pair, completely identical to the first.
+It is said that if we remembered everything we experienced we would be very wise indeed. And that's just what the Pendant of Total Recall lets you do.
+If you want to recover gold pilfered by your troops, be sure to get yourself an Emblem of Cognizance.
+When traveling in parts unknown, bring along a Stoic Watchman. This little artifact lets you see for miles! Pity it takes 7 days to recharge.
+Many novice troops who attack at range will benefit from the power of a Pendant of Second Sight.
+A Pendant of Holiness bestows the knowledge of holy spells upon its wearer.
+If you absolutely must get some place fast, invest in a pair of Boots of Polarity. They're only good for one trip but sometimes that's all you need.
+A wizard is gathering up all Garnitures of Interference to destroy them because they're messing up his magic, but he'll give you a fair trade for one.
+The secret to increased knowledge is the attainment of a calm and dispassionate mind. A Pendant of Dispassion is a great help with this task.
+It is said that a Pendant of Free Will can improve those creatures who have little or no will themselves.
+A magic spell scroll once saved my life when it cast its spell all on its own. It almost seemed to be alive!
+An Orb of Vulnerability not only makes creatures susceptible to magic but attracts mages who wish to study this phenomenon.
+Nobody knows why, but Mighty Gorgons seem attracted to the wielder of a Sphere of Permanence and will serve that wielder loyally.
+A Statesman's Medal brings prestige to any town. A Hero who donates one is certain to have a building constructed in his honour.
+If you release the djinn trapped within an Orb of Inhibition, he'll grant a boon to some of your troops.
+The Surcoat of Counterpoise appears to have a beneficial affect when worn with certain artifacts.
+A Castle's Arrow Towers improve with each battle won.
+There are many exciting ways to use shimmering bars of magical Mithril!
+Magical Mithril is rare. You can't trade for it, but sometimes you'll find it lying around in stacks.
+I heard of a man who was quietly fishing at a well when horrible monsters crawled out and ate him!
+A Hero skilled in the art of Sorcery can sometimes visit certain places from afar.
+For those skilled in Mysticism, some things that were hidden are now revealed.
+For those skilled in Sorcery, much that was unknown is now revealed.
+There's a vast underground tunnel complex connected by Magic Wells but sometimes it's hard to locate the entrance.
+Many Rogues make their home in the mysterious Adventure Caves and sometimes they can be bargained with.
+Beware chests guarded by deadly magical darts!
+Beware chests guarded by poison gas!
+At the Palace of Dreams, a fool and his gold are soon parted.
+The water of Valhalla's Fountain temporarily boosts the luck and skill of a hero in combat but suppresses all magical powers until the effect wears off.
+Drinking the waters of Hydromel from a Fountain of Fortune will temporarily boost a hero's attack and defense skills in combat.
+Breathing the spores of giant mushrooms of air, fire, earth and water will temporarily give a hero great power over the magic spells of those elements.
+Sometimes you'll find the deed to a fully-functional mine locked away in a chest. They're completely legal.
+Asmodeus is attuned to Hero's who carry the Hourglass of the Evil Hour and will fight for any who call him. But a piece of the Hero's soul is the price.
+Rumor has it that heroes and town-types are now closer in ability than ever before.
+Sometimes a wizard will lose her spellbook and the lucky finder will gain its power instead.
+The strange inhabitants of the Grotto keep a stash of ore and gold.
+Destroy some lowly vampires at the Transylvanian Tavern and you may impress the Vampire Lords enough to join your cause.
+The Home of the Bat is a haven for Vampires.
+The woodland protectors of the Hunting Lodge stockpile wood and gold.
+Dispose of the guardian Golems and Gremlins of the Snow-covered Grotto and claim your reward.
+A Hero can leave his troops just about anywhere on guard duty but if they feel abandoned, they'll never rejoin his army.
+A Commander with Master Attack and Master Defense will reduce his enemy's defense by 50%.
+A Commander with Master Attack and Master Hit Points will cause her enemies to freeze with fright.
+A Commander with Master Attack and Master Damage will always do maximum damage.
+A Commander with Master Attack and Master Magic Power cannot be retaliated against.
+A Commander with Master Attack and Master Speed will gain a ranged attack.
+A Commander with Master Defense and Master Hit Points can retaliate against unlimited foes.
+A Commander with Master Defense and Master Damage will strike all enemies around him.
+A Commander with Master Defense and Master Magic Power will sometimes paralyze her opponents.
+A Commander with Master Defense and Master Speed can often block physical attacks completely.
+A Commander with Master Hit Points and Master Damage can strike twice each round.
+A Commander with Master Hit Points and Master Magic Power gains a permanent Fire Shield.
+A Commander with Master Hit Points and Master Speed regenerates 50 hit points each round.
+A Commander with Master Damage and Master Magic Power gains the Death Stare ability.
+A Commander with Master Damage and Master Speed does increased damage when charging.
+A Commander with Master Magic Power and Master Speed can fly across the battlefield.
+The Sylvan Centaur is said to be half-elf and half-centaur, joined together my magic.
+In some lands, the mountains and forests can be traversed without flying, but watch out for ambushes and landslides.
+Some enterprising person had the bright idea to charge a toll for using the two-way monoliths but it's a mystery what he does with all the gold he collects.
+I've heard that an odd assortment of creatures have moved into some of the Confluxes.
+The Sorceress can change into a raven at will, and large groups of Sorceresses often cast powerful enchantments on their foes.
+They say that the fiery Hellsteed is related to the Nightmare; when its fires burn out it loses its soul and becomes a shadow of death.
+Lycanthropy is spreading throughout the land. The bite of the Werewolf is far worse than its howl.
+The Pit Kobold is an expert at underground travel.
+The bite of the Dracolich poisons the victim's blood with evil that burns from within.
+Some of the castles seem to be producing more gold and troops than ever before.
+I've heard it said that some of the magic scrolls are alive and will cast spell on their own.
+It's smart to pay attention to the relationships between the creatures in your army. Some will help each other while others will actually kill each other.
+The writing on most signs is a lot easier to change nowadays. I suppose it must be the type of wood they're made out of.
+It's amazing the new maneuvers that can be performed these days; I witnessed a legion of troops split itself into two even stacks in the heat of battle.
+Heroes are getting pickier it seems. Many are ditching their old Commander and choosing a new one from a completely different faction than before.
+Competition is so fierce that a lot of newly trained Commanders have picked up extra skills and abilities.
+I heard an old wizard saying how his guild has reworked the old Protection spells so they'll protect against all kinds of spells now.
+Apparently, many of the War Machines have been upgraded and improved so that they're a lot more useful than they used to be.
+Sometimes heroes will promote a regular soldier from their army to Henchman status, and a Henchman who survives many battles is a force to be reckoned with.
+I've heard rumours of Dragon Flies enchanted to drive people mad, confusing them so they can't retaliate and causing them to attack friend as often as foe.
+There are bizarre tales of creatures who can transform themselves into any other monster you can imagine. Metamorphs, they call them.
+These days, even the hut witches have Commanders. Your own Commander might learn a thing or two from visiting them.
+Finding magical stones of power is a sure-fire way of boosting the abilities of your Commander.
+Magic mirror portals situated around the land can provide a tired army with a fast way home. Just be sure you can afford to pay the mirror-keeper his fee.
+Beware the Death Chambers in which lurk the Undead King and his evil minions! These chambers are full of treasure but only the powerful survive a visit.
+A new type of Tactics teaches an army to maneuver faster in combat under the command of a properly trained hero.
+There are spies infiltrating towns and performing missions of theft, sabotage and assassination. You can even hire your own spy with the right connections.
+A lot of Scholars are researching new spells in their spare time. If there isn't a mage guild nearby, it sure would be handy to know one.
+All good Navigators are also trained in onboard ship combat and can be a real asset during a battle.
+If you're Lucky, some of your troops will fight better for an entire battle.
+Heroes who make Learning a priority find that they can become better fighters or spellcaster even while studying quietly at home.
+A Marksman's crossbow quarrel is so powerful it can often pierce a foe and damage another right behind the first.
+Many creatures appear to have mastered new abilities lately, usually in addition to their old ones.
+Neutral creatures, following no hero or flag, appear to be getting tougher and tougher as time goes on.
+Have you heard of the Dragonmaster and how his elite Darkness Dragons now guard the old Dragon Utopias? Many foolish armies have died trying to take them on.
+Rumour has it that powerful wizards living in emerald towers can enchant an entire species of creatures to make them more powerful.
+When exploring certain lands you may come upon many garrisons. Be careful because they may be booby-trapped with landmines, fire walls, and other magic.
+I've heard that sometimes heroes can use artifacts fashioned for Commanders, and the hero will gain power from the artifact instead.
+It's said that a Pendant of Life will help living troops live longer.
+I've heard that a Pendant of Death will make the Undead more fearsome.
+I've heard that a Pendant of Total Recall will help archers find their mark.
+I've heard that a Pendant of Second Sight will help you avoid a ranged attack.
+Nothing hits the spot quite like my famous Barbecued Gorynych steaks.  No?  Well how about some Vorpal Bunny stuffed with deep fried Metamorph?
+I've heard that a Pendant of Holiness will bless your whole army.
+If your soul is tainted with bloodshed you may find yourself fighting Karmic Battles against ever-increasing monstrous foes!
+I've heard that a Pendant of Dispassion will fill your army with bloodlust.
+I've heard that a Pendant of Free Will will make your troops' skin as hard as stone.
+An Orb of Vulnerability will make your enemy very susceptible to disease.
+An Orb of the Firmament will help protect your army from Lightning and other spells of the air.
+An Orb of Silt will help protect your army from Meteor Shower and other spells of the earth.
+An Orb of Tempestuous Fire will help protect your army from Fireball and other spells of the flame.
+An Orb of Driving Rain will help protect your army from Ice Bolt and other watery spells.
+Conflux Commanders are very persuasive and are often able to convince some enemy troops to never fight again.
+Stronghold Commanders are exceptionally skilled when it comes to the Ballista.
+Many heroes tell tales of the fabulous Adventure Caves, and the wise hermits, bountiful treasures and great danger they have found in their depths.
+Artifacts of Conjuring will often let a hero cast additional spells in combat.
+The magic of a Sphere of Permanence makes non-living troops tougher.
+A Necromancer's Skeletons are always warriors if she wears a pair of Deadman's Boots.
+A Necromancer's Vampires are always Lords if he wears the Vampire's Cowl.
+A Necromancer's Walking Dead always become Zombies if she wears the Undertaker's Amulet.
+A Hero's Centaurs are always Captains if he wields the Centaur's Axe.
+A Hero's Dwarves are always Battle-hardened if he wears the Shield of the Dwarven Lords.
+A Hero's Dendroids are always Soldiers if she wears a Breastplate of Petrified Wood.
+A Hero's Unicorns are always trained for War if he wears a Helm of the Alabaster Unicorn.
+The mysterious Garb of the Forest Lord is formed from the Centaur's Axe, the Shield of the Dwarven Lords, and the Breastplate of Petrified Wood.
+If you wear a Statesman's Medal, Diplomat's Ring or Ambassador's Sash, the creatures you meet will sometimes be a little friendlier than usual.
+The Vestment's of Authority, formed by wearing a Statesman's Medal, Diplomat's Ring and Ambassador's Sash will persuade many to join you.
+Beware the Santa Gremlins! They may look cute but they hurl magical daggers of ice in combat.
+Royal Griffins will seek out and serve any Hero who carries a Bird of Perception.
+Sprites will seek out and serve any Hero who carries a Pendant of Life.
+Zombies will seek out and serve any Hero who carries a Pendant of Death.
+Beware the Rampaging Ogre for he'll stop at nothing to get back his shield!
+I've heard that a certain pair of boots is haunted by a ghost of a dead cobbler. Every week he'll make a new pair, completely identical to the first.
+It is said that if we remembered everything we experienced we would be very wise indeed. And that's just what the Pendant of Total Recall lets you do.
+If you want to recover gold pilfered by your troops, be sure to get yourself an Emblem of Cognizance.
+When traveling in parts unknown, bring along a Stoic Watchman. This little artifact lets you see for miles! Pity it takes 7 days to recharge.
+Many novice troops who attack at range will benefit from the power of a Pendant of Second Sight.
+A Pendant of Holiness bestows the knowledge of holy spells upon its wearer.
+If you absolutely must get some place fast, invest in a pair of Boots of Polarity. They're only good for one trip but sometimes that's all you need.
+A wizard is gathering up all Garnitures of Interference to destroy them because they're messing up his magic, but he'll give you a fair trade for one.
+The secret to increased knowledge is the attainment of a calm and dispassionate mind. A Pendant of Dispassion is a great help with this task.
+It is said that a Pendant of Free Will can improve those creatures who have little or no will themselves.
+Diplomacy is an essential part of war and a strong army is sure to result from the use of the Diplomat's Ring.
+An Orb of Vulnerability not only makes creatures susceptible to magic but attracts mages who wish to study this phenomenon.
+Nobody knows why, but Mighty Gorgons seem attracted to the wielder of a Sphere of Permanence and will serve that wielder loyally.
+A Statesman's Medal brings prestige to any town. A Hero who donates one is certain to have a building constructed in his honour.
+If you release the djinn trapped within an Orb of Inhibition, he'll grant a boon to some of your troops.
+The Surcoat of Counterpoise appears to have a beneficial affect when worn with certain artifacts.
+A Castle's Arrow Towers improve with each battle won.
+There are many exciting ways to use shimmering bars of magical Mithril!
+Magical Mithril is rare. You can't trade for it, but sometimes you'll find it lying around in stacks.
+I heard of a man who was quietly fishing at a well when horrible monsters crawled out and ate him!
+A Hero skilled in the art of Sorcery can sometimes visit certain places from afar.
+For those skilled in Mysticism, some things that were hidden are now revealed.
+For those skilled in Sorcery, much that was unknown is now revealed.
+There's a vast underground tunnel complex connected by Magic Wells but sometimes it's hard to locate the entrance.
+Many Rogues make their home in the mysterious Adventure Caves and sometimes they can be bargained with.
+Beware chests guarded by deadly magical darts!
+Beware chests guarded by poison gas!
+At the Palace of Dreams, a fool and his gold are soon parted.
+The water of Valhalla's Fountain temporarily boosts the luck and skill of a hero in combat but suppresses all magical powers until the effect wears off.
+Drinking the waters of Hydromel from a Fountain of Fortune will temporarily boost a hero's attack and defense skills in combat.
+Breathing the spores of giant mushrooms of air, fire, earth and water will temporarily give a hero great power over the magic spells of those elements.
+Sometimes you'll find the deed to a fully-functional mine locked away in a chest. They're completely legal.
+Asmodeus is attuned to Hero's who carry the Hourglass of the Evil Hour and will fight for any who call him. But a piece of the Hero's soul is the price.
+The Inferno and Fortress have trained for a long time and are now closer in ability to the other factions.
+Sometimes a wizard will lose her spellbook and the lucky finder will gain its power instead.
+The strange inhabitants of the Grotto keep a stash of ore and gold.
+Destroy some lowly vampires at the Transylvanian Tavern and you may impress the Vampire Lords enough to join your cause.
+The Home of the Bat is a haven for Vampires.
+The woodland protectors of the Hunting Lodge stockpile wood and gold.
+Dispose of the guardian Golems and Gremlins of the Snow-covered Grotto and claim your reward.
+A Hero can leave his troops just about anywhere on guard duty but if they feel abandoned, they'll never rejoin his army.
+A Commander with Master Attack and Master Defense will reduce his enemy's defense by 50%.
+A Commander with Master Attack and Master Hit Points will cause her enemies to freeze with fright.
+A Commander with Master Attack and Master Damage will always do maximum damage.
+A Commander with Master Attack and Master Magic Power cannot be retaliated against.
+A Commander with Master Attack and Master Speed will gain a ranged attack.
+A Commander with Master Defense and Master Hit Points can retaliate against unlimited foes.
+A Commander with Master Defense and Master Damage will strike all enemies around him.
+A Commander with Master Defense and Master Magic Power will sometimes paralyze her opponents.
+A Commander with Master Defense and Master Speed can often block physical attacks completely.
+A Commander with Master Hit Points and Master Damage can strike twice each round.
+A Commander with Master Hit Points and Master Magic Power gains a permanent Fire Shield.
+A Commander with Master Hit Points and Master Speed regenerates 50 hit points each round.
+A Commander with Master Damage and Master Magic Power gains the Death Stare ability.
+A Commander with Master Damage and Master Speed does increased damage when charging.
+A Commander with Master Magic Power and Master Speed can fly across the battlefield.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

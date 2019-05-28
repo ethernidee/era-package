@@ -1,0 +1,46 @@
+WoG MP Script Compatibility   August 25, 2004
+
+The following combat scripts should be fully compatible with network human-to-human battles. If you encounter synchronization errors or other network-specific combat errors with these scripts enabled, please inform us with full details.
+
+Note: non-combat scripts and combat scripts that only involve neutral units aren't listed as these will never be part of a network human-to-human battle anyway, so anything not listed in this document should be considered fully compatible.
+
+NETWORK BATTLE COMPATIBLE SCRIPTS
+
+script01.erm - Map Rules
+script03.erm - Secondary Skills Boost
+script41.erm - Battle Extender (not technically a combat script since it just changes base
+               creature stats for the entire game)
+script44.erm - Emerald Tower (the ability and stat changes should work in all battles)
+script46.erm - Berserker Flies
+script48.erm - Enhanced Secondary Skills
+script54.erm - Enhanced War Machines I
+script60.erm - Forgotten Shrine
+script64.erm - Tobyn's Scripts (First Aid II, Warfare)
+script68.erm - New Battlefields
+script73.erm - Enhanced War Machines III
+
+
+The following scripts are currently disabled for network human-to-human battles but will continue to work in an MP game for other types of battles. Fully-network compatible updated versions of these scripts will be released if and when they're ready.
+
+NETWORK BATTLE DISABLED SCRIPTS
+
+script06.erm - Hourglass of Asmodeus
+script17.erm - Potion Fountains
+script29.erm - Chest (poison from trapped chests)
+script34.erm - Cards of Prophecy
+script39.erm - Hero Specialization Boost
+script42.erm - Garrisons
+script49.erm - Henchmen
+script50.erm - Enhanced Monsters
+script51.erm - Enhanced Commanders
+script55.erm - Enhanced War Machines II
+script56.erm - Metamorphs
+script59.erm - Piercing Shot
+script61.erm - Protection from the Elements
+script62.erm - Split Decision
+script71.erm - Enhanced Artifacts
+
+Note: disabled script options will be noted as such at the bottom of the WoG Options screen right-click hint text.
+
+
+The list may be updated with possible future script updates.
