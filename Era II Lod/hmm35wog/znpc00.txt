@@ -946,37 +946,37 @@ Casts %s (%i)
 224	Astral Spirit	
 225	Left Mouse Click to pass to Hero, Right Mouse Click for info	
 226	
-Axe of Smashing
+{Axe of Smashing}
 
 Gives +%i Attack
 (will give +%i Attack after %i victorious battles)
 	
 227	
-Mithril Mail
+{Mithril Mail}
 
 Gives +%i%% Health
 (will give +%i%% Health after %i victorious battles)
 	
 228	
-Sword of Sharpness
+{Sword of Sharpness}
 
 Gives +%i%% Damage
 (will give +%i%% Damage after %i victorious battles)
 	
 229	
-Helm of Immortality
+{Helm of Immortality}
 
 Revives a slain Commander immediately after battle
 (artifact incremental bonuses are not lost)
 	
 230	
-Pendant of Sorcery
+{Pendant of Sorcery}
 
 Gives +%i Magic Power
 (will give +%i Magic Power after %i victorious battles)
 	
 231	
-Boots of Haste
+{Boots of Haste}
 
 Gives +%i Speed
 (will give +%i Speed after %i victorious battles)
@@ -985,20 +985,20 @@ Gives +%i Speed
 Not Using Description
 	
 233	
-Dragon Eye Ring
+{Dragon Eye Ring}
 
 Gives Commander Breath Attack (two squares)
 and
 Dragon nature (gets bonuses the same as Dragons)
 	
 234	
-Hardened Shield
+{Hardened Shield}
 
 Gives +%i Defense
 (will give +%i Defense after %i victorious battles)
 	
 235	
-Slava's Ring of Power
+{Slava's Ring of Power}
 
 Gives Commander all six Primary Skills at Advanced level
 	
@@ -1103,181 +1103,3 @@ Your Commander's Speed increases by 1.
 255	Your Commander	
 256	Permanent bonus Your Commander gets	
 257	Creatures that had been persuaded by the enemy Commander to leave the battlefield returned.	
-258	%s has gained a level.	Choose a skill to improve:
-259	The Name of your Commander	!!! DEAD !!!
-260	Open commander	Click to open commander
-261	Exit	Click to exit
-262	Ok	Click to increase the selected skill.
-263	Dismiss commander	Click to dismiss this commander
-264	Level: 	Are you sure you want to dismiss this Commander?
-265	Class: 	
-266	Hero owner: 	
-267	Experience: 	
-268	Next level at: 	
-269	Class specific skills	
-270	Artifacts	
-271	Basic skills set of your Commander	
-272	Extra skills set of your Commander	
-273	Right mouse click for Commander Biography	
-274	The Name of your Commander	
-275	Attack:	Attack: %d
-276	Defense:	Defense: %d
-277	Hit Points:	Hit Points: %d
-278	Damage:	Damage: %d - %d
-279	Magic Power:	Magic Power: %d
-280	Resistance:	Resistance: %d%%
-281	Shots:	Shots: %d
-282	Speed:	Speed: %d
-283	Reduce Enemy Defense by 50% (Attack + Defense)	Commander can get : Reduce Enemy Defense by 50% (Attack + Defense)
-	Fearsome (Attack + Hit Points)	Commander can get : Fearsome (Attack + Hit Points)
-	Maximum damage always (Attack + Damage)	Commander can get : Maximum damage always (Attack + Damage)
-	No Enemy Retaliation (Attack + Magic Power)	Commander can get : No Enemy Retaliation (Attack + Magic Power)
-	Can Shoot (Attack + Speed)	Commander can get : Can Shoot (Attack + Speed)
-	Endless Retaliation (Defense + Hit Points)	Commander can get : Endless Retaliation (Defense + Hit Points)
-	Strike all Enemies around (Defense + Damage)	Commander can get : Strike all Enemies around (Defense + Damage)
-	Permanent Fire Shield (Defense + Magic Power)	Commander can get : Permanent Fire Shield (Defense + Magic Power)
-	Block (Defense + Speed)	Commander can get : Block Physical Damage (Defense + Speed)
-	Attack twice (Hit Points + Damage)	Commander can get : Attack twice (Hit Points + Damage)
-	Melee Attack 50% chance to Paralyze (Hit Points + Magic Power)	Commander can get : Melee Attacks 50% chance to Paralyze (Hit Points + Magic Power)
-	Regeneration 50 HP every turn (Hit Points + Speed)	Commander can get : Regeneration 50 HP every turn (Hit Points + Speed)
-	DeathStare (Damage + Magic Power)	Commander can get : DeathStare (Damage + Magic Power)
-	Champion Distance Bonus (Damage + Speed)	Commander can get : Champion Distance Bonus (Damage + Speed)
-	Ignore Obstacles [fly] (Magic Power + Speed)	Commander can get : Ignore Obstacles [fly] (Magic Power + Speed)
-298	
-Reduce Enemy Defense by 50%
-
-The Commander may gain this extra skill if he or she has
-Attack and Defense Master skills
-
-It is marked with [D] in Commander info during a battle.
-
-	
-Fearsome
-
-The Commander may gain this extra skill if he or she has
-Attack and Hit Points Master skills
-
-It is marked with [O] in Commander info during a battle.
-
-Enemies may lose their turn due to freezing with fear.
-
-	
-Maximum damage always
-
-The Commander may gain this extra skill if he or she has
-Attack and Damage Master skills
-
-It is marked with [M] in Commander info during a battle.
-
-	
-No Enemy Retaliation
-
-The Commander may gain this extra skill if he or she has
-Attack and Magic Power Master skills
-
-It is marked with [N] in Commander info during a battle.
-
-	
-Can Shoot
-
-The Commander may gain this extra skill if he or she has
-Attack and Speed Master skills
-
-It is marked with [S] in Commander info during a battle.
-
-	
-Endless Retaliation
-
-The Commander may gain this extra skill if he or she has
-Defense and Hit Points Master skills
-
-It is marked with [E] in Commander info during a battle.
-
-Strike back every attack
-
-	
-Strike all Enemies around
-
-The Commander may gain this extra skill if he or she has
-Defense and Damage Master skills
-
-It is marked with [A] in Commander info during a battle.
-
-	
-Permanent Fire Shield
-
-The Commander may gain this extra skill if he or she has
-Defense and Magic Power Master skills
-
-It is marked with [I] in Commander info during a battle.
-
-Starts Every round with Fire Shield
-
-	
-30% chance to Block any Physical Damage
-
-The Commander may gain this extra skill if he or she has
-Defense and Speed Master skills
-
-It is marked with [B] in Commander info during a battle.
-
-	
-Attack twice
-
-The Commander may gain this extra skill if he or she has
-Hit Points and Damage Master skills
-
-It is marked with [2] in Commander info during a battle.
-
-	
-Melee Attack 50% chance to Paralyze
-
-The Commander may gain this extra skill if he or she has
-Hit Points and Magic Power Master skills
-
-It is marked with [P] in Commander info during a battle.
-
-Every attack has 50% chance to Paralyze an enemy for 3 rounds
-
-	
-Regeneration 50 HP every turn
-
-The Commander may gain this extra skill if he or she has
-Hit Points and Speed Master skills
-
-It is marked with [R] in Commander info during a battle.
-
-Every turn (in the beginning) regenerates 50 Hit Points
-
-	
-DeathStare
-
-The Commander may gain this extra skill if he or she has
-Damage and Magic Power Master skills
-
-It is marked with [G] in Commander info during a battle.
-
-Every attack has the Death Stare
-Kills (Commander Level)/(Creature Level)
-creatures in the stack
-where Creature Level is from 1 to 7
-
-	
-Champion Distance Bonus
-
-The Commander may gain this extra skill if he or she has
-Damage and Speed Master skills
-
-It is marked with [C] in Commander info during a battle.
-
-Damage grows for 5% per square
-
-	
-Ignore Obstacles [fly]
-
-The Commander may gain this extra skill if he or she has
-Magic Power and Speed Master skills
-
-It is marked with [F] in Commander info during a battle.
-
-	

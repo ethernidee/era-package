@@ -651,18 +651,4 @@ Blind, Berserk, Sorrow, Hypnotize and Forgetfulness.
 453	Current Artifact Bonus (cannot be changed now) :
 454	Note: You cannot change an Artifact Option during Battle or checking Upgraded Creature info
 455	Right-click to see more detailed Stack Experience information for this stack
-456	
-457	for Dlg_Expa_Mon.dll
-458	Pass this Artifact to the Hero?
-459	STACK EXPERIENCE DETAILS
-460	Creature Type:
-461	Experience Rank:
-462	Experience Points:
-463	Experience Points to Next Rank:
-464	Maximum Experience per Battle:
-465	Number of Creatures in stack:
-466	Max new recruits without losing Rank:
-467	Experience Multiplier:
-468	Upgrade Multiplier:
-469	Experience after Rank 10:
-470	Maximum New Recruits to remain at Rank 10:
+	

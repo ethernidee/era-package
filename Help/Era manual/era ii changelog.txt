@@ -3,14 +3,18 @@ Version 2.8.1
 [+] Option CPUPatch was replaced by CpuTargetLevel (value 0..100), defining desired level of CPU load. Real CPU loading decrease is usually
     greater than option value. 0 (almost not CPU loading in idle mode, but with possibly a bit not responsive interface or jerky mouse movement).
     100% — regular game mode (waste of CPU time and battery).
+[+] Integrated latest WoG Native Dialogs mod by igrik.
 [+] Tools\installmod.exe utility was updated to support new UTF-8 format of Mods\list.txt file.
+[+] Added char* GetEraVersion exported function.
 [+] Added event 'OnReportVersion' for important plugins and Era. Added void ReportPluginVersion(char* VersionLine) API to era.dll.
     It's now possible to view Era and important plugin versions via right mouse button on Credits button in main menu.
 [+] Added option 'Debug.DumpVirtualFileSystem'. If true, all virtual file system mappings are written in log.txt on game start.
+[+] Added full set of English texts and gui resources to enforce language of core WoG mod.
 [*] Added support for 'modlist' command line argument to map editor.
 [*] Restored obligatory mod list report in log.
 [*] Updated 'numeric creature stats.era' plugin by igrik. No more dependency on VC++ Redistributable anymore.
-[-] Fixed bug: not all virtual files and directories were correctly mapped. Updated vfs.dll to 1.0.2 version.
+[*] Updated patcher_x86.dll by Baratorch to 4.5.4.
+[-] Fixed bug: not all virtual files and directories were correctly mapped. Updated vfs.dll to 1.0.2.3 version.
 [-] Fixed bug: some Era exported API used non-stdcall conversion and pointer to internal routines, rather then special wrappers.
     This would cause immediate crashes in any plugin, that would try to use them.
 

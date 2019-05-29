@@ -40,8 +40,8 @@ None
 High morale enables the %s to attack again.		
 Low morale causes the %s to freeze in panic.		
 Make room for the %s in your army		
-Attack %s (%s damage)		
-"Shoot %s (1 shot left, %s damage)"		
+Attack %s (damage: %s) 		
+Shoot %s (1 shot left, damage: %s)		
 Campaign Description:		
 %s is active.		
 Session Name		
@@ -348,7 +348,7 @@ The enemy's flag flies on every mine. Victory is theirs!
 The enemy has delivered the precious cargo intact and claims victory!		
 Move %s here.		
 Fly %s here.		
-"Shoot %s (%d shots left, %s damage)"		
+Shoot %s (%d shots left, damage: %s)		
 View %s info.		
 No shots left!		
 Resurrect the %s		
@@ -884,3 +884,4 @@ Creating Map
 Only Gelu can carry Armageddon's Blade.		
 The Restoration of Erathia		
 "Congratulations, you have recovered all three artifacts."		
+kills:	

@@ -1,0 +1,26 @@
+; dialog experience monster
+STACK EXPERIENCE DETAILS
+Creature Type:
+Experience Rank:
+Experience Points:
+Experience Points to Next Rank:
+Maximum Experience per Battle:
+Number of Creatures in stack:
+Max new recruits without losing Rank:
+Experience Multiplier:
+Upgrade Multiplier:
+Experience after Rank 10:
+Maximum New Recruits to remain at Rank 10:
+
+; dialog commander
+Open Commander screen
+Click to dismiss this Commander.
+Exit Commander screen
+Click to increase selected skill.
+
+; general descriptions
+kills:
+Attack %s (damage: %s)
+Shoot %s (%d shots left, damage: %s)
+Shoot %s (last shot, damage: %s)
+{WoG Options}

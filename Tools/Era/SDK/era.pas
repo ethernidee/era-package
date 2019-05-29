@@ -228,7 +228,8 @@ procedure SaveEventParams;
 procedure RestoreEventParams;
 procedure RedirectMemoryBlock (OldAddr: pointer; BlockSize: integer; NewAddr: pointer); stdcall;
 function  GetRealAddr (Addr: pointer): pointer; stdcall;
-procedure ReportPluginVersion (VersionLine: pchar); external 'Era.dll';
+procedure ReportPluginVersion (VersionLine: pchar); external 'era.dll';
+procedure GetEraVersion: pchar; external 'era.dll' name 'GetVersion';
 
 
 var
@@ -238,40 +239,40 @@ var
 (***) implementation (***)
 
 
-procedure WriteAtCode;          external 'Era.dll' NAME 'WriteAtCode';
-procedure Hook;                 external 'Era.dll' NAME 'Hook';
-procedure ApiHook;              external 'Era.dll' NAME 'ApiHook';
-procedure KillThisProcess;      external 'Era.dll' NAME 'KillThisProcess';
-procedure FatalError;           external 'Era.dll' NAME 'FatalError';
-function  RecallAPI;            external 'Era.dll' NAME 'RecallAPI';
-procedure RegisterHandler;      external 'Era.dll' NAME 'RegisterHandler';
-procedure FireEvent;            external 'Era.dll' NAME 'FireEvent';
-function  LoadTxt;              external 'Era.dll' NAME 'LoadTxt';
-procedure ForceTxtUnload;       external 'Era.dll' NAME 'ForceTxtUnload';
-procedure ExecErmCmd;           external 'Era.dll' NAME 'ExecErmCmd';
-procedure ReloadErm;            external 'Era.dll' NAME 'ReloadErm';
-procedure ExtractErm;           external 'Era.dll' NAME 'ExtractErm';
-procedure FireErmEvent;         external 'Era.dll' NAME 'FireErmEvent';
-procedure ClearAllIniCache;     external 'Era.dll' NAME 'ClearAllIniCache';
-procedure ClearIniCache;        external 'Era.dll' NAME 'ClearIniCache';
-function  ReadStrFromIni;       external 'Era.dll' NAME 'ReadStrFromIni';
-function  WriteStrToIni;        external 'Era.dll' NAME 'WriteStrToIni';
-function  SaveIni;              external 'Era.dll' NAME 'SaveIni';
-procedure NameColor;            external 'Era.dll' NAME 'NameColor';
-procedure WriteSavegameSection; external 'Era.dll' NAME 'WriteSavegameSection';
-function  ReadSavegameSection;  external 'Era.dll' NAME 'ReadSavegameSection';
-procedure GetGameState;         external 'Era.dll' NAME 'GetGameState';
-function  GetButtonID;          external 'Era.dll' NAME 'GetButtonID';
-function  PatchExists;          external 'Era.dll' NAME 'PatchExists';
-function  PluginExists;         external 'Era.dll' NAME 'PluginExists';
-procedure RedirectFile;         external 'Era.dll' NAME 'RedirectFile';
-procedure GlobalRedirectFile;   external 'Era.dll' NAME 'GlobalRedirectFile';
-procedure RedirectMemoryBlock;  external 'Era.dll' NAME 'RedirectMemoryBlock';
-function  GetRealAddr;          external 'Era.dll' NAME 'GetRealAddr';
-procedure SaveEventParams;      external 'Angel.dll' NAME 'SaveEventParams';
-procedure RestoreEventParams;   external 'Angel.dll' NAME 'RestoreEventParams';
+procedure WriteAtCode;          external 'era.dll' NAME 'WriteAtCode';
+procedure Hook;                 external 'era.dll' NAME 'Hook';
+procedure ApiHook;              external 'era.dll' NAME 'ApiHook';
+procedure KillThisProcess;      external 'era.dll' NAME 'KillThisProcess';
+procedure FatalError;           external 'era.dll' NAME 'FatalError';
+function  RecallAPI;            external 'era.dll' NAME 'RecallAPI';
+procedure RegisterHandler;      external 'era.dll' NAME 'RegisterHandler';
+procedure FireEvent;            external 'era.dll' NAME 'FireEvent';
+function  LoadTxt;              external 'era.dll' NAME 'LoadTxt';
+procedure ForceTxtUnload;       external 'era.dll' NAME 'ForceTxtUnload';
+procedure ExecErmCmd;           external 'era.dll' NAME 'ExecErmCmd';
+procedure ReloadErm;            external 'era.dll' NAME 'ReloadErm';
+procedure ExtractErm;           external 'era.dll' NAME 'ExtractErm';
+procedure FireErmEvent;         external 'era.dll' NAME 'FireErmEvent';
+procedure ClearAllIniCache;     external 'era.dll' NAME 'ClearAllIniCache';
+procedure ClearIniCache;        external 'era.dll' NAME 'ClearIniCache';
+function  ReadStrFromIni;       external 'era.dll' NAME 'ReadStrFromIni';
+function  WriteStrToIni;        external 'era.dll' NAME 'WriteStrToIni';
+function  SaveIni;              external 'era.dll' NAME 'SaveIni';
+procedure NameColor;            external 'era.dll' NAME 'NameColor';
+procedure WriteSavegameSection; external 'era.dll' NAME 'WriteSavegameSection';
+function  ReadSavegameSection;  external 'era.dll' NAME 'ReadSavegameSection';
+procedure GetGameState;         external 'era.dll' NAME 'GetGameState';
+function  GetButtonID;          external 'era.dll' NAME 'GetButtonID';
+function  PatchExists;          external 'era.dll' NAME 'PatchExists';
+function  PluginExists;         external 'era.dll' NAME 'PluginExists';
+procedure RedirectFile;         external 'era.dll' NAME 'RedirectFile';
+procedure GlobalRedirectFile;   external 'era.dll' NAME 'GlobalRedirectFile';
+procedure RedirectMemoryBlock;  external 'era.dll' NAME 'RedirectMemoryBlock';
+function  GetRealAddr;          external 'era.dll' NAME 'GetRealAddr';
+procedure SaveEventParams;      external 'angel.dll' NAME 'SaveEventParams';
+procedure RestoreEventParams;   external 'angel.dll' NAME 'RestoreEventParams';
 
 
 begin
-  EventParams :=  Windows.GetProcAddress(Windows.LoadLibrary('Angel.dll'), 'EventParams');
+  EventParams :=  Windows.GetProcAddress(Windows.LoadLibrary('angel.dll'), 'EventParams');
 end.

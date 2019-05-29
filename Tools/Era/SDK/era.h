@@ -188,6 +188,7 @@ namespace Era
   typedef void  (__stdcall *TSaveEventParams) ();
   typedef void  (__stdcall *TRestoreEventParams) ();
   typedef void  (__stdcall *TReportPluginVersion) (char* VersionLine);
+  typedef const char* (__stdcall *TGetEraVersion) ();
  
 
   TEventParams* EventParams = NULL;
@@ -226,6 +227,7 @@ namespace Era
   TSaveEventParams      SaveEventParams       = NULL;
   TRestoreEventParams   RestoreEventParams    = NULL;
   TReportPluginVersion  ReportPluginVersion   = NULL;
+  TGetEraVersion        GetEraVersion         = NULL;
 
 
   HINSTANCE hEra;
@@ -271,6 +273,7 @@ namespace Era
     RedirectMemoryBlock   = (TRedirectMemoryBlock)  GetProcAddress(hEra, "RedirectMemoryBlock");
     GetRealAddr           = (TGetRealAddr)          GetProcAddress(hEra, "GetRealAddr");
     ReportPluginVersion   = (TReportPluginVersion)  GetProcAddress(hEra, "ReportPluginVersion");
+    GetEraVersion         = (TGetEraVersion)        GetProcAddress(hEra, "GetVersion");
   }
   
   #pragma pack(pop)
