@@ -187,7 +187,7 @@ namespace Era
   typedef void* (__stdcall *TGetRealAddr) (void* Addr);
   typedef void  (__stdcall *TSaveEventParams) ();
   typedef void  (__stdcall *TRestoreEventParams) ();
-  typedef void  (__stdcall *TReportPluginVersion) ();
+  typedef void  (__stdcall *TReportPluginVersion) (char* VersionLine);
  
 
   TEventParams* EventParams = NULL;
