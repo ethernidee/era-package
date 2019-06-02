@@ -241,7 +241,7 @@ namespace Era
     SaveEventParams       = (TSaveEventParams) GetProcAddress(hAngel, "SaveEventParams");
     RestoreEventParams    = (TRestoreEventParams)GetProcAddress(hAngel, "RestoreEventParams");
     /***/
-    hEra                  = (HINSTANCE) v[1];
+    hEra                  = LoadLibrary("era.dll");
     WriteAtCode           = (TWriteAtCode)          GetProcAddress(hEra, "WriteAtCode");
     Hook                  = (THook)                 GetProcAddress(hEra, "Hook");
     ApiHook               = (TApiHook)              GetProcAddress(hEra, "ApiHook");
