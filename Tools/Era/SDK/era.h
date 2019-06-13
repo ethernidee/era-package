@@ -1,5 +1,8 @@
 #pragma once
 #include <windows.h>
+#include <cstdio>
+#include <vector>
+#include <string>
 
 namespace Era
 {
@@ -113,6 +116,8 @@ namespace Era
     int RetAddr;
   };
 
+  typedef BOOL (__stdcall *THookHandler) (THookContext *Context);
+
   struct TEvent
   {
     char* Name;
@@ -143,137 +148,189 @@ namespace Era
   typedef void  (__stdcall *TWriteAtCode) (int Count, void* Src, void* Dst);
   typedef void* (__stdcall *THook) (void* HandlerAddr, int HookType, int PatchSize, void* CodeAddr);
   typedef void* (__stdcall *TApiHook) (void* HandlerAddr, int HookType, void* CodeAddr);
-  typedef void  (__stdcall *TKillThisProcess) ();
-  typedef void  (__stdcall *TFatalError) (char* Err);
+  typedef void  (__stdcall *TFatalError) (const char* Err);
   typedef int   (__stdcall *TRecallAPI) (THookContext* Context, int NumArgs);
-  typedef void  (__stdcall *TRegisterHandler) (TEventHandler Handler, char* EventName);
-  typedef void  (__stdcall *TFireEvent) (char* EventName, void* EventData, int DataSize);
-  typedef void* (__stdcall *TLoadTxt) (char* Name);
-  typedef void  (__stdcall *TForceTxtUnload) (char* Name);
-  typedef void  (__stdcall *TExecErmCmd) (char* CmdStr);
+  typedef void  (__stdcall *TRegisterHandler) (TEventHandler Handler, const char* EventName);
+  typedef void  (__stdcall *TFireEvent) (const char* EventName, void* EventData, int DataSize);
+  typedef void* (__stdcall *TLoadTxt) (const char* Name);
+  typedef void  (__stdcall *TExecErmCmd) (const char* CmdStr);
   typedef void  (__stdcall *TReloadErm) ();
   typedef void  (__stdcall *TExtractErm) ();
   typedef void  (__stdcall *TFireErmEvent) (int EventID);
   typedef void  (__stdcall *TClearAllIniCache) ();
-  typedef void  (__stdcall *TClearIniCache) (char* FileName);
-
-  typedef bool  (__stdcall *TReadStrFromIni)
-  (
-    char* Key,
-    char* SectionName,
-    char* FilePath,
-    char* Res
-  );
-
-  typedef bool  (__stdcall *TWriteStrToIni)
-  (
-    char* Key,
-    char* Value,
-    char* SectionName,
-    char* FilePath
-  );
-
-  typedef bool  (__stdcall *TSaveIni) (char* FilePath);
-  typedef void  (__stdcall *TNameColor) (int Color32, char* Name);
-  typedef void  (__stdcall *TWriteSavegameSection) (int DataSize, void* Data, char* SectionName);
-  typedef int   (__stdcall *TReadSavegameSection) (int DataSize, void* Data, char* SectionName);
+  typedef void  (__stdcall *TClearIniCache) (const char* FileName);
+  typedef bool  (__stdcall *TReadStrFromIni) (const char* Key, const char* SectionName, const char* FilePath, char* Res);
+  typedef bool  (__stdcall *TWriteStrToIni) (const char* Key, const char* Value, const char* SectionName, const char* FilePath);
+  typedef bool  (__stdcall *TSaveIni) (const char* FilePath);
+  typedef void  (__stdcall *TNameColor) (int Color32, const char* Name);
+  typedef void  (__stdcall *TWriteSavegameSection) (int DataSize, void* Data, const char* SectionName);
+  typedef int   (__stdcall *TReadSavegameSection) (int DataSize, void* Data, const char* SectionName);
   typedef void  (__stdcall *TGetGameState) (TGameState* GameState);
-  typedef int   (__stdcall *TGetButtonID) (char* ButtonName);
-  typedef bool  (__stdcall *TPatchExists) (char* PatchName);
-  typedef bool  (__stdcall *TPluginExists) (char* PluginName);
+  typedef int   (__stdcall *TGetButtonID) (const char* ButtonName);
+  typedef bool  (__stdcall *TPatchExists) (const char* PatchName);
+  typedef bool  (__stdcall *TPluginExists) (const char* PluginName);
   typedef void  (__stdcall *TRedirectFile) ();
   typedef void  (__stdcall *TGlobalRedirectFile) ();
   typedef void  (__stdcall *TRedirectMemoryBlock) (void* OldAddr, int BlockSize, void* NewAddr);
   typedef void* (__stdcall *TGetRealAddr) (void* Addr);
   typedef void  (__stdcall *TSaveEventParams) ();
   typedef void  (__stdcall *TRestoreEventParams) ();
-  typedef void  (__stdcall *TReportPluginVersion) (char* VersionLine);
+  typedef void  (__stdcall *TReportPluginVersion) (const char* VersionLine);
   typedef const char* (__stdcall *TGetEraVersion) ();
+  typedef char* (__stdcall *TTr) (const char* key, const char** params, int highParams);
+  typedef void  (__stdcall *TMemFree) (const void* buf);
+  typedef void  (__stdcall *TNotifyError) (const char* error);
+
+  /**
+   * Replaces original function with the new one. HandlerFunc signature must be the same as original
+   * function, except that one extra argument is passed on the stack as the very first argument. It holds
+   * pointer to original replaced function.
+   * Example:
+   *   Splice((void*) 0x401000, (void*) MainProc);
+   *   int __stdcall (void* OrigFunc, int Arg) MainProc {...}
+   */
+  typedef void* (__stdcall *TSplice) (void* OrigFunc, void* HandlerFunc);
+
+  /**
+   * Calls handler function, when execution reaches specified address. Handler receives THookContext pointer.
+   * If it returns true, overwritten commands are executed. Otherwise overwritten commands are skipped.
+   * Changes Context.RetAddr field to return to specific address after handler finishes execution with FALSE result.
+   */
+  typedef void* (__stdcall *THookCode) (void* Addr, THookHandler HandlerFunc);
+
+  /**
+   * Loads Pcx16 resource with rescaling support. Values <= 0 are considered 'auto'. If it's possible, images are scaled proportionally.
+   * Resource name (name in binary resource tree) can be either fixed or automatic. Pass empty PcxName for automatic name.
+   * If PcxName exceeds 12 characters, it's replaced with valid unique name. Check name field of result.
+   * If resource is already registered and has proper format, it's returned with RefCount increased.
+   * Result image dimensions may differ from requested if fixed PcxName is specified. Use automatic naming
+   * to load image of desired size for sure.
+   * Default image is returned in case of missing file and user is notified.
+   */
+  typedef void* (__stdcall *TLoadImageAsPcx16) (const char* FilePath, const char* PcxName, int Width, int Height);
  
 
   TEventParams* EventParams = NULL;
 
 
-  TWriteAtCode          WriteAtCode           = NULL;
-  THook                 Hook                  = NULL;
   TApiHook              ApiHook               = NULL;
-  TKillThisProcess      KillThisProcess       = NULL;
-  TFatalError           FatalError            = NULL;
-  TRecallAPI            RecallAPI             = NULL;
-  TRegisterHandler      RegisterHandler       = NULL;
-  TFireEvent            FireEvent             = NULL;
-  TLoadTxt              LoadTxt               = NULL;
-  TForceTxtUnload       ForceTxtUnload        = NULL;
-  TExecErmCmd           ExecErmCmd            = NULL;
-  TReloadErm            ReloadErm             = NULL;
-  TExtractErm           ExtractErm            = NULL;
-  TFireErmEvent         FireErmEvent          = NULL;
   TClearAllIniCache     ClearAllIniCache      = NULL;
   TClearIniCache        ClearIniCache         = NULL;
-  TReadStrFromIni       ReadStrFromIni        = NULL;
-  TWriteStrToIni        WriteStrToIni         = NULL;
-  TSaveIni              SaveIni               = NULL;
-  TNameColor            NameColor             = NULL;
-  TWriteSavegameSection WriteSavegameSection  = NULL;
-  TReadSavegameSection  ReadSavegameSection   = NULL;
-  TGetGameState         GetGameState          = NULL;
+  TExecErmCmd           ExecErmCmd            = NULL;
+  TExtractErm           ExtractErm            = NULL;
+  TFatalError           FatalError            = NULL;
+  TFireErmEvent         FireErmEvent          = NULL;
+  TFireEvent            FireEvent             = NULL;
   TGetButtonID          GetButtonID           = NULL;
+  TGetEraVersion        GetEraVersion         = NULL;
+  TGetGameState         GetGameState          = NULL;
+  TGetRealAddr          GetRealAddr           = NULL;
+  TGlobalRedirectFile   GlobalRedirectFile    = NULL;
+  THook                 Hook                  = NULL;
+  THookCode             HookCode              = NULL;
+  TLoadImageAsPcx16     LoadImageAsPcx16      = NULL;
+  TLoadTxt              LoadTxt               = NULL;
+  TMemFree              MemFree               = NULL;
+  TNameColor            NameColor             = NULL;
+  TNotifyError          NotifyError           = NULL;
   TPatchExists          PatchExists           = NULL;
   TPluginExists         PluginExists          = NULL;
+  TReadSavegameSection  ReadSavegameSection   = NULL;
+  TReadStrFromIni       ReadStrFromIni        = NULL;
+  TRecallAPI            RecallAPI             = NULL;
   TRedirectFile         RedirectFile          = NULL;
-  TGlobalRedirectFile   GlobalRedirectFile    = NULL;
   TRedirectMemoryBlock  RedirectMemoryBlock   = NULL;
-  TGetRealAddr          GetRealAddr           = NULL;
-  TSaveEventParams      SaveEventParams       = NULL;
-  TRestoreEventParams   RestoreEventParams    = NULL;
+  TRegisterHandler      RegisterHandler       = NULL;
+  TReloadErm            ReloadErm             = NULL;
   TReportPluginVersion  ReportPluginVersion   = NULL;
-  TGetEraVersion        GetEraVersion         = NULL;
+  TRestoreEventParams   RestoreEventParams    = NULL;
+  TSaveEventParams      SaveEventParams       = NULL;
+  TSaveIni              SaveIni               = NULL;
+  TSplice               Splice                = NULL;
+  TTr                   _tr                   = NULL;
+  TWriteAtCode          WriteAtCode           = NULL;
+  TWriteSavegameSection WriteSavegameSection  = NULL;
+  TWriteStrToIni        WriteStrToIni         = NULL;
 
+  /**
+   * Returns translation for given complex key ('xxx.yyy.zzz') with substituted parameters.
+   * Pass vector of (parameter name, parameter value) pairs to substiture named parameters.
+   * Example: Mod\Lang\*.json file: { "eqs": { "greeting": "Hello, @name@" } }
+   * Example: ShowMessage(tr("eqs.greeting", { "name", "igrik" }).c_str());
+   * 
+   * @param  key    Key to get translation for.
+   * @param  params Vector of (parameter name, parameter value pairs).
+   * @return        Translation string.
+   */
+  std::string tr (const char *key, const std::vector<std::string> params = {}) {
+    const int MAX_PARAMS = 64;
+    const char* _params[MAX_PARAMS];
+    int numParams = params.size() <= MAX_PARAMS ? params.size() : MAX_PARAMS;
+
+    for (int i = 0; i < numParams; i++) {
+      _params[i] = params[i].c_str();
+    }
+
+    char* buf = _tr(key, _params, numParams - 1);
+    MemFree(buf);
+
+    return buf;
+  }
+
+  std::string IntToStr (int value) {
+    char buf[64];
+    sprintf(buf, "%d", value);
+    
+    return buf;
+  }
 
   HINSTANCE hEra;
   HINSTANCE hAngel;
 
-
   void ConnectEra ()
   {
     hAngel                = LoadLibrary("angel.dll");
-    EventParams           = (TEventParams*) GetProcAddress(hAngel, "EventParams");
-    SaveEventParams       = (TSaveEventParams) GetProcAddress(hAngel, "SaveEventParams");
-    RestoreEventParams    = (TRestoreEventParams)GetProcAddress(hAngel, "RestoreEventParams");
+    EventParams           = (TEventParams*)         GetProcAddress(hAngel, "EventParams");
+    RestoreEventParams    = (TRestoreEventParams)   GetProcAddress(hAngel, "RestoreEventParams");
+    SaveEventParams       = (TSaveEventParams)      GetProcAddress(hAngel, "SaveEventParams");
     /***/
     hEra                  = LoadLibrary("era.dll");
-    WriteAtCode           = (TWriteAtCode)          GetProcAddress(hEra, "WriteAtCode");
-    Hook                  = (THook)                 GetProcAddress(hEra, "Hook");
+    _tr                   = (TTr)                   GetProcAddress(hEra, "tr");
     ApiHook               = (TApiHook)              GetProcAddress(hEra, "ApiHook");
-    KillThisProcess       = (TKillThisProcess)      GetProcAddress(hEra, "KillThisProcess");
-    FatalError            = (TFatalError)           GetProcAddress(hEra, "FatalError");
-    RecallAPI             = (TRecallAPI)            GetProcAddress(hEra, "RecallAPI");
-    RegisterHandler       = (TRegisterHandler)      GetProcAddress(hEra, "RegisterHandler");
-    FireEvent             = (TFireEvent)            GetProcAddress(hEra, "FireEvent");
-    LoadTxt               = (TLoadTxt)              GetProcAddress(hEra, "LoadTxt");
-    ForceTxtUnload        = (TForceTxtUnload)       GetProcAddress(hEra, "ForceTxtUnload");
-    ExecErmCmd            = (TExecErmCmd)           GetProcAddress(hEra, "ExecErmCmd");
-    ReloadErm             = (TReloadErm)            GetProcAddress(hEra, "ReloadErm");
-    ExtractErm            = (TExtractErm)           GetProcAddress(hEra, "ExtractErm");
-    FireErmEvent          = (TFireErmEvent)         GetProcAddress(hEra, "FireErmEvent");
     ClearAllIniCache      = (TClearAllIniCache)     GetProcAddress(hEra, "ClearAllIniCache");
     ClearIniCache         = (TClearIniCache)        GetProcAddress(hEra, "ClearIniCache");
-    ReadStrFromIni        = (TReadStrFromIni)       GetProcAddress(hEra, "ReadStrFromIni");
-    WriteStrToIni         = (TWriteStrToIni)        GetProcAddress(hEra, "WriteStrToIni");
-    SaveIni               = (TSaveIni)              GetProcAddress(hEra, "SaveIni");
-    NameColor             = (TNameColor)            GetProcAddress(hEra, "NameColor");
-    WriteSavegameSection  = (TWriteSavegameSection) GetProcAddress(hEra, "WriteSavegameSection");
-    ReadSavegameSection   = (TReadSavegameSection)  GetProcAddress(hEra, "ReadSavegameSection");
-    GetGameState          = (TGetGameState)         GetProcAddress(hEra, "GetGameState");
+    ExecErmCmd            = (TExecErmCmd)           GetProcAddress(hEra, "ExecErmCmd");
+    ExtractErm            = (TExtractErm)           GetProcAddress(hEra, "ExtractErm");
+    FatalError            = (TFatalError)           GetProcAddress(hEra, "FatalError");
+    FireErmEvent          = (TFireErmEvent)         GetProcAddress(hEra, "FireErmEvent");
+    FireEvent             = (TFireEvent)            GetProcAddress(hEra, "FireEvent");
     GetButtonID           = (TGetButtonID)          GetProcAddress(hEra, "GetButtonID");
+    GetEraVersion         = (TGetEraVersion)        GetProcAddress(hEra, "GetVersion");
+    GetGameState          = (TGetGameState)         GetProcAddress(hEra, "GetGameState");
+    GetRealAddr           = (TGetRealAddr)          GetProcAddress(hEra, "GetRealAddr");
+    GlobalRedirectFile    = (TGlobalRedirectFile)   GetProcAddress(hEra, "GlobalRedirectFile");
+    Hook                  = (THook)                 GetProcAddress(hEra, "Hook");
+    HookCode              = (THookCode)             GetProcAddress(hEra, "HookCode");
+    LoadImageAsPcx16      = (TLoadImageAsPcx16)     GetProcAddress(hEra, "LoadImageAsPcx16");
+    LoadTxt               = (TLoadTxt)              GetProcAddress(hEra, "LoadTxt");
+    MemFree               = (TMemFree)              GetProcAddress(hEra, "MemFree");
+    NameColor             = (TNameColor)            GetProcAddress(hEra, "NameColor");
+    NotifyError           = (TNotifyError)          GetProcAddress(hEra, "NotifyError");
     PatchExists           = (TPatchExists)          GetProcAddress(hEra, "PatchExists");
     PluginExists          = (TPluginExists)         GetProcAddress(hEra, "PluginExists");
+    ReadSavegameSection   = (TReadSavegameSection)  GetProcAddress(hEra, "ReadSavegameSection");
+    ReadStrFromIni        = (TReadStrFromIni)       GetProcAddress(hEra, "ReadStrFromIni");
+    RecallAPI             = (TRecallAPI)            GetProcAddress(hEra, "RecallAPI");
     RedirectFile          = (TRedirectFile)         GetProcAddress(hEra, "RedirectFile");
-    GlobalRedirectFile    = (TGlobalRedirectFile)   GetProcAddress(hEra, "GlobalRedirectFile");
     RedirectMemoryBlock   = (TRedirectMemoryBlock)  GetProcAddress(hEra, "RedirectMemoryBlock");
-    GetRealAddr           = (TGetRealAddr)          GetProcAddress(hEra, "GetRealAddr");
+    RegisterHandler       = (TRegisterHandler)      GetProcAddress(hEra, "RegisterHandler");
+    ReloadErm             = (TReloadErm)            GetProcAddress(hEra, "ReloadErm");
     ReportPluginVersion   = (TReportPluginVersion)  GetProcAddress(hEra, "ReportPluginVersion");
-    GetEraVersion         = (TGetEraVersion)        GetProcAddress(hEra, "GetVersion");
+    SaveIni               = (TSaveIni)              GetProcAddress(hEra, "SaveIni");
+    Splice                = (TSplice)               GetProcAddress(hEra, "Splice");
+    WriteAtCode           = (TWriteAtCode)          GetProcAddress(hEra, "WriteAtCode");
+    WriteSavegameSection  = (TWriteSavegameSection) GetProcAddress(hEra, "WriteSavegameSection");
+    WriteStrToIni         = (TWriteStrToIni)        GetProcAddress(hEra, "WriteStrToIni");
   }
   
   #pragma pack(pop)

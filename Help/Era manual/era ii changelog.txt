@@ -1,3 +1,52 @@
+Version 2.8.3
+------------------------
+[+] Added "LoadImageAsPcx16" to era.dll export and SDK. Function allows to load png/jpg/bmp image with
+    optional scaling as pcx16 game resource, suitable for replacing native resources or displaying in dialogs.
+    All HD Mod modes are supported.
+[+] Improved syntax of language json files (Mod\Lang\*.json, UTF-8 encoding). Nested objects are supported.
+    {
+      "wogrev": {
+        "no_gold_message": "The is no more gold, @name@!",
+        "no_mercy":        "There will be no mercy!"
+      }
+    }
+
+    The above mentioned document is treated the same as:
+    {
+      "wogrev.no_gold_message": "The is no more gold, @name@!",
+      "wogrev.no_mercy":        "There will be no mercy!"
+    }
+
+    but allows to skip duplicating "messages." prefix.
+
+    ERM example: !!SN:T^wogrev.no_gold_message^/?z2/^name^/^Geralt^; !!IF:M^%Z2^;
+[+] Hints from Mod\Data\Buttons\*.btn files are now automatically translated. No need to include *.btn files in localizations.
+[+] Added translation support for plugins. SDK function "tr", accepting complex key and vector of named parameters.
+    Example: ShowMessage(tr('mymod.greetings', { "hero_name", "Orrin", "age", IntToStr(70) }).c_str());
+[+] Added state-less re-enterable thread-safe functions for splicing and hooking: "Splice" and "HookCode".
+[+] Added function NotifyError, that shows Windows dialog with error, but does not terminate
+    application, unless AbortOnError ini option is set to 1.
+[+] Added "no high level prisons on random maps.bin.off" patch. It disables generation of prisons with 2+ level heroes on random maps. Credits: igrik.
+[+] Updated "WoG Native Dialogs" integrated mod. Commander screen visual improvements applied. Credits: igrik.
+[*] Updated "Quick Savings" mod. Language json file now uses improved syntax.
+[*] Updated "Secondary Skills Scrolling" mod. Moved button hints to language json file.
+[*] Updated era.h, removed garbage and not supported signatures.
+[*] *.ert/*.txt translations are DEPRECATED. New Lua/ERM scripts should not use it, unless there is a substantional necessity.
+    Use SN:T for ERM, Era::tr for C++ Plugins instead.
+[*] Updated vfs.dll to v1.0.4.
+[*] *.era and *.dll plugins loading mechanism was improved. *.dll and *.era plugins are treated the
+    same way, except that "*.dll"s are loaded right before "OnAfterWoG" event. and "*.era"s are loaded right
+    before "OnBeforeWoG" event. Zero size files are skipped. In both cases v1 variable is set to era.dll
+    handle for compatibility reasons only (this behavior is DEPRECATED). If plugin with the same name,
+    but different extension is present (say, 'x.dll' and 'x.era'), an error is reported.
+[*] Fixed crash in buttons.dll by MoP. Invalid counter initialization caused crash if only single button was registered.
+    Added .dbgmap file for updated dll. Updated code to install hooks in OnAfterWoG event and renamed plugin to buttons.era
+[-] Unsafe SN:C and SN:R commands were removed and are not supported anymore.
+[-] Removed outdated or unsafe functions from angel.dll exports.
+[-] The following Mods are not installed automatically and may be removed from main package any time: Yona, Fast Battle Animation, Quick Savings, Secondary Skills Scrolling.
+[-] Era does not apply *.bin patches from EraPlugins directory anymore. Patches from EraPlugins/BeforeWoG and EraPlugins/AfterWoG directories are still applied.
+[-] Fixed bug, introduced in v2.8.2: dll plugins with double extensions were ignored.
+
 Version 2.8.2
 ------------------------
 [+] Updated WoG Native Dialogs. Commander dialog was fully rewritten. Less bugs, performance boost. Credits: igrik.

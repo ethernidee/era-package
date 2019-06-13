@@ -40,10 +40,10 @@ if exist Mods (
 if not exist Mods (
   move /y %MOD_FILES% .
   Tools\installmod WoG
-  Tools\installmod "Fast Battle Animation"
-  Tools\installmod Yona
-  Tools\installmod "Secondary Skills Scrolling"
-  Tools\installmod "Quick Savings"
+  rem Tools\installmod "Fast Battle Animation"
+  rem Tools\installmod Yona
+  rem Tools\installmod "Secondary Skills Scrolling"
+  rem Tools\installmod "Quick Savings"
 )
 
 rem Fix previous installations
