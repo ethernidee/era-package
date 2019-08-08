@@ -1,0 +1,104 @@
+ZVSE
+*************** 
+*** Level 4 *** 
+*************** 
+update 12-01-02 
+Shrine of Magic mind can be visited at all 5 time w30 
+You can visit it one time by week w31=0 
+The spell learn in current week is store in v99 
+ 
+!#VRv99:S0R14; Init for the first week 
+ 
+!#VRz30:S^Shrine of Magic Mind (Not visited)^; 
+!#VRz31:S^Shrine of Magic Mind (Visited)^; 
+!#HT63/22:W31/0/30;  Rename all Shrine 
+!#HT63/22:W31/1/31; 
+ 
+!#TM12:S1/999/7/1; Universal Timer every seven days 
+ 
+!?TM12; 
+!!VRv99:S0T14; 
+!!DO20/0/155/1:P; 
+ 
+!?FU20; 
+!!IF:Wx16; 
+!!VRw31&w30<6:S0; shrine can be visited again 
+ 
+!?OB63/22; 
+!!IF:W-1; 
+!!FU22:Pv99; back in v1 the spell, back in z1 the name of spell 
+!!IF&w31=1/1000:M^{Shrine of Magic Mind} 
+ 
+You've found several of the best arch magi of the land gathered at the Shrine of Magic Mind. 
+ 
+You spend some time chatting with them, but soon realize that there is nothing new for you to learn from them.^; 
+!!FU21&w30<=5/w31=0:P; 
+ 
+!?FU21; 
+!!IF:W-1; 
+!!HE-1:A1/?y1/17; if spellbook y1=1000 otherwise -1 
+!!IF&y1=-1/1000:Q1/9/v1/1^{Shrine of Magic Mind} 
+ 
+You come across a shrine attended by a group of high arch magi. 
+ 
+In exchange for your protection, 
+they agree to teach you a powerful spell : 
+{%Z1} 
+ 
+Unfortunately, you have no Spell Book to record the spell with.^; 
+!!HE-1:S7/?y2; level of wisdom must >=2 
+!!IF&y2<2/y1=1000/1000:Q1/9/v1/1^{Shrine of Magic Mind} 
+ 
+You come across a shrine attended by a group of high arch magi. 
+ 
+In exchange for your protection, 
+they agree to teach you a powerful spell : 
+{%Z1} 
+ 
+Unfortunately, you do not have the wisdom to understand the spell, 
+and you are unable to learn it.^; 
+!!HE-1&y2>1/y1=1000:Mv1/1; 
+!!VRw31&y2>1/y1=1000:S1; 
+!!VRw30&y2>1/y1=1000:+1; 
+!!IF&y2>1/y1=1000/1000:Q1/9/v1/1^{Shrine of Magic Mind} 
+ 
+You come across a shrine attended by a group of high arch magi. 
+ 
+In exchange for your protection, 
+they agree to teach you a powerful spell : 
+{%Z1}^; 
+ 
+!?FU22; Learn spell 
+!!VRv1:S0; 
+* Choose the spell 
+!!VRv1&x1=0:S9; town portal 
+!!VRv1&x1=1:S7; water walk 
+!!VRv1&x1=2:S26; armageddon 
+!!VRv1&x1=3:S59; Berserk 
+!!VRv1&x1=4:S19; Chain Lightning 
+!!VRv1&x1=5:S65; Clone 
+!!VRv1&x1=6:S58; Counter strike 
+!!VRv1&x1=7:S29; fire Shield 
+!!VRv1&x1=8:S56; Frenzy 
+!!VRv1&x1=9:S22; Inferno 
+!!VRv1&x1=10:S23; Meteor Shower 
+!!VRv1&x1=11:S50; Sorrow 
+!!VRv1&x1=12:S48; Prayer 
+!!VRv1&x1=13:S38; Resurrection 
+!!VRv1&x1=14:S55; Slayer 
+* Store in z1 the name of the spell 
+!!VRz1&x1=0:S^Town Portal^; 
+!!VRz1&x1=1:S^Water Walk^; 
+!!VRz1&x1=2:S^Armageddon^; 
+!!VRz1&x1=3:S^Berserk^; 
+!!VRz1&x1=4:S^Chain Lightning^; 
+!!VRz1&x1=5:S^Clone^; 
+!!VRz1&x1=6:S^Counterstrike^; 
+!!VRz1&x1=7:S^Fire Shield^; 
+!!VRz1&x1=8:S^Frenzy^; 
+!!VRz1&x1=9:S^Inferno^; 
+!!VRz1&x1=10:S^Meteor Shower^; 
+!!VRz1&x1=11:S^Sorrow^; 
+!!VRz1&x1=12:S^Prayer^; 
+!!VRz1&x1=13:S^Resurrection^; 
+!!VRz1&x1=14:S^Slayer^; 

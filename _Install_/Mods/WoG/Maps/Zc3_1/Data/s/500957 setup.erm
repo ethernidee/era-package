@@ -1,0 +1,137 @@
+ZVSE
+!#HE0:Y4/500/999/1; (Gives Nailag a curse- he is drained of 500 gold/day)
+!#HE0:Y65/175/2/1;   (Extra movement)
+
+!?GE100;
+!!OW:R0/0/0;
+!!OW:R0/1/0;
+!!OW:R0/2/0;
+!!OW:R0/3/0;
+!!OW:R0/4/0;
+!!OW:R0/5/0;
+!!OW:R0/6/0;   (sets starting resources to zero)
+
+!!MO18/65/0:G0;
+!!MO21/69/0:G0;
+!!MO17/70/0:G0;
+!!MO11/67/0:G0;
+!!OB11/67/0:S; (Set Peasants to untriggerable)
+
+!!MO36/64/1:G0;      (Sets guardian golems number to "0")
+!!MO63/6/1:G0;        (Sets angry dwarf number to "0")
+!!MO45/2/0:G0;        (Sets Gados number to "0")
+!!UN:K1/1;
+!!UN:M1;                     (Disable month and week of the...)
+
+Makes different objects unuseable:
+
+!#OB51/16/0:S;  (Library)
+
+!#OB3/56/1:S;(Water Altar)
+
+!#OB58/61/1:S;
+!#OB32/12/0:S;  (Necro Portal)
+
+!#OB26/59/1:S;
+!#OB26/61/1:S;
+!#OB28/59/1:S;
+!#OB28/61/1:S;
+!#OB37/62/1:S;
+!#OB37/63/1:S;
+!#OB37/66/1:S;
+!#OB37/67/1:S;
+!#OB39/62/1:S;
+!#OB39/63/1:S;
+!#OB39/66/1:S;
+!#OB39/67/1:S;
+!#OB42/62/1:S;
+!#OB42/63/1:S;
+!#OB42/66/1:S;
+!#OB42/67/1:S;
+!#OB44/62/1:S;
+!#OB44/63/1:S;
+!#OB44/66/1:S;
+!#OB44/67/1:S;(Mage underground)
+
+!#OB9/65/0:S;
+!#OB10/64/0:S;
+!#OB12/66/0:S; 
+!#OB8/62/0:S;  (Village)
+
+!?OB57; (obelisks)
+!!OB998:S;
+
+!?OB16; (creature banks)
+!!OB998:S;
+
+!?OB84; (crypts)
+!!OB998:S;
+
+!?OB63; (pyramids)
+!!OB998:S;
+
+!?OB97; (den of thieves)
+!!OB998:S;
+
+!?OB95; (taverns)
+!!OB998:S;
+
+!?OB53; (mines)
+!!OB998:S;
+
+!?OB17; (Disable all dwellings)
+!!OB998:S;
+
+!?OB22; (Disable all corpses(skeletons))
+!!OB998:S;
+
+!#VRz13:S^Burned-out Sawmill^;
+!#OB26/28/0:Hz13;
+
+!#VRz14:S^Hideout^;
+!#OB32/27/0:Hz14;
+
+!#VRz15:S^Nice helm, eh? To bad you can't get it:-)^;
+!#OB27/69/1:Hz15;
+
+!#VRz16:S^Hidden Door^;
+!#OB43/25/1:Hz16;
+!#OB42/48/1:Hz16;
+
+!#VRz17:S^Wolf Gate^;
+!#OB48/27/0:Hz17;
+!#OB48/28/0:Hz17;
+
+!#VRz18:S^Eagle Gate^;
+!#OB61/27/0:Hz18;
+!#OB61/28/0:Hz18;
+
+!#VRz19:S^Wyvern Gate^;
+!#OB52/0/0:Hz19;
+
+!#VRz20:S^Abandoned Cottage^;
+!#OB64/50/0:Hz20;
+!#OB68/48/0:Hz20;
+
+!#VRz21:S^Coliseum^;
+!#OB64/18/0:Hz21;
+
+!#VRz22:S^Ekir^;
+!#OB11/67/0:Hz22;
+
+!#VRz23:S^Gerul^;
+!#VRz24:S^Geruls^;
+!#UN:G1/144/0/23;
+!#UN:G1/144/1/24;
+
+!#VRz25:S^Ghoul^;
+!#VRz26:S^Ghouls^;
+!#UN:G1/62/0/25;
+!#UN:G1/62/1/26;
+!#MA:U62/-2; (Vampires can't be upgraded)
+!#MA:X62/d-2; (Vampires can't fly)
+
+!#VRz27:S^Vampire^;
+!#VRz28:S^Vampires^;
+!#UN:G1/63/0/27;
+!#UN:G1/63/1/28;

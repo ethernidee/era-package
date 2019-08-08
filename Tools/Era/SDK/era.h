@@ -110,6 +110,28 @@ namespace Era
   const int TRIGGER_ONAICALCSTACKATTACKEFFECT = 77013;
   const int TRIGGER_ONCHAT                    = 77014;
 
+  const int CONV_LAST = -101;
+
+  // Left-to-right
+  const int CONV_PASCAL = CONV_LAST;
+
+  // Left-to-right, first three arguments in EAX, EDX, ECX
+  const int CONV_REGISTER = -102;
+
+  // Right-to-left, caller clean-up
+  const int CONV_CDECL = -103;
+
+  // Right-to-left
+  const int CONV_STDCALL = -104;
+
+  // Right-to-left, first argument in ECX
+  const int CONV_THISCALL = -105;
+
+  // Right-to-left, first two arguments in ECX, EDX
+  const int CONV_FASTCALL = -106;
+
+  const int CONV_FIRST = CONV_FASTCALL;
+
   struct THookContext
   {
     int EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX;
@@ -182,21 +204,27 @@ namespace Era
   typedef void  (__stdcall *TNotifyError) (const char* error);
 
   /**
-   * Replaces original function with the new one. HandlerFunc signature must be the same as original
-   * function, except that one extra argument is passed on the stack as the very first argument. It holds
-   * pointer to original replaced function.
+   * Replaces original function with the new one with the same prototype and 1-2 extra arguments.
+   * Calling convention is changed to STDCALL. The new argument is callable pointer, which can be used to
+   * execute original function. The pointer is passed as THE FIRST argument. If custom parameter address
+   * is given, the value of custom parameter will be passed to handler as THE SECOND argument. If AppliedPatch
+   * pointer is given, it will be assigned an opaque pointer to applied patch data structure. This
+   * pointer can be used to rollback the patch (remove splicing).
+   * Returns address of the bridge to original function.
+   * 
    * Example:
-   *   Splice((void*) 0x401000, (void*) MainProc);
-   *   int __stdcall (void* OrigFunc, int Arg) MainProc {...}
+   *   int custom_param = 700;
+   *   Splice((void*) 0x401000, (void*) MainProc, CONV_STDCALL, 2, &custom_param);
+   *   int __stdcall (void* orig_func, int custom_param, int arg1, int arg2) MainProc {...}
    */
-  typedef void* (__stdcall *TSplice) (void* OrigFunc, void* HandlerFunc);
+  typedef void* (__stdcall *TSplice) (void* OrigFunc, void* HandlerFunc, int CallingConv, int NumArgs, int* CustomParam, void** AppliedPatch);
 
   /**
    * Calls handler function, when execution reaches specified address. Handler receives THookContext pointer.
    * If it returns true, overwritten commands are executed. Otherwise overwritten commands are skipped.
-   * Changes Context.RetAddr field to return to specific address after handler finishes execution with FALSE result.
+   * Change Context.RetAddr field to return to specific address after handler finishes execution with FALSE result.
    */
-  typedef void* (__stdcall *THookCode) (void* Addr, THookHandler HandlerFunc);
+  typedef void* (__stdcall *THookCode) (void* Addr, THookHandler HandlerFunc, void** AppliedPatch);
 
   /**
    * Loads Pcx16 resource with rescaling support. Values <= 0 are considered 'auto'. If it's possible, images are scaled proportionally.

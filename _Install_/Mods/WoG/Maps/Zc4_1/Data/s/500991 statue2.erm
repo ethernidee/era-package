@@ -1,0 +1,36 @@
+ZVSE
+!#TR27/22/0:P1;
+!#TR27/22/0:E0;
+!#OB27/22/0:T91;
+!#OB27/22/0:S;
+
+!?OB27/22/0;
+!!FU255&1000:P;
+
+!?FU255;
+!!IF&v256<4:G0/255/0/255/256/257/258/259;
+
+!!IF&v255=1/v256<4/v154<>1:Q255/8/54/1^You look to the north of the grave and find an Amulett!^;
+!!HE-1&v255=1/v256<4/v154<>1:A54;
+!!IF&v255=1/v256<4/v154=1:M^%Z260^;
+!!VRv256&v255=1/v154<>1:+1;
+!!VRv154&v255=1/v256<4:S1;
+
+!!IF&v255=2/v256<4/v155<>1:M^You look to the east of the grave and find nothing!^;
+!!IF&v255=2/v256<4/v155=1:M^%Z260^;
+!!VRv256&v255=2/v155<>1:+1;
+!!VRv155&v255=2/v256<4:S1;
+
+!!IF&v255=4/v256<4/v156<>1:Q255/6/100/1^You look to the south of the grave and find some gold!^;
+!!OW&255=4/v256<4/v156<>1:R-1/6/d100;
+!!IF&v255=4/v256<4/v156=1:M^%Z260^;
+!!VRv256&v255=4/v156<>1:+1;
+!!VRv156&v255=4/v256<4:S1;
+
+!!IF&v255=8/v256<4/v157<>1:M^You look to the west of the grave and find a blood red key!^;
+!!OW&v255=8/v256<4/v157<>1:K0/2/1;
+!!IF&v255=8/v256<4/v157=1:M^%Z260^;
+!!VRv256&v255=8/v157<>1:+1;
+!!VRv157&v255=8/v256<4:S1;
+
+!!IF&v256>=4:M^You`re searching but don`t find any more!^;

@@ -1,0 +1,680 @@
+ZVSE
+
+*************************** 
+*** The Island's Rogues *** 
+*************************** 
+*** I N I T *** 
+* String * 
+!#VRz111:S^%Z199\21_007.BMP^; Rogue Repair 
+!#VRz112:S^%Z199\21_008.BMP^; Rogue Forest 
+!#VRz113:S^%Z199\21_009.BMP^; Village chef 
+!#VRz114:S^%Z199\21_010.BMP^; Chef of Rogue 
+!#VRz115:S^%Z199\21_011.BMP^; Anne, faerie 
+!#VRz116:S^%Z199\21_012.BMP^; Slava 
+!#VRz117:S^%Z199\21_013.BMP^; Alexander 
+!#VRz118:S^%Z199\21_014.BMP^; Polgara 
+!#VRz119:S^%Z199\21_015.BMP^; Timothy 
+!#VRz120:S^%Z199\21_016.BMP^; Rogue Well 
+!#VRz121:S^%Z199\21_017.BMP^; Rogue Chief 
+!#VRz122:S^%Z199\21_018.BMP^; Equestrian 
+!#VRz123:S^%Z199\21_019.BMP^; Dragon Vial 
+!#VRz124:S^%Z199\21_020.BMP^; elixir of life 
+ 
+!#VRz409:S^The rogue's lair^; 
+!#OB28/15/0:SHz409; The rogue's lair 
+ 
+!#VRz410:S^Rogue^; 
+!#OB29/7/0:SHz410; rogue ok (well) 
+!#OB33/11/0:SHz410; rogue ok (hut chief) 
+!#OB32/17/0:SHz410; rogue ok (forest) 
+ 
+!#VRz411:S^A broken well^; 
+!#VRz412:S^A well^; 
+!#OB28/7/0:SHz411; 
+ 
+!#VRz413:S^Slava^; 
+!#OB29/11/0:SHz413; Slava 
+ 
+!#VRz414:S^Alexander^; 
+!#OB31/5/0:SHz414; Alexander 
+ 
+!#VRz415:S^Timothy^; 
+!#OB35/10/0:SHz415; Timothy 
+ 
+!#VRz416:S^Polgara, a faerie^; 
+ 
+!#VRz417:S^Anne, a faerie^; 
+ 
+!#VRz418:S^A hut^; 
+!#OB34/9/0:SHz418; 
+!#OB32/9/0:SHz418; 
+!#OB29/10/0:SHz418; 
+!#OB29/12/0:SHz418; 
+ 
+!#VRz419:S^Hut's Chief^; 
+!#OB33/10/0:SHz419; 
+!#VRz420:S^Equestrian Gloves^; 
+!#VRz421:S^Vodka^; 
+!#VRz422:S^Simon^; Simon boss of Rogue 
+!#VRz423:S^Cox^; The chief of village 
+ 
+!#VRz150:S^Plantation^; 
+ 
+* Variable 
+!#VRv519:S0; Elixir of life 
+!#VRv520:S0; State of Rogue of forest 
+!#VRv521:S0; State of Rogue of hut chief 
+!#VRv522:S0; State of Rogue of  rogue of hell 
+!#VRv523:S0; Glove found 1 
+!#VRv524:S0; Faerie dwelling 
+!#VRv525:S0; Timothy Event and well 
+!#VRv526:S0; Chief 
+!#VRv527:S0; Chief layer 
+!#VRv534:S0; In the layer 
+ 
+ 
+*** The hut *** 
+!?OB29/10/0; 
+!!FU24:P; 
+!?OB29/12/0; 
+!!FU24:P; 
+!?OB32/9/0; 
+!!FU24:P; 
+!?OB34/9/0; 
+!!FU24:P; 
+ 
+*** Rogue of chief *** 
+!?OB33/11/0; 
+!!VRv521:+1; 
+!!FU25:P; 
+ 
+*** Slava *** 
+!?OB29/11/0; Slava 
+!!VRz200&v519=0:S^Hello %Z400... 
+ 
+My name is Slava. 
+ 
+Perhaps you can help us... 
+ 
+I pray every day to Gaïa for his help... 
+I heard stories that his Labyrinth of Flowers was devasted by gremlins... 
+ 
+You must help us to save our chief, Cox... 
+ 
+ 
+Simon, the rogue's boss is terrible... 
+He won't hesitate to kill you... 
+ 
+Go see Alexander, perhaps he will help you.^; 
+!!VRz200&v519=1:S^Have you seen Alexander?^; 
+!!VRz200&v519=2:S^Go to see the guard of the forest. 
+Perhaps the forest people can help you.^; 
+Gaïa be with you.^; 
+!!VRz200&v519>2:S^ 
+Gaïa be with you.^; 
+!!VRv519&v519=0:S1; 
+!!FU16:Pz200/z116/z413; 
+ 
+*** Alexander *** 
+!?OB31/5/0&v526=0; Alexander 
+!!VRv519&v519=1:S2; 
+!!VRz201&v519<=1:S^Hello... 
+ 
+My name is Alexander.^; 
+!!VRv519&v519=1:S2; 
+!!VRz201&v519=2:S^Hmmm... 
+ 
+So Slava told you my little secret 
+ 
+Here's my secret potion... 
+ 
+Here's the elixir of life... 
+It's a powerful alcohol called vodka.^; 
+!!VRz201&v519>=3:S^Gaïa be with you.^; 
+!!FU18&v519=2:P; 
+!!FU16:Pz201/z117/z414; 
+ 
+*** Alexander and well 
+!?OB31/5/0&v526=1; Alexander 
+!!VRz201:S^Gaïa be with you.^; 
+!!FU16:Pz201/z117/z414; 
+ 
+!?OB31/5/0&v526=2; Alexander ask to repair the well 
+!!VRz201:S^ 
+Hello %Z400 
+ 
+So Cox needs a plant to cast his illusion. 
+But my field needs water... 
+ 
+The rogues have broken the well. 
+Can you repair it?^; 
+!!FU16:Pz201/z117/z414; 
+ 
+!?OB31/5/0&v526=3; Alexander 
+!!FU31:P; 
+ 
+!?OB31/5/0&v526>=4; Alexander 
+!!VRz201:S^Gaïa be with you.^; 
+!!FU16:Pz201/z117/z414; 
+ 
+*** Forest Rogue *** 
+!?OB32/17/0&v519<3; 
+!!VRv520:+1; The state of Rogue grow up 
+!!FU21&v519<>4:P; 
+ 
+!?OB30/13/0&v519>4; 
+!!FU20:P143/75; provoke a batlle 
+!!UN:O30/13/0; remove rogue 
+ 
+!?OB32/17/0&v519=3; v519 event if player have vodka 
+!!VRz200:S^Give me to drink 
+Gloglgoglgoglo... 
+ 
+Oh this alcohool is powerful... 
+ 
+You try to drug us... 
+ 
+Brothers in arms, atta...^; 
+!!FU16:Pz200/z112/z410; 
+!!FU20:P143/15; provoke a batlle 
+!!FU19:P; Call f19 if heroes has elixir of life... 
+ 
+!?OB32/17/0&v519=4; First meet with faerie 
+!!FU23:P; 
+ 
+!?OB32/17/0&v519=5; 
+!!VRz200:S^Cross the forest to the north. 
+ 
+Here some of my sisters can join you to help you in your quest...^; 
+!!FU16:Pz200/z115/z417; faerie dialogue 
+ 
+!?OB32/17/0&v519=6; 
+!!VRz200:S^Gaïa be with you...^; 
+!!FU16:Pz200/z115/z417; faerie dialogue 
+ 
+!?OB32/15/0; Faerie dwelling 
+!!VRz205&v524=1:S^Be careful of the rogues... 
+ 
+We can't help you anymore... 
+ 
+Gaïa be with you.^; 
+!!VRz205&v524=0:S^Welcome %Z400... 
+ 
+Thanks for healing the forest... 
+ 
+Some of my brothers and sisters want to help you... 
+ 
+Please accept them... 
+They're waiting outside the forest...^; 
+!!FU16:Pz205/z118/z416; faerie dialogue 
+!!FU29&v524=0:P; 
+ 
+*** Rogue of well *** 
+!?OB29/7/0&v523=0; 
+!!VRv522:+1; Next state of Rogue of well 
+!!FU26:P; 
+ 
+!?OB29/7/0&v523=1; 
+!!VRz204:S^ 
+ 
+Oh my god... 
+ 
+Those are my gloves... 
+ 
+Give them back to me and I'll return to my lair.^; 
+!!FU16:Pz204/z120/z410; dialogue rogue of forest 
+!!HE-1:A-70; Remove glove 
+!!UN:O29/7/0; Delete the rogue 
+ 
+*** State of Well *** bug 
+!?OB28/7/0&v525<3; Broken well 
+!!VRz207:S^Ouch, the well is broken... 
+You need at least two ore to repair it.^; 
+!!VRv525&v525<2:S1; 
+!!FU16:Pz207/z125/z400; heroes dialogue 
+ 
+!?OB28/7/0&v525>=3; Repairing the well 
+!!FU30&v525=3:P; call function to repair the well 
+!!VRz207:S^Thanks to Timothy... 
+ 
+With the two ore you repair the well.^; 
+!!FU16:Pz207/z125/z400; heroes dialogue 
+ 
+!?OB33/10/0; Hut chief v526 
+!!VRz210:S^Welcome %Z400... 
+ 
+My name is Cox. 
+I am the chief of this village. 
+ 
+Thanks again for helping us against the rogues... 
+But we still have a big problem. 
+A legion of rogues is in front of the boss's lair. 
+ 
+I have a solution but... I can't do it yet... 
+I can create an illusion to make the rogues afraid. 
+Some will run away and only the bravest ones will remain. 
+ 
+But I need a special type of plant. 
+Ask Alexander about this -- he knows about plants.^; 
+!!VRz210&v526>=4:S^Thanks to Gaïa.^; 
+!!FU16:Pz210/z113/z423; chef dialogue 
+!!VRv526&v526<2:S2; 
+!!FU32&v526=4:P; 
+ 
+*** Timothy **** 
+!?OB35/10/0; Timothy Event 
+!!VRz206&v525=0:S^ 
+Hello my name is Timothy! 
+ 
+Stay Enchanted!^; 
+!!VRz206&v525=1:S^ 
+So... to repair the well you need ore! 
+Ok come with me... 
+ 
+Stay Enchanted!^; 
+!!FU16:Pz206/z119/z415; 
+!!FU27&v525=1:P; 
+ 
+!?OB28/19/0&v525=2; enlève 
+!!VRz206:S^ 
+Suddenly a huge fireball hits the rock and causes it to explode. 
+ 
+- Here's two ore. Take them. These should help you. 
+A long time ago, I was called Fnord the Wizard 
+I promised to never use my art against life...^; 
+!!FU16:Pz206/z119/z415; 
+!!OW:R0/2/d+2; 
+!!UN:O28/20/0;erase rock 
+!!VRv525:S3; 
+ 
+!?OB28/19/0&v525>=3; 
+!!VRz206:S^Gaïa be with you. 
+ 
+Stay Enchanted.^; 
+!!FU16:Pz206/z119/z415; 
+ 
+*** Simon the boss of rogue 
+!?OB28/16/0; Event for Simon 
+!!VRz211:S^I am Simon, chief of the rogues. 
+ 
+Prepare to die... Chosen.^; 
+!!FU16:Pz211/z114/z422; Alexander 
+ 
+*** In boss layer *** 
+!?OB28/15/0; Event for Simon 
+!!FU40&v534=0:P; 
+ 
+*** FUNCTION 40 : End of Rogue 
+!?FU40; 
+!!VRz200:S^%Z400... 
+ 
+I am very proud of you... 
+We won. We chased the rogues off the island. 
+ 
+But our quest is not finished. 
+We must go to the south to the town of Troydaïo. 
+ 
+I am with you...^; 
+!!FU16:Pz200/z110/z408; Gaïa dialogue 
+!!IF:Q1/17/2000/1^You gain 2000 experience points 
+for chasing the rogues off the island^; 
+!!HE-1:Ed+2000; Give 2000 experience 
+!!UN:O28/19/0/1; erase timothy 
+!!UN:I26/18/0/54/139; move timothy at 26/18/0 
+!!OB26/18/0:SHz415; rename and disable object to timothy 
+!!VRv534:S1; 
+ 
+!?OB26/18/0&v534=1; 
+!!VRz206:S^ 
+Gaïa be with you %Z400 
+ 
+Stay Enchanted!^; 
+!!FU16:Pz206/z119/z415; 
+ 
+ 
+****************************** 
+*** Function of the island *** 
+****************************** 
+*** FUNCTION 9 : Put shrub in the field 
+!?FU9; Rebirth of forest... 
+!!UN:I35/13/0/155/0/155/0/0; 
+!!UN:I35/14/0/155/0/155/0/0; 
+!!UN:I35/15/0/155/0/155/0/0; 
+!!UN:I35/16/0/155/0/155/0/0; 
+!!UN:I35/17/0/155/0/155/0/0; 
+!!UN:I35/18/0/155/0/155/0/0; 
+!!UN:I35/19/0/155/0/155/0/0; 
+!!UN:I35/20/0/155/0/155/0/0; 
+!!UN:I34/14/0/155/0/155/0/0; 
+!!UN:I34/15/0/155/0/155/0/0; 
+!!UN:I34/16/0/155/0/155/0/0; 
+!!UN:I34/17/0/155/0/155/0/0; 
+!!UN:I34/18/0/155/0/155/0/0; 
+!!UN:I34/19/0/155/0/155/0/0; 
+!!UN:I33/15/0/155/0/155/0/0; 
+!!UN:I33/16/0/155/0/155/0/0; 
+!!UN:I33/17/0/155/0/155/0/0; 
+!!UN:I33/18/0/155/0/155/0/0; 
+!!UN:I32/16/0/155/0/155/0/0; 
+!!UN:I32/18/0/155/0/155/0/0; 
+Add others tree... 
+!!UN:I35/13/0/155/0/155/0/1; 
+!!UN:I35/14/0/155/0/155/0/1; 
+!!UN:I35/15/0/155/0/155/0/1; 
+!!UN:I35/16/0/155/0/155/0/1; 
+!!UN:I35/17/0/155/0/155/0/1; 
+!!UN:I35/18/0/155/0/155/0/1; 
+!!UN:I35/19/0/155/0/155/0/1; 
+!!UN:I35/20/0/155/0/155/0/1; 
+!!UN:I34/14/0/155/0/155/0/1; 
+!!UN:I34/15/0/155/0/155/0/1; 
+!!UN:I34/16/0/155/0/155/0/1; 
+!!UN:I34/17/0/155/0/155/0/1; 
+!!UN:I34/18/0/155/0/155/0/1; 
+!!UN:I34/19/0/155/0/155/0/1; 
+!!UN:I33/15/0/155/0/155/0/1; 
+!!UN:I33/16/0/155/0/155/0/1; 
+!!UN:I33/17/0/155/0/155/0/1; 
+!!UN:I33/18/0/155/0/155/0/1; 
+!!UN:I32/16/0/155/0/155/0/1; 
+!!UN:I32/18/0/155/0/155/0/1; 
+ 
+*** FUNCTION 11 : Put shrub in the field 
+!?FU11; Put shrub in the field 
+!!UN:I29/1/0/150/0; 
+!!UN:I30/1/0/150/0; 
+!!UN:I31/1/0/150/0; 
+!!UN:I32/1/0/150/0; 
+!!UN:I33/1/0/150/0; 
+!!UN:I34/1/0/150/0; 
+!!OB29/1/0:H150; 
+!!OB30/1/0:H150; 
+!!OB31/1/0:H150; 
+!!OB32/1/0:H150; 
+!!OB33/1/0:H150; 
+!!OB34/1/0:H150; 
+ 
+!!UN:I29/2/0/150/0; 
+!!UN:I30/2/0/150/0; 
+!!UN:I31/2/0/150/0; 
+!!UN:I32/2/0/150/0; 
+!!UN:I33/2/0/150/0; 
+!!UN:I34/2/0/150/0; 
+!!OB29/2/0:H150; 
+!!OB30/2/0:H150; 
+!!OB31/2/0:H150; 
+!!OB32/2/0:H150; 
+!!OB33/2/0:H150; 
+!!OB34/2/0:H150; 
+ 
+!!UN:I29/3/0/150/0; 
+!!UN:I30/3/0/150/0; 
+!!UN:I31/3/0/150/0; 
+!!UN:I32/3/0/150/0; 
+!!UN:I33/3/0/150/0; 
+!!UN:I34/3/0/150/0; 
+!!OB29/3/0:H150; 
+!!OB30/3/0:H150; 
+!!OB31/3/0:H150; 
+!!OB32/3/0:H150; 
+!!OB33/3/0:H150; 
+!!OB34/3/0:H150; 
+ 
+!!UN:I29/4/0/150/0; 
+!!UN:I30/4/0/150/0; 
+!!UN:I31/4/0/150/0; 
+!!UN:I32/4/0/150/0; 
+!!UN:I33/4/0/150/0; 
+!!UN:I34/4/0/150/0; 
+!!OB29/4/0:H150; 
+!!OB30/4/0:H150; 
+!!OB31/4/0:H150; 
+!!OB32/4/0:H150; 
+!!OB33/4/0:H150; 
+!!OB34/4/0:H150; 
+ 
+*** FUNCTION 13 TO 15 : Function of Terra Transformation 
+!?FU13; transform an area 
+!!DO14/0/144/1:Px1/x2/x3/x4/x5/x6/x7; 
+ 
+!?FU14&x16>=x1/x16<=x3; transform a column 
+!!DO15/0/144/1:Px16/x2/x4/x5/x6/x7; 
+ 
+!?FU15&x16>=x2/x16<=x3; Transform one square 
+!!VRv1:Sx1; Xcoordinate 
+!!VRv2:Sx16; Ycoordinate 
+!!VRv3:Sx4; level 
+!!TR1:Tx5/x6/d/d/d/d/d/d; start rettain type 
+ 
+*** FUNCTION 16 : MESSAGE PICTURE 
+    Params: x1=text, x2=pic, x3=name 
+    Return: - 
+    Used:   z2,v3 
+***!?FU16; 
+!!VRz2:S^^; 
+!!IF:D99/x1/z2/z2/x2/z2/z2/z2/x3/z2/z2/z2/z2/z2/z2/z2; 
+!!IF:E1/99; 
+ 
+*** FUNCTION 17 : Question PICTURE 
+    Params: x1=text, x2=pic, x3=name 
+    Return: - 
+    Used:   z2,v3 
+***!?FU17; 
+!!VRz2:S^^; 
+!!IF:D99/x1/z2/z2/x2/z2/z2/z2/x3/z2/z2/z2/z2/z2/z2/z2; 
+!!IF:F99/z2/z2/z2/z2/1; Give hints and enable cancel button 
+!!IF:E1/99; 
+ 
+*** FUNCTION 18 : give elixir of life and rename it... 
+!?FU18; give elixir of life and rename it... 
+!!HE-1:A131; 
+!!HE-1:Y2/6/99/2; 
+!!VRv519:S3; 
+ 
+*** FUNCTION 19 : Function of the forest 
+!?FU19; Function of the forest 
+!!HE-1:A-131; Remove elixir of life 
+!!HE-1:Y2/6/0/0; Remove curse lock 
+!!UN:O32/17/0; Remove rogue 
+!!UN:R1; 
+!!UN:I32/17/0/54/119; Add faerie 
+!!OB32/17/0:SHz417; Rename Faerie 
+!!UN:O33/11/0; Remove rogue in front of hut chief 
+!!UN:I30/13/0/54/143; Add Rogue in front of village 
+!!OB30/13/0:SHz410; 
+!!UN:R1; 
+!!VRv519:S4; Next State of object 
+ 
+*** FUNCTION 20 : Provoke a batlle 
+!?FU20; Provoke a batlle 
+x1 is the type of monster 
+x2 is the number of monster 
+!!HE-1:T0/35/0/x1/x2; 
+ 
+*** FUNCTION 21 : State of the Rogue of forest... 
+!?FU21; State of the Rogue of forest... 
+!!VRz200&v520=1:S^ 
+I'm very thirsty... 
+ 
+First warning 
+Go away Jerk...^; 
+ 
+!!VRz200&v520=2:S^ 
+I'm very thirsty... 
+ 
+2nd warning 
+Go back to work...^; 
+ 
+!!VRz200&v520=3:S^ 
+I'm very thirsty... 
+ 
+I'll kill you...^; 
+ 
+!!VRz200&v520=4:S^ 
+I'm very thirsty... 
+ 
+And I'm furious! 
+ 
+Attack!!^; 
+!!FU16:Pz200/z112/z410; 
+!!FU20&v520>=4:P143/75; provoke a batlle 
+ 
+*** FUNCTION 22 : Add grass to forest 
+!?FU22; Add grass to forest 
+!!FU13:P35/12/35/21/0/2/50; 
+!!FU13:P34/13/34/20/0/2/50; 
+!!FU13:P33/14/33/19/0/2/50; 
+!!FU13:P32/15/32/19/0/2/50; 
+ 
+*** FUNCTION 23 : First meet with faerie 
+!?FU23; First meet with faerie 
+!!VRz200:S^ 
+You search the corpse... 
+ 
+You find a pair of gloves. 
+ 
+You take them... 
+ 
+Perhaps they will be useful later.^; 
+!!VRv523:S1; 
+!!HE-1:A70; 
+!!FU16:Pz200/z122/z420; Equestrian glove 
+!!VRz200:S^ 
+WELCOME MESSENGER OF GAÏA 
+ 
+Thank you for chasing the rogues out of our forest. 
+ 
+Please rest awhile and heal our forest...^; 
+!!FU16:Pz200/z115/z417; faerie dialogue 
+!!VRz200:S^ 
+How can I do that?^; 
+!!FU16:Pz200/z125/z400; heroes dialogue 
+!!VRz200:S^ 
+Close your eyes... 
+ 
+Just think to Gaïa. 
+ 
+You're the Chosen...^; 
+!!FU16:Pz200/z115/z417; faerie dialogue 
+!!VRz200:S^ 
+So %Z400... 
+ 
+You need me... 
+ 
+Relax, I'll heal the forest...^; 
+!!FU16:Pz200/z110/z408; Gaïa dialogue 
+!!FU9:P; Call function to rebirth forest 
+!!FU9:P; Call function to rebirth forest 
+!!FU22:P; Call function to add grass to forest 
+!!TR32/16/0:P1; passable 
+!!TR32/15/0:P1; passable 
+!!UN:I32/15/0/91/0/91/0/2; 
+!!OB32/15/0:S; disable object 
+!!VRv519:S5; 
+ 
+*** FUNCTION 24 : the hut 
+!?FU24; the hut 
+!!VRz202:S^This hut seems inhabited. 
+So you don't touch anything and leave.^; 
+!!FU16:Pz202/z125/z400; heroes dialogue 
+ 
+*** FUNCTION 25 : Rogue in front of hut 
+!?FU25; Rogue in front of hut 
+!!VRz203&v521=1:S^ 
+Go away Jerk...^; 
+ 
+!!VRz203&v521=2:S^ 
+Go back to work...^; 
+ 
+!!VRz203&v521=3:S^ 
+Go away or I'll kill you...^; 
+!!VRz203&v521=4:S^ 
+I'm furious 
+ 
+A T T A C K . . .^; 
+!!FU16:Pz203/z121/z410; 
+!!FU20&v521>=4:P143/75; provoke a batlle 
+ 
+*** FUNCTION 26 : Rogue of well 
+!?FU26; Rogue of well 
+!!VRz204&v522=1:S^ 
+Do you see my gloves?...^; 
+!!VRz204&v522=2:S^ 
+I am sure you know where they are... 
+ 
+Do you see my gloves?...^; 
+!!VRz204&v522=3:S^ 
+ 
+Give me back my gloves?...^; 
+!!VRz204&v522=4:S^ 
+You're a thief... 
+I'll kill you^; 
+!!FU16:Pz204/z120/z410; 
+!!FU20&v522>=4:P143/75; provoke a batlle 
+ 
+*** FUNCTION 27 : Function with Timothy for ore 
+!?FU27; Function with Timothy for ore 
+!!UN:O35/10/0; erase timothy near the hut 
+!!UN:I28/19/0/54/139; move timothy at 28/19/0 
+!!VRz200:S^Wow this guy is fast... 
+Where did he disappear to? Perhaps in the south...^; 
+!!FU16:Pz200/z125/z400; heroes dialogue 
+!!OB28/19/0:SHz415; rename and disable object to timothy 
+!!VRv525:S2; 
+ 
+*** FUNCTION 29: Add people of forest 
+!?FU29; 
+!!UN:I30/17/0/54/119; Add faerie 
+!!UN:I30/16/0/54/19; Add elfe 
+!!MO30/17/0/0:G100R0; change number and always join 
+!!MO30/16/0/0:G20R0; change number and always join 
+!!VRv524:S1; next state of faerie dwelling 
+!!VRv519:S6; new dialogue for the faerie 
+!!VRv526:S1; init the quest of well 
+ 
+*** FUNCTION 30 : Repair the well 
+!?FU30; 
+!!OB28/7/0:Hz412; Well rename 
+!!OW:R0/2/d-2; Remove two ore 
+!!VRv525:S4; state of well the well is repaired 
+!!VRv526:S3; 
+ 
+*** FUNCTION 31 : Dialogue and irrigate field 
+!?FU31; 
+!!HE-1:W0; movement to 0 
+!!VRz201:S^Thanks for repairing the well. 
+I'll water my field. Wait a bit.^; 
+!!FU16:Pz201/z117/z414; Alexander dialogue 
+ 
+!!VRz207:S^Ok... I wait.^; 
+!!FU16:Pz207/z125/z400; heroes dialogue 
+ 
+!!VRz201:S^Please friends, call Gaïa.^; 
+!!FU16:Pz201/z117/z414; Alexander dialogue 
+ 
+!!VRz207:S^Ok... ^; 
+!!FU16:Pz207/z125/z400; heroes dialogue 
+ 
+!!VRz200:S^ 
+Yes, I know my Chosen...^; 
+!!FU16:Pz200/z110/z408; Gaïa dialogue 
+!!FU9:P; 
+!!FU11:P; 
+!!VRv526:S4; next state of Alexander and chief 
+!!VRz201:S^Thanks to Gaïa. Here's the plant you need.^; 
+!!FU16:Pz201/z117/z414; Alexander 
+ 
+*** FUNCTION 32 : the illusion 
+!?FU32; the illusion 
+!!VRz210:S^Great. Give me the plant... 
+ 
+I'll prepare the illusion.... 
+There, it is done. 
+ 
+Please defeat the remaining rogues and their boss. 
+ 
+Gaïa be with you %Z400.^; 
+!!FU16:Pz210/z113/z423; cheif dialogue 
+!!MO28/16/0:G200R1; 
+!!VRv526:S5; 
+ 

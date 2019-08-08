@@ -1,0 +1,11 @@
+ZVSE
+!#TM27:S1/1/1/1;
+
+!?TM27;
+!!IF&v501=2:Q27/8/112/8/114/8/117/1^You saved the Artifacts or Edrics resource production on you`re way.^;
+
+!!HE69&v501=2:A112;
+!!HE69&v501=2:A114;
+!!HE69&v501=2:A117;
+
+!!IF&v501<>2:M^Better you had saved the Artefacts of Sir Edric. Now you could need them!^;

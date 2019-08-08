@@ -1,0 +1,16 @@
+ZVSE
+!?LE22/5/0;
+!!HE73:P71/45/1;(moves hero so she can be ambushed, killed and later resurrected by ERM code)
+
+!?LE11/7/0;
+!!HE73:P10/6/0; (move in a dead überhero)
+!!HE73:C0/0/57/4; 
+!!HE73:C0/1/58/2;  
+!!HE73:C0/2/60/1; 
+!!HE73:C0/3/62/1; 
+!!HE73:C0/4/60/1; 
+!!HE73:C0/5/58/2; 
+!!HE73:C0/6/57/4; (Set up creatures)
+
+!?HE73;
+!!HE73:O5; (Set purple as owner to avoid crashes)

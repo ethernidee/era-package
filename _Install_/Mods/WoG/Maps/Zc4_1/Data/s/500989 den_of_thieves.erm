@@ -1,0 +1,37 @@
+ZVSE
+!#VRv260:S0;
+!#TR24/17/0:P1;
+!#TR24/17/0:E0;
+!#OB24/17/0:T91;
+!#OB24/17/0:S;
+!?OB24/17/0;
+!!FU260&1000:P;
+
+!?FU260;
+!!HE-1:N?y1;
+
+!!IF&y1<>69/v260=0:M^I don`t trust any stranger! But you`re a Necromancer, I see. That`s good. I miss {Isra}. Perhaps you can find her. She`s the only necromancer I trust.^;
+!!IF&y1<>69/v260=1:M^I heard that you freed {Isra} from prison. So be sure I will help you, when you will need my help, later.^;
+
+
+!!IF&y1=69/v260=0:Q260/8/8/8/14/1^Ah Isra! I am glad to see you back again. You know that you owe me, my {Blackshard of the Dead Knight} and my {Shield of the Yawning Dead} after you lost them in a fight with the Arch Angles. Bring them 
+back and I will help you! %V260^;
+
+!!HE69&v260=1:A2/8/?y2/?y3;
+!!HE69&v260=1:A2/14/?y4/?y5;
+!!VRy2&v260=1:+y3;
+!!VRy2&v260=1:+y4;
+!!VRy2&v260=1:+y5;
+
+!!IF&y1=69/y2<2/v260=1:M^Don`t try to trick me! I want both Artefacts back. %Y2 %Y3 %Y4 %Y5^;
+
+!!HE-1&y1=69/v260=1/y2>=2:A-8;
+!!HE-1&y1=69/v260=1/y2>=2:A-14;
+!!IF&y1=69/v260=1/y2>=2:M^It was a good idea to give me my Artefacts back. Now I will help you to flea 
+from this country!^;
+
+!!UN&y1=69/y2>=2:D22/16/0;
+!!UN&y1=69/y2>=2:D21/16/0;
+!!UN&y1=69/y2>=2:D20/16/0;
+!!UN&y1=69/y2>=2:D19/16/0;
+!!VRv260&y1=69:S1;

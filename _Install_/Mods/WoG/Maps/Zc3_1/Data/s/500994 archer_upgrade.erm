@@ -1,0 +1,9 @@
+ZVSE
+!?LE44/2/0; 
+!!IF&-1:Q1^Gados tells you that he can get some nice crossbows for your troops, but that it will cost you 1000 gold, one time. Do you agree to this?^;
+!!IF&1:M^Gados leaves his office, and returns a few minutes later with a new crossbow for each of your archers.^;
+!!LE44/2/0:R4/0;                           (Makes sure gold is only taken once)
+!!LE44/2/0&1/-4:R6/-1000;            (Takes away money)
+!!IF&1:V4/1;                                    (Makes sure gold is only taken once.)
+!!HE0&4:C1/2/3/d0;                       (Upgrades archers to Marksmen)
+!!IF:V1/0;                                        (Resets flag no.1)

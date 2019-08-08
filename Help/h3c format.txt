@@ -1,0 +1,122 @@
+Heroes 3 Campaign (h3c) format after unpacking (gz).
+=================================
+Note, header + zones and each map file must be gzencoded as a separate chunk.
+
+byte    = 1 byte (0..255)
+word    = 2 bytes (0..65535)
+integer = 4 bytes (-2147483648..2147483647)
+boolean = 1 byte (0 = false, 1 = true)
+---------------------------------
+const
+  (* Hardcoded in camptext.txt, differs for each campaign index. Number of zones in current campaign *)
+  NUM_ZONES = ?;
+
+var
+  Header: THeader;
+  Zones:  array NUM_ZONES of TZone;
+  Maps:   array NUM_ZONES of TMap | None;
+
+type
+  TString = record
+    Length: integer;
+    Value:  array Length of char;
+  end;
+
+  THeader = record
+    GameVersion:             integer = 5 (Armageddon Blade) | 6 (WoG);
+    CampaignInd:             byte; // Index of campaign (from 0), see camptext.txt
+    CampaignName:            TString;
+    CampaignDesc:            TString; // Description
+    UserCanSelectDifficulty: boolean;
+    MusicTheme:              byte;
+  end; // THeader
+
+  TZonePrologue = record
+    HasPrologue: boolean;
+
+    if HasPrologue then
+      VideoId: byte;
+      MusicId: byte;
+      Text:    TString;
+    end;
+  end;
+
+  TZoneEpilogue = record
+    HasEpilogue: boolean;
+
+    if HasEpilogue then
+      VideoId: byte;
+      MusicId: byte;
+      Text:    TString;
+    end;
+  end;
+
+  TStartingOpts = record
+    OptsType: byte; // StartingBonus = 1, CrossoverHero = 2, InitialHero = 3
+
+    if OptsType = 1 then
+      PlayerColor: byte;
+      NumBonuses:  byte;
+      Bonuses:     array NumBonuses of record
+        BonusType: byte;
+
+        if BonusType = 0 (spell) then
+          Hero:  word; 65023 for most powerful hero
+          Spell: byte;
+        end;
+
+        if BonusType = 1 (creature) then
+          Creature: word;
+          Number:   word;
+        end;
+
+        if BonusType = 3 (artifact) then
+          Hero: word;
+          Art:  word;
+        end;
+
+        if BonusType = 4 (spell scroll) then
+          Hero:  word;
+          Spell: byte;
+        end
+
+        if BonusType = 5 (primary skills) then
+          Hero:       word;
+          PrimSkills: array [4] of byte;
+        end;
+
+        if BonusType = 6 (secondary skill) then
+          Hero:     word;
+          SecSkill: byte;
+          Level:    byte;
+        end;
+
+        if BonusType = 7 (resource) then
+          Resource: byte;
+          Quantity: integer;
+        end;
+      end; // Bonuses
+    end; // if
+
+    if OptsType = 2 then
+      PlayerColor: byte;
+      ZoneIndex:   byte;
+    end;
+  end; // .TStartingOpts
+
+  TZone = record
+    FileName:           TString;
+    FileSize:           integer;
+    RequiredZones:      byte; // Zone prerequisites; bitmask: 1 bit for each zone
+    ZoneColor:          byte;
+    DifficultyLevel:    byte;
+    RegionRmbText:      TString; // Right mouse button hint
+    Prologue:           TZonePrologue;
+    Epilogue:           TZoneEpilogue;
+    HeroesRetain:       byte; // Bitmask of Experience (bit 0), Primary Skills (bit 1), Secondary Skills (bit 2), Spells (bit 3), Artifacts (bit 4)
+    CrossoverCreatures: array of 19 bytes; // 1 bit for every creature. Creature ID: 0..159
+    CrossoverArts:      array of 18 bytes; // 1 bit for every artifact. Artifact ID: 0..143
+    StartingOpts:       TStartingOpts;
+  end;
+
+  TMap = unpacked h3m (gz) map

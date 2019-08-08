@@ -1,0 +1,18 @@
+ZVSE
+!?LE15/33/0;        (triggered by event at 15:33:0(where you first enter                                WotW))
+!!IF:V7/0; (resets flags 1, 6 and 7 to "0"-leftovers from Knight Quest) 
+!!IF:M^Ellam walks up to you. He glances nervously around him, looking afraid of something.
+ Me... me must leave you here Nailag. Me... me must go back to me home."
+ "Of course you can leave if you wish too, though I'm sad that you have to."
+ As you  part ways, you can't help but feel sad for your lost companion. But there is something else also. Why did he have to go home? Why was he so nervous. You guess you have to ask him sometime later, if you ever see him again.^;
+
+!!HE0:C1/17/d0/0;  (removes Battle Dwarfs)
+!!HE0:C1/16/d0/0;  (removes Dwarfs (backup if player didn't upgrade him))
+!!IF:M^ You and Aned watch as Ellam goes back the way you came. Then, you ask:
+ "Any idea of where we should go next?"
+ "Well, there's always Emokon."
+ "Then Emokon it is."
+ "Let us then follow the Way of the Wolf, as that will be the fastest and safest way. A suggestion, though. Most people are afraid of mages, perhaps rightfully so. I would advise that we should try to keep it secret what we are, at least until we know the person we're dealing with"
+ "That sounds like good advice. I'll follow it."
+
+Now, it is finally time for some {A-d-v-e-n-t-u-r-e}.^;              (This message appears afterwards.)

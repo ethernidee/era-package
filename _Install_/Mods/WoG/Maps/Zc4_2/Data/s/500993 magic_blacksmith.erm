@@ -1,0 +1,182 @@
+ZVSE
+
+**vars
+**v160 set Hint Text
+**v161 money of current heroe
+**v162 var for 3 artefakt question
+**v163 var for 4 artefakt question
+**v164 var for visit check
+
+!#VRz160:S^Magic Blacksmith^;
+!#VRv160:S0;
+!#HT63/6:V160/0/160;
+
+
+!?TM16;
+!#TM16:S1/999/1/255;
+!!VRv164:S0;
+
+
+!?OB63/6;
+!!OW:R-1/6/?v161;
+!!IF&1000/v164=1:M^I can only upgrade one artifact per day. Come back tomorrow!^;
+!!IF&1000/v164<>1:Q160^{I am a Magic Blacksmith and can upgrade} 
+{your equipped Helmet, Sword, Shield or}
+{Breastplate. The cost will be:}
+2000 for Level 1 to Level 2,
+3000 for Level 2 to Level 3,
+4000 for Level 3 to 4 and so on.
+{Do you want to upgrade one of your artifacts?}^;
+!!IF&1000/-160:M^No? It's a good deal. Think it over at least!^;
+!!FU160&1000/160/v164<>1:P;
+
+
+!?FU160;
+!!HE-1:A1/?y1/0; ** check helmet
+!!HE-1:A1/?y2/3; ** check sword
+!!HE-1:A1/?y3/4; ** check shield
+!!HE-1:A1/?y4/5; ** check breastplate
+
+!!VRy11&y1>=19/y1<24:S1; ** set helmet checkvar
+!!VRy12&y2>=7/y2<12:S2;  ** set sword checkvar
+!!VRy13&y3>=13/y3<18:S4; ** set shield checkvar
+!!VRy14&y4>=25/y4<30:S8; ** set breastplate ceckvar
+
+!!VRy5:S0;
+!!VRy5:+y11; ** add helmet checkvar to checkall var
+!!VRy5:+y12; ** add sword checkvar to checkall var
+!!VRy5:+y13; ** add shield checkvar to checkall var
+!!VRy5:+y14; ** add breastplate checkvar to checkall var
+
+!!UN&y1<>-1:N0/161/y1; ** get name of helmet
+!!UN&y2<>-1:N0/162/y2; ** get name of sword
+!!UN&y3<>-1:N0/163/y3; ** get name of shield
+!!UN&y4<>-1:N0/164/y4; ** get name of breastplate
+
+** All possible Questions
+
+** Heroe wears no artefact
+!!IF&y5=0:M^I am sorry but I can't help you! You don`t have an artifact, that I can upgrade^;
+
+** Heroes wears one artefact
+!!IF&y5=1:Q161/8/y1/2^You wear a %Z161, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=1:Py1/0;
+!!IF&y5=2:Q161/8/y2/2^You hold a %Z162, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=2:Py2/3;
+!!IF&y5=4:Q161/8/y3/2^You hold a %Z163, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=4:Py3/4;
+!!IF&y5=8:Q161/8/y4/2^You wear a %Z164, that I can upgrade! Do you want to upgrade it?^;
+!!FU161&161/y5=8:Py4/5;
+
+
+** Heroes wears two artefacts
+
+!!IF&y5=3:Q162/8/y1/8/y2/7^You've got a %Z161 and a %Z162, that I can upgrade! Choose one which you want to 
+upgrade.^;
+!!FU161&162/y5=3:Py1/0;
+!!FU161&-162/y5=3:Py2/3;
+!!IF&y5=5:Q162/8/y1/8/y3/7^You've got a %Z161 and a %Z163, that I can upgrade! Choose one which you want to 
+upgrade.^;
+!!FU161&162/y5=5:Py1/0;
+!!FU161&-162/y5=5:Py3/4;
+!!IF&y5=9:Q162/8/y1/8/y4/7^You've got a %Z161 and a %Z164, that I can upgrade! Choose one which you want to 
+upgrade.^;
+!!FU161&162/y5=9:Py1/0;
+!!FU161&-162/y5=9:Py4/5;
+!!IF&y5=6:Q162/8/y2/8/y3/7^You've got a %Z162 and a %Z163, that I can upgrade! Choose one which you want to 
+upgrade.^;
+!!FU161&162/y5=6:Py2/3;
+!!FU161&-162/y5=6:Py3/4;
+!!IF&y5=10:Q162/8/y2/8/y4/7^You've got a %Z162 and a %Z164, that I can upgrade! Choose one which you want to 
+upgrade.^;
+!!FU161&162/y5=10:Py2/3;
+!!FU161&-162/y5=10:Py4/5;
+!!IF&y5=12:Q162/8/y3/8/y4/7^You've got a %Z163 and a %Z164, that I can upgrade! Choose one which you want to 
+upgrade.^;
+!!FU161&162/y5=12:Py3/4;
+!!FU161&-162/y5=12:Py4/5;
+
+** Text Vars vor II:G - command headline
+
+!!VRz165:S^You wear three artifacts. Please choose one which you want to upgrade.^;
+!!VRz166:S^You wear four artifacts. Please choose one which you want to upgrade.^;
+
+** Heroes wears three artefacts
+
+!!IF&y5=7:G1/162/0/165/161/162/163;
+!!FU161&v162=1/y5=7:Py1/0;
+!!FU161&v162=2/y5=7:Py2/3;
+!!FU161&v162=4/y5=7:Py3/4;
+!!IF&y5=11:G1/162/0/165/161/162/164;
+!!FU161&v162=1/y5=11:Py1/0;
+!!FU161&v162=2/y5=11:Py2/3;
+!!FU161&v162=4/y5=11:Py4/5;
+!!IF&y5=13:G1/162/0/165/161/163/164;
+!!FU161&v162=1/y5=13:Py1/0;
+!!FU161&v162=2/y5=13:Py3/4;
+!!FU161&v162=4/y5=13:Py4/5;
+!!IF&y5=14:G1/162/0/165/162/163/164;
+!!FU161&v162=1/y5=14:Py2/3;
+!!FU161&v162=2/y5=14:Py3/4;
+!!FU161&v162=4/y5=14:Py4/5;    
+
+** Heroes wears four artefacts
+
+!!IF&y5=15:G1/163/0/166/161/162/163/164;
+!!FU161&v163=1/y5=15:Py1/0;
+!!FU161&v163=2/y5=15:Py2/3;
+!!FU161&v163=4/y5=15:Py3/4; 
+!!FU161&v163=8/y5=15:Py4/5;  
+
+
+** ------------------------------ Change Artefact Function --------------------------------- **
+
+!?FU161;
+
+** caculate cost
+
+!!VRy21&x1<12:Sx1;
+!!VRy21&x1<12:-5;
+
+!!VRy21&x1>12/x1<18:Sx1;
+!!VRy21&x1>12/x1<18:-11;
+
+!!VRy21&x1>18/x1<24:Sx1;
+!!VRy21&x1>18/x1<24:-17;
+
+!!VRy21&x1>24/x1<30:Sx1;
+!!VRy21&x1>24/x1<30:-23;
+!!VRy21:*1000;
+
+** upgrade the artifact
+** check artefact inclusive skills
+!!HE-1:F?y22/?y23/?y24/?y25;
+
+!!HE-1&v161>=y21:A3/x1/1/1; ** delete previous artefact
+!!VRx1&v161>=y21:+1;        ** add + 1 to number of previous artefact
+
+** calculate primary skill values
+!!VRy25&x1>=19/x1<24:+1; ** check 'normal artefakt'
+!!VRy25&x1=24:+6;        ** check relict
+
+!!VRy22&x1>=7/x1<12:+1;
+!!VRy22&x1=12:+6;
+
+!!VRy23&x1>=13/x1<18:+1;
+!!VRy23&x1=18:+6;
+
+!!VRy24&x1>=25/x1<30:+1;
+!!VRy24&x1=30:+6;
+
+!!HE-1&v161>=y21:A1/x1/x2;  ** add new artefact
+
+!!HE-1:Fy22/y23/y24/y25; ** set new primary skills
+
+
+!!IF&v161<y21:Q163/6/y21/1^This upgade costs %Y21 You don't have enough money! Come back later!^;
+!!IF&v161>=y21:Q164/8/x1/1^The Magic Blacksmith takes your artifact and you wait a few hours. When he returns, 
+he has your upgraded artifact ready!^;
+
+!!VRv161&v161>=y21:-y21;    ** substract money
+!!OW:R-1/6/v161;            ** set money
+!!VRv164&v161>=y21:S1;      ** set visitvar to visited 

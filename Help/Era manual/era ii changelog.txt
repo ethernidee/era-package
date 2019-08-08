@@ -1,3 +1,176 @@
+Version 2.8.7
+------------------------
+[+] Added new function and event name 'OnRemoteEvent', generating !?FU(OnRemoteEvent) on remote sides with x1..x16 arguments.
+    x1 is event type, values 0..9999 are reserved by Era. ERM users may use !!FU(any func):D instead with the same functionality.
+
+[+] Added new event 'OnEveryDay', same as !?TM[xx], but occuring every day for every player/AI without any settings and before
+    all other !?TM triggers.
+    Example: !?FU(OnEveryDay)&-1000; every day for any AI
+
+[+] Added new ERM command SN:R^old resource name^/^new resource name^, redirecting lod/pac/mp3 resources to other names.
+    The command is a thin wrapper over RedirectFile exported function. Pass empty name as new resource name to remove
+    redirection. All applied redirections are local, stored in saved game and reverted on map exit.
+    '*.mp3' redirection works on all mp3 files at once.
+    
+    Example:
+    !#SN:R^crgrif.def^/^croc.def^; let Royal Griffins look like Rocs (portraits are not changed)
+
+    Game unloads not used resources, thus many resources can be dynamically redirected during playing.
+    If resource is used in Hero Screen, perform redirection before Hero Screen is shown (and resource is cached).
+
+    Custom interface skins may also be implemented, allowing user to switch themes right in the game (saved game
+    loading may be necessary for visual update).
+
+[+] MP trigger and receivers were fully remade. Old documentation is not applicable now. New implementation is fully
+    thread-safe. From now heroes3.ini setting "UseOnlyOneCpuCore" is 0 by default, allowing running HD mod in CPU-heavy modes.
+
+    Documentation:
+
+    !?MP; Trigger occurs whenever game or ERM/Lua calls ChangeMp3Theme function.
+    ; Here function parameters may be changed via !!MP:S, function default reaction enabled/disabled via !!MP:R
+
+    !!MP:C?z[xx]; Get name of current theme without mp3 extension in lower case.
+    ; Receiver may be called any time. Example result: 'dirt'.
+
+    !!MP:P[theme name]/[Don't track position = 0/1]/[Loop = 0/1]; Calls ChangedMp3Theme function and generates !?MP event.
+    ; Theme name is mp3 file name without extension.
+    ; If 'Don't track position' is true (1), track playing is begun from start after resuming from pause.
+    ; Otherwise position is remembered and restored on resume.
+    ; 'Loop' controls automatical theme replay after end. 'Don't track position' must be set to 0 in order for looping to work.
+    ; ---------------------
+    ; Please, note, that final parameters are fully ignored if theme with the same name is being played currently.
+    ; You may need to pause current theme before starting another one to force playing from start or without loops.
+    Example: !!MP:P^cstletown^/0/1; start playing looped Castle theme
+
+    !!MP:P0/[0 - pause, 1 - resume]; Pauses or resumes current theme
+    Example:
+    !!MP:P0/0; Silence, please, important event will occur now
+
+    !!MP:S[theme name]/[Don't track position = 0/1]/[Loop = 0/1]; Get/change parameters for !?MP trigger.
+    Examples:
+    !?MP;
+    !!MP:S?z2/d/0; Make all themes non-looped
+
+    !?MP;
+    !!MP:S^mainmenu^/0/1; Play SoD main menu theme during the whole gameplay process
+
+    !!MP:R[get/set: Enable default reaction = 0/1]; Command allows to disable theme changing at all
+    ; Can be used to disallow music changing for some time
+    Example:
+    !?MP;
+    !!MP:R0; Don't switch current theme at all
+
+[+] Added 4 new battle events as solution to !?BR and v997 mess with full backward compatibility:
+    Event: 'OnBeforeBattlefieldVisible'.
+    Occurs when battlefield and stacks are ready, but not visible. Right before !?BR&v997=-1.
+    WoG applies spells to stacks in this phase and inits shoot/melee/attack-n-return settings.
+
+    Event: 'OnAfterTacticsPhase'.
+    Occurs right after tactics phase or after 'OnBeforeBattlefieldVisible' event if no tactics phase takes place.
+    WoG summons Santa's guardians in this phase (because now stacks are in their final positions).
+
+    Event: 'OnBattlefieldVisible'.
+    Occurs when battlefield becomes visible. Game changes theme to combat right after this phase.
+    
+    Event: 'OnCombatRound'. A drop-in replacement for !?BR aka 'OnBattleRound'. Occurs only for visible real rounds.
+    v997 is round number. For tactics phase it starts from -1000000000. For normal phase, counting starts from 0.
+    Each round v997 is increased by one, thus it can serve as always increasing unique round ID.
+    Note: v997 value in other triggers may be different!
+
+    Example:
+    !?FU(OnCombatRound)&v997=0; on first non-tactics visible real round
+    ; apply spells, play music, change creature attributes, etc.
+
+[-] Fixed bug: pressing Enter/Esc in ERM error dialog showed error dialog twice.
+
+Version 2.8.6
+------------------------
+[-] Fixed 'load only these scripts.txt' handling bug, when global scripts were treated as map internal scripts.
+
+Version 2.8.5
+------------------------
+[+] Included Help\h3c format.txt, describing campaign file format.
+[-] Restored !?MP/!!MP functionality, disabled in 2.8.4 by mistake.
+
+Version 2.8.4
+------------------------
+[+] Greatly improved WoG code performance by removing functions prolog and epilog code, that was added by ZVS in debug purposes.
+
+[+] Improved ERM errors reporting: valid file name, line and positions are displayed, as long as appropriate context. Errors reporting now
+    works correctly during ERM compilation. No more double/tripple error messages. The whole receiver is skipped in case of error.
+
+[+] Rewritten scripts loading/saving/exporting engine. Removed restriction on 100 unique ERM scripts. Previously Era used to join 99+ scripts
+    into single one. A few bugs of not unloading previous map scripts were fixed. Loading saved game with the same scripts set as current one
+    is now really fast and does not require ERM recompilation. It means that loading game is much faster now.
+
+[+] ERM memory limit is extended to 128 MB. Memory is now allocated gradually as needed, saving system resources.
+
+[+] All maps are always treated as WoG format.
+
+[+] Scripts from map global events are now managed by Era: they are preprocessed (named functions and labels support) and can be extracted via F11
+    and reapllied on F12. They are loaded before scripts from map separate directory.
+
+[+] Each map can have its own directory in Maps. For "Arrogance.h3m" it's Maps/Arrogance. For campaign Zc2.h3c (the first map) it's Maps\Zc2_1.
+    The last number is map zone index in campaign. 1 for Zone A, 2 for Zone B, etc. Custom map scripts can be put inside map directory under Data/s subpath.
+    Script names can have any names, they are loaded first and do not depend on global script names. If Maps/[MapName]/Data/s/load only these scripts.txt is present,
+    only those global scripts, which are written there (one name per line), will be loaded from global Data/s directory. Anyway, all map scripts will
+    be loaded in the first place. Map scripts are stored in saved game, can be reloaded, extracted, can use named functions and labels.
+
+[+] All language Lang/*.json files are loaded from map directory (ex. Maps/Arrogance/Lang/arrogance.json), stored in saved games are applied. Thus
+    maps can be supplied with translatable language data.
+
+[+] WoG Option 5 (Wogify) meaning was changed for both map start or scripts reloading via F12:
+    - 0: don't load any global ERM scripts (previously - load global ERM scripts for maps with 'RANDOM MAP' like name);
+    - 1, 2: always load global ERM scripts, unless map forces other value;
+    - 3: load global ERM scripts, but if map has its own scripts and does not force fixed set of global scripts,
+      ask user, whether to skip global scripts loading or not.
+
+    If there exists "Maps/[MapName]/Data/s/load only these scripts.txt" file, then global scripts specified in the file are loaded without confirmation
+    and WoG Option 5 is set to "2".
+    If user choses to skip or load global scripts in confirmation dialog, WoG Option 5 is changed to either 0 or 2.
+
+    Summary:
+    - Backward compatibility with existing maps/scripted campaigns is preserved. They usually set !!UN:P905/0 (disable wogification), which
+      disables global ERM scripts loading.
+    - Because all maps are now treated as WoG Format, option 1 is the same as option 2.
+    - Scripts reloading via F12 always honor the option.
+
+[+] Scripts from WoG Campaigns were fixed and extracted to separate directories. Bug fixes applied.
+New service for scripts extraction was published: https://tools.bsoft.parkingby.icu/scripts-extractor/
+
+[+] UN:J3 command was improved. Specify ':clear:' option instead of file name to turn off all WoG Options and set Map Rules to "use selected below".
+
+[+] Added UN:J13 command. It resets commanders, according to current WoG Options 3 and 6.
+
+[+] Added missing descriptions for old Era events:
+  !?FU77012 = !?FU(OnStackToStackDamage). Occurs when damage dealt by one stack to another stack is calculated.
+  SN:X parameters:
+
+  ATTACKER            = 0; (attacker stack)
+  DEFENDER            = 1; (defender stack)
+  FINAL_DAMAGE_CONST  = 2; Do not change
+  FINAL_DAMAGE        = 3;
+  BASIC_DAMAGE        = 4; Normal basic damage
+  DAMAGE_BONUS        = 5; Damage bonus (caused by attack-defense difference, cavalry bonus or any custom bonus)
+  IS_DISTANT          = 6; (0 for melee, 1 for distant)
+  DISTANCE_ARG        = 7;
+  IS_THEORETICAL      = 8; (0 for real damage, 1 for estimated damage)
+
+  !?FU77013 = !?FU(OnAICalcStackAttackEffect). Occured when AI calculates the effect of attacking stack
+  SN:X parameters:
+
+  ATTACKER            = 0; (attacker stack)
+  DEFENDER            = 1; (defender stack)
+  EFFECT_VALUE        = 2; (final effect)
+  EFFECT_VALUE_CONST  = 3; Do not change
+
+[+] Added "fix wog exp screen.bin" memory patch by igrik. It fixes column headers display in creature experience screen.
+[+] Splice and HookCode API was improved. Added support for custom extra argument and multiple calling conventions.
+[*] Savegames format was changed and is not compatible with previous Era versions.
+[-] Disabled "Failed to create Debug\Era\log.txt" message if several game instances are running.
+[-] Fixed UN:P3 command. Enabling/disabling commanders now enables/disables commander chests too.
+[-] Mapname.erm and Mapname.cmd are not loaded anymore.
+
 Version 2.8.3
 ------------------------
 [+] Added "LoadImageAsPcx16" to era.dll export and SDK. Function allows to load png/jpg/bmp image with

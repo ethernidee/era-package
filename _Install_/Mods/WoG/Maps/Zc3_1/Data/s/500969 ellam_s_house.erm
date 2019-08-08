@@ -1,0 +1,12 @@
+ZVSE
+
+!#VRz5:S^Dwarven House^;
+!#OB27/54/0:Hz5;
+
+!?OB27/54/0;
+!!HE0:C1/16/17/1;
+!!HE0:C1/16/d0/?y1;
+!!IF&y1=0/-71:Q1/21/16/1^This dwarven house is empty.^;
+!!IF&y1=0/71:Q1/21/16/1^Ellam's house is empty.^;
+!!IF&y1<>1:Q1/21/17/1^Ellam enters the house, and comes back a few minutes later, dressed in impressive dwarven armor.^;
+!!IF:V71/1;

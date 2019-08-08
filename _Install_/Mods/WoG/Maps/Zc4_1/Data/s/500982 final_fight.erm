@@ -1,0 +1,21 @@
+ZVSE
+!?LE12/11/0;
+!!TR35/8/0:E?v279;
+
+!!IF&v279=1:Q280/8/114/8/112/8/117/2^An Archangel appears:"I warn you, only once! You have fought the Cavaliers, who guarded Edrics Resource Production. Give the Artifacts back or it will be your end. Do you agree?^;
+
+!!IF&v279=0:M^An Archangel appears:You coward, you hadn`t the courage, to fight the Cavaliers, who guarded Edrics Resource Production! You aren`t worth to be recognised!^;
+!!VRv501&v279=0:S0;
+
+
+!!GR5/13/0&v279=1/280:G0/13/2;
+!!GR5/13/0&v279=1/280:G2/13/2;
+!!GR5/13/0&v279=1/280:G4/13/2;
+!!GR5/13/0&v279=1/280:G6/13/2;
+!!VRv501&v279=1/280:S1;
+
+!!GR5/13/0&v279=1/-280:G0/13/5;
+!!GR5/13/0&v279=1/-280:G2/13/5;
+!!GR5/13/0&v279=1/-280:G4/13/5;
+!!GR5/13/0&v279=1/-280:G6/13/5;
+!!VRv501&v279=1/-280:S2;

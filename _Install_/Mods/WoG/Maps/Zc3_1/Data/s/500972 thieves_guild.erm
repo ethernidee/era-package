@@ -1,0 +1,18 @@
+ZVSE
+!?OB47/26/0;
+!!IF&-66/67:Q1/21/143/1^ "The rogues still live, and the Guards continue to pester us. You'll not pass."^;
+!!IF&-66/-67:Q1/21/143/1^ Two guards materialize from the shadows.
+ "You. Hold there. Our guild Head would like to speak to you."
+ "Well, get him then."
+ "Sure."
+ A few minutes later, an old, but good-looking man appears.
+ "Normally, I wouldn't leave my guild to meet with anybody, but I won't take any risks about letting you in. I am Reivard, leader of the local thieves guild. We don't do much thieving here in Emokon, but rather smuggle wares in and out of Emokon. Lately, a group of rogues have been causing us trouble. The City guard has been getting hard on us. If you would rid us of them, everything would go back to normal. You would gain access to our headquarter. I'm sure you'll find opportunity for some.. good business there."^;
+!!IF:V67/1;
+!!IF&66:M^ "Now that we are rid of that problem, you have free access to our guildhouse."^;
+!!HE0&66:P46/22/1;
+
+!?OB45/21/1;
+!!HE0:P48/26/0;  (leaving thieves guild)
+
+!?LE63/43/0;
+!!IF:V66/1; (rogues killed)

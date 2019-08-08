@@ -1,0 +1,56 @@
+ZVSE
+!#VRz261:S^Skullhill^;
+!#VRz262:S^Skullhill (visited)^;
+!#VRv261:S0;
+!#HT63/15:V261/0/261;
+!#HT63/15:V261/1/262;
+!#VRv261:S0;
+
+!?OB63/15;
+!!IF&v261=1:Q260/16/3/1^Don`t visit a visited Skullhill!^;
+!!HE-1&v261=1:R0/-3;
+!!FU261&1000/v261=0:P;
+
+!?FU261;
+
+!!DO262/0/6/1:P;
+!!IF&v262=0:M^You don`t have any Walking Dead, perhaps it would be better you had. Now it`s to late!^;
+!!IF&v262>=1:Q261/21/58/2^Do you want to sacrife some Walking Deads while vising the skullhill?^;
+
+!!VRy1&-261:S0 R1;
+!!VRy2&261:S0 R4;
+
+** no sacrifice
+
+!!IF&-261/y1=0:M^You feel week until the end of they day and are not able to do anything^;
+!!HE-1&-261/y1=0:W0;
+
+!!IF&-261/y1=1:Q260/3/1/1^You find a piece of sulfur^;
+!!OW&-261/y1=1:R-1/3/d1;
+
+*** scrifice Walking Dead
+
+!!HE-1&261:C0/v263/-1/0;
+
+!!IF&261/y2=0:M^You may upgrade all your creatures, once^;
+!!HE-1&261/y2=0:D;
+
+!!IF&261/y2=1:Q260/21/67/1^2 Dread Knights appear to help you.
+Attention:
+Don`t put them into a empty slot, where Walking Deads were before scarifycing^;
+!!HE-1&261/y2=1:C67/2/-1/0/-1/0/-1/0/-1/0/-1/0/-1/0;
+
+!!IF&261/y2=2:Q260/6/2000/1^You find some gold^;
+!!OW&261/y2=2:R-1/6/d2000;
+
+!!IF&261/y2=3:Q260/8/31/1^You find the Amor of Wonder^;
+!!HE-1&261/y2=3:A31;
+
+!!VRv261:S1;
+
+
+
+!?FU262;
+!!HE-1:C0/x16/?y1/?y2;
+!!VRv262&y1=58:+y2;
+!!VRv263&y1=58:Sx16;

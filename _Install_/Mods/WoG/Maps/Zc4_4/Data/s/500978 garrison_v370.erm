@@ -1,0 +1,24 @@
+ZVSE
+!?LE19/10/0;
+!!HE-1:N?v371;
+!!VRv374&v371=69:S1;
+!!IF&v371=69:M^A good place for {Isra}, she should wait here until all have reached this place!^;
+!!IF&v371<>69:M^This place is for {Isra}!^;
+!!LE19/10/0&v374=1/375=1/376=1:D0/1;
+
+!?LE20/10/0;
+!!HE-1:N?v372;
+!!VRv375&v372=77:S1;
+!!IF&v372=77:M^A good place for {Xsi}, she should wait here until all have reached this place!^;
+!!IF&v372<>77:M^This place is for {Xsi}!^;
+!!LE20/10/0&v374=1/375=1/376=1:D0/1;
+
+!?LE20/11/0;
+!!HE-1:N?v373;
+!!VRv376&v373=68:S1;
+!!IF&v373=68:M^A good place for {Tamika}, she should wait here until all have reached this place!^;
+!!IF&v373<>68:M^This place is for {Tamika}!^;
+
+!!IF&v374=1/v375=1/v376=1:M^You discuss how to go on and find a way to get the owner of the garrison in the south east.^;
+!!GR27/15/0&v374=1/v375=1/v376=1:O0;
+!!LE20/10/0&v374=1/v375=1/v376=1:D0/1;

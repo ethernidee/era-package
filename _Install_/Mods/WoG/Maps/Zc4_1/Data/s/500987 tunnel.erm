@@ -1,0 +1,5 @@
+ZVSE
+!?LE31/21/0;
+!!IF:M^You find a tunnel to go through!^;
+!!HE-1:P30/19/0;
+!!IF:M^This tunnel was not stabil. You`re lucky and notice that it breaks down after your walked through.^;

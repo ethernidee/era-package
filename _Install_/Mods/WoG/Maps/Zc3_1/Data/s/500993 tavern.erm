@@ -1,0 +1,18 @@
+ZVSE
+!?LE62/5/1;
+!!IF:Q1^You see two men, standing by themselves and whispering to each other. Do you try to overhear?^;
+
+!!IF&1:M^ "Sure, a Dragon. It has its lair somewhere in the underground."
+ "I hope it's the same one that used to terrorize my town. I've a blade for that one."
+ "I don't know. From what I've heard, its name is Ebedos, and you can only access his lair through the... HEY! What are YOU listening to?"
+With that, the two figures leave the room, but what you heard sure seemed like an {A-d-v-e-n-t-u-r-e}.^;
+!!IF:V1/0; (sets flag no.1 to "0")
+
+!?LE65/4/1;
+!!IF:Q1^You see two mildly-drunk officers of the City Guard, having some sort of argument. Do you try to overhear?^;
+!!IF&1:M^"I'm telling you, the Thieves Guild has access to a Portal. How else could they sneak in all those goods?"
+ "No. no! They've dug a tunnel under the walls."
+ "Don't be ridiculous, how could they have done that?"
+ "How could they have gotten access to a Portal?"
+ "Well, they are thieves you know..."^;
+!!IF:V1/0; (sets flag no.7 to "0")

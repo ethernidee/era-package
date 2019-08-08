@@ -1,0 +1,10 @@
+ZVSE
+
+!#VRz142:S^Beaming Tree House^;
+!#VRv142:S0;
+!#HT63/3:V142/0/142; 
+
+!?OB63/3;
+!!IF&1000:Q142^I can bring you back to the Center of the Elven Country. Do you wish to go there?^;
+!!HE-1&142:P51/48/0;
+!!IF&-142/1000:M^Come back, when you need me!^;

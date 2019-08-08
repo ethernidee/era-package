@@ -1,0 +1,14 @@
+ZVSE
+!?LE50/62/0;
+!!IF:Q1^A Hre-Chul comes riding up to you:
+"Me bring offer for yo, hooman. Yo givv us gold and gems and we leeve yo alone."
+Do you agree to the Goblins' offer?^;
+
+!!IF&1:M^"Tanks for the gold, stoopid hooman. We still eat you. Mwahahaha!"
+You draw your sword to decapitate the goblin, but he escapes with all your gold and gems.^;
+!!LE50/62/0&1:R6/-1000;
+!!LE50/62/0&1:R5/-1;   (If agreeing to Goblin's offer, display this message and take all gold/gems)
+
+!!IF&-1:M^Stoopid hooman. I am not alone!^;
+!!HE102&-1:P51/61/0;   (If rejecting, bring in a hero to block the path.)
+!!IF:V1/0;      (Set flag no. 1 to "0")
