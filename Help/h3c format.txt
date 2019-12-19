@@ -105,18 +105,21 @@ type
   end; // .TStartingOpts
 
   TZone = record
-    FileName:           TString;
-    FileSize:           integer;
-    RequiredZones:      byte; // Zone prerequisites; bitmask: 1 bit for each zone
-    ZoneColor:          byte;
-    DifficultyLevel:    byte;
-    RegionRmbText:      TString; // Right mouse button hint
-    Prologue:           TZonePrologue;
-    Epilogue:           TZoneEpilogue;
-    HeroesRetain:       byte; // Bitmask of Experience (bit 0), Primary Skills (bit 1), Secondary Skills (bit 2), Spells (bit 3), Artifacts (bit 4)
-    CrossoverCreatures: array of 19 bytes; // 1 bit for every creature. Creature ID: 0..159
-    CrossoverArts:      array of 18 bytes; // 1 bit for every artifact. Artifact ID: 0..143
-    StartingOpts:       TStartingOpts;
+    FileName: TString;
+
+    if FileName.Length > 0 then
+      FileSize:           integer;
+      RequiredZones:      byte; // Zone prerequisites; bitmask: 1 bit for each zone
+      ZoneColor:          byte;
+      DifficultyLevel:    byte;
+      RegionRmbText:      TString; // Right mouse button hint
+      Prologue:           TZonePrologue;
+      Epilogue:           TZoneEpilogue;
+      HeroesRetain:       byte; // Bitmask of Experience (bit 0), Primary Skills (bit 1), Secondary Skills (bit 2), Spells (bit 3), Artifacts (bit 4)
+      CrossoverCreatures: array of 19 bytes; // 1 bit for every creature. Creature ID: 0..159
+      CrossoverArts:      array of 18 bytes; // 1 bit for every artifact. Artifact ID: 0..143
+      StartingOpts:       TStartingOpts;
+    end;
   end;
 
   TMap = unpacked h3m (gz) map

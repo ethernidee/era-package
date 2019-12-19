@@ -306,7 +306,7 @@ class MapCompiler {
    * @return int|float
    */
   protected function parseAddr (string $addr) {
-    $result = hexdec($addr);
+    $result = hexdec(rtrim($addr, 'H'));
     $result < 0 and $result += 4294967296;
 
     return $result ?: 0;

@@ -1,3 +1,266 @@
+Version 2.9.1
+------------------------
+#small-fixes #antiviruses-heaven
+[+] Replaced Tools\DEFka v1.0 with more feature rich DEFka 2.0.
+[+] Replaced Virtual Pascal angel.dll stub with Delphi angel.dll stub.
+[+] Added "ErmLegacySupport" option in heroes3.ini. If set to 1, compatibility with old ERM scripts will be better
+    at the cost of ~15% ERM performance decrease. Options forces local variables reset before each !?XX trigger, even
+    in DO-loops.
+[-] Renamed Mods\WoG\EraPlugins\erm_hooker.dll to *.era.
+
+Version 2.9.0
+------------------------
+#performance #erm-speed-up #erm-stability #era-evolution #recruit-dialog
+
+[@] Special thanks to HMM 3 fans, who supported the project with donations: Andarium (++) and a few other players (+).
+[@] Special thanks to daemon_n for maintaining main Russian Era all-in-one package, script writers and players support,
+    Advanced Classes Mod translation and more.
+[@] Special thanks to MoP. His Battery.dll plugin was used during Recruit Dialog API development.
+[@] Special thanks to igrik for his constant plugins updates, advices and help.
+
+[+] Speeded up ERM triggers in 2-10x times. There is no more performance penalty, depending on total triggers number.
+    Whether there are 5 total triggers or 5000, trigger search time is almost linear. Triggers location in memory and search mechanism
+    were optimized.
+
+[!] Backward incompatible change: local variables saving and initialization is performed before the first trigger of particular type (like !?CM2)
+    and restoration is performed after the last trigger of particular type. It means, that code must not depend on local vars initial zero/empty value.
+    Some original WoG scripts need corrections.
+
+[+] Rewritten trigger execution procedure. Features:
+  - Up to 32 nested IFs support.
+  - Each trigger/function from now has its own local set of y1..y100, e1..e100, z-1..z-10, x1..x16, f996..f1000, v997..v1000 variables.
+    Flags and v-variables are automatically set before first trigger of the same type execution.
+    x1..x16 usually hold trigger/function paremeters and should be changed only when you know, what you are doing.
+  - Optimized !!DO support. Variables saving/restoring is performed only once before !!DO-loop and after.
+
+[+] Rewritten !!DO implementation. Now it's lightning fast (10x), almost same as manual loop with SN:G.
+  - DO parameters are set only once before the first iteration.
+  - DO:P? syntax is supported. Get-parameters will have 0 value at first iteration and their final value will be returned after the last iteration.
+    Example: !!DO(Test)/0/100/1:P?y1; y1 will be set to x1 value after last loop iteration, x1 initial value is 0
+  - !!DO:P= syntax is not supported anymore.
+  - Backward iteration is now supported. !!DO(Test)/100/-10/-1; will iterate 111 times from 100 to -10.
+
+[+] v1..v10 and z1 variables are restored after OnKeyPressed event automatically. No keyboard fix scripts is necessary anymore.
+
+[*] Negative y-variables are DEPRECATED and are subject to be removed in the future. Do not use them in new scripts.
+    They are saved and restored for any event, except !?FU1..!?FU29999. Thus some WoG scripts used them as local variables (positive y-vars are better),
+    and some scripts used them as return values from FU1..FU29999 functions (like global variables).
+
+[+] SN:E always assigns both v1 and e1. No need to add 4 to calling convention in order to receive float result.
+
+[+] SN:X works directly with x1..x16 now. Parameters for Era triggers are assigned to x1..x16. Thus you can write:
+    !?FU(OnKeyPressed)&x1=27; handle ESC key (code 27)
+    !!VRx2:S1; disable default reaction
+
+[+] Era 1.9 was fully ported to Delphi. Angel.dll is left as deprecated stub only. Antiviruses no longer complain on angel.dll.
+[+] All SN receiver commands are now handled by Era.
+[+] ERM Hooker was updated to 2.1 version and is now part of Era package. Mod makers should not include it in their mods.
+
+[+] Added new event "OnLoadHeroScreen". It occurs just before Hero Screen is drawn for specific hero: after "OnOpenHeroScreen"
+    event and during each switching in the same dialog between different heroes. Event also occures during RMB on hero in tavern
+    and in battle (with special plugins). The event can be used to change hero skills/info/troops only for hero screen dialog.
+
+[+] Added "OnRecruitDlgMouseClick", "OnTownHallMouseClick" and "OnKingdomOverviewMouseClick" events. All parameters
+    can be obtained via !!CM, as usual. Default reaction can be disabled.
+
+[+] Improved SN:S / !?SN pair. Sound name is always copied to a separate buffer before calling PlaySound.
+    Previously the following code used to produce no sound:
+
+    !!VRz1:S^test.wav^;
+    !!SN:Pz1;
+
+    !?SN;
+    !!VRz1:S^WTF^;
+
+[+] OnBeforeHeroInteraction event has 3-d parameter (x3): "enable interaction". Set it to 0 to disable interaction.
+
+[+] Added SN:F^era.dll or kernel32.dll exported function name^/...function arguments... for executing functions
+    with STDCALL calling convention. No more need to use SN:L... A... E... in most cases.
+    Example: !!SN:F^ReadStrFromIni^/^key^/^section name^/^Data\test.ini^/?z2;
+             !!SN:F^GetButtonID^/^testBtn^;
+
+[+] Added ERM command for dynamical string interpolation (substitution of variables in string).
+    SN:I(string to interpolate)/?z#.
+    Command can be used for interpolating strings, obtained from external sources, such as ini-files
+    and SN:T, though its usage is recommended only for debugging/porting needs.
+
+    Example:
+    Use SN:T, UN:N6 or get input from dialog in z2.
+    Example z2 contents: '%Y5 %V996 test %Z5'
+    !!SN:Iz2/?z3; z3 now contains z2 contents with all variables substituted/interpolated
+
+[*] Updated "Quick Savings" mod.
+[+] Updated "wog native dialogs" plugin by igrik.
+
+[+] Era.dll now exports 2 additional functions: GetArgXVars and GetRetXVars. Each one returns pointer to int[16].
+    The first set of values should be used as parameters for generated events. They are automatically copied to x1..x16
+    right on trigger execution start. The second array holds copied x1..x16 values after trigger execution and serve
+    as return values.
+
+    Example:
+    GetArgXVars()[0] = 1; // default reaction is enabled
+    FireErmEvent(100000); // call trigger 100000
+    int defReactionEnabled = GetRetXVars()[0]; // get "default reaction enabled" parameter final value
+
+[-] Backward compatibility with plugins, adding new ERM receivers is broken. New API for regestering custom
+    ERM receiver handler is ready, only docs are missing for now.
+
+[+] Added new receiver !!RD for managing recruit dialog and a few new events.
+  
+  Whenever recruit dialog is created, an event "OnOpenRecruitDlg" is triggered with the following parameters:
+  x1 - selected/active monster slot (0..3)
+  x2 - flags/options. Combination of bits, controlling dialog behavior:
+    CLOSE_ON_BUY       = 1; Dialog should be closed, when buy button is clicked. Used normally in towns
+                            ir when there is only single recruit slot. Unset this flag to force use to manually close dialog.
+    AUTO_UPDATE_ADVMAP = 2; Adventure map screen should be updated after any recruit is hired (even when dialog is shown).
+                            This flag is used during hiring recruits from adv. map dwellings, allowing player to see
+                            new creature quantities in the right bottom info screen.
+  x3 - enable dialog = 1.   Set to 0 to not show dialog at all.
+
+  When recruit dialog is closed, an appropriate "OnCloseRecruitDlg" is trigger without parameters.
+  
+  When dialog slider is touched or active slot changed, recalculation of number of monsters to hire
+  and total costs is performed in "OnRecruitDlgRecalc" event. All parameters can be changed.
+  x1 - creature cost in gold
+  x2 - resource ID (0..5) or -1
+  x3 - resource cost
+
+  Dialog was modified to allow zero gold/resource cost.
+
+  When a few recruits are hired, "OnRecruitDlgAction" is triggered.
+  x1 - number of hired creatures. Read-only.
+  
+  
+  !!RD:C#slot/$type[/$num/$sourceId/#0 = use original number]; Configurate dialog
+  ===============================================================================
+  #slot - dialog slot index (0..3)
+  $type - creature type to hire in specified slot or -1 for inactive slot.
+  $num  - current number of creatures to hire. If the last parameter is 0, then it's original number
+          of monsters to hire, remembered right after "OnOpenRecruitDlg" event (get syntax only).
+          Number of creatures is usually directly binded to some source, like town creature dwelling.
+          Thus, settings this value in configuration phase, you change real creature quantity.
+  $sourceId - the source/memory, where available number of creatures is stored.
+    >> For existing towns on the map the following sourceId formula can be used:
+    Town ID * 14 + (town creature dwelling 0..6) + (7 for upgraded only), where Town ID is CA:U.
+    For instance, the source of second town on the map, 3-d upgraded dwelling is: 1 * 14 + 3 + 7 = 24.
+
+    >> If dialog is called with special, programmer-defined external sources, they will have the following IDs:
+    9000, 9001, 9002, 9003. For instance, mod maker implemented custom dwelling in town and has some memory,
+    where number of creatures for hiring is stored. Script writers will be able to see such sourceId as 9000.
+
+    >> Custom source. sourceId >= 10000. User-scripted implementation.
+    When custom source is used, unique memory block is allocated for it. Do not forget to set initial
+    value in "OnOpenRecruitDlg" and get final (remaining) value in "OnCloseRecruitDlg".
+
+    Same sourceId may be assigned to any number of dialog slots. All those slots will display same
+    creature quantity and update simultaneously. This is usefull for alternative creatures implementation.
+    Slots may have different creature types (and costs), but total amount of recuits is shared between all
+    slots.
+
+  SourceId is changed before applying new monsters number. Thus !!RD:C0/13/100/20000 will change
+  sourceId to 20000 (custom) first and then set monsters quantity to 100 archangels, without changing
+  original dwelling/object/etc population.
+
+  You can set slot 0 and 3 types to some values and slot 1 and 2 types to -1. Free space will collapse and user
+  will see only two slots.
+
+  Dialogs without working slots (creature type <> -1) will not be shown.
+
+  Example: !!RD:C2/?y3; y3 is creature type is 3-d dialog logical slot
+
+
+  !!RD:S#offset; Shift slots
+  ===============================================================================
+  #offset - shift all slots by this value to the right (positive number) or to the left (negative number).
+            If slot goes outside of 0..3 indexes, it disappears.
+  Example: given 0..1 slots with normal and upgraded creatures and any sourceIds. Task: prepend two custom slots
+           with angels/archangels to them.
+           !!RD:S2 C0/12/2/12345 C1/13/2/54321;
+           Before:
+           [creatures A] [creatures B] [empty slot] [empty slot]
+           After:
+           [2 angels] [2 archangels] [creatures A] [creatures B]
+  Shifting is performed will all settings (number, type, sourceId) preserved.
+
+  Example 2: remove first slot with upgraded monsters and leave non upgraded only.
+  !!RD:C0/?t/?t/?y2; y2 is sourceId for slot 0, t - temp global quick var
+  !!VRy2:%14;        y2 - is dwelling index 0..13, 7+ for upgraded
+  !!RD&y2>=7:S-1;    shift one slot to the left if the first slot is upgraded town dwelling
+
+
+  !!RD:F#visualSlot/?$logicalSlot; Convert visual dialog slot index to logical one (used with !!RD:C)
+  ===============================================================================
+  #visualSlot   - visible slot index (0..3)
+  ?$logicalSlot - logical slot index (0..3 or -1)
+
+  Command used together with mouse handling in recruit dialog. Visible slot IDs are monotonically
+  increasing and need to be converted to logical slot IDs.
+  Example:
+  [creature A] [empty slot] [empty slot] [creature B]
+  is displayed as
+  [creature A] [creature B], where creature B has visual slot index 1 and logical slot index 3
+
+
+  !!RD:I?$dialogId[/?$townId/?$dwellingId/?$selectedSlot]; Get current dialog Info
+  ===============================================================================
+  ?$dialogId     - Unique recruit dialog ID. Used to distinguish between nested dialogs (yep, it's possible). Reusable.
+  ?$townId       - ID of town, for which dialog is opened or -1.
+  ?dwellingId    - ID of town dwelling, for which dialog is opened or -1. 0..6 non upgraded, 7..13 for upgraded.
+                   Horde buildings (+X population) are treated as dwellings, they influence.
+  ?$selectedSlot - Active logical slot index.
+
+
+  !!RD:M#var/$value; Access current recuird dialog associative memory
+  ===============================================================================
+  #var   - either integer number or unique string. Same as SN:W
+  $value - get/set/modify variable value
+
+  Commands provide fully-featured SN:W equivalent with memory, allocated for each created recruit dialog.
+  Memory is released after "OnCloseRecruitDlg" for each dialog.
+
+  Example:
+  !!RD:M^acm.mapX^/v998 M^acm.mapY^/v999 M^acm.mapZ^/v1000;
+  !!RD:M^mithril^/*2;
+
+
+  !!RD:O#townId/#dwellingId/#targetType/#targetId[/#dlgFlags]; Open new recruit dialog (previous dialogs will remain in the background)
+  ===============================================================================
+  #townId     - ID of town to open dialog for or -1. Town will be used as slots source.
+  #dwellingId - ID of town dwelling (0..13) or -1. Dwelling will be used as slots source.
+  #targetType - Type of the destination for hired recruits:
+    RECRUIT_TARGET_TOWN   = 0;
+    RECRUIT_TARGET_HERO   = 1;
+    RECRUIT_TARGET_CUSTOM = 2; Destination will be determined by Lua/ERM script and handled manually
+  #targetId   - ID of target: hero ID, town ID or special value for Lua/ERM script.
+  #dlgFlags   - Combination of CLOSE_ON_BUY and AUTO_UPDATE_ADVMAP flags. See "OnOpenRecruitDlg" event.
+                Don't set this parameter of using native/default settings.
+
+
+Version 2.8.8
+------------------------
+[+] Added command for changing monster names/specialty text as !!UN:G1 zvar-free replacement.
+    SN:H^monname^/monster ID/(0 - singular, 1 - plural, 2 - description)/text. 
+    Note: get syntax works with all SN:H commands, allowing to obtain actual hint/text.
+
+    Example:
+    !?FU(OnOpenHeroScreen);
+    !!SN:H^monname^/0/0/^Bug^; rename pikeman to Bug
+    !!SN:H^monname^/0/1/^Bugs^; pikemen to Bugs
+    !!SN:H^monname^/0/2/^Screws the game process^; change pikeman special abilities description
+    !!SN:H^monname^/13/2/?z2; get archangel special abilities text
+    !!IF:M^Don't hire bugs. Better higher archangel. Pros: %Z2^; display archangel advertisement
+
+[+] Added plugin event 'OnAfterStructRelocations', occured after 'OnAfterWoG'. All game/WoG/Era structure relocations
+    must be performed before it with calling corresponding RedirectMemoryBlock (OldAddr: pointer; BlockSize: integer; NewAddr: pointer)
+    function. At 'OnAfterStructRelocations' event final addresses of game structures must be obtained via GetRealAddr.
+    UN:C command always uses GetRealAddr and is thus safe to use default WoG/SoD addresses.
+
+    Era uses GetRealAddr to get hero specialties, secondary skills, monster names and descriptions from now and
+    will support more relocated structures in the future.
+
+[-] Fixed MR:N bug: if dead stacks were present in position of alive stack, dead stack number could be returned.
+[-] Fixed Era bug with invalid address of secondary skills descriptions table, leading to wrong SN:H behavior. Credits: gamemaster.
+
 Version 2.8.7
 ------------------------
 [+] Added new function and event name 'OnRemoteEvent', generating !?FU(OnRemoteEvent) on remote sides with x1..x16 arguments.

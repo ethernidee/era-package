@@ -1,0 +1,58 @@
+; Alternative Trolls Mod
+; Mod allows to hire trolls instead of orcs using 3:10 rate (1 troll = 3.333 orcs)
+
+!?FU(atm.UpdateSlots);
+!!SN:F^recruit_dlg^/0/?y99/?y1/?y99/0; y1 - original number of orcs
+!!SN:F^recruit_dlg.mem^/^rate_x^/?y2; y2 - number of trolls for
+!!SN:F^recruit_dlg.mem^/^rate_y^/?y3; y3 - appropriate number of orcs
+!!SN:F^recruit_dlg.mem^/^percentage_left^/?e1; e1 - amount of monsters available in percents
+!!VRe9:S1:1000; e9 - epsilon (possible rounding error)
+!!VRe2:Sy1 *y2 :y3 *e1 +e9; e2 - number of trolls left
+!!VRy4:Se2; y4 - number of trolls left
+!!SN:F^recruit_dlg^/2/?y99/y4; update trolls quantity
+!!VRe3:Sy1 *e1 +e9; e3 - number of orcs left
+!!VRy5:Se3; y5 - number of orcs left
+!!SN:F^recruit_dlg^/0/?y99/y5; update orcs quantity
+
+!?FU(OnOpenRecruitDlg);
+!!SN:F^recruit_dlg.info^/?y1/?y2/?y3;
+; y1 - dialog ID
+; y2 - town ID
+; y3 - dwelling ID
+!!FU|y2=-1/y3=-1:E; exit if not town dwelling
+!!FU&y3<>2/y3<>9:E; exit if not 3-d level dwelling (upgraded or not)
+!!CA0/y2:T?y4; y4 - town type
+!!FU&y4<>6:E; exit if not stronghold
+
+!!SN:X?y99/0; don't close dialog on buy
+!!SN:F^recruit_dlg.mem^/^is_unequal_alt^/1; mark dialog as ours
+!!VRe1:S1; e1 - number alternative creatures available (1 = 100%)
+!!SN:F^recruit_dlg.mem^/^percentage_left^/e1; save number of available monsters in percents
+
+; remember orcs/trolls rate
+!!SN:F^recruit_dlg.mem^/^rate_x^/3; 3 trolls
+!!SN:F^recruit_dlg.mem^/^rate_y^/10; vs 10 orcs
+
+!!SN:F^recruit_dlg^/2/144/0/10000; setup trolls slot
+!!FU(atm.UpdateSlots):P;
+
+!?FU(OnRecruitDlgAction);
+!!SN:F^recruit_dlg.mem^/^is_unequal_alt^/?y1; y1 - 1 if it's atm dialog
+!!FU&y1<>1:E;
+!!SN:X?y2; y2 - number of recruited monsters
+!!SN:F^recruit_dlg.info^/?y99/?y99/?y99/?y3; y3 - active slot
+!!SN:F^recruit_dlg.mem^/^rate_x^/?y4; y4/y5 = trolls/orcs rate
+!!SN:F^recruit_dlg.mem^/^rate_y^/?y5;
+!!SN:F^recruit_dlg^/0/?y99/?y6/?y99/0; y6 - original number of orcs
+!!SN:F^recruit_dlg.mem^/^percentage_left^/?e1; e1 - amount of monsters available in percents
+
+!!if&y3=2:;
+  !!VRe2:Sy2 *y5 :y4 :y6; e2 - recruited percentage
+!!el:;
+  !!VRe2:Sy2 :y6; e2 - recruited percentage
+!!en:;
+
+!!VRe1:-e2;
+!!SN:F^recruit_dlg.mem^/^percentage_left^/e1; update percentage left
+!!FU(atm.UpdateSlots):P;
+

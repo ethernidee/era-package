@@ -312,6 +312,24 @@ namespace Era
     return buf;
   }
 
+  /**
+   * Assigns new string value to buffer.
+   * @param  Buf      Buffer to change contents of.
+   * @param  NewValue New string value.
+   * @param  BufSize  Maximal buffer size.
+   * @return void
+   */
+  void SetPcharValue (char *Buf, const char *NewValue, int BufSize = -1) {
+    if (BufSize < 0) {
+      lstrcpyA(Buf, NewValue);
+    } else if (BufSize > 0) {
+      int NumBytesToCopy = lstrlenA(NewValue);
+      NumBytesToCopy >= BufSize && (NumBytesToCopy = BufSize - 1);
+      memcpy(Buf, NewValue, NumBytesToCopy);
+      Buf[NumBytesToCopy] = 0;
+    }
+  }
+
   HINSTANCE hEra;
   HINSTANCE hAngel;
 
