@@ -1,3 +1,53 @@
+Version 2.9.5
+------------------------
+[+] Added "OnBuildTownBuilding" event, occuring when current PC human or AI builds town building.
+    Parameters: x1 = Town ID, x2 = Building ID.
+
+
+Version 2.9.4
+------------------------
+[+] Improved LoadImageAsPcx16 exported function, allowing to load any png/jpg/bmp file as pcx16 resource.
+    LoadImageAsPcx16 (FilePath, PcxName: pchar; Width, Height, MaxWidth, MaxHeight, ResizeAlg: integer): {OU} Heroes.PPcx16Item; stdcall;
+    Now it supports size constraints (0 for none) and resizing algorithm.
+    ALG_NO_RESIZE = 0, ALG_STRETCH = 1, ALG_CONTAIN = 2, ALG_DOWNSCALE = 3, ALG_UPSCALE = 4, ALG_COVER = 5, ALG_FILL = 6.
+    Use ALG_STRETCH to set fixed dimensions, ALG_FILL to fill the box with tiles and ALG_DOWNSCALE for custom dialogs
+    to shrink large images proportionally.
+
+    Example of using custom jpg image in DL-dialog.
+    !!SN:F^LoadImageAsPcx16^/^Data\Pics\test.jpg^/^rW3.cust.pcx^/400/300/0/0/1;
+    !!VRy1:Sv1; y1 - image resource
+    ...call DL dialog, where rW3.cust.pcx is used.
+    !!SN:F^DecRef^/y1; free image resource
+
+[+] Included "view mage guild without spellbook.bin" by igrik, allowing to enter magic guild without spellbook.
+[*] Allowed old SN:P[n] syntax instead of Pz[n].
+[*] Replaced WoG Native Dialog plugin by igrik with the one without non-dialog features.
+[-] Fixed sound handling issues and appropriate sound error message.
+[-] Fixed wrong flag 1000 value in triggers. Thanks to Valery (Salamandre).
+[-] Fixed crash in !!RD:O and a few other RD-related issues.
+[-] Fixed bug: SN:R was treated as missing command.
+[-] Fixed bug: heroes could not be dismissed.
+[!] battery.dll by MoP (included in Typhon too) is not supported anymore.
+[!] erm_hooker.era MUST BE deleted from all mods, unless you know, what you are doing. It's a part of Era package now.
+
+Version 2.9.3
+------------------------
+[+] Improved "ErmLegacySupport" option. Negative z-variables are not local for classic FU1..FU29999.
+    Negative z-variables are not nulled on FU1..FU29999 enter and other quirks.
+    Old WoG scripts bug count decreased.
+[!] Warning. Modern ERM scripts should not rely on any initial y+, y-, e+, e-, z- value. Assign them
+    before usage. In named functions and non-functional triggers y+, e+, z- variables are local to current trigger.
+    Use temprorary global z+ variables or SN:W to return string values from functions.
+[+] x1..x16 are also printed during ERM vars dumping.
+[*] Question in ERM error dialog is changed from "continue without dumping" to "dump ERM memory".
+[*] IFs counter is now reset at each trigger start.
+[-] Fixed bug: current hero was not set in a few ERM events.
+
+Version 2.9.2
+------------------------
+[-] Release building software used to put older angel.dll into installer.
+[-] Fixed bug: negative y-variables were reset even in non FU1..FU29999.
+
 Version 2.9.1
 ------------------------
 #small-fixes #antiviruses-heaven
@@ -154,7 +204,7 @@ Version 2.9.0
 
     Same sourceId may be assigned to any number of dialog slots. All those slots will display same
     creature quantity and update simultaneously. This is usefull for alternative creatures implementation.
-    Slots may have different creature types (and costs), but total amount of recuits is shared between all
+    Slots may have different creature types (and costs), but total amount of recruits is shared between all
     slots.
 
   SourceId is changed before applying new monsters number. Thus !!RD:C0/13/100/20000 will change
@@ -210,7 +260,7 @@ Version 2.9.0
   ?$selectedSlot - Active logical slot index.
 
 
-  !!RD:M#var/$value; Access current recuird dialog associative memory
+  !!RD:M#var/$value; Access current recruit dialog associative memory
   ===============================================================================
   #var   - either integer number or unique string. Same as SN:W
   $value - get/set/modify variable value

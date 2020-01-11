@@ -24,3 +24,4 @@ Attack %s (damage: %s)
 Shoot %s (%d shots left, damage: %s)
 Shoot %s (last shot, damage: %s)
 {WoG Options}
+End the battle instantly?
