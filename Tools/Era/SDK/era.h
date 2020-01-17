@@ -226,6 +226,14 @@ namespace Era
    */
   typedef void* (__stdcall *THookCode) (void* Addr, THookHandler HandlerFunc, void** AppliedPatch);
 
+  const int RESIZE_ALG_NO_RESIZE = 0; // Do not apply any constaints and do not change image dimensions
+  const int RESIZE_ALG_STRETCH   = 1; // Assign image width and height to box width and height, scale unproportionally
+  const int RESIZE_ALG_CONTAIN   = 2; // Resize image so, that at least one of its dimension become same as box dimension, and the other one less or equal to box dimension
+  const int RESIZE_ALG_DOWNSCALE = 3; // Only downscale images proportionally, do not upscale small images
+  const int RESIZE_ALG_UPSCALE   = 4; // Only upscale small images proportionally, leave big images as is
+  const int RESIZE_ALG_COVER     = 5; // NOT IMPLEMENTED
+  const int RESIZE_ALG_FILL      = 6; // Use image as a tile to fill the whole box
+
   /**
    * Loads Pcx16 resource with rescaling support. Values <= 0 are considered 'auto'. If it's possible, images are scaled proportionally.
    * Resource name (name in binary resource tree) can be either fixed or automatic. Pass empty PcxName for automatic name.
@@ -235,7 +243,7 @@ namespace Era
    * to load image of desired size for sure.
    * Default image is returned in case of missing file and user is notified.
    */
-  typedef void* (__stdcall *TLoadImageAsPcx16) (const char* FilePath, const char* PcxName, int Width, int Height);
+  typedef void* (__stdcall *TLoadImageAsPcx16) (const char* FilePath, const char* PcxName, int Width, int Height, int MaxWidth, int MaxHeight, int ResizeAlg);
  
 
   TEventParams* EventParams = NULL;

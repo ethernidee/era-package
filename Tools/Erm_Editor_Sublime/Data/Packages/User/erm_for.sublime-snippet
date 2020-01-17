@@ -1,0 +1,12 @@
+<snippet>
+  <content><![CDATA[
+!!VRy${1:(counter)}:S0;
+[:for]
+$0
+!!VRy${1:(counter)}:+1;
+!!SN&y${1:(counter)}<${2:(num_iterations)}:G[for];
+]]></content>
+  <description>FOR (iterate X times)</description>
+  <tabTrigger>for</tabTrigger>
+  <scope>source.erm - receiver.erm - trigger.erm</scope>
+</snippet>

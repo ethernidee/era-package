@@ -1,7 +1,49 @@
 Version 2.9.5
 ------------------------
+[+] New version of WoG Native Dialogs plugin released by igrik. Now IF:D dialogs are rendered using
+    native Heroes 3 engine, compatible with HD mod scaling, unless avi/gif images are used.
+    The Sphinx dialog is also remade.
+
+[+] Included new powerful ERM Editor, based on Sublime Text.
+
 [+] Added "OnBuildTownBuilding" event, occuring when current PC human or AI builds town building.
     Parameters: x1 = Town ID, x2 = Building ID.
+
+[+] Added "OnOpenTownScreen" and "OnCloseTownScreen" events with the only x1 parameter: ID of town,
+    that was entered initially. Towns may be switched between inside town screen without generating Enter/Leave events.
+
+[+] Added "OnSwitchTownScreen" event (x1 = Town ID), occuring when player switches towns in town screen.
+
+[+] Added "OnPreTownScreen" and "OnPostTownScreen" events (x1 = Town ID), occuring right before/after showing
+    town screen for particular town. Both events occur, whether town screen is opened/closed or switched.
+    They can be used to pre-change buildings/names/dwellings and revert changes afterwards, for instance.
+
+[+] Events "OnOpenHeroScreen", "OnCloseHeroScreen" and "OnUpdateHeroScreen" now receive x1 = Hero ID parameter.
+    In "OnCloseHeroScreen" x1 is the same as in "OnOpenHeroScreen", thus it's the first hero, screen was opened for.
+    Hero screen dialog allows to switch between heroes, without generating new Open/Close events.
+
+[+] Added "OnPreHeroScreen" and "OnPostHeroScreen" events (x1 = Hero ID), occuring right before/after showing
+    hero screen for particular hero. Both events occur, whether hero screen is opened/closed or switched.
+    They can be used to pre-change creatures/names/skills and revert changes afterwards, for instance.
+
+[+] Included Smacker (smk producing tools) in the package. Thanks to wessonsm. False positive detection by AVG/Avira possible.
+
+[*] Labels in ERM triggers may now be duplicated, overwriting previous ones. Example:
+    !?XX;
+    [:loop]
+    ...
+    [:loop] new loop will use the same label "loop", overwriting label position
+    ...
+
+[*] Events "OnEnterTown" and "OnLeaveTown" were renamed to "OnEnterTownHall" and "OnLeaveTownHall".
+
+[*] SN:E result is stored in e1 only for FLOAT_RES convention (+4), otherwise in v1. The behavior is the
+    same, as it was before Era 2.9.x branch.
+
+[-] Fixed crash when using temp variables f..t with GET syntax.
+[-] Fixed invalid parameters of RD:I in town horde dwelling dialog.
+[-] Fixed crash, caused by invalid town dialog detection.
+[-] Fixed a small bug in structure address, thanks to gamemaster.
 
 
 Version 2.9.4

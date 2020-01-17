@@ -1,0 +1,111 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: ERM
+
+file_extensions:
+  - erm
+
+first_line_match: ^ZVSE
+
+scope: source.erm
+
+contexts:
+  main:
+    - match: ;
+      scope: comment.line.erm
+      push:  comment
+
+    - match: '(!!)([A-Za-z]{2})'
+      captures:
+        1: keyword.operator.receiver.erm
+        2: keyword.operator.receiver_name.erm
+      push: receiver
+
+    - match: '(!#)([A-Z]{2})'
+      captures:
+        1: keyword.operator.instruction.erm
+        2: keyword.operator.instruction_name.erm
+      push: receiver
+
+    - match: '(!\?FU)(?:(\()([^)]++)(\)))?'
+      captures:
+        1: keyword.operator.trigger.erm
+        2: decorator.function_name.erm
+        3: entity.name.type.trigger.erm
+        4: decorator.function_name.erm
+      push: trigger
+
+    - match: '(![?$][A-Z]{2})'
+      captures:
+        1: keyword.operator.trigger.erm
+        2: keyword.operator
+      push: trigger
+
+    - match: ^ZVSE
+      scope: keyword.operator.erm
+
+  erm_operator:
+    - match: (?<=;)
+      set:   comment
+
+    - match: \^
+      scope: string.caret.erm
+      push:  string_caret
+
+    - match: '[f-txyvzwefc](?:\d++)?'
+      scope: variable.erm
+
+    - match: \d++
+      scope: constant.numeric.erm
+
+    - match: \([^)]++\)
+      scope: constant.named.erm
+
+    - match: \[[^\]]++\]
+      scope: variable.label.erm
+
+    - match: '@'
+      scope: string.macro_declaration.erm
+      push:  macro_declaration
+
+    - match: '\$'
+      scope: string.macro_usage.erm
+      push:  macro_usage
+
+  comment:
+    - meta_scope: comment.line.erm
+    - match: $
+      pop:   true
+    - match: (?=![!#?$])
+      pop:   true
+
+  string_caret:
+    - meta_scope: string.caret.erm
+    - match: '(%{1,4})([A-Z]\d*+)'
+      captures:
+        1: keyword.operator.interpolation.erm
+        2: string.interpolation.erm
+    - match: \^
+      pop:   true
+
+  receiver:
+    - meta_scope: receiver.erm
+    - include:    erm_operator
+    
+    - match: '[A-Z]'
+      scope: command.erm
+
+  trigger:
+    - meta_scope: trigger.erm
+    - include:    erm_operator
+
+  macro_declaration:
+    - meta_scope: string.macro_declaration.erm
+    - match: '[;@]'
+      pop:   true
+
+  macro_usage:
+    - meta_scope: string.macro_usage.erm
+    - match: '[;$]'
+      pop:   true
