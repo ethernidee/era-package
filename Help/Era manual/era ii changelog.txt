@@ -1,3 +1,39 @@
+Version 2.9.6
+------------------------
+[+] SN, MP and RD receivers syntax was improved. Now any command can use string concatenation (like d&z2),
+    integer modification (like d*5), SN:W string variable in the form of [?]s^var name^, SN:W integer
+    variable in the form of [?]i^var name^.
+
+    Examples:
+    - Concatenate string with existing variable and display result.
+    !!SN:W^report^/^Today we met a few strangers. They were^;
+    !!SN:W^report^/d&^ orcs^;
+    !!IF:M^%S(report)^; Today we met a few strangers. They were orcs
+
+    - Get current MP3 theme into named variable
+    !!MP:C?s^theme^;
+    !!IF:M^Current theme is %S(theme)^;
+
+    - Multiply number of creatures in the first slot of recruit dialog by 10 and display it
+    !!RD:C0/?t/d*10; type not changed, number multiplied by 10
+    !!RD:C0/?t/?i^numMons^;
+    !!IF:M^There are %I(numMons) creatures to hire^;
+
+[+] Added support for SN:W variables interpolation inside ^...^. %S(var_name) for string values, %I(var_name)
+    for integer values. The total length of interpolated string must not exceed 1 MB.
+
+[+] Replaced Heroes 3 random generator routine with world-wide known Mersenne Twister, generating
+    qualitative uniformly distributed sequences with huge periods.
+
+[+] Added new ERM command BM:U6/?$, returning stack actual speed, including slow spell effect.
+    Note, BM:S always returns speed without slow spell effect.
+
+[*] VR:T is deprecated and is equal to VR:R now. To get current time in milliseconds the following code can be used:
+    !!UN:C6529876/4/?t; t = timeGetTime function address
+    !!SN:Et/1;          v1 = result
+    Use VR:R0/#new_seed to reseed random number generator.
+
+
 Version 2.9.5
 ------------------------
 [+] New version of WoG Native Dialogs plugin released by igrik. Now IF:D dialogs are rendered using
@@ -378,6 +414,7 @@ Version 2.8.7
 
 [+] MP trigger and receivers were fully remade. Old documentation is not applicable now. New implementation is fully
     thread-safe. From now heroes3.ini setting "UseOnlyOneCpuCore" is 0 by default, allowing running HD mod in CPU-heavy modes.
+    Please note, that it's better to remove all ID3 tags from mp3 in order to avoid strange game issues.
 
     Documentation:
 
@@ -499,25 +536,25 @@ New service for scripts extraction was published: https://tools.bsoft.parkingby.
 
 [+] Added missing descriptions for old Era events:
   !?FU77012 = !?FU(OnStackToStackDamage). Occurs when damage dealt by one stack to another stack is calculated.
-  SN:X parameters:
+  Parameters:
 
-  ATTACKER            = 0; (attacker stack)
-  DEFENDER            = 1; (defender stack)
-  FINAL_DAMAGE_CONST  = 2; Do not change
-  FINAL_DAMAGE        = 3;
-  BASIC_DAMAGE        = 4; Normal basic damage
-  DAMAGE_BONUS        = 5; Damage bonus (caused by attack-defense difference, cavalry bonus or any custom bonus)
-  IS_DISTANT          = 6; (0 for melee, 1 for distant)
-  DISTANCE_ARG        = 7;
-  IS_THEORETICAL      = 8; (0 for real damage, 1 for estimated damage)
+  ATTACKER            = x1; (attacker stack)
+  DEFENDER            = x2; (defender stack)
+  FINAL_DAMAGE_CONST  = x3; Do not change
+  FINAL_DAMAGE        = x4;
+  BASIC_DAMAGE        = x5; Normal basic damage
+  DAMAGE_BONUS        = x6; Damage bonus (caused by attack-defense difference, cavalry bonus or any custom bonus)
+  IS_DISTANT          = x7; (0 for melee, 1 for distant)
+  DISTANCE_ARG        = x8;
+  IS_THEORETICAL      = x9; (0 for real damage, 1 for estimated damage)
 
   !?FU77013 = !?FU(OnAICalcStackAttackEffect). Occured when AI calculates the effect of attacking stack
-  SN:X parameters:
+  Parameters:
 
-  ATTACKER            = 0; (attacker stack)
-  DEFENDER            = 1; (defender stack)
-  EFFECT_VALUE        = 2; (final effect)
-  EFFECT_VALUE_CONST  = 3; Do not change
+  ATTACKER            = x1; (attacker stack)
+  DEFENDER            = x2; (defender stack)
+  EFFECT_VALUE        = x3; (final effect)
+  EFFECT_VALUE_CONST  = x4; Do not change
 
 [+] Added "fix wog exp screen.bin" memory patch by igrik. It fixes column headers display in creature experience screen.
 [+] Splice and HookCode API was improved. Added support for custom extra argument and multiple calling conventions.

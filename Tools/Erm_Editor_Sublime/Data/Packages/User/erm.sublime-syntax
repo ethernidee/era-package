@@ -82,7 +82,7 @@ contexts:
 
   string_caret:
     - meta_scope: string.caret.erm
-    - match: '(%{1,4})([A-Z]\d*+)'
+    - match: '(%)([SI]\([^);\^]*+\)?|[A-Z]\d*+)'
       captures:
         1: keyword.operator.interpolation.erm
         2: string.interpolation.erm
