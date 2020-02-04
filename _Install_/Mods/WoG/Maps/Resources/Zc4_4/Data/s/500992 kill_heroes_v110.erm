@@ -1,0 +1,18 @@
+ZVSE
+!#IF&1000:M^Be careful heroes. In this Country you can`t live without a Nightmare!^; 
+!#TM11:S2/999/1/1; 
+ 
+!?TM11; 
+!!DO110/0/155/1:P; [loop through all heroes] 
+ 
+!?FU110; 
+!!HEx16:O?y1; [get owner] 
+!!VRv111:S0; [count nightmares] 
+!!DO111/0/6/1&y1=0:Px16; [only checking red heroes for nightmares] 
+!!HEx16&y1=0/v111=0:B0/?z110; 
+!!IF&y1=0/v111=0:M^You were warned! You loose %Z110!^; 
+!!HEx16&y1=0/v111=0:K; 
+ 
+!?FU111; 
+!!HEx1:C0/x16/?y1/?y2; [get y1 type y2 qty] 
+!!VRv111&y1=172:+y2; [add up nightmares] 

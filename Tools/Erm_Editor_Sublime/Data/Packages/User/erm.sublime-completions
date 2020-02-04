@@ -31,6 +31,7 @@
       { "trigger": "hl\t!!HL", "contents": "!!HL:" },
       { "trigger": "ho\t!!HO", "contents": "!!HO" },
       { "trigger": "ht\t!!HT", "contents": "!!HT" },
+      { "trigger": "iff\t!!IF", "contents": "!!IF:" },
       { "trigger": "ip\t!!IP", "contents": "!!IP:" },
       { "trigger": "kt\t!!KT", "contents": "!!KT" },
       { "trigger": "le\t!!LE", "contents": "!!LE" },
@@ -74,6 +75,10 @@
       { "trigger": "exi\tEXIT TRIGGER", "contents": "!!FU:E;" },
       { "trigger": "exif\tEXIT IF", "contents": "!!FU&$1:E;$0" },
       { "trigger": "exifo\tEXIT IF .. OR ..", "contents": "!!FU|$1/$2:E;$0" },
+
+      { "trigger": "mes\t!!IF:M^^;", "contents": "!!IF:M^$1^;$0" },
+      { "trigger": "dump\t!!IF:M^%^;", "contents": "!!IF:M^%$1^;$0" },
+      { "trigger": "echo\t!!IF:L^%^;", "contents": "!!IF:L^%$1^;$0" },
 
       { "trigger": "_ae\t!?AE", "contents": "!?AE" },
       { "trigger": "_ba\t!?BA", "contents": "!?BA" },

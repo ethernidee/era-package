@@ -1,0 +1,178 @@
+ZVSE 
+ 
+** Market of Time ERM Script Version 1.2 created by Timothy E. Pulver 
+** This script requires WoG Version 3.52 and ERM Version 2.1 to use. 
+ 
+** This script sets up all Markets of Time on a map to function as locations 
+** where heroes can forget skills they have learned for a cost of 2000 gold. 
+** When a hero visits a Market of Time, the player is invited to type in a 
+** skill name to be forgotten. A hero can forget a maximum of one skill per 
+** day and 500 movement points are deducted from the hero's move that turn 
+** (it takes awhile to meditate). If a player types in a skill that the hero 
+** doesn't, he or she won't be charged any money (you can't forget what you 
+** don't know). 
+ 
+** To install this script in a map, simply copy & paste the code into a global 
+** (timed) event. Copy the entire code, from ZVSE to the end. Make sure that 
+** you disable ALL colours from receiving the event and/or change the event 
+** day to something like 500 or later to avoid the ERM script popping up as if 
+** it were a regular event message. 
+ 
+** And of course, you'll also need to put one or more Market of Time objects 
+** on your map for the heroes to visit. Have fun forgetting! :-) 
+ 
+Flags used: 1-4, 1000 
+Variables used: v451-v469, w45, x16, z1, z241-248 
+Functions used: 451 
+Dialogs used: 14 
+Macros used: @hsex@, @slevel@, @pgold@, @sicon@, @cday@, @skillnum@, @pithnum@, @skname@, @hname@, @he-she@, @man-woman@, @pithy@ 
+ 
+[Check version of ERM to see if it's current enough] 
+[Display warning message if it isn't] 
+!#IF:V1/0; 
+!#UN:V?v468/?v469; 
+!#IF&v468<352:V1/1; 
+!#IF&v469<210:V1/1; 
+!#IF&1:M^{VERSION OUT-OF-DATE WARNING} 
+ 
+Sorry, your versions of WoG and/or ERM 
+are too old to use the 
+{Market of Time version 1.2 script.} 
+ 
+Please update your files.^; 
+ 
+[Set up Macros] 
+!#MCv452:S@hsex@; [Sex of hero] 
+!#MCv453:S@slevel@; [Hero's level in skill to forget] 
+!#MCv454:S@pgold@; [Player's current gold] 
+!#MCv455:S@sicon@; [Icon number for skill to forget] 
+!#MCv456:S@cday@; [Current day] 
+!#MCv458:S@skillnum@;  [Number of skill chosen to forget] 
+!#MCv459:S@pithnum@; [Pithy message number] 
+!#MCz1:S@skname@; [Name of skill chosen to forget] 
+!#MCz242:S@hname@; [Name of hero] 
+!#MCz245:S@he-she@; ["he" or "she"] 
+!#MCz246:S@man-woman@; ["man" or "woman"] 
+!#MCz247:S@pithy@; [Pithy message] 
+ 
+[Initialize variables v460-v467 to zero] 
+!#VRv460:C-1/-1/-1/-1/-1/-1/-1/-1; 
+ 
+[Set hint for Market of Time] 
+!#VRz241:S^Market of Time^; 
+!#HT63/51:T241; 
+ 
+[Activate if any Market of Time is visited by a human player] 
+!?OB63/51&1000; 
+ 
+[Get colour, name and sex of hero visiting Market] 
+!!HE-1:O?v451 B0/?$hname$ R2/?$hsex$; 
+!!VRv451:+460; 
+ 
+[Display this message the first time each player visits the Market on a given map] 
+!!IF&vv451=-1:M^At the {Market of Time} we help you regain some of your lost years by teaching meditation techniques that let you forget useless skills. This frees up your mind for new learning. We charge a nominal fee of 2000 gold coins for our service.^; 
+ 
+[Set variable (v460..v467) to show that a player has visited before] 
+!!VRvv451:S99; 
+ 
+[Set up skill forgetting dialog - dialog box #14] 
+!!VRz243:S^Market of Time^; 
+!!VRz244:S^Which skill do you wish to forget, %$hname$?^; 
+!!IF:D14/243/244/////////////; 
+ 
+[Extended Dialog: asks player which skill he/she wishes to forget] 
+!!IF:E457/14; 
+ 
+[Set $skillnum$ to value of -1 prior to name lookup] 
+!!VR$skillnum$:S-1; 
+ 
+[Call Function 451 in a loop to see if skill name entered exists 
+ and assigns its number to $skillnum$ if it does] 
+!!DO451/0/27/1:P; 
+ 
+[If nothing was entered, set $skillnum$ to -2] 
+!!VR$skname$:H3; 
+!!VR$skillnum$&-3:S-2; 
+ 
+!!IF&$skillnum$=-1:M^We're sorry %$hname$, but we've never heard of the %$skname$ skill. 
+ 
+Perhaps you have mistakenly given us the wrong name.^; 
+ 
+ 
+[Continue Market of Time script only if a valid skill name was entered] 
+!?OB63/51&1000/$skillnum$>=0; 
+ 
+!!IF&$skillnum$>=0:Q4/36/2000/2^So, you wish to forget everything you ever knew about %$skname$... 
+ 
+Will you pay the fee of 2000 gold coins to forget %$skname$?^; 
+ 
+[Checks if hero has that skill] 
+!!HE-1&4:S$skillnum$/?$slevel$; 
+!!IF&$slevel$=0/4:M^Better keep your money, %$hname$. 
+ 
+You don't know the first thing about %$skname$ and it's hard to forget something you have not yet learned.^; 
+ 
+[Check if hero has already forgotten a skill today] 
+[Set flag 2 to true if he/she has] 
+!!IF:V2/0; 
+!!IF:W-1; 
+!!VR$cday$:Sc0; 
+!!IF&w45=$cday$:V2/1; 
+!!IF&4/2/$slevel$>0:M^Sorry %$hname$, but you've already forgotten a skill today. 
+ 
+Come back tomorrow or yesterday if you feel the need to forget something more.^; 
+ 
+[Continue Market of Time script only if hero hasn't already forgotten a skill today] 
+!?OB63/51&1000/-2/$skillnum$>=0; 
+ 
+[Checks if player has enough money to afford this service] 
+!!OW:R-1/6/?$pgold$; 
+!!IF&$slevel$>0/$pgold$<2000/4:Q1/6/2000/1^You don't have enough money. Come back when you can afford our services.^; 
+ 
+[Reduces player's gold by 2000 to pay for service] 
+!!OW&$slevel$>0/$pgold$>=2000/4:R-1/6/d-2000; 
+ 
+[Set up icon for message to show player's current skill to be forgotten] 
+!!VR$sicon$&$slevel$>0/$pgold$>=2000:S$skillnum$ *3 +2 +$slevel$; 
+ 
+[Generate random pithy message] 
+!!VR$he-she$&$hsex$=0:S^he^; 
+!!VR$man-woman$&$hsex$=0:S^man^; 
+!!VR$he-she$&$hsex$=1:S^she^; 
+!!VR$man-woman$&$hsex$=1:S^woman^; 
+!!VR$pithnum$:S1 R11; 
+!!VR$pithy$&$pithnum$=1:S^"You are wise, %$hname$. %$skname$ does not lie along the true path of a hero."^; 
+!!VR$pithy$&$pithnum$=2:S^"To forget %$skname$ is to experience enlightenment."^; 
+!!VR$pithy$&$pithnum$=3:S^"Your heart knows there is no place for %$skname$ within your tortured soul."^; 
+!!VR$pithy$&$pithnum$=4:S^"%$hname$, by forsaking the temptation of %$skname$, you begin to harmonize with life itself."^; 
+!!VR$pithy$&$pithnum$=5:S^"To experience ecstasy, you must first give up %$skname$."^; 
+!!VR$pithy$&$pithnum$=6:S^"Without %$skname$, it is easier to find the stillness in one's soul."^; 
+!!VR$pithy$&$pithnum$=7:S^"The prophets say that the forbidden knowledge of %$skname$ is a sin of the soul."^; 
+!!VR$pithy$&$pithnum$=8:S^"The prophecy tells of the great hero %$hname$, and that %$he-she$ had no knowledge of %$skname$."^; 
+!!VR$pithy$&$pithnum$=9:S^"Forgetting %$skname$ is like the sound of the morning dew."^; 
+!!VR$pithy$&$pithnum$=10:S^"Of all the things a %$man-woman$ should learn, %$skname$ is the last."^; 
+!!VR$pithy$&$pithnum$=11:S^"A wise guru once said: If I were skilled in %$skname$, I could be a guru no longer, for I would have to use my %$skname$ skill for the greater good."^; 
+!!VR$pithy$&$pithnum$=12:S^"As the flame flickers and dies, so must %$hname$'s %$skname$ skill come to an end."^; 
+ 
+[Show skill that's being forgotten along with message] 
+!!IF&$slevel$>0/$pgold$>=2000/4:Q1/20/$sicon$/1^%$pithy$ 
+ 
+{You} {meditate} {long} {and} {hard} {all} {day} {and} {purge} {the} {unwanted} {%$skname$} {skill} {from} {your} {mind,} {freeing} {it} {for} {more} {learning.}^; 
+ 
+[Remove hero's skill] 
+!!HE-1&$slevel$>0/$pgold$>=2000/4:S$skillnum$/0; 
+ 
+[Reduce hero's movement by 500] 
+!!HE-1&$slevel$>0/$pgold$>=2000/4:Wd-500; 
+ 
+[Set hero's w45 variable to current day] 
+!!VRw45&$slevel$>0/$pgold$>=2000/4:Sc0; 
+ 
+[Look up skill name and find its number. If it exists, assign it to $skillnum$] 
+!?FU451; 
+!!UN:N4/248/x16;  [Look up and store skill name referenced by loop count (x16) in z248] 
+!!VR$skillnum$&$skname$=z248:Sx16; [If skill name exists, set $skillnum$ to skill number (x16)] 
+!!VR$skname$&$skname$=z248:S248;  [Set $skname$ to actual skill name with proper capitalisation] 
+ 
+*** End of Script *** 
+ 

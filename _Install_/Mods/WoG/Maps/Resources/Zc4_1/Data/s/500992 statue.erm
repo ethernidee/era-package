@@ -1,0 +1,38 @@
+ZVSE
+!#TR23/3/0:P1;
+!#TR23/3/0:E0;
+!#OB23/3/0:T91;
+!#OB23/3/0:S;
+
+!?OB23/3/0;
+!!CA30/6/0:T?v270;
+!!IF&1000/v270<>4:M^Maybe this statue got a secret. But as long as the Town in the south west of here is a castle, you won`t be able to search here!^;
+!!FU265&1000/v270=4:P;
+
+!?FU265;
+!!IF:G0/265/0/255/256/257/258/259;
+
+!!IF&v265=1/v266<4/v164<>1:Q255/21/66/1^You look to the north of the staue and some Black Knights appear!^;
+!!HE-1&v265=1/v266<4/v164<>1:C66/10/-1/0/-1/0/-1/0/-1/0/-1/0/-1/0;
+!!IF&v265=1/v266<4/v164=1:M^%Z260^;
+!!VRv266&v265=1/v164<>1:+1;
+!!VRv164&v265=1/v266<4:S1;
+
+!!IF&v265=2/v266<4/v165<>1:M^You look to the east of the statue and find nothing!^;
+!!IF&v265=2/v266<4/v165=1:M^%Z260^;
+!!VRv266&v265=2/v165<>1:+1;
+!!VRv165&v265=2/v266<4:S1;
+
+!!IF&v265=4/v266<4/v166<>1:Q255/8/67/1^You look to the south of the statue and find a Ring!^;
+!!HE-1&v265=4/v266<4/v166<>1:A67;
+!!IF&v265=4/v266<4/v166=1:M^%Z260^;
+!!VRv266&v265=4/v166<>1:+1;
+!!VRv166&v265=4/v266<4:S1;
+
+!!IF&v265=8/v266<4/v167<>1:M^You look to the west of the statue and find a blue key!^;
+!!OW&v265=8/v266<4/v167<>1:K0/3/1;
+!!IF&v265=8/v266<4/v167=1:M^%Z260^;
+!!VRv266&v265=8/v167<>1:+1;
+!!VRv167&v265=8/v266<4:S1;
+
+!!IF&v266>=4:M^You`re searching but don`t find any more!^;

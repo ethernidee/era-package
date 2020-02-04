@@ -1,0 +1,7 @@
+ZVSE
+
+!?OB111;
+!!OB998:S;
+!!HE0:Pd0/?y1/d0; (get y location)
+!!HE0&y1>66:Pd0/d-6/d0;
+!!HE0&y1<65:Pd0/d6/d0; (move hero accordingly)

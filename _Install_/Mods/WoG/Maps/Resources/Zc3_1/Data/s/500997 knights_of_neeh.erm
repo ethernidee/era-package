@@ -1,0 +1,36 @@
+ZVSE
+!?LE16/43/0;  (triggered by event at 16:43:0(Shrubbery field))
+!!IF&6v1=1:M^The Knights who say {Neeh!} booms out:
+"You haven't found a Shrubbery! You cannot pass until you do. We will now say {Neeh!}-
+{Neeh! Neeh! Neeh! {Neeh! {Neeh! {Neeh! {Neeh! {Neeh! {Neeh! {Neeh! {Neeh! {Neeh!}
+
+You flee in horror and pain from the terrible onslaught."^;
+!!IF&v1=0:Q1^You come into a large clearing, filled with shrubberies. In the middle of them are a group of Knights. They yell at you:
+"We are the Knights who say {Neeh!} You may not pass, unless you bring us a... shrubbery! Else, we will say {Neeh!}"
+You look from the Knights, to the shrubberies between you and them, to the path, and then back to the Knights who say {Neeh!}.
+There seems to be just enough space for you if you wish to make a run for it.
+Do you agree to find a shrubbery(yes) or do you make a run for it(no)?^;
+!!HE2&1:P17/43/0;    (Moves in Knight of Neeh! as blocker)
+!!LE17/43/0&1:D0/1;   (Removes event at 17:43:0 if Nailag agreed.)
+!!VRv1&1/v1=0:S1;
+!!VRv1&-1/v1=0:S3;
+
+!!IF&v1=2:M^The Knights who say {Neeh!} booms out:
+"We see that you have brought us a shrubbery. You may pass."^;
+!!LE16/43/0&v1=2:D0/1;  (Removes event if quest is fullfilled)
+!!HE2&v1=2:P19/45/0;  (moves away Knight)
+!!IF:V1/0;
+
+!?LE9/38/0;
+!!IF&v1=1:M^You pick up a piece of shrubbery for the Knights who say {Neeh!}^;
+!!VRv1&v1=1:S2;         (Sets flag 7 to "1" if agreeing on quest)
+!!IF&v1<>1:M^You chance upon a shrubbery.^;
+
+!?LE17/43/0;
+!!HE2&-501:P17/43/0; (moves Knight if player fights)
+!!LE16/43/0:D0/1;
+!!IF:V501/1;
+
+!?LE3/45/0;
+!!HE2&-501:P18/45/0;   (moves Knight when triggered)
+!!IF:V501/1;

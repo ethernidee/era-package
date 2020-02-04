@@ -1,0 +1,345 @@
+ZVSE
+
+*********************
+*** The Samaritan ***
+***** By Bruno ******
+*********************
+**   Beta tester   **
+*** HMM 3.5 Team  ***
+*********************
+English adaptation : Timothy
+
+!#UN:P5/0;
+!#VRz199:S^..\Data\Zvs\Cmp.res^;
+!#VRz198:S^B21p^;
+
+***************
+*** Prelude ***
+***************
+Get name dialogue
+!#IF:V100/1;
+Variable customization
+!#VRz10:S^Time to play^;
+!#VRz11:S^Name yourself^;
+!#VRz12:S^Choose your spell^;
+!#VRz13:S^%Z199\21_001.BMP^;
+!#VRz14:S^%Z199\21_002.BMP^;
+!#VRz15:S^%Z199\21_003.BMP^;
+!#VRz16:S^%Z199\21_004.BMP^;
+!#VRz17:S^Bloodlust^;
+!#VRz18:S^Bless^;
+!#VRz19:S^Magic Arrow^;
+!#VRz20:S^Slow^;
+!#VRz21:S^Your hero will start with the Bloodlust spell^;
+!#VRz22:S^Your hero will start with the Bless spell^;
+!#VRz23:S^Your hero will start with the Magic Arrow spell^;
+!#VRz24:S^Your hero will start with the Slow spell^;
+!#IF:D1/z10/z11/z12/z13/z14/z15/z16/z17/z18/z19/z20/z17/z18/z19/z20;
+!#IF:F1/z21/z22/z23/z24/0; Give hints and disable cancel button
+!#IF:E100/1;
+!#VRz400:Sz1; your name
+!#VRz400:H10; Check if the string is empty and Flag 10
+!#VRz400&-10:S^Caneghem^; if the string is empty call the hero Caneghem
+
+
+*********************
+*** Init the game ***
+*********************
+*String
+!#VRz2:S^^;
+!#VRz11:S^^; a one name variable
+
+! #VRz397:S^%Z199\21a.bmp^; portrait for external dialogue
+!#VRz398:S^%Z198_bl.pcx^; large pcx of the heroes in short name
+!#VRz399:S^%Z198_bs.pcx^; small pcx of the heroes in short name
+
+* Variable
+!#VRi:S0; I is a random valor
+
+* Clear some variables
+!#VRv504:S0;
+!#VRv545:S0;
+!#VRv546:S0;
+
+* Allow heroes to live forever
+!#OW:D0/254; Allow to live forever
+!#OW:D1/254; Allow Nemesis to live forever
+
+* initialisation of the timer
+!#TM1:S1/999/1/1;
+
+* No weeks, no months (thanks Slava)
+!#VRz407:S^Another week has passed.^;
+!#UN:K1/1; no week of ...
+!#UN:M1; no month of ...
+!#UN:K2/407; set every week of message
+
+*** Heroes and red initialization
+!?GE1; First changes that cannot be done with instructions
+!!HE21:A1/0/17; give magic book
+!!HE16:A1/0/17; give magic book
+!!HE21&v100=1:M43/1; give spell lvl 1
+!!HE21&v100=2:M41/1;
+!!HE21&v100=3:M15/1;
+!!HE21&v100=4:M54/1;
+!!HE16&v100=1:M43/1; give spell lvl 1 to the nemesis
+!!HE16&v100=2:M41/1;
+!!HE16&v100=3:M15/1;
+!!HE16&v100=4:M54/1;
+!!OW:R0/0/0; *Remove Resource
+!!OW:R0/1/0;
+!!OW:R0/2/0;
+!!OW:R0/3/0;
+!!OW:R0/4/0;
+!!OW:R0/5/0;
+!!OW:R0/6/0;
+!!HE21:B0/z400; rename the heroes
+!!HE16:B0/z400; rename the Nemesis
+!!HE21:L5/z398/z399; set Nemesis' portrait
+!!HE16:L5/z398/z399; set Nemesis' portrait
+
+******************************
+*** The island of Ekaterin ***
+******************************
+*** I N I T ***
+!#VRz401:S^Home of Ekaterin^;
+!#OB8/29/0:SHz401; Home of Ekaterin
+
+!#VRz402:S^Obelisk of Miles Vorkosigan...
+What's its use..^;
+!#OB13/30/0:SHz402; Obelisk of Miles Vorkosigan.
+
+!#VRz404:S^The remains of your boat^;
+!#OB0/31/0:SHz404; Boat
+
+!#VRz405:S^A corpse^;
+!#VRz406:S^A decent sepulchure^;
+!#OB17/30/0:SHz405; a corpse.
+
+!#VRz25:S^A Lost Soul^;
+!#OB10/34/0:SHz25; A Lost Soul
+
+
+!#VRv499:S0; wagon (o not visited)
+!#VRv500:S0; ekaterin
+!#VRv501:S0; tomb
+!#VRv502:S0; go to labyrinth
+!#VRv503:S0; in the labyrinth timer off (503=1 timer on)
+!#VRv504:S0; shiprwreck
+!#VRv505:S0; corpse
+!#VRv506:S0; sepulture
+!#VRv538:S0; lost soul
+
+!#VRz125:S^%Z199\21_021.BMP^; samaritan (you)
+!#VRz126:S^%Z199\21_022.BMP^; Ekaterin
+!#VRz27:S^%Z199\21_027.BMP^; Lorenys (elf survivor)
+
+!#VRz26:S^Ekaterin^;
+
+*** The lost soul ***
+!?OB10/34/0; A Lost Soul v538
+!!IF&v538=0:Q10/21/61/2^You see a lost soul:
+
+Please help me!!
+I want to go to Paradise
+But my corpse needs to be buried.
+
+I want to know the final peace...
+H E L P...
+
+Do you agree to help the lost soul?^;
+!!IF&10/v538=0:Q10/21/61/1^Thanks...
+Be blessed by Gaïa^;
+!!IF&-10/v538=0:Q10/21/61/1^Please,
+you're my only hope...^;
+!!VRv538:S1;
+!!IF&v538=1:Q10/21/61/1^I wait^;
+
+!?LE10/34/0;
+!!IF&10:M^For saving the lost soul,
+
+You gain:^;
+!!LE10/34/0&10:E1000;
+
+*** the shipwreck ***
+!?LE2/31/0;
+!!VRz12:S^Lorenys^;
+!!IF&v505=1:M^You arrive too late
+There is nothing...^;
+!!VRv504&v505=1:S1;
+!!IF&v504=0:M^You search for survivors and intact supplies.^;
+!!IF&v504=0:Q1/8/7/1^You find a beautiful axe.^;
+!!HE-1&v504=0:A1/7/3;
+
+!!IF&v504=0:Q1^You were ready to leave the ramains of the boat when you heard small voices.
+They're coming from the ship...
+
+Your crew is trapped inside!
+
+Will you brave the perilous rocks to clear the debris and save them?^;
+
+!!VRv545&v504=0/1:S1;
+!!VRv546&v504=0:S1;
+
+!!IF&v504=0/1:M^You ignore your fears and swim out to save them. The water is cold and it's not easy clearing the debris away from the hatch. But you do it anyway, because your care about your crew!^;
+
+!!IF&v504=0/-1:M^You feel too afraid of the ragged rocks and crashing waves to dive back in. After all, you barely escaped with your own life!
+
+They will have to save themselves...^;
+
+!!FU16&v504=0/v545=0/v546=0:Pz11/27/12;
+!!LE2/31/0&v504=0/1:C0/19/10;
+!!IF&v504=0/1:Q1/17/1000/1^You gain 1000 experience points
+for saving Lorenys and his Elves^;
+!!HE-1&v504=0/1:Ed+1000; Give 1000 experience
+!!VRv504&v504=0:S1;
+!!VRv505&v504=0:S1;
+
+
+*** the ship disappears ***
+!?LE5/31/0;
+!!VRz200:S^You hear a terrible sound.
+
+The shipwreck vanishes below the waves...
+
+You feel better having found Lorenys and his elves.^;
+!!VRz200&v504=0/v545=0:S^You hear a terrible sound.
+
+The shipwreck vanishes below the waves...
+
+And you didn't look for survivors...
+
+Be ashamed.^;
+!!VRz200&v504=1/v545=0:S^You hear a terrible sound.
+
+The shipwreck vanishes below the waves...
+
+And you wouldn't even save your friends...
+
+Be ashamed!^;
+!!FU16:Pz200/z125/z400; heroes dialogue
+!!UN:O1/31/0; Delete shipwreck
+!!UN:I1/32/0/29/0; Place Flotsam
+!!UN:I0/31/0/29/0; Place flotsam
+!!UN:I1/33/0/59/0; Place bottle
+!!VRv505:S1;
+!!IF:V4/0;
+
+*** the sepulture ***
+!?OB17/30/0;
+!!VRi:S0;
+!!IF:V2/0;
+!!OW:R0/2/?i;
+!!IF&v506=1:M^You worked hard to build this sepulchure and are very proud of your work.^;
+!!IF&v506<>1:Q2^
+You see a corpse.
+It disturbs you.
+Do you want to make him a sepulchure?
+
+It will take at least
+5 ore to build it.^;
+!!FU10&2/i>4:P;
+!!IF&2/i<5/v506<>1:Q1/2/5/1^You need at least 5 ore^;
+
+*** The Wagon ***
+!?OB4/30/0;
+!!WG4/30/0&v499=1:S0;
+!!WG4/30/0&v499=0:S1B0R2/5; Wagon 5 ore
+!!VRv499&v499=0:S1;
+
+*** Ekaterin *** z131/127/26
+!?OB8/29/0;
+!!VRz131&v500=0:S^%Z400
+
+You see a beautiful woman.
+Her gaze is warm and welcoming.
+
+You feel as if there's nothing that you could refuse her.^;
+!!FU16&v500=0:Pz131/126/26;
+!!VRz131&v500=1:S^Please %Z400
+You promised to clean the obelisk.^;
+!!VRz131&v500>=2:S^Thanks %Z400.^;
+!!FU16&v500>=1:Pz131/126/26;
+!!UN&v500=2:I8/30/0/26/0; place the event for the rewards
+!!VRv500&v500=2:S3;
+!!IF&v500=0:Q1^Hello,
+
+I have a job for you.
+Will you agree to clean my husband's obelisk?^;
+!!IF&v500=0/1:M^Good. Here are some cleaning cloths you can use.^;
+!!VRv500&1:S1; put 500=1 (accept to clean
+!!VRv500&v501=1:S3; a protect for cleaning only one time
+
+!!VRv502&v501=1:S1; go to labyrinth
+!!IF&-1:M^This island seems small.
+Perhaps she could help you travel from it.^;
+!!OB8/29/0&v500>=2:D0;
+
+The event for experience
+!?LE8/30/0;
+!!LE8/30/0:L1;
+!!IF:Q1/17/500/1^You gain 500 experience points
+for cleaning the obelisk.^;
+!!HE-1:Ed+500; Give 500 experience
+
+
+*** the obelisk ***
+!?OB13/30/0;
+!!IF&v500<=1:M^It's a beautiful obelisk.
+What a pity it's so dirty.^;
+!!IF&v500>=2:M^You're proud.
+The obelisk of Miles looks beautiful...^;
+!!HE-1&v500=1:P13/31/0/1; move the heroes
+!!UN&v500=1:O13/30/0; delete the dark obleisk
+!!UN&v500=1:I13/30/0/57/0/57/0/3; place the obelisk
+!!IF&v500=1:M^You put the cloths to good use.
+It's much cleaner now!^;
+!!VRv500&v500=1:S2; obelisk clean
+!!VRv501&v500=2:S1; with V501=1 the obelisk can't be cleaned a 2nd time
+
+*** Go to labyrinth ***
+!?LE19/32/0; the players helps grand ma
+!!VRz131&v502=1/v538=3:S^You hear a whispering in your head.
+
+It is Ekaterin speaking:
+
+"You must help me find my pet.
+He is lost in the Labyrinth of Flowers..."
+
+You can't refuse, she is clearly the one who
+can help you get off this island^;
+!!FU16&v502=1/v538=3:Pz131/126/26;
+!!HE-1&v502=1/v538=3:P16/17/0; move the heroes
+!!IF&v502=1/v538=3:M^You must find the pet of Ekaterin.
+It's terrible because you don't know what he looks like.
+
+Suddenly you hear some laughs:
+
+Gremlins.
+
+They will play with you. They'll trick you.
+You'll have to catch them all or you'll never find her pet.
+It won't be easy!
+
+Arghhh...^;
+
+*** FUNCTION 10: Delete sepulture
+!?FU10; Delete sepulture
+!!UN:O17/30/0; delete
+!!UN:I17/30/0/108/0/108/0/1; place the tomb
+!!VRi:-5; Substract -5 to i (the cost in ore)
+!!OW:R0/2/i; Substract 5 ore (i)
+!!UN:R1R2; Redraw screen and ressource
+!!VRv506:S1; Close the event
+!!OB17/30/0:Hz406; Rename the object
+!!IF:Q10/21/61/1^Thank you for burying my body...
+I'm leaving for Heaven...
+Gaïa be with you...^;
+!!IF:Q1/17/500/1^You gain 500 experience points
+for saving the lost soul^;
+!!HE21:Ed+500; Give 500 experience
+!!VRv538:S3;
+!!UN:O10/34/0/1; delete wraith and hint
+!!UN:I10/34/0/26/0; place an event
+!!LE10/34/0:L1;
+

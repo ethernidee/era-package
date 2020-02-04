@@ -1,0 +1,14 @@
+ZVSE
+!#VRz3:S^Village priest^;
+!#OB12/66/0:Hz3;
+
+!?OB12/66/0;
+!!HE0:A=102;
+!!IF&v3=1:Q1/8/102/1^"Haven't you visited the dwarves? Go there, now!"^;
+!!IF&v3=0:Q1/8/102/1^ This is the house of the village priest Harro, a man who has reached the height of his life, and now slowly has begun descending again.
+ "Hello there, son. I understand it as you want adventure, yes? Well, I have a small task for you. It will not be the greatest of adventures, but, I'll give you a good reward. The task is to go to the dwarven village northeast of here, and fetch a small charm their goldsmith was to make for the temple. I don't dislike Gonenis, he's a great blacksmith, but he is better off making swords and armor than tiny charms. Take this letter, it will prove that you have the right to collect the charm."^;
+!!VRv3&v3=0:S1;
+!!IF&v3=2:Q1/34/1/1^"Good. I see that the dwarven goldsmiths have done a good job. Now, I'll teach you about the world, making you more knowledgeable.."^;
+!!HE0:A-102;
+!!HE0&v3=2:Fd0/d0/d0/d1;
+!!VRv3&v3=2:S3;

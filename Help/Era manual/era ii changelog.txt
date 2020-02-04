@@ -1,3 +1,133 @@
+Version 2.9.8
+------------------------
+[+] Introduced high-level fastest loops in ERM via new receivers: !!re, !!br, !!co.
+    
+    !!re $1[/#2/#3/#4].
+      ...
+    !!en:;
+
+    $1 - loop counter var like 'i' or 'y6'.
+    #2 - counter start value. Optional. Default: initial value of loop counter var.
+    #3 - counter stop value.  Optional. Default: initial value of loop counter var.
+    #4 - step.                Optional. Default: 1, if stop value is set, 0 otherwise.
+    
+    Repeats block of code. Only the first argument is obligatory.
+    At first loop counter variable is initialized.
+    Counter stop and step values are remembered for the whole loop and won't be evaluated on each iteration.
+    Step determines, what value must be added to counter variable after each iteration. It also determines type of iteration stop condition.
+    Positive step checks if counter > stop value. Negative step checks if counter < stop value.
+    
+    On !!re it's checked, if counter reached stop-value or exceeds it. If true, execution is passed to corresponding !!en block.
+    On !!en counter is increased by step and if stop condition is not met, next receiver after closest !!re will be executed.
+    If stop condition is not met, execution goes to the next receiver after closest !!re.
+
+    !!br (BREAK) with optional condition immediately jumps after loop !!en receiver.
+    !!co (CONTINUE) with optional condition immediately jumps to loop !!en receiver, which will be executed as usual.
+
+    Examples:
+
+    ; Endless loop of annoying messages:
+    !!re i:;
+      !!IF:M^Donate, please!^;
+    !!en:;
+
+    ; Clear current hero army
+    !!re i/0/6:;
+      !!HE-1:C0/i/-1/0;
+    !!en:;
+
+    ; Display 10, 8, 6, 4, 2 (1 will not be displayed, same as 0)
+    !!re i/10/1/-2:;
+      !!IF:M^%Vi^;
+    !!en:;
+
+    ; Display number of the first hero empty slot, if it's found
+    !!re i/0/6:;
+      !!HE-1:C0/i/?t/?k;
+      
+      !!if|t=-1/k=0:;
+        !!IF:M^Free slot number is %Vi^;
+        !!br:;
+      !!en:;
+    !!en:;
+
+    !!IF&i>6:M^No free slot was found^;
+
+[+] Added possibility to query syntax, that was used for particular function parameter.
+    !!FU:S#1/?$2;
+    #1  - argument index
+    ?$2 - syntax type (0 - get, 1 - set, 2 - add)
+    Add syntax is applied via 'd' prefix like FU:Pd200.
+
+    Using this receiver scriptmakers can write functions which act the same as normal ERM commands.
+    For instance, one function to get/set/add dwelling population amount.
+
+[+] Rewritten ZvsCheckFlags routine, which evaluates ERM receiver conditions. Now e-variables can be
+    compared to integer variables and constants. All logical operations are supported for strings.
+    Variable indexes were not checked at all, but are checked now.
+
+[+] Adapted wonderful PA and QU receivers by gamecreator with Pandora and Seer Hut Quests API.
+    From now these receivers are officially part of Era. See Help\Erm Help directory for details.
+    Be sure to delete "pandora's api.era", "receiver pa.era", "receiver qu.era" from old mod packages.
+
+[+] WoG scripts were extractd to a separate mod "WoG Scripts". Some fixes by igrik/Algor were applied.
+[+] Included updated TxtEdit and MMArchive by GrayFace.
+[*] Replaced 'for' snippet in ERM editor with 're' snippet, other syntax file corrections.
+[*] Maximum 16 nested IF/RE blocks are allowed.
+[-] Fixed crash caused by invalid RD:M second parameter handling.
+
+
+Version 2.9.7
+------------------------
+[+] Added possibility to query function arguments count for functions, called via FU:P, FU:D, DO:P.
+    New command !!FU:A?$ returns number of x-arguments (not including x16 for DO:P), received by function.
+    This mechanism allows to write functions with optional parameters (parameters with default values) and
+    functions with variadic arguments number.
+
+    Example 1:
+    !?FU(KillHero);
+    ; Kills specified hero. Demonstration of optional parameters.
+    ; [x1] - hero ID. Optional. -1 by default
+    !!FU:A?k;       get number of function arguments
+    !!VRx1&k=0:S-1; set x1 to -1, if no arguments passed
+    !!HEx1:K;       kill hero
+
+    !?CM0;
+    !!FU(KillHero):P; kill current hero
+    !!FU(KillHero):P155; kill Xeron
+
+    Example 2:
+    !?FU(sum);
+    ; Calculates sum of all passed arguments.
+    ; x1..x[n] - arguments to sum
+    ; x[n+1] - result
+    !!FU:A?k;  count function arguments
+    !!VRxk:S0; set result to 0
+
+    !!VRi:S0;
+    [:for]
+    !!SN&i>=k:G[end-for]; repeat k times 
+    !!VRxk:+xi; add next argument value to result
+    !!VRi:+1;
+    !!SN:G[for];
+    [:end-for]
+
+    !?CM0;
+    !!FU(sum):P100/200/300/400/?s; get 100 + 200 + 300 + 400 into "s" quickvar
+    !!IF:M^%Vs^; displays "1000"
+
+[+] VR:C now supports v, y, x and w-variables.
+[+] Improved MR:N and OnBattleRegeneratePhase:x1. Now stack ID is returned more accuratly. Thanks to Heromant.
+[+] Small improvements of ERM Editor. Better 'for'-loop snippet, syntax fixes, 'iff' for !!IF, etc.
+
+[*] Map resources, like ERM or Lua scripts were previously located in Maps/[MapName] directories. In order
+    to support HD-mod maps grouping into folders, the location was changed to Maps/Resources/[MapName].
+
+[-] Fixed wrong/unstable round, used by WoG for creature autosummoning via creature experience system.
+[-] Fixed bug: w-variables in SN/MP/RD were always related to current hero.
+[-] VR:R will no more crash on invalid value.
+
+
 Version 2.9.6
 ------------------------
 [+] SN, MP and RD receivers syntax was improved. Now any command can use string concatenation (like d&z2),

@@ -1,9 +1,0 @@
-ZVSE
-!?OB3/56/1;
-!!IF&502:M^You once again approach the altar, but the water only continue it's flow without taking notice of you.^;
-!!IF&-502:Q1/20/52/34/1/1^You sail closer to the beautiful altar, where countless streams of water form arches of all shapes, and suddenly, a huge wave flushes over the boat, directed towards you. When it reaches you, you feel as if a thousand devils are trying to drag you out of the boat, but you stand still, immobile, and when the wave passes, you feel like you've passed a test, a test to see if you're worthy of the newfound power you now have.^;
-!!HE0&83/-502:S16/3;
-!!HE0&83/-502:Fd0/d0/d0/d1;
-!!HE0&83/-502:M48/1;
-!!HE0&83/-502:M61/1;
-!!IF:V502/1;

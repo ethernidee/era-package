@@ -28,12 +28,13 @@ contexts:
         2: keyword.operator.instruction_name.erm
       push: receiver
 
-    - match: '(!\?FU)(?:(\()([^)]++)(\)))?'
+    - match: '(!\?FU)(?:(?:(\d++)|(\()([^)]++)(\)))?)'
       captures:
         1: keyword.operator.trigger.erm
-        2: decorator.function_name.erm
-        3: entity.name.type.trigger.erm
-        4: decorator.function_name.erm
+        2: entity.name.type.trigger.erm
+        3: decorator.function_name.erm
+        4: entity.name.type.trigger.erm
+        5: decorator.function_name.erm
       push: trigger
 
     - match: '(![?$][A-Z]{2})'
@@ -53,7 +54,7 @@ contexts:
       scope: string.caret.erm
       push:  string_caret
 
-    - match: '[f-txyvzwefc](?:\d++)?'
+    - match: '[g-t]|[xyvzwefc](?:-?\d++)?'
       scope: variable.erm
 
     - match: \d++
@@ -82,7 +83,7 @@ contexts:
 
   string_caret:
     - meta_scope: string.caret.erm
-    - match: '(%)([SI]\([^);\^]*+\)?|[A-Z]\d*+)'
+    - match: '(%)([SI]\([^);\^]*+\)?|[A-Z](?:[f-t]|-?\d*+))'
       captures:
         1: keyword.operator.interpolation.erm
         2: string.interpolation.erm

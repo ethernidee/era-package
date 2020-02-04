@@ -1,0 +1,17 @@
+ZVSE
+
+!?OB11/67/0;
+
+!!IF:M^ Seems like it's your friend Ekir that has guard duty now. Maybe he wants to join your adventure?
+ "No, Nailag, I cannot go. I have guard duty now. What if the Goblins from the forests came? There has been rumors of Hre-Chul moving in the forests, you know."
+ "Has anyone except me left?"
+ "Yea, Aeln left for the western forest yesterday. Odd that she hasn't came back yet. Jiels and Almas are somewhere to the east of here. But you... you can't go out... the Hre-Chul a-and..."
+ Chicken, you think and leave him.^;
+
+!!IF:Q666^The Peasants, awed by the power of your forces, begin to scatter. Do you wish to pursue and engage them?^;
+!!IF&666:M^Before you have time to land your first blow, angry villagers intervene. You are stripped of your sword, and locked up in your old room. Game Over.^;
+!!HE0&666:O3;
+
+!$OB11/67/0;
+!!UN:O11/67/0/1;
+

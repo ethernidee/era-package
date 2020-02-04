@@ -1,0 +1,35 @@
+ZVSE
+!#VRv151:S2;
+!#VRz151:S^Lonesome Vampire Lord^;
+!#TR60/37/0:P1;
+!#TR60/37/0:E0;
+!#OB60/37/0:T91;
+!#OB60/37/0:S;
+!#OB60/37/0:H151;
+
+!?OB60/37/0;
+
+!!IF&v153=1:M^I told you all I know!^;
+
+!!IF&v151=2:Q150^Because of a curse, I can`t leave this place! But I know this country since hundrets of years.
+
+There is a Halfling Village in the south west of this country. Bring me some and place them next behind me.
+
+I need their blood. If you bring the Halflings I would help you to find the fastes way out of this country. Would you bring me some creatures, who I can drink from?^;
+
+!!TR61/36/0:E?v151;
+!!IF&150/v151=1:M^There are no Halflings - bring them, or I won`t help you!^;
+
+!!MO61/36/0&v151=0:G?v152;
+
+!!IF&150/v151=0/v152<=5:M^There are %V152 Halflings. So I will give you %V152 advises.^;
+!!IF&150/v151=0/v152>5:M^There are %V152 Halflings. So I will give you all advises.^;
+
+!!IF&v151=0/v152>0/153<>1:M^First use the Subterranean Gate in the north east. Search the Black Dragons in the Underground^;
+!!IF&v151=0/v152>1/153<>1:M^Then go to the Subterranean Gate in the south west. Find the green Key Masters Tent^;
+!!IF&v151=0/v152>2/153<>1:M^Third go to the center Subterranean Gate. Use the teleporter at the end of the underground tunnel.^;
+!!IF&v151=0/v152>3/153<>1:M^Find the blue Key Masters Tent in the Center Devils Country. Now you can go through the other two Subterranean Gates and use the Teleporters at the end of the tunnels.^;
+!!IF&v151=0/v152>4/153<>1:M^To get the Angelwings, you have to capture Hell Hole first. The unfightable Devils in the Underground would disapear.^;
+!!IF&v151=0/v152>5/153<>1:M^Get some Angels from the Griffin Conservatory and bring them to the south west in this country.^;
+
+!!VRv153&v151=0:S1;

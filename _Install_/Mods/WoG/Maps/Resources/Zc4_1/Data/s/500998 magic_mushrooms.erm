@@ -1,0 +1,191 @@
+ZVSE  
+AUTO_PoweredBy=ERM Script Editor v.1.2.5.25  
+  
+************************  
+*** Magic Mushrooms  ***  
+***     By Bruno     ***  
+***       V1.10e     ***  
+************************  
+IA support 10e  
+This version is working well 10.d  
+Thanks To Donald for his suggestions and his help  
+  
+When you visit the Mushroom, your hero gains Expert level in  
+one of the four schools of magic for the rest of the week.  
+This works even if your hero has all eight skill slots filled.  
+  
+Uses timer 10 and Functions 10-12  
+Uses v1-v2-v3 just for local use  
+Uses w20-w27 to track hero visits to mushrooms and previous skill levels  
+Uses z10-z17 for hint texts and z18 as a local variable  
+  
+*** Init for amm mushroom  
+!#TM10:S1/999/7/255; launch timer every 7 days launch timer every 7 days for all players  
+  
+*** Init for Magic Water Mushroom  
+!#VRz10:S^Magic Water Mushroom  
+  
+(Not Visited)^;  
+!#VRz11:S^Magic Water Mushroom  
+  
+(Visited)^;  
+!#HT63/18:W21/0/10;  Rename all Magic Water mushromm  
+!#HT63/18:W21/1/11;  call z11 string if mushroom was visited  
+*** Init for Magic Fire Mushroom  
+!#VRz12:S^Magic Fire Mushroom  
+  
+(Not Visited)^;  
+!#VRz13:S^Magic Fire Mushroom  
+  
+(Visited)^;  
+!#HT63/29:W23/0/12;  Rename all Magic Fire mushromm  
+!#HT63/29:W23/1/13;  call z13 string if mushroom was visited  
+*** Init for Magic Earth Mushroom  
+!#VRz14:S^Magic Earth Mushroom  
+  
+(Not Visited)^;  
+!#VRz15:S^Magic Earth Mushroom  
+  
+(Visited)^;  
+!#HT63/23:W25/0/14;  Rename all Magic Earth mushromm  
+!#HT63/23:W25/1/15;  call z15 string if mushroom was visited  
+*** Init for Magic Air Mushroom  
+!#VRz16:S^Magic Air Mushroom  
+  
+(Not Visited)^;  
+!#VRz17:S^Magic Air Mushroom  
+  
+(Visited)^;  
+!#HT63/14:W27/0/16;  Rename all Magic Air mushromm  
+!#HT63/14:W27/1/17;  call z17 string if mushroom was visited  
+  
+*** Timer  
+!?TM10;  
+!!OW:C?v1; [get current player]  
+!!DO10/0/155/1:P;  
+  
+** function to check one hero for variable resetting  
+!?FU10;  
+!!HEx16:O?v2; [get owner of this hero if any]  
+!!FU11&v1=v2:P; [continue if it's this player's turn]  
+  
+*** Function to reset variable  
+!?FU11;  
+!!IF:Wx16;  
+*** water  
+!!HEx16&w21=1:S16/w20;  
+!!VRw20:S0; [reinstate old skill level if visited mushroom]  
+!!VRw21:S0; free the visit  
+*** Fire  
+!!HEx16&w23=1:S14/w22;  
+!!VRw22:S0; [reinstate old skill level if visited mushroom]  
+!!VRw23:S0; free the visit  
+*** Earth  
+!!HEx16&w25=1:S17/w24;  
+!!VRw24:S0; [reinstate old skill level if visited mushroom]  
+!!VRw25:S0; free the visit  
+*** Air  
+!!HEx16&w27=1:S15/w26;  
+!!VRw26:S0; [reinstate old skill level if visited mushroom]  
+!!VRw27:S0; free the visit  
+  
+*** Magic Water Mushroom ***  
+!?OB63/18;  
+!!VRv1:S0;  
+!!IF:W-1;  
+!!HE-1&w21<>1/v1<>3:S16/?v1; ask skill  
+!!IF&v1=3/1000:Q1/20/53/1^{Magic Water Mushroom}  
+  
+The Magic Water Mushroom gives Expert Water Magic until the end of the week...  
+  
+Since you already have Expert Water Magic, the mushroom can't help you.^;  
+!!IF&w21=1/1000:M^{Magic Water Mushroom}  
+  
+You have already visited a Magic Water Mushroom this week.  
+Try again next week.^;  
+!!VRw20&v1<>3/w21<>1:Sv1; w20 stock the level of the skill  
+!!IF&v1<>3/w21<>1/1000:Q1/20/53/1^{Magic Water Mushroom}  
+  
+The Magic Water Mushroom gives Expert Water Magic until the end of the week...  
+  
+You inhale the spores of the magic mushroom...  
+  
+You learn Expert Water Magic!^;  
+!!HE-1&v1<>3:S16/3; put skill in expert  
+!!VRw21&v1<>3:S1; heroes have visited the magic water mushroom  
+  
+*** Magic Fire Mushrooms ***  
+!?OB63/29;  
+!!VRv1:S0;  
+!!IF:W-1;  
+!!HE-1&w23<>1/v1<>3:S14/?v1;  
+!!IF&v1=3/1000:Q1/20/47/1^{Magic Fire Mushroom}  
+  
+The Magic Fire Mushroom gives Expert Fire Magic until the end of the week...  
+  
+Since you already have Expert Fire Magic, the mushroom can't help you.^;  
+!!IF&w23=1/1000:M^{Magic Fire Mushroom}  
+  
+You have already visited a Magic Fire Mushroom this week.  
+Try again next week.^;  
+!!VRw22&v1<>3/w23<>1:Sv1; w22 stock the level of the skill  
+!!IF&v1<>3/w23<>1/1000:Q1/20/47/1^{Magic Fire Mushroom}  
+  
+The Magic Fire Mushroom gives Expert Fire Magic until the end of the week...  
+  
+You inhale the spores of the magic mushroom...  
+  
+You learn Expert Fire Magic!^;  
+!!HE-1&v1<>3:S14/3; put skill in expert  
+!!VRw23&v1<>3:S1; heroes have visited the magic mushroom  
+  
+*** Magic Earth Mushrooms ***  
+!?OB63/23;  
+!!VRv1:S0;  
+!!IF:W-1;  
+!!HE-1&w25<>1/v1<>3:S17/?v1;  
+!!IF&v1=3/1000:Q1/20/56/1^{Magic Earth Mushroom}  
+  
+The Magic Earth Mushroom gives Expert Earth Magic until the end of the week...  
+  
+Since you already have Expert Earth Magic, the mushroom can't help you.^;  
+!!IF&w25=1/1000:M^{Magic Earth Mushroom}  
+  
+You have already visited a Magic Earth Mushroom this week.  
+Try again next week.^;  
+!!VRw24&v1<>3/w25<>1:Sv1; w22 stock the level of the skill  
+!!IF&v1<>3/w25<>1/1000:Q1/20/56/1^{Magic Earth Mushroom}  
+  
+The Magic Earth Mushroom gives Expert Earth Magic until the end of the week...  
+  
+You inhale the spores of the magic mushroom...  
+  
+You learn Expert Earth Magic!^;  
+!!HE-1&v1<>3:S17/3; put skill in expert  
+!!VRw25&v1<>3:S1; heroes have visited the magic mushroom  
+  
+*** Magic Air Mushrooms ***  
+!?OB63/14;  
+!!VRv1:S0;  
+!!IF:W-1;  
+!!HE-1&w27<>1/v1<>3:S15/?v1;  
+!!IF&v1=3/1000:Q1/20/50/1^{Magic Air Mushroom}  
+  
+The Magic Air Mushroom gives Expert Air Magic until the end of the week...  
+  
+Since you already have Expert Air Magic, the mushroom can't help you.^;  
+!!IF&w27=1/1000:M^{Magic Air Mushroom}  
+  
+You have already visited a Magic Air Mushroom this week.  
+Try again next week.^;  
+!!VRw26&v1<>3/w27<>1:Sv1; w22 stock the level of the skill  
+!!IF&v1<>3/w27<>1/1000:Q1/20/50/1^{Magic Air Mushroom}  
+  
+The Magic Air Mushroom gives Expert Air Magic until the end of the week...  
+  
+You inhale the spores of the magic mushroom...  
+  
+You learn Expert Air Magic!^;  
+!!HE-1&v1<>3:S15/3; put skill in expert  
+!!VRw27&v1<>3:S1; heroes have visited the magic mushroom  
+  

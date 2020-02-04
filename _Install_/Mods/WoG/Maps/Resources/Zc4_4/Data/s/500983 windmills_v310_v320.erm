@@ -1,0 +1,54 @@
+ZVSE
+** Windmill 1
+!#VRz310:S^Woodmill^;
+!#VRz311:S^Woodmill (visited)^;
+!#VRv310:S0;
+!#HT63/45:V310/0/310;
+!#HT63/45:V310/1/311;
+
+!#TM31:S1/999/7/1;
+!?TM31;
+!!VRv310:S0;
+
+!?OB63/45;
+!!IF&1000/v310=1:M^Come back again next week!^;
+!!FU310&1000/v310=0:P;
+!!OB63/45&-1000:T112;
+
+!?FU310;
+!!VRy1:S0 T2;
+!!VRy1:+2;
+!!VRy2:Sy1;
+!!VRy2:*100;
+!!IF:Q310/0/y1/6/y2/1^You get some Resources^;
+!!OW:R-1/0/dy1;
+!!OW:R-1/6/dy2;
+!!VRv310:S1;
+
+
+** Windmill 2
+!#VRz320:S^Oremill^;
+!#VRz321:S^Oremill (visited)^;
+!#VRv320:S0;
+!#HT63/46:V320/0/320;
+!#HT63/46:V320/1/321;
+
+!#TM32:S1/999/7/1;
+!?TM32;
+!!VRv320:S0;
+
+!?OB63/46;
+!!IF&1000/v320=1:M^Come back again next week!^;
+!!FU320&1000/v320=0:P;
+!!OB63/46&-1000:T112;
+
+!?FU320;
+!!VRy1:S0 T2;
+!!VRy1:+2;
+!!VRy2:Sy1;
+!!VRy2:*100;
+!!IF:Q320/2/y1/6/y2/1^You get some Resources^;
+!!OW:R-1/2/dy1;
+!!OW:R-1/6/dy2;
+!!VRv320:S1;
+

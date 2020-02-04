@@ -1,0 +1,15 @@
+ZVSE
+** Snow building 
+!#VRz400:S^Last Teacher^; 
+!#VRv400:S0; 
+!#HT63/24:V400/0/400; 
+ 
+!?OB63/24&1000; 
+!!IF:Q400^Your journey in this country seems to be nearly at it`s end. Do you want to spend your last money for experience?^; 
+!!IF&-400:M^Come back again^; 
+!!FU400&400:P; 
+ 
+!?FU400; 
+!!OW:R-1/6/?y1;  
+!!HE-1:Edy1; 
+!!OW:R-1/6/0;

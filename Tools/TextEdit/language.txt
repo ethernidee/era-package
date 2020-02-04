@@ -1,7 +1,0 @@
-	[Help]
-Memo1.Lines.Strings	Version 1.1
-Author: Sergey Rozhenko
-http://www.grayface.chat.ru
-sergroj@mail.ru
-
-Hint: Click Open button with the right mouse button to open Recent files list.

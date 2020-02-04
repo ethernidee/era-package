@@ -1,0 +1,34 @@
+ZVSE
+** Masks 
+!#VRz380:S^Masks Man^; 
+!#VRv380:S0; 
+!#HT63/53:V380/0/380; 
+!#VRv381:S1; 
+!#VRv382:S1; ** start with valeska 
+ 
+!?OB63/53&1000; 
+!!IF:W-1; ** set current Heroe to use w-var 
+!!IF&w38=1:M^You wear already a mask. Every heroe, who wants one has to come personally!^; 
+!!FU381&w38<>1:P; 
+ 
+!?FU381; 
+!!OW:R-1/6/?y1; 
+!!IF&v381<=8/y1<1000:M^You don`t have enough Money, come back later^; 
+!!IF&v381<=8/y1>=1000:Q380/6/1000/2^When you reach the humans province. It would be better, noone knows, that you are a Necromancer. so would you like to buy a mask to hide your real face? It will cost:^; 
+ 
+!!HE-1&380/v381<=8/y1>=1000:L4/v382; 
+ 
+!!IF&v381>8:M^You bought all masks I have!^; 
+ 
+!!VRv381&380/y1>=1000:+1; 
+!!VRv382&v381=2:S3; ** Sylvia 
+!!VRv382&v381=3:S5; ** Sorsha 
+!!VRv382&v381=4:S7; ** Tyris 
+!!VRv382&v381=5:S9; ** Adela 
+!!VRv382&v381=6:S11; ** Adelaide 
+!!VRv382&v381=7:S13; ** Sanya 
+!!VRv382&v381=8:S15; ** Caitlin 
+ 
+!!VRy1&380/v381<=8/y1>=1000:-1000; 
+!!OW&380/v381<=8/y1>=1000:R-1/6/y1; 
+!!VRw38&380:S1; 

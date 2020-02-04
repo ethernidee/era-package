@@ -1,0 +1,50 @@
+ZVSE
+** Quiz Reward in the Cave *******
+ 
+!#VRz330:S^Desert Cave^; 
+!#VRz331:S^Empty Cave^; 
+!#VRv330:S0; 
+!#HT63/1:V330/0/330; 
+!#HT63/1:V330/1/331; 
+!#VRv330:S0; 
+ 
+** Stringvars for D-Dialogue Box 
+!#VRz332:S^I am The Guardian of the Gods^; 
+!#VRz333:S^They will help you, if you know the answer of Obelisk Quest, right!^; 
+!#VRz334:S^godsarewake^; 
+!#VRz335:S^gods are wake^; 
+!#VRz339:S^Wake of Gods^; 
+ 
+!?OB63/1; 
+!!IF&v330=0:Q330:^The Guardian of the Gods lives here. He will ask you for the obelisk quest 
+ 
+Do you wish to enter?^; 
+!!FU33&1000/v330=0/330:P; 
+ 
+!?FU33; 
+ 
+!!IF:D33/z332/z333/0/0/0/0/0/0/0/0/0/0/0/0/0; 
+!!IF:E331/33; 
+ 
+ 
+** Check Result ************************************************* 
+!!VRz337:Sz1; 
+ 
+!!VRv331&z337=z334:S1; 
+!!VRv331&z337=z335:S1; 
+!!IF&v331=1:M^Your answer is right! The Gods will help you: 
+ 
+All your Heroes will start next map with all 28 Secondary Skills!^; 
+!!VRv532&v331=1:S1; 
+!!VRv330&v331=1:S1; 
+ 
+ 
+ 
+!!VRv331&z337=z339:S2; 
+!!IF&v331=2:M^Nice Try. But "Wake of Gods" insn`t right.^; 
+ 
+!!VRv331&z337<>z334/z337<>z335/z337<>z339:S3; 
+!!IF&v331=3:M^That`s wrong try it again!^; 
+ 
+!!VRv532&v331<>1:S0; 
+!!VRv330&v331<>1:S0; 

@@ -1,0 +1,197 @@
+ZVSE
+
+**              Fishing Well ERM Code created by Timothy E. Pulver
+
+** This script enhances all magic wells on a map by adding an option for
+** the hero to go fishing there. It's all a matter of pure luck as to what he
+** or she will catch. It could be nothing of interest, it could gold or it could
+** be a chest that contains resources, an artifact or a trap. But there are
+** other dangers too -- there's a chance that something nasty will emerge
+** from within the well and attack the hero.
+
+** To install this script in a map, simply copy & paste the code into a global
+** (timed) event. Copy the entire code, from ZVSE to the end. Make sure
+** that you disable ALL colours from receiving the event and/or change
+** the event day to something like 500 or later to avoid the ERM script
+** popping up as if it were a regular event message. And of course, you'll
+** also need to put one or more Magic Wells on your map for the heroes
+** visit. Happy fishing! :-)
+
+Flags Used in this Script: 1,2,3
+Variables Used in this Script: y1-y3,v1-v4,v300-v304,v998-v1000,
+z300-z304
+Functions Used in this Script: 1100-1105
+
+------------------------------------------------------------------------------------------
+
+!?OB29/28/0;          [Magic Well near castle is trigger]
+
+[Set hint text for Magic Well]
+!!VRz304:S^Fnord's Fishing Well^;
+!!OB29/28/0:H304;
+
+[Clear flags 1-3]
+!!IF:R1110000000;
+
+[Ask if hero wishes to fish in the well]
+!!IF:Q3^Do you stop to fish in the well?^;
+
+!!HE-1:W>0; [Check if hero has any movement points left]
+
+[If hero doesn't have enough movement but does want to fish, display this message]
+!!IF&3/-1:M^You're too exhausted to do any fishing today. Try in the morning.^;
+
+!!FU1100&3/1:P;  [If hero has enough movement and wishes to fish, call function 1100]
+
+!!HE-1&3:W0;  [Reduce hero's remaining movement points to 0 if he/she stopped to fish]
+
+------------------------------------------------------------------------------------------
+
+!?FU1100;  [Start of well fishing Function]
+
+!!VRy1:S25 T99;   [y1 = random # from 25-124]
+!!VRy1::25;            [Divide result by 25 to get # from 1-4]
+
+!!FU1101&y1=1:P; [If y = 1, call function 1101 - obscure result]
+!!FU1102&y1=2:P; [If y = 2, call function 1102 - loose coins]
+!!FU1103&y1=3:P; [If y = 3, call function 1103 - iron chest]
+!!FU1104&y1=4:P; [If y = 4, call function 1104 - monster]
+
+------------------------------------------------------------------------------------------
+
+!?FU1101;  [Start of obscure fishing result Function]
+
+!!VRz301:S^After several hours you discover that there's nothing but^;
+!!VRz302:S^at the bottom of this well^;
+!!VRy1:S0 T24; [y1 = random # from 0-24]
+
+!!IF&y1=0:M^%Z301 water and a soggy cheese sandwich %Z302.^;
+!!IF&y1=1:M^%Z301 water and an old smelly boot %Z302.^;
+!!IF&y1=2:M^%Z301 water and an old rusty sword %Z302.^;
+!!IF&y1=3:M^%Z301 water and a half-eaten lambchop %Z302.^;
+!!IF&y1=4:M^%Z301 smelly water and slimy mud %Z302.^;
+!!IF&y1=5:M^%Z301 sparkling water and a lot of mossy rocks %Z302.^;
+!!IF&y1=6:M^After several hours you reel in a large hairy trout and decide to cook it for supper.^;
+!!IF&y1=7:M^You start to fish in the old well and end up mesmerised by the dark deep hole. Several hours later you snap out of it with a start!^;
+!!IF&y1=8:M^After a long day's fishing you catch a miniature mermaid. She sings to you until you fall asleep and when you awake she's gone.^;
+!!IF&y1=9:M^You fish and fish and fish and fish and fish and fish and fish and fish and fish and fish. In the end you're totally sick of fishing.^;
+!!IF&y1=10:M^You fish for a long long time and finally you give up. But not before you've used every single worm you can find.^;
+!!IF&y1=11:M^While fishing in the well, you amuse yourself by yelling into it and hearing the echoes return. This is great fun until the echoes start occurring by themselves...
+
+{SpOoKy!}^;
+!!IF&y1=12:M^You spend an enjoyable time fishing in the well and telling tales of scaly heroes, brave dragons and silly little warlocks.^;
+!!IF&y1=13:M^It's such a hot day that you decide to cool off in the well. Luckily for you, the undertow isn't too strong and you manage to keep your footing down there.^;
+!!IF&y1=14:M^While fishing around in the well for valuable things, you discover an old and very heavy anchor. Now who would have thought a sailing ship could even FIT down there?^;
+!!IF&y1=15:M^Casting a fishing line down in the well quickly grows boring so you and your second in command take turns dunking the troops instead!^;
+!!IF&y1=16:M^After fishing for awhile in the well without any luck you decide to play a game and bob for apples.^;
+!!IF&y1=17:M^You fish for awhile in the well and end up landing an electric eel. It's a shocking experience that you're not eager to repeat!^;
+!!IF&y1=18:Q1/8/6/1^You fish in the well for a long time until the blackflies finally drive you back to your tents.^;
+
+!!IF&y1=19:Q1/14/1/1^After many hours you manage to catch a beautiful rainbow fish that tastes delightful fried with onions! Eating the meal boosts your entire army's spirits.^;
+!!HE-1&y1=19:R0/d1; [Give +1 temporary morale to hero]
+
+!!IF&y1=20:Q1/8/2/1^After several hours of fishing you're amazed to discover that you've reeled in The Grail!^;
+!!IF&y1=20:M^But it turns out you were just hallucinating and luckily your army is able to bring you back to your senses!^;
+
+!!VRy2&y1=21:S2 T8; [Set y2 to random # between 2 and 10]
+!!VRy3&y1=21:S0 -y2 -100000; [Create a negative number for message display purposes]
+!!IF&y1=21:Q1/36/y3/1^You fish for a long time without incident, pausing now and then to toss in a coin and make a wish. By the end of the day you realize that you've tossed {%Y2} {gold} {coins} into the boring old well.^;
+!!VRy2&y1=21:*-1;     [Change number to a negative number]
+!!OW&y1=21:R-1/6/dy2; [Remove 1 to 10 gold from player]
+
+!!IF&y1=22:Q1/16/1/1^After several hours fishing in the well, a storm rolls in and your whole army gets drenched to the bone. Everyone goes to bed cold, wet and miserable.^;
+!!HE-1&y1=22:R0/d-1; [Reduce morale by 1]
+
+!!IF&y1=23:Q500/21/16/1^While fishing in the well, you're surprised by a troop of friendly dwarves that emerge singing
+
+"{Hi ho, Hi ho, it's}
+{home again we go.}"^;
+
+!!VRy2&y1=24:S0 T69;  [Generate random # from 0-69 for spell - put in y2]
+!!UN&y1=24:N1/z301/y2; [Assign spell name to z301]
+!!IF&y1=24:Q1/9/y2/1^You fish all day long and are just about to give up when a sexy water spirit appears and teaches you the mystic words to a magic spell.
+"{Use} {this} {%Z301} {spell} {to} {annoy} {your} {enemies},"
+giggles the spirit before vanishing back down the well from where she came.^;
+!!HE-1&y1=24:My2/1; [Give spell to hero]
+
+------------------------------------------------------------------------------------------
+
+!?FU1102;  [Start of loose coins result Function]
+
+!!VRy1:S3 T97;    [Set y1 to random # from 3-100]
+!!IF:Q1/36/y1/1^Fishing in the well takes several hours but you finally manage to dredge up some loose coins.^;
+!!OW:R-1/6/dy1;  [Give player 3 to 100 gold]
+
+------------------------------------------------------------------------------------------
+
+!?FU1103;  [Start of iron chest result Function]
+
+!!VRy1:S1 T4;  [Set y1 to random number from 1-5]
+
+!!IF:Q2^You spend all day fishing in the well. Eventually you haul up a rusty old chest.
+
+Do you open it?^;
+
+!!VRy1&-2:S0; [If chest isn't opened, set y1 to 0]
+
+!!IF&y1=0:M^You toss the unopened chest back down the well where it lands with an incredibly loud {*SPLASH*} at the bottom!^;
+
+ [Empty chest: y1=1]
+!!IF&y1=1:M^Much to everyone's disappointment, the chest turns out to be empty.^;
+
+ [Chest contains gold: y1=2]
+!!VRy2&y1=2:S1 T7 *100; [Set y2 to random number from 100 to 800]
+!!IF&y1=2:Q1/6/y2/1^Inside the chest you find
+
+{%Y2 Gold Coins!}^;
+!!OW&y1=2:R-1/6/dy2;  [Give player gold]
+
+ [Chest contains resources: y1=3]
+!!VRy2&y1=3:S0 T3; [Set y2 to random number from 0 to 3 -- resource type]
+!!VRy3&y1=3:S3 T7; [Set y2 to random number from 3 to 8 -- resource amount]
+!!IF&y1=3:Q1/y2/y3/1^Inside the chest you find valuable resources!}^;
+!!OW&y1=3:R-1/y2/dy3; [Give player resources]
+
+ [Chest contains artifact: y1=4]
+!!VRy2&y1=4:S7 T110;  [Set y2 to random number from 7 to 117 -- artifact number]
+!!VRy2&y1=4/y2>=86/y2<=90:S7 T78;  [If artifact is a magic Tome or Boots of Levitation, choose a new artifact]
+!!VRy2&y1=4/y2=72:S7 T64; [If artifact is Angel Wings, choose a new one]
+!!HE-1&y1=4:Ay2;       [Give hero artifact #y2]
+!!IF&y1=4:Q2/8/y2/1^Inside the chest you're elated to discover a magical artifact!^;
+
+ [Chest contains trap: y1=5]
+!!HE-1&y1=5:B0/?z303;    [Store hero's name in z303]
+!!VRy2&y1=5:S0 T6;  [Set y2 to random number from 0 to 6 -- army slot number]
+!!VRy3&y1=5:S1 T4;  [Set y3 to random number from 1 to 4 -- number of darts]
+!!HE-1&y1=5:C0/y2/d0/?y4; [Store # of monsters found in hero's army slot y2 in y4]
+!!VRy3&y3>y4:Sy4; [If more darts than monsters, make equal to monsters]
+!!HE-1&y1=5:C0/y2/?y5/d0; [Store TYPE of monsters found in hero's army slot y2 in y5]
+!!IF&y1=5/y4=0:M^It's a TRAP! Deadly poison darts fly out, but luckily they all miss and nobody is injured.^;
+!!VRy6&y1=5:Sy3 *65536 +y5; [Store type/number of monsters for message display purposes in y6]
+!!UN&y1=5/y4>0:N3/z304/y5/1; [Store monster name (plural) in z304]
+!!IF&y1=5/y4>0:Q1/21/y6/1^It's a TRAP! Deadly poison darts fly out and instantly kill %Y3 of %Z303's loyal %Z304!^;
+!!VRy3&y1=5:*-1; [Change y3 into a negative value]
+!!HE-1&y1=5/y4>0:C0/y2/d0/dy3; [Remove y3 troops killed by darts]
+
+------------------------------------------------------------------------------------------
+
+!?FU1104;  [Start of monster result Function]
+
+!!FU1105:P;    [Get monster # Function]
+!!VRy1:S1 T6;  [Set y1 to random number from 1 to 7 - number of monsters that appear]
+!!VRy2:Sy1 *65536 +v300; [Set y2 to monster type/number for message display purposes]
+!!IF:Q1/21/y2/1^After spending several lazy hours fishing in the well, you're totally unprepared for what suddenly emerges!^;
+!!HE-1:Tv998/v999/v1000/v300/y1;  [Start a battle with hero vs y1 of type v300 monsters]
+
+------------------------------------------------------------------------------------------
+
+!?FU1105;  [Start of get monster # Function]
+
+!!VRv300:S0 T144;  [Generate random number from 0-144 for monster]
+!!FU1105&v300=122:P;  [If monster # doesn't exist get a new #]
+!!FU1105&v300=124:P;  [If monster # doesn't exist get a new #]
+!!FU1105&v300=126:P;  [If monster # doesn't exist get a new #]
+!!FU1105&v300=128:P;  [If monster # doesn't exist get a new #]
+
+** End of Script **
+

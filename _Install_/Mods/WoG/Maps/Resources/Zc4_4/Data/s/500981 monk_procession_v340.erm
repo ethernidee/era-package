@@ -1,0 +1,53 @@
+ZVSE
+!#VRz341:S^Poor Monk^;
+!#VRv341:S100;
+!#VRv342:S0;
+
+!#TR95/26/0:P1;
+!#TR95/26/0:E0;
+!#OB95/26/0:T91;
+!#OB95/26/0:S;
+!#OB95/26/0:H341;
+!?OB95/26/0;
+!!FU340&1000:P;
+
+!#TR96/26/0:P1;
+!#TR96/26/0:E0;
+!#OB96/26/0:T91;
+!#OB96/26/0:S;
+!#OB96/26/0:H341;
+!?OB96/26/0;
+!!FU340&1000:P;
+
+!#TR97/26/0:P1;
+!#TR97/26/0:E0;
+!#OB97/26/0:T91;
+!#OB97/26/0:S;
+!#OB97/26/0:H341;
+!?OB97/26/0;
+!!FU340&1000:P;
+
+!#TR98/26/0:P1;
+!#TR98/26/0:E0;
+!#OB98/26/0:T91;
+!#OB98/26/0:S;
+!#OB98/26/0:H341;
+!?OB98/26/0;
+!!FU340&1000:P;
+
+!?FU340;
+!!OW:R-1/6/?y1;
+
+!!IF&v341>y1:M^Your are really a poor. Perhaps you have some gold for us later.^;
+
+!!IF&v341<=y1:Q341/6/v341/2^We are poor monks on a procession. Please give us a contribution^;
+!!IF&341/v341<=y1:M^Thank you very much!^;
+!!VRv342&341/v341<=y1:+1;
+
+!!VRy1&v341<=y1/341:-v341;
+!!OW&v341<=y1/341:R-1/6/y1;
+!!VRv341&v341<=y1/341:*2;
+
+!!VRy1&v341<=y1/-341:-v341;
+!!IF&v341<=y1/-341:M^That was no good idea!^;
+!!VRv342&v341<=y1/-341:S0;

@@ -1,0 +1,15 @@
+ZVSE
+!#VRz7:S^Dwarven Home^;
+!#OB27/56/0:Hz7;
+
+!?OB27/56/0;
+!!IF&v4>=2:M^You see a sign on the door:
+
+"Painting. Don't disturb me!"^;
+!!IF&v4<2:Q1/1/5/1^"Hi there, human. Say, you haven't heard from a Traveler anywhere here? 'e were s'posed to com' here wi' some mercury for me."^;
+!!IF&v4=0:M^"No? To bad."^;
+!!IF&v4=1:Q1/5/3/1^  You open your bag and hand over the mercury to the dwarf.
+ "Good! Now I can finally make the special red color I need to finish me painting. Here, take these gems to your employer, and here is one for you."
+ With that, he hands over a small bag filled with gems.^;
+!!OW&v4=1:R0/5/1;
+!!VRv4&v4=1:S2;

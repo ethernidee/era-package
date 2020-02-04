@@ -1,0 +1,38 @@
+ZVSE
+** Living Skull 
+!#VRz190:S^Necromancers Skull^; 
+!#VRz191:S^Necromancers Skull (Doors closed)^; 
+!#VRz193:S^Which Skill do you wish to increase^; 
+!#VRz194:S^Attack^; 
+!#VRz195:S^Defense^; 
+!#VRz196:S^Damage^; 
+!#VRz197:S^Health^; 
+!#VRz198:S^Speed^; 
+ 
+!#HT63/50:V190/0/190; 
+!#HT63/50:V190/1/191; 
+ 
+!#TM19:S1/999/1/1; 
+!?TM19; 
+!!VRv190:S0; 
+ 
+!?OB63/50; 
+!!IF&1000/v190=1:M^Doors are closed. Try it again next week!^; 
+!!FU190&1000/v190=0:P; 
+ 
+!?FU190; 
+!!IF:Q190/6/2000/2^I am able to increase all Zombies in this country, once every week. Do you wish, I should do? It will cost:^; 
+!!IF&-190:M^Come back again^; 
+!!IF&190:G190/192/0/193/194/195/196/197/198; 
+!!MA&v192=1:A59/d3; 
+!!IF&v192=1:Q191/21/59/1^All Zombies in this country have +3 Attack now.^; 
+!!MA&v192=2:D59/d3; 
+!!IF&v192=2:Q191/21/59/1^All Zombies in this country have +3 Defense now.^; 
+!!MA&v192=4:M59/d3; 
+!!MA&v192=4:E59/d3; 
+!!IF&v192=4:Q191/21/59/1^All Zombies in this country have +3 minimum and maximum Damage now.^; 
+!!MA&v192=8:P59/d3; 
+!!IF&v192=8:Q191/21/59/1^All Zombies in this country have +3 Health now.^; 
+!!MA&v192=16:S59/d3; 
+!!IF&v192=16:Q191/21/59/1^All Zombies in this country have +3 Speed now.^; 
+!!VRv190:S1; 

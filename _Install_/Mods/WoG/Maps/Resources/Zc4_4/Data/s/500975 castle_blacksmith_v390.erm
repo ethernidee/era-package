@@ -1,0 +1,13 @@
+ZVSE
+** 
+!#VRz390:S^Castle Blacksmith^; 
+!#VRv390:S0; 
+!#HT63/40:V390/0/390; 
+ 
+!?OB63/40&1000; 
+!!IF:W-1; 
+!!IF&w38<>1:M^The craftsman cries out:"Alarm - Necromacncer have reached the town."^; 
+!!HE-1&w38<>1:T0/0/0/13/10; 
+ 
+!!IF&w38=1:Q390/8/35/1^Sir Edric gave us the order to create a new Sword for our Heroes. This is what we have done for you:"^; 
+!!HE-1&w38=1:A35; 

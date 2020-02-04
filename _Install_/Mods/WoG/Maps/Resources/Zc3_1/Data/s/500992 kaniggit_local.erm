@@ -1,0 +1,48 @@
+ZVSE
+!?LE66/22/0;
+<---The following applies if player refused to help Luamesoum--->
+
+!!IF&-5/9/-10:M^The High Paladin seems a bit sad to see that you haven't brought him the head of the thieves yet. He doesn't say anything, but the look on his face is more than enough^; (Display this message if return without quest fulfilled)
+
+!!IF&-5/-9/-10:Q1^As you enter The Kings Night's local in Emokon, you see the knight you recently met on the Way of the Wolf, Luamesoum. 
+"Well, if it isn't the fiend who wouldn't aid me! So perfect that we can settle that debt. I here and now challenge thee to a duel."
+Do you wish to fight him?^;
+!!IF&1/-5/-10:M^Excellent! Shall we begin?^;
+!!HE144&1/-5/-10:C1/11/7/d0; (transforms Champion to crusader)
+!!HE144&1/-5/-10:P66/23/0;     (moves in Luamesoum)
+
+!!IF&-5/-1/-9/-10:M^"A coward as well as a fiend? Then run, dog, and..."
+The Knight is interrupted by another, older, with a voice that knows that it will be obeyed:
+"Enough of this! Just because he didn't aid you before, you can't call him a fiend, and just because he doesn't want to fight you in a duel, he isn't a coward. Now go to your cell, and stay there and contemplate this."
+"Yes, High Paladin Xeja."
+"And, you adventurer, you, I have a quest for, to remove the stain on your reputation that you got when you refused to aid that fool. Last month, two of the younger recruits ran away. That isn't unheard of before, but these two stole a valuable War Horse and a set of armor each, and now we can't track them down. If you come across them, kill them and return here to get a reward."^;
+!!IF&-5/-1/-10:V9/1; (activates quest)
+
+!!IF&-5/9/10:M^The High Paladin Xeja is waiting for you:
+ "I see that you bring the head of the two thieves. Very good. Your reward is five hundred gold pieces. If you would but come closer into our local, I will go before and get them."^;
+
+!!IF:V1/0; (resets flag no.1)
+
+<---The following applies if player helped Luamesoum--->
+!!IF&5/9/-10:M^The Knight seems a bit sad to see that you haven't brought him the head of the thieves yet. He doesn't say anything, but the look of his face is more than enough.^; (Display this message if return without quest fulfilled)
+
+!!IF&5/-9/-10:M^As you enter The Kings Night's local in Emokon, you see the knight you recently met on the Way of the Wolf, Luamesoum. 
+"Well, if it isn't the good man who helped me on my way here! Perfect! The High Paladin Xeja has informed me that I am to organize a search for two of the younger recruits who ran away last month. That has happened before, but these two stole War Horses and a set of armor each, and now we have failed to track them down. If you come across them, kill them and return here to get a reward"^;
+!!IF&5/-10:V9/1;  (activates quest)
+
+!!IF&5/9/10:M^Luamesoum is waiting for you:
+ "I see that you bring the head of the two thieves. Very good. Your reward is that we will train all you swordsmen to be Crusaders, free of charge. Just come further into here, and training will begin immediately."^;
+!!IF&5/9/10:V821/1;  (Flag for carryover to next map)
+
+!?LE34/28/0;
+!!IF:V10/1; (sets flag to show that cavaliers are dead.)
+
+!?LE66/23/0;
+!!LE66/23/0&-5/9/10:R6/500;    (Sets gold reward)
+!!LE66/23/0&-5/-9/10:R6/0;       (remove reward)
+!!IF&9/10:V9/0; (makes sure player doesn't messages from ongoing quest more than once)
+!!IF&-10:M^You watch as some Knights trains.^; (display message if quest not fulfilled/reward already has been collected)
+!!IF&5/10:M^You and the rest of your swordsmen train with the Knights.^;
+(Display message if Player helped Luamesoum and quest is fulfilled)
+!!HE0&5/10:C1/6/7/d0; (Upgrades all Nailag's Swordsmen to Crusaders)
+!!IF&-5/10:M^The High Paladin is true to his word, and you soon have a new purse of gold at your belt.^; (display message if not helping Luamesoum and quest is fulfilled)
