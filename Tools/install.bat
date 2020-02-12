@@ -41,7 +41,6 @@ if exist Mods (
 if not exist Mods (
   move /y %MOD_FILES% .
   Tools\installmod WoG
-  Tools\installmod "WoG Scripts"
   rem Tools\installmod "Fast Battle Animation"
   rem Tools\installmod Yona
   rem Tools\installmod "Secondary Skills Scrolling"

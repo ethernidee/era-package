@@ -1,3 +1,47 @@
+Version 2.9.10
+------------------------
+[+] ERM engine now supports any number of control characters (0x00..0x1F), including line breaks, between commands:
+    !!VRv4:
+      +5
+      *3;
+
+[+] ERM error location is reported more precisely.
+[+] Updated MMArchive by GrayFace to version 1.3.1.
+
+[-] Fixed bug in "5 wog - enhanced war machines 3.erm" at line 463, accessing v-2. Fixed a few more bugs in WoG Scripts mod
+    with the help of Algor/Perry/daemon_n and removed WoG Scripts mod from Era installation package.
+
+[-] Fixed treating ';' as receiver command. Receivers may have any number of leading and traling spaces before
+    semicolon or even have no commands at all like !!HE-1:;
+
+
+Version 2.9.9
+------------------------
+[+] Added support for loop level in !!br (BREAK) and !!co (CONTINUE) loop controlling receivers.
+    !!br 1:; is the same as !!br:; and means break current (innermost) loop.
+    !!br 2:; will break outer level loop, !!br 3:; even higher level.
+
+    Example:
+    !!re i/0/6:; loop level 2
+      !!re j/0/4:; loop level 1
+        !!IF:M^%Vi %Vj^;
+        
+        !!if&i=3:; The last shown message will be "3 0"
+          !!br 2:; break loop level 2
+        !!en;
+      !!en:;
+    !!en:;
+
+[*] XX:Z command is no more a special command. Disabling ERM receivers is not supported.
+    57 - freelancers guild.erm will not work propertly.
+
+[-] Fixed wrong ERM interpreter handling of spaces as commands. Example: !!VRy1:Sj +100 used to treat
+    space as command and silently consume '+100'. Now spaces between subcommands are fully supported.
+    !!VRy1:Sj +100 *4 -7;
+
+[-] Fixed occasional savegames data corruption.
+
+
 Version 2.9.8
 ------------------------
 [+] Introduced high-level fastest loops in ERM via new receivers: !!re, !!br, !!co.
