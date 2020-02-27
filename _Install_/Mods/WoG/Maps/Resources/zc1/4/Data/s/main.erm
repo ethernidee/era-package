@@ -1,0 +1,1012 @@
+ZVSE
+!#UN:P5/0;
+!#IF:V100/1; enable Video
+
+***** Temporaly initialized - must be removed for campaign **********
+! #VRz400:S^Slava^;
+! #VRz395:S^11_905.bmp^;
+! #VRz397:S^11_901.bmp^;
+! #VRz398:S^..\maps\1l.p^;
+! #VRz399:S^..\maps\1s.p^;
+!#VRz412:S^Another week has passed^;
+!#CD:E1/0/0;  !#CD:A0/0/0;  Guild 1 to brake
+!#CD:E4/0/0;  !#CD:A0/0/0;
+!#CD:E7/0/0;  !#CD:A0/0/0;
+!#CD:E1/7/0;  !#CD:A0/7/0;  Fort to brake
+!#CD:E4/7/0;  !#CD:A0/7/0;
+!#CD:E7/7/0;  !#CD:A0/7/0;
+!#CD:E1/8/0;  !#CD:A0/8/0;  Citadel to brake
+!#CD:E4/8/0;  !#CD:A0/8/0;
+!#CD:E7/8/0;  !#CD:A0/8/0;
+!#CD:E0/10/0; !#CD:A0/10/0; Village Hall to brake
+!#CD:E1/10/0; !#CD:A0/10/0;
+!#CD:E4/10/0; !#CD:A0/10/0;
+!#CD:E7/10/0; !#CD:A0/10/0;
+!#CD:E0/16/100000; !#CD:A0/16/0; Blacksmith 0 to brake
+!#CD:E1/16/100000; !#CD:A0/16/0;
+!#CD:E4/16/100000; !#CD:A0/16/0;
+!#CD:E7/16/100000; !#CD:A0/16/0;
+
+*** Variables from previous map.
+z400 - Hero's name
+z397 - portrait for external dialogues
+z398 - large portrait
+z399 - small portrait
+
+!#UN:K1/1; no week of ...
+!#UN:M1; no month of ...
+!#UN:K2/412; set every week of message
+!#OW:D6/254D0/254D1/254D2/254D3/254; Allow to live forever
+!#VRz100:S^Do not take me^;
+!#OB49/69/0:Hz100;
+!#TM1:S0/999/1/64;
+!#TM3:S0/999/1/64; check for G leave
+!#TM4:S1/999/7/64; first day of a week
+!#TM5:S0/999/1/64; check for ghost grow.
+
+*** Varables initialization
+!#VRv10:S0; state of Gorynych's speach
+!#VRv11:S0; substate of Gorynych's speach
+!#VRv12:S0; grail taken
+!#VRv13:S1; need to check for Gorynych (1) and nightmare (2)
+!#VRv14:S0; need to make FOW
+!#VRv15:S0; braking a LB castle (10=done)
+!#VRv16:S0; how many times do not beleve to G
+!#VRv17:S0; Koschey's Castle
+!#VRv18:S0; braking a RT castle (10=done)
+!#VRv19:S0; church punishments
+!#VRv20:S0; braking a LT castle (10=done)
+!#VRv21:S0; gr shooters
+!#VRv22:S0; rd shooters
+!#VRv23:S0; wt shooters
+!#VRv24:S999; army to hire in the town
+!#VRv25:S200; DR messages
+!#VRv30:S0; Help from Monks about TTT
+!#VRv31:S0; Common Help about TTT
+!#VRv32:S0; State of Help about TTT
+
+!#IF:Q1/21/168/1^Here we come!
+I know this place it is good point for you to start with.
+You will find a lot of posibilities to train yourself.
+You know, without power you mean nothing.
+Here are some bad fellow here around.
+They decided to go against Gods.
+They are fool!
+Together we will realize the Gods will, right?
+I see, you are in.^;
+
+!?GE1; First changes that cannot be done with instructions
+!!HE0:B0/z400;
+!!HE0:L5/z398/z399; set hero's portrait
+! !HE0:A-3;
+!!FU103:P64/50/0; init ttt
+!!HE0:C0/0/168/1C0/1/0/1C0/2/-1/0C0/3/-1/0C0/4/-1/0C0/5/-1/0C0/6/-1/0;
+*** all chests to minimum expo
+!!CH49/69/0:S0B0;
+!!CH27/25/0:S0B3;
+!!UN:R1;
+
+*** !?OB101; all chest for minimum expo
+!!CH998:S0B1;
+!!CH49/69/0&v998=49/v999=69:S0B0;
+!!CH27/25/0&v998=27/v999=25:S0B3;
+!!CH58/48/0&v998=58/v999=48:S0B16; big
+
+*** !?TM4; reset all dwellings
+!!VRv2:Sc; !!VRv900:S1; !!VRv900&v2>v24:S0;
+!!DW38/33/0:M0/d/v900; only one
+!!DW35/33/0:M0/d/v900; only one
+!!DW39/34/0:M0/d/v900; only one
+!!DW41/35/0:M0/d/v900; only one
+!!DW43/37/0:M0/d/v900; only one
+!!DW44/37/0:M0/d/v900; only one
+!!DW35/38/0:M0/d/v900; only one
+!!DW32/35/0:M0/d/v900; only one
+!!DW29/37/0:M0/d/v900; only one
+!!DW33/2/0:M0/d/v900; only one
+!!DW70/29/0:M0/d/v900; only one
+!!DW6/26/0:M0/d/v900; only one
+
+*** !?TM4&v10>6; all built
+!!CA49/64/0:O?i;
+!!CA49/64/0&i=-1:M2/0/-1/0M2/1/-1/0M2/2/-1/0M2/3/-1/0M2/4/-1/0M2/5/-1/0M2/6/-1/7;
+
+*** !?TM3&v13<>0;
+!!FU113:P0/168;
+!!IF&v900=0:Q2/21/168/1^How could you leave me?
+You are full!
+And you will die!!!^;
+!!HE0&v900=0:K;
+*** !?TM3&v13=2;
+!!FU113:P0/172;
+!!IF&v900=0:Q2/21/168/1^How could you leave my best friend?
+You are full!
+And you will die!!!^;
+!!HE0&v900=0:K;
+
+*** !?TM1&v10=0;
+!!IF&v11=0:Q1/21/168/1^Here we are!
+Ok, let's have dinner.
+...
+Just kidding!
+This land is familiar to me.
+I used to do some hunting here.
+...
+No, it was a long time ago.
+Now, I don't need food any more, since I am divine!^;
+!!IF&v11=1:Q1/21/168/1^I think we need a Town to eat...
+err, I mean to get forces for your army.
+You are a knight, right?
+So, what's a knight without army?^;
+!!IF&v11=2:Q1/21/168/1^If we have no town, let's just find someone who can help us.^;
+!!IF&v11=3:Q1/21/168/1^Did you not notice the fellow in cassoc?^;
+!!VRv11:+1;
+*** !?TM1&v10=2;
+!!IF&v11=0:Q1/21/168/1^Maybe we should ask someone about this.^;
+!!IF&v11=1:Q1/21/168/1^That monk...
+Let's eat him...
+Sorry, ASK him about this treasure^;
+!!VRv11:+1;
+*** !?TM1&v10=1;
+!!IF&v11=0:Q1/21/168/1^What was that monk talking about?
+What treasure?
+...If it is true, I could try then to build a little shack...
+I am divine, but not omnipotent.^;
+!!VRv10:S2; !!VRv11:S0;
+*** !?TM1&v10=3;
+!!IF&v11=0:Q1/21/168/1^What the hell...
+...oops, I mean God!
+The monk just disappeared!
+I should have eaten him!!!
+And... what are those guys doing there?
+I think we should be careful - they look very strange.^;
+!!IF&v11=1:Q1/21/168/1^What will we do now?^;
+!!IF&v11=2:Q1/21/168/1^Nothing to do. Just go and...
+well, ask them.^;
+!!VRv11:+1;
+*** !?TM1&v10=4;
+!!IF&v11=0:Q1/21/168/1^It looks like a chess...^;
+!!IF&v11=1:Q1/21/168/1^Hey! You can change this!^;
+!!IF&v11=2:Q1/21/168/1^It's like tick-tock-toe.^;
+!!IF&v11=3:Q1/21/168/1^If you're a knight, use your brains!^;
+!!IF&v11=4:Q1/21/168/1^Even I can see the relation.^;
+!!IF&v11=5:Q1/21/168/1^Well, well, well...^;
+!!IF&v11=6:Q1/21/168/1^Maybe I'd better take a nap?^;
+!!IF&v11=7:Q1/21/168/1^hrrrr, hrrrr, hrrrr <yawn>.^;
+!!IF&v11=8:Q1/21/168/1^I won't say a word!^;
+!!IF&v11=9:Q1/21/168/1^I should have stayed with first map.^;
+!!VRv11:+1;
+*** !?TM1&v10=9;
+!!IF&v11=0:Q1/21/168/1^Anyway we should find the way out of here.^;
+!!IF&v11=1:Q1/21/168/1^We can try here and there.^;
+!!IF&v11=2:Q1/21/168/1^So hot here. Look! All is burning around!^;
+!!IF&v11=3:Q1/21/168/1^Hey! It is burning out!^;
+!!IF&v11=4:Q1/21/168/1^Interesting, what will happen with trees then.^;
+!!IF&v11=5:Q1/21/168/1^I wander if it is passable now?^;
+!!IF&v11>5/v11<10:Q1/21/168/1^Just think and watch! It helps!^;
+!!VRv11:+1;
+
+*** monk1
+!#OB57/52/0:S; no access
+*** !?OB57/52/0&v10=1;
+!!IF:Q1/21/8/1^Don't you see that I am praying?^;
+*** !?OB57/52/0&v10=0;
+!!IF:Q1/21/8/1^This place is void and you will find nothing here.
+...What?...Town?...
+I have no idea. All that I know is there is a great treasure hidden somewhere close.^;
+!!VRv10:S1; !!VRv11:S0;
+*** !?OB57/52/0&v10=2; gorynych said about grail
+!!IF:Q1/21/8/1^I told you all I knew. Go away.^;
+!!IF:Q1/21/168/1^This monk...
+I told you we should have eaten him!^;
+!!IF:Q1/21/8/1^You keep pestering about this treasure!
+So, if you are so self-assured, go and take it!
+And leave me alone!!!^;
+!!UN:O57/52/0;
+!!UN:O66/60/0;
+!!VRv10:S3; !!VRv11:S0;
+
+*** enter to ttt
+!?LE66/59/0&v10=3; in
+!!IF:Q1/21/168/1^Look! They are like statues!
+What is happening to the ground?^;
+!!VRv10:S4; !!VRv11:S0;
+!?LE66/59/0&v10=6; out
+!!IF:Q1/21/168/1^Wow! Now I can try all I can...
+... just wait a bit...
+... another attempt...
+... sorry, wrong pocket...
+... READY...
+... not so bad... I guess...^;
+!!IF:Q1/21/168/1^I have spent all the treasure.^;
+!!HE-1:A-2;
+!!UN:I51/64/0/98/0/63/1/-1;
+!!CA49/64/0:N^Gorynych's^O6G0;
+!!CA49/64/0:M2/0/-1/0M2/1/-1/0M2/2/-1/0M2/3/172/1M2/4/-1/0M2/5/-1/0M2/6/-1/0;
+!!CA49/64/0:B2/0B5/0 B2/5B5/5 B2/6B5/6 B2/7B5/7 B2/11B5/11;
+!!CA49/64/0:B2/14B5/14 B2/17B5/17 B2/18B5/19 B2/0B5/0 B2/20B5/20 B2/21B5/21;
+!!CA49/64/0:B2/22B5/22 B2/30B5/30 B2/31B5/31 B2/32B5/32;
+!!UN:R1;
+!!VRv10:S7; !!VRv11:S0;
+
+*** enter to grail
+!?OB66/46/0&v10=5; in
+!!IF:Q1/21/168/1^Finally!
+You are such clever knight! Even more clever than knight should be...^;
+!!VRv10:S6; !!VRv11:S0;
+
+!?LE66/48/0;
+!!IF:Q1/21/168/1^Great!
+That wasn't so easy, right?^;
+!!VRv10:S5; !!VRv11:S0;
+
+!?LE49/65/0&v10=0; before town entrance
+!!IF:Q1/21/168/1^I like this place!^;
+!?LE49/65/0&v10>0/v10<7;
+!!IF:Q1/21/168/1^I really like this place!^;
+!?LE49/65/0&v10=7; town build
+!!IF:Q1/21/168/1^Don't you like it?
+I tried so hard!
+So ugly...
+... this is just an *optical illusion*.
+You will see...
+Well... If you insist, you can just demolish it!^;
+!?LE49/65/0&v10=8; exit from town
+!!IF:Q1/21/168/1^Do you still think this is bad?
+I told you! This is your decision.
+If you want, you can do all that you want!
+But don't ask me to build a town for you!^;
+!!FU113:P0/172;
+!!IF&v900<>0:Q1/21/172/1^And take care of my best friend.
+He can be very useful!^;
+!!IF&v900=0:Q1/21/172/1^Hey! Don't forget my best friend!
+He is lonely here.
+Come on, take him!^;
+!!LE49/65/0:D6/1;
+!!VRv10:S9; !!VRv11:S0;
+
+!?OB49/64/0&v10=7; town
+!!VRv10:S8; !!VRv11:S0;
+
+!?LE43/65/0; out
+!!IF:Q1/21/168/1^We have lost a lot of time!
+Now let's move faster. Make all you can for acceleration.^;
+!!VRv13:S2; check for Gorynych and Nighmare dayly
+!!VRv10:S10; !!VRv11:S0;
+
+*** Tick-tock-toe
+!#OB63/50/0:S; !#OB63/51/0:S; !#OB63/52/0:S; !#OB63/53/0:S; !#OB63/54/0:S;
+!#OB69/50/0:S; !#OB69/51/0:S; !#OB69/52/0:S; !#OB69/53/0:S; !#OB69/54/0:S;
+
+!#OB68/56/0:S; !?OB68/56/0; !!FU100:P1/64/50/0;
+!#OB68/58/0:S; !?OB68/58/0; !!FU100:P3/64/50/0;
+!#OB64/56/0:S; !?OB64/56/0; !!FU100:P2/64/50/0;
+!#OB64/58/0:S; !?OB64/58/0; !!FU100:P4/64/50/0;
+
+****** Functions ******
+### Tic-tak-toe: x1=swith x2=X0, x3=Y0, x4=level
+    Used: v2,v3,v4,v5,v6
+*** !?FU100; all
+!!IF:V2/0; !!IF:V3/0;
+!!IF&v30>4/v31>10/v31<31:Q2/21/169/2^I see that you bang your head against a brick wall.
+I can give you confidentially some help.
+But do not tell my brothers about it.
+{Do you need help?}^;
+!!IF&v31>30:Q3/21/169/2^I want to sleap and have got hungry as a hunter.
+I agree to tell you ALL! Just do it!
+{Do you need more inportant  help?}^;
+!!VRv30&2:S0; !!VRv30:+1; !!VRv31:+1; !!VRv32&3:+1;
+!!IF&3/v31>30/v32=1:Q1/21/169/1^You must make all terrain squares in one any {column} any but the {same}.^;
+!!IF&3/v31>30/v32=2:Q1/21/169/1^You can split the task for three independent parts:
+1. {Second} and {fourth} squares,
+2. {First}, {third} and {fifth} squares,
+3. {All} squares of a {column}.^;
+!!IF&3/v31>30/v32=3:Q1/21/169/1^To make {second} and {fourth} squares the same
+turn for help to {south-west} brother.^;
+!!IF&3/v31>30/v32=4:Q1/21/169/1^To make {first}, {third} and {fifth} squares the same
+turn for help to {north-east} and {south-east} brothers.^;
+!!IF&3/v31>30/v32=5:Q1/21/169/1^Well, first ask {north-east} brother to make
+{third} and {fifth} squares the same.
+Then ask {south-east} brother to make
+{first}, {third} and {fifth} squares the same.^;
+!!IF&3/v31>30/v32=6:Q1/21/169/1^Finally ask {north-west} brother to make
+{all} squares the same.^;
+!!IF&3/v31>30/v32=7:Q1/21/169/1^Here is all sequence:
+1. Ask {south-west} brother to make
+    {second} and {fourth} squares the same,
+2. Ask {north-east} brother to make
+    {third} and {fifth} squares the same,
+3. Ask {south-east} brother to make
+    {first}, {third} and {fifth} squares the same,
+4. Ask {north-west} brother to make
+    {all} squares the same.^;
+!!IF&3/v31>30/v32=8:Q1/21/169/1^The author needs only 7 square turns :-)^;
+!!VRv5:S2; index of position vars
+!!VRv4:Sx4; level
+!!VRy1:Sx1; !!VRy1&x1<0:S0-x1; modul
+!!VRv6:S1;  !!VRv6&x1<0:S-1; terrain delta
+*** !?FU100&y1=1;
+!!IF&2:Q1/21/169/1^I will turn {third} and {fifth} line.^;
+!!VRv3:Sx3; !!FU102:Px2;
+!!VRv3:+2;  !!FU102:Px2;
+*** !?FU100&y1=2;
+!!IF&2:Q1/21/169/1^I will turn {second} and {fourth} line.^;
+!!VRv3:Sx3+1; !!FU102:Px2;
+!!VRv3:+2;    !!FU102:Px2;
+*** !?FU100&y1=3;
+!!IF&2:Q1/21/169/1^I will turn {first} and {third} line.^;
+!!VRv3:Sx3+2; !!FU102:Px2;
+!!VRv3:+2;    !!FU102:Px2;
+*** !?FU100&y1=4;
+!!IF&2:Q1/21/169/1^I will turn {third}, {fourth} and {fifth} line.^;
+!!VRv3:Sx3; !!FU102:Px2;
+!!VRv3:+1;  !!FU102:Px2;
+!!VRv3:+1;  !!FU102:Px2;
+*** !?FU100&y1=5;
+!!IF&2:Q1/21/169/1^I will turn {first}, {second} and {third} line.^;
+!!VRv3:Sx3+2; !!FU102:Px2;
+!!VRv3:+1;    !!FU102:Px2;
+!!VRv3:+1;    !!FU102:Px2;
+*** !?FU100; all
+!!FU104:Px2/x3/x4; set passability
+!!UN:R1;
+### subfunction - change terrain type
+*** !?FU101;
+!!TRv5:T?y1/d/d/d/d/d/d/d;
+!!VRy1:+v6; !!VRy1&y1>6:S2; !!VRy1&y1<2:S6;
+!!TRv5:Ty1/50/d/d/d/d/d/d;
+!!VRv2:+1;
+### subfunction - circle for change terrain type
+*** !?FU102;
+!!VRv2:Sx1;
+!!DO101/1/5/1:P;
+### Tic-tak-toe Check: x1=X0, x2=Y0, x3=level
+    Used: v2,v3,v4,v5,v6
+*** !?FU104; all
+!!VRv5:S2; index of position vars
+!!VRv4:Sx3; level
+!!VRv2:Sx1+0; !!VRv3:Sx2+4; !!TRv5:T?y1/d/d/d/d/d/d/d; start rettain type
+!!IF:V1/0;  !!DO105/1/5/1:Py1;
+!!VRv2:Sx1+1; !!VRv3:Sx2+4; !!TRv5:T?y1/d/d/d/d/d/d/d;
+!!IF:V1/0;  !!DO105/1/5/1:Py1;
+!!VRv2:Sx1+2; !!VRv3:Sx2+4; !!TRv5:T?y1/d/d/d/d/d/d/d;
+!!IF:V1/0;  !!DO105/1/5/1:Py1;
+!!VRv2:Sx1+3; !!VRv3:Sx2+4; !!TRv5:T?y1/d/d/d/d/d/d/d;
+!!IF:V1/0;  !!DO105/1/5/1:Py1;
+!!VRv2:Sx1+4; !!VRv3:Sx2+4; !!TRv5:T?y1/d/d/d/d/d/d/d;
+!!IF:V1/0;  !!DO105/1/5/1:Py1;
+### subfunction - set accessability
+*** !?FU105;
+!!TRv5:T?y1/d/d/d/d/d/d/d; start rettain type
+!!IF&-1/y1<>x1:V1/1;
+ ! !IF&1:M^%X16 %X1 %Y1 x%V2 y%V3 l%V4^;
+!!TRv5:P1; !!TRv5&1:P0;
+!!VRv3:-1; y
+### Tic-tak-toe Init: x1=X0, x2=Y0, x3=level
+    Used: v2,v3,v4,v5,v6
+*** !?FU103; all
+!!VRv5:S2; index of position vars
+!!VRv4:Sx3; level
+!!VRv2:Sx1; y
+!!VRv3:Sx2; !!TRv5:T2/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T3/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T4/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T5/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T6/50/d/d/d/d/d/d;
+!!VRv2:Sx1+1; y
+!!VRv3:Sx2; !!TRv5:T4/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T3/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T2/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T6/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T5/50/d/d/d/d/d/d;
+!!VRv2:Sx1+2; y
+!!VRv3:Sx2; !!TRv5:T4/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T2/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T3/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T5/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T6/50/d/d/d/d/d/d;
+!!VRv2:Sx1+3; y
+!!VRv3:Sx2; !!TRv5:T6/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T5/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T4/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T3/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T2/50/d/d/d/d/d/d;
+!!VRv2:Sx1+4; y
+!!VRv3:Sx2; !!TRv5:T5/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T3/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T2/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T4/50/d/d/d/d/d/d;
+!!VRv3:+1;  !!TRv5:T6/50/d/d/d/d/d/d;
+!!FU104:Px1/x2/x3; set passability
+
+ZVSE
+
+*** !?TM2&v10=11; before father
+!!FU110:P;
+!!IF&v11=0:Q1/21/168/1^And it seems that we should find a town or garrison as soon as possible.^;
+!!VRv11:+1;
+
+*** !?TM2&v10=12; after father
+!!FU110:P;
+!!IF&v11=0:Q1/21/168/1^Hey. How long are you going to sleep?
+We have no time!
+LET'S GO!!!^;
+!!VRv11:+1;
+
+*** !?TM2&v14=1; FOW
+!!FU110:P;
+
+*** monk2
+!#OB41/65/0:S; no access
+*** !?OB41/65/0;
+!!IF:Q1/21/8/1^Hello, stranger.
+How did you get here? This place is closed...
+...never mind.
+Aren't you that pesky knight that stole our treasure?
+Damn you!^;
+!!UN:O41/65/0;
+!!TM1:S0/0/100/64;
+!!TM2:Sc/999/1/64;
+!!VRv14:S1; start FOW
+!!VRv10:S11; !!VRv11:S0;
+!!FU110:P;
+!!IF:Q1/21/168/1^If I meet this meat again, I'll eaten it!
+I mean monk.
+Anyway, I can't see much of our surroundings anymore.^;
+
+*** fathers portrait
+!?LE34/61/0;
+!!IF:M^Your father again... or not.
+They look identical.
+Anyway, you decide to take a rest here.^;
+!!HE-1:W0;
+!!OW:D6/4;
+!!VRv10:S12; !!VRv11:S0;
+
+*** long before town
+!?LE34/52/0;
+!!IF:Q1/21/168/1^Is this the right way?^;
+
+*** before town
+!?LE35/44/0&v10<13; before in
+!!VRz1:S^So strange town.^; !!FU10:Pz1;
+!?LE35/44/0&v10>=13/v15=0; before out
+!!HE-1:A2/4/?i/?j;
+!!IF&i<>0:Q3/21/10/8/19/2^Hey, knight!
+  We noticed that you have a Ballista.
+That is a very useful war machine and we would appreciate it
+if you would give it to us for our town's protection.
+We could give you a Helm of Alabaster Unicorn in return.
+
+{Do you agree for exchange?}^;
+!!IF&i<>0/3:Q1/21/10/1^Ok, let it be so!^;
+!!HE-1&i<>0/3:A1/19/0A-4;
+!!IF&i<>0/-3:Q1/21/10/1^No problem.^;
+!!IF:Q1/21/168/8/96/1^Don't hurry.
+You know I will not follow you, so take this flask
+with a wonder drug. Drink it when you feel that
+your strength has been depleted.
+Now, go.^;
+!!HE-1:A96;
+!!VRv15:S1; has flask
+!!LE35/44/0:D6/1;
+
+*** inside town
+!?LE35/42/0;
+!!IF:Q1/21/168/1^Finally! A Town!
+It looks fine, but I don't like human beings, you know.
+I would rather stay here in the garrison.
+When you are ready, come and pick me up.
+Bye!
+P.S. And my friend will stay too, sorry.^;
+!!HE-1:C1/168/-1/0C1/172/-1/0;
+!!GR35/43/0:F0G0/168/1G1/172/1G3/-1/0G4/-1/0G5/-1/0G6/-1/0;
+!!FU111:P;
+!!OW:D6/254;
+!!VRv13:S0; DO NOT check for Gorynych and Nighmare dayly
+!!VRv24:Sc+7;
+!!VRv10:S13; !!VRv11:S0;
+
+*** tower in the town
+!?OB40/36/0;
+==== сообщение об отмене FOW
+!!VRv14:S0;
+
+*** Arena in Town
+!?OB27/39/0;
+!!OB27/39/0:S;
+!!IF:M^If this had been the fourth map, we could have helped you.
+But it is not!
+Begone!^;
+
+*** School of War in Town
+!?OB34/35/0;
+!!OB34/35/0:S;
+!!IF:M^If this had been the third map, we could have helped you.
+But it is not!
+Begone!^;
+
+*** External monsters - Gorynych to go
+!?OB30/58/0; !!FU114:P;
+!?OB25/64/0; !!FU114:P;
+!?OB20/58/0; !!FU114:P;
+!?OB15/59/0; !!FU114:P;
+!?OB14/53/0; !!FU114:P;
+!?OB12/61/0; !!FU114:P;
+!?OB13/64/0; !!FU114:P;
+!?OB15/46/0; !!FU114:P;
+!?OB32/67/0; !!FU114:P;
+!?OB39/60/0; !!FU114:P;
+!?OB26/48/0; !!FU114:P;
+!?OB40/48/0; !!FU114:P;
+
+!?HE17;
+! !IF:M^!!!!!!!^;
+!!FU117:P0/137;
+!!FU117:P0/170;
+!!FU117:P0/171;
+
+************************
+*** Functions ***
+### Fog of war
+*** !?FU110;
+!!UN:H36/36/0/0/50;
+!!UN:S35/43/0/6/1;
+
+### Dwelling service
+    Used: v2,v3,v4,v5
+*** !?FU111;
+!!VRv5:S2; index of position vars
+!!VRv4:S0;
+!!VRv2:S38; !!VRv3:S33; !!FU112:P;
+!!VRv2:S35; !!VRv3:S33; !!FU112:P;
+!!VRv2:S39; !!VRv3:S34; !!FU112:P;
+!!VRv2:S41; !!VRv3:S35; !!FU112:P;
+!!VRv2:S43; !!VRv3:S37; !!FU112:P;
+!!VRv2:S44; !!VRv3:S37; !!FU112:P;
+!!VRv2:S35; !!VRv3:S38; !!FU112:P;
+!!VRv2:S32; !!VRv3:S35; !!FU112:P;
+!!VRv2:S29; !!VRv3:S37; !!FU112:P;
+!!VRv2:S31; !!VRv3:S36; !!FU112:P;
+!!CH33/41/0:S0B1;
+!!CH36/38/0:S0B1;
+!!CH34/36/0:S0B1;
+!!CH43/38/0:S0B1;
+!!OB31/36/0:S;
+!?OB31/36/0;
+!!IF:Q1/21/13/1^Who are you, peasant?^;
+
+*** !?FU112; dwelling subfunction
+!!DWv5:O6M0/d1/1; first time only one
+
+### Check for creature
+    Params: x1=hero, x2=monster type
+    Return: number to v900
+    Used: v2,v3
+*** !?FU113;
+!!VRv900:S0;
+!!HEx1:C0/0/?v2/?v3; !!VRv900&v2=x2:+v3;
+!!HEx1:C0/1/?v2/?v3; !!VRv900&v2=x2:+v3;
+!!HEx1:C0/2/?v2/?v3; !!VRv900&v2=x2:+v3;
+!!HEx1:C0/3/?v2/?v3; !!VRv900&v2=x2:+v3;
+!!HEx1:C0/4/?v2/?v3; !!VRv900&v2=x2:+v3;
+!!HEx1:C0/5/?v2/?v3; !!VRv900&v2=x2:+v3;
+!!HEx1:C0/6/?v2/?v3; !!VRv900&v2=x2:+v3;
+
+### Gorynych does not want to fight
+*** !?FU114;
+!!VRv900:S0;
+!!FU113&v13<>0:P0/168;
+!!FU113&v13=2/v900=0:P0/172;
+!!IF&v900<>0:Q1/21/168/1^Hey! Hey!
+I have no intention to fight.
+You are the knight, I am not.
+I am leaving.^;
+!!HE-1&v900<>0:C1/168/-1/0C1/172/-1/0;
+
+### Message with hero's portrait
+    Params: x1=text, z400=hero name, z397=hero pic
+    Return: -
+    Used:   z2,v3
+***!?FU10;
+!!VRz2:S^^;
+!!IF:D99/x1/z2/z2/z397/z2/z2/z2/z400/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+### Message with turned hero's portrait
+    Params: x1=text, z400=hero name, z395= turnedhero pic
+    Return: -
+    Used:   z2,v3
+***!?FU11;
+!!VRz2:S^^;
+!!IF:D99/x1/z2/z2/z395/z2/z2/z2/z400/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+*************************************
+LB town brake
+first step to LB
+*** !?LE8/65/0&v15=2; tryes to get back
+!!HE-1:P7/65/0;
+*** !?LE8/65/0&v15=1; with flask
+!!IF:Q1/8/96/2^You feel that your strenght is gone.
+Perhaps, it is time to drink Gorynych's...
+
+{Do you want do drink it?}^;
+!!VRv2:S0; !!VRv2&1:S1;
+!!HE-1&v2=1:A-96Wd100; !!HE-1&v2=0:Pd1/d/dW0;
+!!HE-1&v2=1:Pd-1/d/d;
+!!VRz1&v2=1:S^You feel power. Thanks to Gorynych.
+...
+But strange... it looks like something changes.
+But what?^;
+!!FU10&v2=1:Pz1;
+!!VRv15&v2=1:S2;
+*** !?LE8/65/0&v15=3; must be broken
+!!CA7/63/0:B3/10; !!VRv3:S0; !!VRv3&1:S1; broken?
+!!IF&v3=1:Q1/21/168/1^Why do you not fulfill your mission?
+I am disappointed.
+So let it be! Go back to peasant life!^;
+!!HE-1&v3=1:P42/11/0;
+!!IF&v3=0:Q1/21/168/1^There's a good boy!
+I am proud of you.^;
+!!VRz1&v3=0:S^Again. This strange feeling...
+...what...
+What have you done?!
+With your own hands! You demolished a wonderful town!^;
+!!FU10&v3=0:Pz1;
+!!IF&v3=0:Q1/21/168/2^After this, can you still believe Gorynych?
+{Do you believe him?}^;
+!!IF&v3=0/1:Q2/21/168/1^What are you talking about.
+All goes well! March!^;
+!!IF&v3=0/-1:Q2/21/168/1^How dare you!
+Do not test my patience another time!
+I forgive you, but nothing passes without a trace!^;
+!!VRv16&v3=0/-1:+1;
+!!OW:D6/254;
+!!LE8/65/0:D6/1;
+!!VRv15:S10;
+
+*** second step to LB
+!?LE7/64/0;
+!!IF:Q1/21/168/1^Do you see that devilish town?
+Here they hide a very beautifull princess.
+Haven't you seen her? You will be charmed!
+But they are going to kill her.
+Hurry up! Destroy this ugly town!
+Before it is too late!!!^;
+!!VRv15:S3;
+
+*** Crypt
+!?OB39/60/0&v17=0;
+!!IF:Q1/21/59/1^Message on the entrance.
+
+Thou, who tries to disturb dead souls.
+In the name of Koschey, get thee gone.^;
+!!VRz1:S^Who is this Koschey? Strange.^; !!FU10:Pz1;
+!!UN&v20=1:O12/11/0; remove the tree if the Monk visited
+!!CA9/7/0:N^Koschey's^;
+!!VRv17:S1;
+
+*** LE1 RT castle
+*** !?LE58/9/0&v18=0;
+!!IF:Q1/21/168/1^Right, go in this direction.
+You will find an exit at the end of the road.^;
+
+*** LE2 RT castle
+*** !?LE59/9/0&v18=1;
+!!CA63/6/0:B3/10; !!VRv3:S0; !!VRv3&1:S1; broken?
+!!IF&v3=1:Q1/21/168/1^Why don't you carve your way to an exit?
+You are coward! Go back to peasant life!^;
+!!HE-1&v3=1:P42/11/0;
+!!IF&v3=0:Q1/21/168/1^Right! You did it!^;
+!!VRz1&v3=0:S^Uh! All is back!
+But what have I done?^;
+!!FU10&v3=0:Pz1;
+!!FU115:P1;
+!!IF&v3=0:Q1/21/168/2^After this can you still believe in Gorynych?
+{Do you believe him?}^;
+!!IF&v3=0/1:Q2/21/168/1^What are you talking about.
+All goes well! March!^;
+!!IF&v3=0/-1:Q2/21/168/1^What do I hear?
+Do not test my patience another time!
+I forgive you, but nothing passes without a trace!^;
+!!VRv16&v3=0/-1:+1;
+!!OW:D6/254;
+!!VRv18:S10;
+
+*** LE3 RT castle
+*** !?LE63/7/0;
+!!VRz1:S^If this castle blocks your way,
+you should wipe it off the face of the earth.^;
+!!FU10:Pz1;
+
+*** !?LE59/9/0&v18=0;
+!!VRz1:S^What a strange smell? And what can possibly smell so foul?
+When you look around more closely, you find a herb
+that grows here in abundance.^; !!FU10:Pz1;
+!!IF:Q1/21/168/1^Don't stop in the middle of the road!
+Crash this castle that stands in your way!
+Go ahead!^;
+!!VRz1:S^Shomeshing hash chnged arrraund.
+Whot wis mai tun...?^; !!FU11:Pz1;
+!!FU115:P3;
+!!HE-1:Pd1/d/dW0;
+!!VRv18:S1;
+
+### Change the type of the road
+    Params: x1=type
+***!?FU115;
+!!TR58/9/0:Td/d/d/d/x1/d/d/d;
+!!TR55/13/0:Td/d/d/d/x1/d/d/d;
+!!TR56/12/0:Td/d/d/d/x1/d/d/d;
+!!TR56/11/0:Td/d/d/d/x1/d/d/d;
+!!TR57/10/0:Td/d/d/d/x1/d/d/d;
+!!TR58/9/0:Td/d/d/d/x1/d/d/d;
+!!TR59/9/0:Td/d/d/d/x1/d/d/d;
+!!TR60/9/0:Td/d/d/d/x1/d/d/d;
+!!TR61/8/0:Td/d/d/d/x1/d/d/d;
+!!TR62/8/0:Td/d/d/d/x1/d/d/d;
+!!TR63/7/0:Td/d/d/d/x1/d/d/d;
+!!TR63/6/0:Td/d/d/d/x1/d/d/d;
+
+### Remove monsters of X2 type from Heroes X1 army
+    Params: x1=hero x2=type
+***!?FU117;
+!!HEx1:C1/x2/-1/0;
+
+*** LE to the exit
+*** !?LE57/37/0;
+!!VRz1:S^A Church. Again!^;
+!!FU10:Pz1;
+
+*** First Monk to the exit
+*** !?OB59/40/0;
+!!IF:Q1/21/8/1^You have brought evil to this land.
+I cannot help you.^;
+!!UN:O59/40/0; !!OB59/40/0:S;
+
+*** Second Monk to the exit
+*** !?OB59/47/0;
+!!OB59/47/0:R;
+!!IF:Q1/21/169/1^In the name of God, go away!
+This place is not for ordinary people.^;
+!!IF:Q2^Do you still want to wash your hands? of the Monk
+and go ahead?^;
+!!IF&2:Q1/21/169/1^Beware! Church is displeased with you.^;
+!!OB59/47/0&-2:S;
+
+!?OB58/48/0;
+!!CH58/48/0:S0B7; big
+
+*** Event before the last Monk to the exit
+*** !?LE49/52/0;
+!!VRv5:S1; !!VRv5&v15<>10/v18<>10:S0;
+*** !?LE49/52/0&v5=0; UNcompleted
+!!IF:Q1/21/168/1^Hey! Do you not want to go out?
+Your mission is not completed yet!
+I am not satisfied!^;
+!!HE-1:P37/13/0;
+*** !?LE49/52/0&v5=1; completed
+!!IF:Q1/21/168/1^Great!
+You did all I have been dreaming about!^;
+!!LE49/52/0:D6/1; disable
+
+*** The last Monk to the exit
+*** !?OB48/50/0&v20=1; next time
+!!CA9/7/0:B3/10; !!VRv5:S1; !!VRv5&1:S0; built?
+*** !?OB48/50/0&v20=1/v5=1; broken
+!!IF:Q1/21/8/1^I am not sure that this is enough,
+but I hope that you come up to a good way.
+And to watch over you I would like to follow you.^;
+!!IF:Q1/21/168/21/172/1^Hey, hey!
+Do not even think about going without me!
+Wait...I am back...with my friend!^;
+!!HE-1:C0/0/168/1C0/1/172/1C0/2/-1/0C0/3/-1/0C0/4/-1/0C0/5/-1/0C0/6/-1/0;
+!!MO48/50/0:R0;
+!!OB48/50/0:R; Monk enabled
+*** !?OB48/50/0&v20=1/v5=0; NOT broken
+!!IF:Q1/21/8/1^I have nothing new for you, go!^;
+*** !?OB48/50/0&v20=0; first time
+!!VRv5:S0; !!VRv5&v15=10/v18=10:S1;
+*** !?OB48/50/0&v20=0/v5=0; first time NOT all broken
+!!IF:Q1/21/8/1^Do not waste my time!^;
+!!OB48/50/0:S; Monk disabled
+*** !?OB48/50/0&v20=0/v5=1; first time all broken
+!!IF:Q1/21/8/1^You, myrmidon of the devil!
+How dare you come to me after all that you have done?
+I will never allow you to go further until
+you perform at least one deed, that would be approved by God.
+Go away.^;
+!!UN&v17=1:O12/11/0; remove the tree if cript visited
+!!OB48/50/0:S; Monk disabled
+!!VRz1:S^Eeeer,...
+...what could it be?^;
+!!FU10:Pz1;
+!!VRv20:S1;
+
+*** Event 1 before Koschey's castle
+*** !?LE9/8/0;
+!!IF:Q1/21/168/1^Hey, hey!
+Where are you going?^;
+
+*** Event 2 before Koschey's castle
+*** !?LE11/10/0;
+!!VRz1:S^Is it a good or bad to demolish this castle.
+It seems to be a devilish place.^;
+!!FU10:Pz1;
+
+***************************
+**** External monsters ****
+***************************
+*** green sh
+!#VRv708:S0;
+*** !?OB34/3/0&v15=10; castle broken
+!!IF:Q1/21/137/1^An impudent fellow!
+Look at him!
+He demolished the towne of our friend and has the effrontery to come here!
+So, let it be!^;
+*** !?OB34/3/0&v15<>10; castle NOT broken
+!!VRz1:S^Hello, forest brothers!
+I heard that you are very skilful and brave archers.
+Don't you want to join me in my just campaign?^;
+!!FU10:Pz1;
+!!IF:Q3/21/137/2^Salute, warrior!
+We can join you only if you promise not to fight
+against our brothers in the future.^;
+
+*** !?OB34/3/0&v15<>10/3; do not agree
+!!VRv708:S1;
+!!IF:Q1/21/137/1^Ok. Here we are!
+But we will not fight against our brothers.^;
+!!MO34/3/0:R0;
+!!DW33/2/0:G0/-1/0G1/-1/0G2/-1/0G3/-1/0G4/-1/0G5/-1/0G6/-1/0;
+!!VRv21:S1;
+*** !?OB34/3/0&v15<>10/-3; do not agree
+!!IF:Q1/21/137/1^?We have what to do without you. Bye!^;
+!!UN:O34/3/0; !!OB34/3/0:S;
+!!OB33/2/0:S;
+!!VRv21:S-1;
+
+!?OB33/2/0&v15=10;
+!!IF:Q1/21/137/1^An impudent fellow! Look at him!
+He demolished the town of our friend and has the effrontery to come here!
+Go away!^;
+!!OB33/2/0:S;
+
+*** red sh
+!#VRv709:S0;
+*** !?OB69/30/0&v21<>0;
+!!OB69/30/0:R;
+!!IF:Q3/21/171/2^Salute, warrior!
+We heard from our brothers that you muster troops.
+We can join you, but only if you promise not to fight
+against our brothers in the future.^;
+
+*** !?OB69/30/0&v21<>0/3; do not agree
+!!VRv709:S1;
+!!IF:Q1/21/171/1^Ok. Here we are!
+But we will not fight against our brothers.^;
+!!MO69/30/0:R0;
+!!DW70/29/0:G0/-1/0G1/-1/0G2/-1/0G3/-1/0G4/-1/0G5/-1/0G6/-1/0;
+!!VRv22:S1;
+*** !?OB69/30/0&v21<>0/-3; do not agree
+!!IF:Q1/21/171/1^We have what to do without you. Bye!^;
+!!UN:O69/30/0; !!OB69/30/0:S;
+!!OB70/29/0:S;
+!!VRv22:S-1;
+*** !?OB69/30/0&v21=0; not visited
+!!IF:Q1/21/171/1^Who are you? Go away!^;
+!!OB69/30/0:S;
+
+!?OB69/30/0&v15=10;
+!!OB69/30/0:S;
+!!IF:Q1/21/171/1^An impudent fellow! Look at him!
+He demolished the town of our friend and has the effrontery to come here!
+Go away!^;
+
+*** wt sh
+!#VRv710:S0;
+*** !?OB6/27/0&v22<>0;
+!!OB6/27/0:R;
+!!IF:Q3/21/170/2^Salute, warrior!
+We heard from our brothers that you muster troops.
+We can join you, but only if you promise not to fight
+against our brothers in future.^;
+
+*** !?OB6/27/0&v22<>0/3; do not agree
+!!VRv710:S1;
+!!IF:Q1/21/170/1^Ok. Here we are!
+But we will not fight against our brothers.^;
+!!MO6/27/0:R0;
+!!DW6/26/0:G0/-1/0G1/-1/0G2/-1/0G3/-1/0G4/-1/0G5/-1/0G6/-1/0;
+!!VRv23:S1;
+*** !?OB9/27/0&v22<>0/-3; do not agree
+!!IF:Q1/21/170/1^We have what to do without you. Bye!^;
+!!UN:O6/27/0; !!OB6/27/0:S;
+!!OB6/26/0:S;
+!!VRv23:S-1;
+*** !?OB6/27/0&v22=0; not visited
+!!IF:Q1/21/170/1^Who are you? Go away!^;
+!!OB6/27/0:S;
+
+!?OB6/27/0&v15=10;
+!!OB6/27/0:S;
+!!IF:Q1/21/170/1^An impudent fellow! Look at him!
+He demolished the town of our friend and has the effrontery to come here!
+Go away!^;
+
+!#VRz200:S^Hello, %Z400.
+Do not be surprized. I am a messenger of a God.
+Actually we do not come down to the Earth.
+But lately we are anxious about situation here.
+You know the problem is, that Evil tries to create disorder in the land.
+I have an order to follow you and keep an eye on all that will happen.
+{Do you agree?}^;
+!#VRz201:S^Long live to you, %Z400!
+We have been watching over the situation here on the Earth and found
+that Evil has concentrated somewhere over here.
+And this is a reasonable to follow you now.
+{Do you not mind?}^;
+!#VRz202:S^Salute you, %Z400!
+This is strange but Evil obviously follows you!
+You should be careful, we are worriing.
+{Is it Ok with you, if I follow you}?^;
+!#VRz203:S^Dear %Z400.
+We figured out the situation. You have a devilish creature with you!
+If all goes at this speed, the balance between good and bad
+will be completely broken and could not be restored anymore.
+I cannot tell you which creature is an envoy of the Devil,
+for I do not see him here.
+But we need to take some steps to avoid a collapse.
+So I should go with you.
+{Go together?}^;
+!#VRv711:S0; !#VRv712:S0; !#VRv713:S0; !#VRv714:S0;
+*** !?OB2/31/0; water golem
+!!IF:Q1/21/167/2/zv25; !!VRv711&1:S1;  !!VRv25:+1;
+*** !?OB43/27/0; air golem
+!!IF:Q1/21/166/2/zv25; !!VRv712&1:S1; !!VRv25:+1;
+*** !?OB36/5/0; earth golem
+!!IF:Q1/21/165/2/zv25; !!VRv713&1:S1; !!VRv25:+1;
+*** !?OB69/33/0; fire golem
+!!IF:Q1/21/164/2/zv25; !!VRv714&1:S1; !!VRv25:+1;
+
+************************************
+!?LE19/50/0; !!IF:M^Elm Street.^;
+!?LE7/36/0;  !!IF:M^It seems like the broken walls of a town.^;
+!?OB2/34/0;  !!IF:M^Yes, it was abandoned long ago.^;
+!?LE34/13/0;
+!!IF:M^Village again.
+But one building looks neglected.
+And these fields need a zealous owner.^;
+!#OB35/12/0:S;
+!?OB35/12/0; !!IF:M^Tuk, tuk... no answer...^;
+!#OB37/12/0:S;
+!?OB37/12/0; !!IF:M^A sign says:
+Will be back at eight o'clock.^;
+!?LE39/16/0; !!IF:M^This field should be harvested now.
+But by whom?^;
+!?LE48/23/0; !!IF:M^A Resource clearing.^;
+!?LE63/35/0; !!IF:M^More broken walls.
+Once this area was densely inhabited.^;
+!?OB70/38/0; !!IF:M^This mill should be able to work.^;
+!#OB32/23/0:S;
+!?OB32/23/0; !!IF:Q1/21/169/1^Knight!
+Get out of here as soon as possible!
+Do you see that knight? He used to be a peasant
+right over here. But once all went mad about war.
+And he took the path of a warrior.
+You see, he has not gone far away.
+I did not see it, but peple say that there was a
+three-head monster and it scared the hell out of him.
+Now he cannot move or say a word.
+Mark my words! That monster is very intricate.
+Be careful!^;
+!#HO132:S;
+!?HE132; !!IF:M^"Mmmm...mmmm..."
+Well, what did you expect?^;
+
+!?OB40/36/0;
+!!IF:Q1/9/2/1^When you went up to the tower
+you found that you can see all around again!
+Wonderful!^;
+ 

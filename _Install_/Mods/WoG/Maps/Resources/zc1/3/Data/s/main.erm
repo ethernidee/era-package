@@ -1,0 +1,1027 @@
+ZVSE
+!#UN:P5/0;
+!#IF:V100/1; enable Video
+!#VRz199:S^..\Data\Zvs\Cmp.res^;
+!#VRz198:S^Z11p^;
+
+*** 2 next map
+!#VRv701:S0; quest 1
+!#VRv702:S0; quest 2
+!#VRv703:S0; quest 3
+!#VRv704:S0; quest 4
+!#VRv705:S0; quest 5
+!#VRv706:S0; quest 6
+!#VRv707:S0; quest 7
+
+*** #1 Name and portrait
+!#VRz100:S^Time to play a real game. Are you ready, Hero?
+(it is strongly recommended to try the tutorial map).^;
+!#VRz101:S^What's your name:^;
+!#VRz102:S^Choose your portrait, hero:^;
+!#VRz103:S^%Z199\11_901.bmp^;
+!#VRz104:S^%Z199\11_902.bmp^;
+!#VRz105:S^%Z199\11_903.bmp^;
+!#VRz106:S^%Z199\11_904.bmp^;
+!#VRz107:S^First^;
+!#VRz108:S^Second^;
+!#VRz109:S^Third^;
+!#VRz110:S^Fourth^;
+!#IF:D1/z100/z101/z102/z103/z104/z105/z106/z107/z108/z109/z110/z107/z108/z109/z110;
+!#IF:F1/z107/z108/z109/z110/0;
+
+!#IF:E100/1; Get Name dialoge
+!#VRz1:H1; !#VRz1&-1:S^Ivan^;
+!#VRz400:Sz1; Hero's name in z400
+!#VRz396:S^This is you, hero^;
+!#VRz397:S^%Z199\11_901.bmp^;
+!#VRz395:S^%Z199\11_905.bmp^;
+!#VRz398:S^%Z198_1l.pcx^;
+!#VRz399:S^%Z198_1s.pcx^;
+!#VRz397&v100=2:S^%Z199\11_902.bmp^;
+!#VRz395&v100=2:S^%Z199\11_906.bmp^;
+!#VRz398&v100=2:S^%Z198_2l.pcx^;
+!#VRz399&v100=2:S^%Z198_2s.pcx^;
+!#VRz397&v100=3:S^%Z199\11_903.bmp^;
+!#VRz395&v100=3:S^%Z199\11_907.bmp^;
+!#VRz398&v100=3:S^%Z198_3l.pcx^;
+!#VRz399&v100=3:S^%Z198_3s.pcx^;
+!#VRz397&v100=4:S^%Z199\11_904.bmp^;
+!#VRz395&v100=4:S^%Z199\11_908.bmp^;
+!#VRz398&v100=4:S^%Z198_4l.pcx^;
+!#VRz399&v100=4:S^%Z198_4s.pcx^;
+
+*** Now all string variables initialization
+*** To localize the map change all of them
+!#VRz402:S^Your home, %Z400^;
+!#VRz403:S^Home of your friend Dan^;
+!#VRz404:S^Home of an obstinate peasant
+... Well, it was.^;
+!#VRz405:S^^;
+!#VRz406:S^Water Wheel^;
+!#VRz407:S^Useless Heroes IV object^;
+!#VRz408:S^Brave Knight^; Name of Edrik
+!#VRz409:S^Monk^; Name of Monk
+!#VRz410:S^The {exact} image of your father, %Z400^; Name of Statue
+!#VRz411:S^Your best friend Dan^;
+!#VRz412:S^Another week has passed^;
+!#VRz420:S^
+Your father was a brave man.
+He decided to make his own future.
+In the end he had no enemies.
+He was a legendary...
+
+...peasant.
+"Son, come and ask me
+if you do question your steps."
+His words were engraved on your memory.
+^;
+!#VRz421:S^Can't you read, buddy.
+Look at those big letters:
+"HEROES IV OBJECT"
+You will have to wait a while (probably longer :-)^;
+!#VRz422:S^Hey, What did we tell you!
+Get back to work!
+Or we'll come over
+and teach you some obedience!^;
+!#VRz423:S^We'll get you!^;
+!#VRz424:S^%Z400! Where are you?
+I can't find you!^;
+!#VRz425:S^Hah! Now you really made us angry!
+We're coming!^;
+!#VRz426:S^Oops, .... they're here already.^;
+!#VRz427:S^Go ahead!^;
+!#VRz428:S^Hey, %Z400, don't leave me alone, please!
+Don't go!!
+No!!!
+...
+I have to go back... I can't stay here...
+They're coming...^;
+!#VRz429:S^Yes, yes, sir.
+I will work very hard!
+I will do my very best!
+Don't worry!^;
+!#VRz430:S^You, scoundrel, get back to work!^;
+!#VRz431:S^What did we tell you?
+Scrub those ears and clean them! GET BACK TO WORK!
+You want to foresake your parents, do you?
+Hah! After we make your house an empty one, we'll burn it!^;
+!#VRz432:S^Well. That's it.^;
+!#VRz433:S^When you knock on the door, you get no answer.
+Such a strange place.
+It has obviously been abandoned long ago.^;
+!#VRz434:S^Home of Kirr^;
+!#VRz435:S^What did you expect to find here?^;
+!#VRz436:S^
+You search every corner of the abandoned house and find a note:
+"You will probably find this note, %Z400!
+You are not the first who tried his luck.
+Take this book and find some help."
+**Kirr**
+The note is glued to an old book.
+Just a bible, maybe...
+^;
+!#VRz437:S^
+Your father was a clever man though.
+You remember him saying:
+"Son, don't keep the company of a whiner.
+Try to get rid of them.
+But... keep in mind that you should do leave him behind
+at right TIME and at right PLACE.
+And try to go into HIDING as soon as possible,
+so the Crusaders can't find you."
+^;
+!#VRz438:S^
+"Son, How can you be so silly!
+Get rid of this whinger!
+Leave him at 21*26.
+And hide at 17*31."
+^;
+
+*** CMD Dialogues initialization
+*** #2 Ratibors questions
+!#VRz210:S^Ratibor looks very irritable.
+It doesn't seem safe to talk to him.
+And he certainly has no humor.
+But not talking to him will get you nowhere.^;
+!#VRz211:S^So you decide to say:^;
+!#VRz212:S^%Z199\11_009.bmp^;
+!#VRz213:S^%Z199\11_010.bmp^;
+!#VRz214:S^%Z199\11_011.bmp^;
+!#VRz215:S^%Z199\11_012.bmp^;
+!#VRz216:S^Why don't you ask the monks for some spiritual guidance!^;
+!#VRz217:S^Why don't you ask the Crusaders to help you?^;
+!#VRz218:S^Why don't you take a rest at Kirr's cottage, old man?^;
+!#VRz219:S^Why don't you ask Dan to teach you a pitchfork fighting. Better than that heavy sword.^;
+!#VRz220:S^Monks^;
+!#VRz221:S^Crusaders^;
+!#VRz222:S^Kirr's cottage^;
+!#VRz223:S^Dan's pitchfork^;
+
+*** #8 Magic book
+!#VRz200:S^
+I have four items that could be of interest to you.
+Each of them has a unique property.
+But I have no time for lengthy explanations.
+So you will have to make your own choise.
+^;
+!#VRz201:S^Which item do you prefer?^;
+!#VRz202:S^%Z199\11_005.bmp^;
+!#VRz203:S^%Z199\11_006.bmp^;
+!#VRz204:S^%Z199\11_007.bmp^;
+!#VRz205:S^%Z199\11_008.bmp^;
+!#VRz206:S^Burning into flame book^;
+!#VRz207:S^Earthen book^;
+!#VRz208:S^Flimsy book^;
+!#VRz209:S^Wet book^;
+
+Logical state in v500
+!#VRv500:S0;
+Logical steps in flags 500...
+500-Guards visited
+501-Abandoned building
+502-Monk
+503-water wheel
+504-Ratibor
+505-Out
+!#IF:V500/0V501/0V502/0V503/0V504/0V505/0;
+!#VRv550:S0; Dan's whine state
+
+!#UN:K1/1; no week of ...
+!#UN:M1; no month of ...
+!#UN:K2/412; set every week of message
+
+!?GE1; First changes
+!!HE0:L5/z398/z399; set hero's portrait
+!!HE0:B0/z400;
+!!HE0:A-3;
+!!UN:R1;
+!!VRz2:S^^;
+!!VRz1:S^
+A warm summer night...
+the smell of fresh grass and sweet rain is pungeant in the air...
+Soft sounds reverberate through the groves,
+melting and changing into another,
+filling the deep of darkness with mystery...
+A light breaze rustles the branches of the maple-trees.
+Two charmed stars soar through the sky
+and seem to land on the soft silky grass as fresh dew.
+^;
+!!VRz3:S^%Z199\11_015.bmp^;
+!!VRz4:S^%Z199\11_014.bmp^;
+!!IF:D99/z1/z2/z2/z3/z4/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99; Start up message
+! !VRz3:S^%Z199\11_013.bmp^;
+! !IFB100/z3/0;
+! !IF:P100;
+
+!!VRz1:S^
+The silence deepens,
+then the cry of two new borns salute the midnight air.
+And the old witch foretells...
+One will follow the long and winding road.
+The other will suffer the fate of a warrior.
+^;
+!!VRz3:S^%Z199\11_015.bmp^;
+!!IF:D99/z1/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99; Start up message
+
+!!VRz1:S^
+Years went by. You were siblings as infants.
+But as time passed your soul stayed light
+and reached for to stars, the blazing summer lighting, the distant sky.
+Dan is your friend. You have spent almost all your life together.
+Stand-up fights, hunting... but something draws you to the unknown.
+You dream of a knight on a white horse,
+in shining armour reflecting rays of the sun.
+Or could it be reality?
+^;
+!!IF:D99/z1/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99; Start up message
+
+!!VRz1:S^
+What was his name... Gelu???
+You can't remember...
+Did this happen to you when you were just a child,
+memories that will stay with you for all your life?
+So that is it...
+Now the time comes when you can no longer consider yourself a youth,
+You can not wait anymore...
+^;
+!!IF:D99/z1/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99; Start up message
+
+!!VRz1:S^You move out on your quest for glory.
+Your army yet numbers only one man, your friend, Dan.
+Together you will conquer the world.^;
+!!VRz3:S^%Z199\11_012.bmp^;
+!!VRz4:S^This is your friend Dan^;
+!!IF:D99/z1/z2/z2/z397/z3/z2/z2/z396/z4/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99; Start up message
+
+!#OW:D6/254D1/254D0/254; Allow to live forever
+!#OB26/27/0:S;
+
+!#OB17/27/0:SHz402;
+!#OB15/27/0:SHz403;
+!#OB14/17/0:SHz404;
+!#OB22/29/0:SHz406;
+!#OB9/25/0:SHz407;
+!#OB23/20/0:SHz409;
+!#OB23/19/0:S;
+!#OB22/19/0:S;
+!#OB22/18/0:S;
+!#OB18/23/0:Hz410;
+!#HO2:SHz408;
+
+Statue
+!#TR18/23/0:P1E0; make an entrance
+!#OB18/23/0:ST63U2; set a type (no matter)
+!?OB18/23/0;
+!!VRz3:S^%Z199\11_016.bmp^;
+!!IF&v550<15:D99/z420/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF&v550>14/v550<30:D99/z437/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF&v550>29:D99/z438/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+Home
+!?OB17/27/0;
+!!VRz1:S^
+This was your home not long ago.
+But time flies and now you are on your quest for glory.
+^;
+!!VRz3:S^%Z199\11_001.bmp^;
+!!IF:D99/z1/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+Dan's home
+!?OB15/27/0;
+!!VRz1:S^
+Your friend, Dan, has decided to accompany you in your quest.
+Look for him in your army.
+^;
+!!VRz3:S^%Z199\11_002.bmp^;
+!!IF:D99/z1/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+!?OB9/25/0;
+!!VRz3:S^%Z199\11_017.bmp^;
+!!IF:D99/z421/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+! !IF:M1/z421;
+
+Exit sign
+!#OB0/34/0:S;
+!?OB0/34/0;
+!!VRz1:S^
+Congratulations!
+You have found a hidden passage to the end of the campaign.
+^;
+!!VRz3:S^%Z199\11_004.bmp^;
+!!IF:D99/z1/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+Dead end sign
+!#OB0/16/0:S;
+!?OB0/16/0;
+!!VRz1:S^
+Dead End
+^;
+!!VRz3:S^%Z199\11_004.bmp^;
+!!IF:D99/z1/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF:E1/99;
+
+!?LE0/35/0; quick exit
+!!HE-1:K;
+
+Timer
+!?TM1;
+!!TM1&505:S1/1/100/0; disable timer
+!!VRv500&v500=8:S9; second day
+!!VRv500&v500=7:S8; next day
+!!FU101:P0/20/26/0; if Hero at a spot
+!!FU205&1:P; kill hero, he is at a spot
+!!IF:V2/0;
+!!FU102:P21/26/0/54/139; if peasant around place
+!!FU102&-1:P19/26/0/54/139; if peasant around place
+!!IF&1:V2/1;
+!!TM2&2:S2/1/100/0; disable Dan's timer
+!!VRv550&2:S35; disable Dan's message
+!!FU101&2:P0/17/31/0; if he at place?
+!!IF&1:V3/1;
+!!VRv500&3/v500=6:S7; done
+!!FU203&v500=7:P; all is ready - next state
+!!FU204&2/v500<7:P; peasant is placed but hero did not hide
+!!FU100&-2:P0/12/18/28/31/0; if he inside?
+!!IF&-1/-2:Q1/21/7/1/z422;
+!!OB26/27/0:R; enable a battle
+!!FU201&v500=8:P; move Dan to field
+!!FU202&v500=10:P; move Guards back
+*** Timer subfunctions ***
+*** kill hero, he is at a spot
+!?FU205;
+!!IF:Q1/21/7/1/z423;
+!!HE0:T20/26/0/7/10;
+*** all is ready - next state
+!?FU203;
+!!IF:Q1/21/139/1/z424;
+!!IF:Q1/21/7/1/z425;
+!!IF:Q1/21/139/1/z426;
+!!UN:O26/27/0I22/26/0/54/7;
+!!LE20/26/0:L1Mz427;
+!!OB21/26/0:S;
+!!OB19/26/0:S;
+*** peasant is placed but hero did not hide
+!?FU204;
+!!IF:Q1/21/139/1/z428;
+!!UN:O21/26/0O19/26/0I5/30/0/54/139;
+!!MO5/30/0/1:G1O1U1R0;
+!!UN:S5/30/0/6/2;
+*** move Dan to the field
+!?FU201;
+!!UN:O21/26/0O19/26/0I5/30/0/54/139;
+!!UN:O22/26/0I6/30/0/54/7;
+!!UN:S6/30/0/6/2;
+!!IF:Q1/21/139/1/z429;
+*** move Guards back
+!?FU202;
+!!UN:O6/30/0I26/27/0/54/7;
+!!MO26/27/0/1:G10O1U1R1;
+**************************
+Guards (0->1)
+!?OB26/27/0;
+!!IF&v500<3/-500:Q1/21/7/1/z430;
+!!IF&v500<3/500:Q1/21/7/1/z431;
+!!IF:V500/1;
+!!IF&v500>1:Q1/21/7/1/z432;
+!!HE-1&v500>1:T26/27/0/7/10;
+!!TM1:Sc/999/1/64; set timer for pink
+!!VRv500&v500<1:S1; guards visited
+!!VRv550:S5; next Dan's state
+
+Abandoned building (1->2)
+!?OB14/17/0;
+!!VRz3:S^%Z199\11_011.bmp^;
+!!IF&-501:D99/z433/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF&-501:E1/99;
+! !IF&-501:M1/z433;
+!!VRz404&v500=1:Sz434;
+!!VRv500&v500=1:S2; visited
+!!IF&v500<>2/501:D99/z435/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF&v500<>2/501:E1/99;
+! !IF&v500<>2/501:M1/z435;
+!!IF&v500=2:D99/z436/z2/z2/z3/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2/z2;
+!!IF&v500=2:E1/99;
+! !IF&v500=2:M1/z436;
+!!IF:V501/1;
+!!VRv550&v500=2:S10; next Dan's state
+
+Monk (2->3)
+!?OB23/20/0;
+!!IF&-502:Q1/21/8/1^God bless you, %Z400.
+Allow me to help you one day.^;
+!!VRz406&v500=2:S^Water Wheel of Melnik^;
+!!VRv500&v500=2:S3; Monk visited
+!!IF&v500<>3/502:Q1/21/8/1^God will help you, son.^;
+!!IF&v500=3:Q1/21/8/1^Yes, I knew him. God knows, he was a righteous man.
+Kirr left his home long ago and no one has seen him since.
+No one knows what happened to him...
+Maybe Melnik has heard news of him.^;
+!!IF:V502/1;
+!!VRv550&v500=3:S15; next Dan's state
+
+Water Wheel (3->4)
+!?OB22/29/0;
+!!IF&-503:M^Hello, %Z400, how are you?^;
+!!VRz408&v500=3:S^Ratibor the Knight^; Change Name of Edrik
+!!VRv500&v500=3:S4; Melnik visited
+!!IF&v500<>4/503:M^This is not a good place to linger.
+I don't think the guards are sleeping.
+You had better go back
+and tend those fields of wheat.^;
+!!IF&v500=4:M^Kirr... I am not sure...
+Perhaps that knight knows more about him.
+Did you talk to him?
+His name? Well... I could be mistaken... Ratibor.^;
+!!IF:V503/1;
+!!VRv550&v500=4:S20; next Dan's state
+
+Ratibor (4->5)
+!?HE2;
+!!IF&-504:M^Get yourself gone, peasant!^;
+!!VRv500&v500=4:S5; Melnik visited
+!!IF&v500<>5/504:M^Don't try my patience too long!^;
+!!IF&v500=5:M^How do you know my name?
+Ah, Melnik.
+That peaceful guy, but too weak to be a warrior...^;
+!!IF:D2/z210/0/z211/z212/z213/z214/z215/z216/z217/z218/z219/z220/z221/z222/z223;
+!!IF:F2/z216/z217/z218/z219/0;
+!!IF&v500=5:E1/2;
+!!IF&v500=5/v1<>2:M^How dare you...^;
+!!HE-1&v500=5/v1<>2:K;
+!!IF&v500=5/v1=2:M^Great! I need new forces! March, march!^;
+!!HE2&v500=5/v1=2:P25/27/0;
+!!UN&v500=5/v1=2:I1/16/0/54/0;
+!!MO1/16/0/1&v500=5/v1=2:M-1;
+!!MO1/16/0/1&v500=5/v1=2:G1O1U1R0;
+!!IF:V504/1;
+!!VRv550&v500=5/v1=2:S25; next Dan's state
+
+Pikeman (5->6)
+!?OB1/16/0;
+!!IF&v500=5:Q1/21/7/1^Oh no, Ratibor,
+We can't take your offer.
+We are under orders to stay here and see to it that
+those dumb peasants keep working hard!
+^Q1/21/0/1^I am too old to follow Ratibor.
+With you... well... if you don't move too fast.^;
+!!VRv500&v500=5:S6; Pikeman taken
+!!HE2:P35/0/0;
+
+!?LE20/26/0;
+!!IF&v500>0:Q1/21/7/1^Hey! Stay where you are!
+We're coming!^;
+!!IF&v550>=30/v550<35:Q1/21/139/1^Ouch!!!
+I'm shivering with fright!
+I'm going weak in the knees!
+I stay here!
+Do something!!!^;
+!!LE20/26/0&v500>0:M-1;
+
+****** Dan's whine service *******
+!#TM2:S1/999/1/64;
+*** phase 30
+!?TM2&v550>=30;
+!!IF:Q1/21/139/1^I want to go home,
+pleeeeease!!!
+He winked away a tear:
+"Don't you remember what your father said?"^;
+*** phase 29
+!?TM2&v550=29; !!VRv550:S30;
+!!IF:Q1/21/139/1^I am tired!
+I can't move anymore...
+Let's take a break...
+Oh...^;
+*** phase 28
+!?TM2&v550=28; !!VRv550:S29;
+!!IF:Q1/21/139/1^
+Don't you see that we are stuck here!
+You're just a fool!^;
+*** phase 27
+!?TM2&v550=27; !!VRv550:S28;
+!!IF:Q1/21/139/1^I am so tired.
+We will be moving from here to there forever!^;
+*** phase 26
+!?TM2&v550=26; !!VRv550:S27;
+!!IF:Q1/21/139/1^Can you please slow down!^;
+*** phase 25
+!?TM2&v550=25; !!VRv550:S26;
+!!IF:Q1/21/139/1^He disappointed me, that Ratibor.
+I counted on him...
+I'm in a foul mood.
+Don't touch me.
+I won't say more!^;
+*** phase 20
+!?TM2&v550=20; !!VRv550:S21;
+!!IF:Q1/21/139/1^Wow, a brave knight!
+I am sure he will help us.
+What was his name...
+... oh, yea, Ratibor!
+Such a fine name...
+He is definitely a nice man...
+so strong... so gentle...
+^;
+*** phase 15
+!?TM2&v550=15; !!VRv550:S16;
+!!IF:Q1/21/139/1^Melnik... I have no idea.^;
+*** phase 11
+!?TM2&v550=11; !!VRv550:S12;
+!!IF:Q1/21/139/1^Oh, the bible.
+Don't you think that it's a sin to take someone's bible.
+What? Ah, for that...
+Yes, that's a good idea.^;
+*** phase 10
+!?TM2&v550=10; !!VRv550:S11;
+!!IF:Q1/21/139/1^I remember Kirr. But...
+not that good. You know, we were so young then.^;
+*** phase 7
+!?TM2&v550=7; !!VRv550:S8;
+!!IF:Q1/21/139/1^No, no, I am not scared,
+but I am afraid.^;
+*** phase 6
+!?TM2&v550=6; !!VRv550:S7;
+!!IF:Q1/21/139/1^I have been thinking of those guards.
+Maybe there is another easy way out.^;
+*** phase 5
+!?TM2&v550=5; !!VRv550:S6;
+!!IF:Q1/21/139/1^Those guards look so scary.
+But we are not afraid...
+Right?^;
+*** phase 2
+!?TM2&v550=2; !!VRv550:S3;
+!!IF:Q1/21/139/1^What are we looking for?^;
+*** phase 1
+!?TM2&v550=1; !!VRv550:S2;
+!!IF:Q1/21/139/1^Together we can beat our enemies!^;
+*** phase 0
+!?TM2&v550=0; !!VRv550:S1;
+!!IF:Q1/21/139/1^We are real friends, %Z400,
+and we will stick together
+till the bitter end...
+Right?^;
+***********************************
+
+Out
+!?LE27/27/0;
+!!IF:V505/1;
+!!VRv500&v500>7/v500<10:S10; move the guard back
+
+****** Functions ******
+Check if hero x1 inside square x2...x3*x4...x5 level x6 and set Flag1 if yes
+!?FU100;
+!!HEx1:P?y1/?y2/?y3; store hero's position
+!!IF:V1/0; clear flag
+!!IF&y1>=x2/y1<=x3/y2>=x4/y2<=x5/y3=x6:V1/1; set flag if Ok
+
+Check if hero x1 at position x2*x3 level x4 and set Flag1 if yes
+!?FU101;
+!!HEx1:P?y1/?y2/?y3; store hero's position
+!!IF:V1/0; clear flag
+!!IF&y1=x2/y2=x3/y3=x4:V1/1; set flag if Ok
+
+Check for object type x4 and subtype x5 at position x1/x2/x3
+!?FU102;
+!!IF:V1/0; clear flag
+!!VRv2:Sx1; !!VRv3:Sx2; !!VRv4:Sx3;
+!!OB2:T?y1U?y2; use v2/v3/v4 to point
+!!IF&y1=x4/y2=x5:V1/1; set flag if Ok
+
+**********************
+****** Part II *******
+!#VRz320:S^Twin peaks (left part)^;
+!#VRz321:S^Twin peaks (right part)^;
+
+!#OB29/26/0:SHz320;
+!#OB30/27/0:SHz321;
+!#OB32/30/0:S;
+!#OB33/31/0:S;
+!#OB34/30/0:S;
+!#OB35/29/0:S;
+!#OB33/28/0:S;
+!#OB34/28/0:S;
+!#OB34/23/0:S;
+!#OB24/2/0:S;
+!#OB33/19/0:S;
+!#OB19/4/0:S;
+!#OB34/10/0:S;
+!#OB34/16/0:S;
+!#OB24/12/0:S;
+!#OB31/25/0:S;
+!#OB25/14/0:S;
+!#OB3/2/0:S;
+!#OB21/6/0:S;
+!#OB27/17/0:S;
+!#OB35/23/0:S;
+!#OB30/11/0:S;
+!#OB29/12/0:S;
+!#OB29/14/0:S;
+!#OB30/12/0:S;
+!#OB35/22/0:S;
+
+!#VRv350:S0; global state
+!#VRv360:S0; sequence state
+!#IF:V360/0; sequence flag
+!#VRz360:S^^;   sequence name
+!#VRv361:S0; castle visit state
+!#VRv362:S0; rogue visit state
+!#VRv370:S0; completed tasks
+
+Clear all flags and vars
+!#IF:V300/0V301/0V302/0; rally flag
+
+Out (continue)
+!?LE27/27/0;
+!!TR30/25/0:P1;
+!!TR30/21/0:P1;
+!!TR31/22/0:P1E1;
+**************************
+#1
+!?OB32/30/0; !!VRv360:S1; !!IF:V360/1; !!VRz360:S^Zvezdochet^;
+!!IF:Q1/21/138/1^Hi, dude. What?... Ok, %Z400.
+You know, %Z400, life is short and we should take all that it offers...
+You, dude... err... %Z400, came from... what? What a funny name, hah!
+Ok, ok. What was I talking about? ...
+Oh, yes! Life is short and we should take all that it offers...
+... you know? ... already? ... ok. Don't get angry! Relax.
+My brother... You know my brother? No? He lives north of here...
+Well... What I was talking about?
+Oh, my brother, yea. He used to tell me that life is short and
+we should take all that it offers... Wow! You are like my brother!
+You dude... ok, %Z400. So you, %Z400, obviously should visit my brother.
+You will find things to talk about. Especially about life being short and...
+Ok, ok, go. Give him my regards... and his name is Zvezdochet.^;
+!!UN:O32/30/0;
+
+#2
+!?OB33/31/0; !!VRv360:S2; !!IF:V360/1; !!VRz360:S^Vlad^;
+!!IF:Q1/21/139/1^Don't listen to them. They know nothing about life.
+My brother does!
+It was long ago. When we were young and ambitious...
+A knight passed our village then. Such a strange knight...
+Imagine, when my brother offered his service to him,
+he did not even turn down the proposal!
+Strange knight...
+Who could have known then ...
+They didn't go far... were beaten up.
+Perhaps my brother can help you to avoid that fate.
+Find him. His name is Vlad. Good luck!
+^;
+!!UN:O33/31/0;
+
+#3
+!?OB34/30/0; !!VRv360:S3; !!IF:V360/1; !!VRz360:S^Gavriil^;
+!!IF:Q1/21/9/1^My son, be patient.
+Do not allow anger to eat at your heart.
+God will help you. Well... well...
+Don't you wish to toast?
+I have some good red wine.
+Ah! I had...
+So you should visit my cousin Gavriil.
+He has an even better wine, believe me.^;
+!!UN:O34/30/0;
+
+#4
+!?OB35/29/0; !!VRv360:S4; !!IF:V360/1; !!VRz360:S^Igor^;
+!!IF:Q1/21/1/1^Don't listen to those civilians.
+Only a real warrior can be objective...
+especially when he is drunk, hah!
+Yes, I am a warrior, Igor. What's your name, Hero!
+I see, you look like a real warrior, %Z400.
+You are my friend and I will do my best for a friend, hah!
+Listen. There is a place ... not far away, yeah.
+And there you will find one very useful thing
+for a real warrior like you, hah!
+See you later!^;
+!!UN:O35/29/0;
+
+#5
+!?OB33/28/0; !!VRv360:S5; !!IF:V360/1; !!VRz360:S^Torgovets^;
+!!IF:Q1/21/28/1^Hello, merchant!
+Do you know the power of money?
+You don't believe me? Really?
+You are such a fool!
+So go to a marketplace and mention me, Torgovets.
+And you will see!^;
+!!UN:O33/28/0;
+
+#6
+!?OB34/28/0;
+!!IF:V1/0; !!VRv1:Sv361&16; !!IF&v1<>0:V1/1; test for bit 4
+!!IF&-1:M^Hello, glorious knight.
+Pull up a chair and have drink with us.
+If you are searching for a way to start a career,
+The best way would be to go to a castle
+and ask for a job there.
+The closest one is right to the North. Try it.^;
+!!VRv361&-1:|1; set bit 1
+!!IF&1:M^Hello,%Z400.
+Did you get a job?
+No? Well, join us!
+To be a bush-knight is not so bad.
+We are all in that Quest for Glory!^;
+
+#7
+!?OB34/23/0;
+!!IF:V1/0; !!VRv1:Sv362&2; !!IF&v1<>0:V1/1; test state
+!!IF&1:Q3/21/143/1^Gold?
+Without a guard? Unbelieveable!
+Can you stay here and watch my camp, take care of my fire...
+I'll be back soon! Probably...^;
+!!VRv362&1:|4;
+!!UN&1:O34/23/0O30/12/0;
+!!IF&-1:Q3/21/143/1^Who are you?
+A knight? You look more like a peasant.
+How would I know??
+Well. Not long ago I was in the army of a knight like you.
+until we were beaten to pulp.
+Not far from here...
+And I understand now that you can't do anything
+without some cunning.^;
+!!VRv362&-1:|1;
+
+#8
+!?OB24/2/0;
+!!VRz3:S^%Z199\11_sun.avi^;
+!!IF:B100/z3/1;
+!!IF:P100;
+!!IF:Q1/21/93/1^Have you never met a bird that could speak?
+Right, birds can't. But I'm not a bird,
+I am a Rod, %Z400.
+I know all about you. Your merits and deficiencies,
+your thoughts and intentions, your debts and promises.
+All about you.
+And take my word.
+The root of all evil that shrouds the Heroes' world
+is in the lack of belief in justice, in truth,
+in GOD!^;
+!!VRv350:S1;
+
+#9
+!?OB33/19/0;
+!!IF:V1/0; !!VRv1:Sv361&2; !!IF&v1<>0:V1/1; test for bit 2
+!!IF&1:Q2/21/139/1^You can't get into the Castle?
+My son serves as a bridge guard there.
+Give my regards to my son
+the next time you try to get in.^;
+!!VRv361&1:|4; set bit 3
+!!IF&-1:Q2/21/139/1^Leave me alone.
+Don't you see I am trying to get some work done!
+Digging holes is hard work.^;
+
+#9a
+!?OB21/6/0;
+!!IF&1:Q2/21/0/1^Stay where you are!^;
+!!VRv361:|2; set bit 2
+!!IF:V1/0; !!VRv1:Sv361&4; !!IF&v1<>0:V1/1; test for bit 3
+!!TR20/5/0&1:P1;
+!!TR21/6/0&1:P1E1;
+!!IF&1:Q2/21/0/1^Yes, my father. I miss him much...
+You can pass.^;
+!!VRv361&1:&253; reset bit 2
+!!IF&-1:Q2/21/0/1^Who are you? I don't know you.
+Get lost!^;
+
+#10
+!?OB19/4/0;
+!!IF:Q2/21/6/1^In the King's name. Halt!^;
+!!IF:V1/0; !!VRv1:Sv361&16; !!IF&v1<>0:V1/1; test for bit 4
+!!IF&1:Q2/21/6/8/4/1^Hey. Look at this!
+He stole our ballista!
+What the heck...
+In the King's name: Get him!!!^;
+!!HE-1&1:T19/4/0/6/10;
+!!IF:V1/0; !!VRv1:Sv361&1; !!IF&v1<>0:V1/1; test for bit 1
+!!IF&1:Q2/21/6/1^You want to get a job?
+Well, peasant..  Go and find our lost transport,
+and bring it to us.
+Where?
+Are you sure you are a knight?^;
+!!VRv361&1:|8; set bit 4
+!!IF&-1:Q2/21/6/1^Get out of here, dirty ragamuffin!^;
+
+#1
+!?OB34/10/0&v360=1/-360; Already
+!!IF:Q1/21/34/1^I can't help you.
+Go away. I am watching stars.^;
+!?OB34/10/0&v360=1/360; Ok
+!!IF:Q1/21/34/2^Yes, I am Zvezdochet.
+My brother, that hard drinker ???
+He promised my help??
+I don't know... well...
+If you give me your word that you will help me,
+when I am in trouble, I will....
+
+{Do you agree?}^;
+!!IF&1:D8/z200/0/z201/z202/z203/z204/z205/z206/z207/z208/z209/z206/z207/z208/z209;
+!!IF&1:F8/z206/z207/z208/z209/0;
+!!IF&1:E1/8;
+!!IF&1:V2/0;
+!!VRv2&1/v1=1:S1; !!VRv2&1/v1=2:S2; !!VRv2&1/v1=3:S3; !!VRv2&1/v1=4:S4;
+!!IF&v2=0:V1/0; escape
+!!VRv370&1:+1; task completed
+!!VRv701&1:S1;
+!!HE-1&1/v2=1:S14/1M31/1M62/1M21/1;
+!!IF&1/v2=1:Q3/20/45/1^You take the book and place it to a pocket.^;
+!!IF&1/v2=1:Q3/9/31/9/62/9/21/1^And you have found these spells in the book:^;
+!!HE-1&1/v2=2:S17/1M46/1M33/1M27/1;
+!!IF&1/v2=2:Q3/20/54/1^You take the book and place it to a pocket.^;
+!!IF&1/v2=2:Q3/9/46/9/33/9/27/1^And you have found these spells in the book:^;
+!!HE-1&1/v2=3:S15/1M30/1M47/1M28/1;
+!!IF&1/v2=3:Q3/20/48/1^You take the book and place it to a pocket.^;
+!!IF&1/v2=3:Q3/9/30/9/53/9/28/1^And you have found these spells in the book:^;
+!!HE-1&1/v2=4:S16/1M32/1M45/1M20/1;
+!!IF&1/v2=4:Q3/20/51/1^You take the book and place it to a pocket.^;
+!!IF&1/v2=4:Q3/9/32/9/45/9/20/1^And you have found these spells in the book:^;
+!!IF&1:V360/0;
+!!IF&-1:Q1/21/34/1^Ok. This is your choise, %Z400.^;
+!?OB34/10/0&v360<>1;
+!!VRz1&360:S^Hello, stranger.
+I don't know... Who is this %Z360^;
+!!VRz1&-360:S^Hello, %Z400.
+The stars talk forever. If you would just listen to them.^;
+!!IF:Q1/21/34/1/z1;
+
+#2
+!?OB34/16/0&v360=2/-360; Already
+!!IF:Q1/21/139/1^Don't disturb me.
+Can't you see I'm working?^;
+!?OB34/16/0&v360=2/360; Ok
+!!IF:Q1/21/139/2^My brother... yes, I am Vlad.
+those were the days...
+You remind me that knight. What was his name...
+Yeah, Kirr. Did you know him?
+Yes, I have something special for you.
+But... only if you help me when I am in need.
+
+{Ok?}^;
+!!VRz3&100/1:S^%Z199\11_sword.avi^;
+!!IF&100/1:B100/z3/1;
+!!IF&100/1:P100;
+!!IF&1:Q2/8/8/21/139/1^This is Kirr's sword. Take it.^;
+!!HE-1&1:A1/8/3;
+!!VRv370&1:+1; task completed
+!!VRv702&1:S1;
+!!IF&1:V360/0;
+!!IF&-1:Q1/21/139/1^Do what you want, %Z400.^;
+!?OB34/16/0&v360<>2;
+!!VRz1&360:S^Hello, stranger.
+How should I know this %Z360^;
+!!VRz1&-360:S^Hi, friend.
+Take a look at my flowers. They're wonderful, right?^;
+!!IF:Q1/21/139/1/z1;
+
+#3
+!?OB24/12/0&v360=3/-360; Already
+!!IF:Q1/21/8/1^God knows!^;
+!?OB24/12/0&v360=3/360; Ok
+!!IF:Q1/21/8/2^Who? I do not know him.
+Though we are all sons of God...
+But some of us are more God's sons than other!
+And you, secular, should display your humbleness.
+If you promise to obey the God's laws,
+I will give you a gift.
+
+{Are you with God?}^;
+!!IF&1:Q2/8/58/21/8/1^This surcoat is a God's gift.^;
+!!HE-1&1:A1/58/1;
+!!VRv370&1:+1; task completed
+!!VRv703&1:S1;
+!!IF&1:V360/0;
+!!IF&-1:Q1/21/8/1^God bless you!^;
+!?OB24/12/0&v360<>3;
+!!VRz1&360:S^God will help you, son.
+%Z360 is unknown to me and to the church.^;
+!!VRz1&-360:S^God bless you!^;
+!!IF:Q1/21/8/1/z1;
+
+#4
+Rally flag
+!?OB31/25/0&v360=4/360; Ok
+!!IF:M^Remembering the words of Igor you decide
+to spend more time looking around.^;
+!!VRz3&100:S^%Z199\11_shield.avi^;
+!!IF&100:B100/z3/1;
+!!IF&100:P100;
+!!IF:Q1/8/15/1^Perhaps, this is Kirr's shield^;
+!!HE-1:A1/15/4;
+!!VRv370&1:+1; task completed
+!!VRv704&1:S1;
+!!IF&1:V360/0;
+!?OB31/25/0&v360<>4; first visit
+!!IF:M^Yes, it was a Rally flag...
+once... But now it is a sorry sight.
+Skulls and bones everywhere...
+Something familiar is around.^;
+
+#5
+!?OB25/14/0;
+!?OB25/14/0&v360=5/360; Ok
+!!IF:M^The name of Torgovets has a magical power on the market.
+Though you have never had merchant skills,
+you are not able to resist one offer.^;
+!!IF:Q1/8/3/1^This is a catapult!^;
+!!HE-1:A1/3/16;
+!!VRv370&1:+1; task completed
+!!VRv705&1:S1;
+!!IF&1:V360/0;
+!?OB25/14/0&v360<>5; Not
+!!IF:M^Do you need anything here?^;
+
+#8
+!?OB3/2/0&v350=0;
+!!IF:Q1/21/168/1^Hello, mortal!
+Bye mortal!!!^;
+!!HE-1:T3/2/0/168/1;
+!?OB3/2/0&v350=1;
+!!IF:Q1/21/168/2^Hello, mortal!
+What? God?
+Yes, I am a God...
+in a way...
+Well, actually, I am not a God
+but the Gods representative on the earth.
+
+{Do you believe me?}^;
+!?OB3/2/0&v350=1/1;
+!!IF:Q3/21/168/1^That is right.
+The Gods told me to go with you and help
+you in your quest.
+So, lead on!^;
+!!MO3/2/0:R0;
+!!OB3/2/0:R;
+!!IF:M^Congratulations!
+You complete the main mission
+and %V370 of 7 submissions.^;
+!!VRv700:Sv370;
+!!VRz3:S^%Z199\11_out.avi^;
+!!IF:B100/z3/1;
+!!IF:P100;
+!?OB3/2/0&v350=1/-1;
+!!IF:Q3/21/168/1^You are fool!^;
+!!HE-1:T3/2/0/168/1;
+
+#10
+!?OB27/17/0;
+!!IF:V1/0; !!VRv1:Sv361&8; !!IF&v1<>0:V1/1; test for bit 4
+!!IF&1:M^Remembering the words the castle-gate guard spoke,
+you notice that this wagon looks like the transport
+he told you about.
+And he said, there might be something useful.^;
+!!IF&1:Q2/8/4/1^Great! You have found a Ballista!
+That guard said that you should return it to him.
+No way! He was too loutish!
+Right, keep it to yourself.^;
+!!HE-1&1:A1/4/13;
+!!VRv370&1:+1; task completed
+!!VRv706&1:S1;
+!!VRv361&1:S1+16; reset all
+!!IF&-1:M^An old wagon.
+You decide not to spend a lot of time
+digging through the trash.^;
+
+!?OB35/23/0; 
+!!IF:V1/0; !!VRv1:Sv362&4; !!IF&v1<>0:V1/1; test state 
+!!OB35/23/0&1:R; 
+!!IF&-1:Q3/21/143/1^Hey! 
+Don't touch my fire! 
+You don't want me to get cold?^; 
+ 
+!?OB35/22/0; 
+!!IF:V1/1; !!VRv1:Sv362&8; !!IF&v1<>0:V1/0; test state 
+!!IF&-1:M^Nothing more...^; 
+!!IF&1:Q1^Stealing from rogues? 
+ 
+{Are you a Rogue too?}^; 
+!!IF&1:Q1/8/0/1^Well... you have found a book. 
+A magic book!^; 
+!!HE-1&1:A1/0/17; 
+!!VRv370&1:+1; task completed 
+!!VRv707&1:S1;
+!!VRv362&1:|8; 
+ 
+!?OB30/11/0; !!FU300:P; 
+!?OB29/12/0; !!FU300:P; 
+!?OB29/14/0; !!FU300:P; 
+!?FU300; 
+!!IF:M^Silence... 
+You come closer and lift up your hand 
+about to knock on the door... 
+But no... there is a sound... 
+Yes. That's a snore! 
+Great. Good workers! They sleep all day long. 
+Is it wise to wake them up? 
+^; 
+ 
+!?OB30/12/0; 
+!!IF:V1/0; !!VRv1:Sv362&1; !!IF&v1<>0:V1/1; test state 
+!!IF&1:M^This looks like something the rogues may want.^; 
+!!VRv362&1:|2; 
+!!IF&-1:M^Is it your gold, %Z400?^; 

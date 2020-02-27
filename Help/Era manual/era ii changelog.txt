@@ -1,3 +1,12 @@
+Version 2.9.12 (02/2020)
+------------------------
+[*] Restructured WoG Campaigns files.
+
+[*] Campaign directory name is now Maps\Resources\[Campaign file name without extension]\[Campaign zone index 1..N].
+    Zone index is ordinal position of zone in camptext.txt in //... block, starting from 1.
+    Usually Zone A has index 1, Zone B has index 2, etc.
+
+
 Version 2.9.11
 ------------------------
 [+] Added Quest Dialog plugin by igrik. It allows to easily view quests contents and move view to seer huts.
