@@ -1,0 +1,1485 @@
+
+			BTB's Heroes 3 Modding Reference Guide
+
+			TABLE OF CONTENTS:
+
+				1. INTRODUCTION
+				2. HEROES
+				3. SKILLS
+				4. SPELLS
+				5. CREATURES
+				6. ARTIFACTS
+				7. BUILDINGS & MISC.
+				8. ID REFERENCE
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				1. INTRODUCTION
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+This guide is a compilation of all of the information I've been able to find for modding Heroes of Might
+and Magic III, little to none of which is centralized or particularly easy to find. The information here
+addresses novice and intermediate modders; .lod editing and hex editing are both covered, as well as how
+to best compile your changes into an easy-to-distribute mod. More advanced techniques are not covered,
+such as external modding programs which allow for scripts, plugin files, or assembly. That said, this
+guide should still be a useful reference tool even for advanced hackers.
+
+Before we get started, let's set you up with all of the tools you'll want/need.
+
+	Heroes 3 HD+
+	------------
+
+	The HD+ fan mod (NOT to be confused with the official HD mod, which should never, under
+	any cirsumstances, ever be used) upgrades the game's graphics as well as its interface.
+	It's important from a modding perspective since the new .exe file that it generates will
+	restructure some of the internal code, making several of the hex edits discussed in this
+	file possible. The unofficial "Horn of the Abyss" patch is based on the structure of HD+
+	and so will also work; any differences between the two will be specifically noted.
+
+	https://sites.google.com/site/heroes3hd/
+
+	-----------------------------------------------------------------------------------------
+
+	MMArchive
+	---------
+
+	This tool allows you to view - and more importantly, extract - the files contained inside
+	the game's .lod archives. Contrary to what the name suggests, all of the game's rules and
+	basic settings can be found in "H3bitmap.lod". For ease of use, you can set a filter for
+	a given file extension; just set it to .txt and extract everything in there.
+
+	https://github.com/GrayFace/Misc/releases/download/MMArchive-1.3.1/MMArchive.rar
+
+	-----------------------------------------------------------------------------------------
+
+	TxtEdit
+	-------
+
+	If you attempt to open one of the .txt files you extracted above, you will find that they
+	are structured in a spreadsheet-like format that renders them nearly impossible to read,
+	let alone edit. This program was specifically designed to work with them.
+
+	http://h3maparchives.celestialheavens.com/wog.tools/TxtEdit.zip
+
+	-----------------------------------------------------------------------------------------
+
+	LodEdit
+	-------
+
+	While MMArchive is able to extract files from .lod archives without issue, it seems to
+	have a hard time re-inserting them after you edit them. This is a command-line utility
+	designed to do exactly that, and in a much more convenient fashion.
+
+	http://prot.free.fr/h3/lodedit.zip
+
+	-----------------------------------------------------------------------------------------
+
+	H3DefTool
+	---------
+
+	Another file type you may be working with in the .lod archives are .def files, which are
+	themselves archives of bitmap omages. This program is able to both edit .def archives as
+	well as re-insert them into the .lod files from whence they came. Even if you don't want
+	to edit the game's graphics, you'll need to use this tool if you change any of the hero
+	specialties or else their associated images will be incorrect.
+
+	(You'll also need something like Photoshop or GIMP to edit images as needed.)
+
+	http://sites.google.com/site/sergroj/wog/H3DefTool.rar
+
+	-----------------------------------------------------------------------------------------
+
+	HxD64
+	-----
+
+	Many edits cannot be made via .lod editing and will require the .exe file to be directly
+	modified. Any hex editor will do; this is simply the one I'd recommend.
+
+	https://mh-nexus.de/en/downloads.php?product=HxD20
+
+	-----------------------------------------------------------------------------------------
+
+	Tsukuyomi UPS
+	-------------
+
+	This utility will create a patch containing all of your .exe edits for easy distribution.
+	It probably also works for .lod files, as well, but I haven't tested it yet.
+
+	http://www.romhacking.net/utilities/519/
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				2. HEROES
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+Everything about editing hero classes (i.e. Knight, Cleric, Ranger, etc.) is done via the HCtraits.txt
+file inside the H3bitmap.lod archive. This includes their base attributes, attribute growth, secondary
+skill growth, and appearance probabilities per town - as well as the "aggression" factor which seems to
+determine how likely the AI is to attack when controlling that hero type. Individual heroes can only be
+edited directly through the .exe, and their attributes are stored in two arrays: one for most of their
+data and another one for their specialties (AKA "Bonuses"). The offsets for each hero are as follows:
+
+		KNIGHTS		DATA	BONUS		CLERICS		DATA	BONUS
+		------------------------------		------------------------------
+		Orrin		279DD0	278420		Rion		27A0B0	278560
+		Valeska		279E2C	278448		Adela		27A10C	278588
+		Edric		279E88	278470		Adela		27A10C	278588
+		Sylvia		279EE4	278498		Adelaide	27A1C4	2785D8
+		Lord Haart	279F40	2784C0		Ingham		27A220	278600
+		Sorsha		279F9C	2784E8		Sanya		27A27C	278628
+		Christian	279FF8	278510		Loynis		27A2D8	278650
+		Tyris		27A054	278538		Caitlin		27A334	278678
+
+		RANGERS		DATA	BONUS		DRUIDS		DATA	BONUS
+		------------------------------		------------------------------
+		Mephala		27A390	2786A0		Coronius	27A670	2787E0
+		Ufretin		27A3EC	2786C8		Uland		27A6CC	278808
+		Jenova		27A448	2786F0		Elleshar	27A728	278830
+		Ryland		27A4A4	278718		Gem		27A784	278858
+		Thorgrim	27A500	278740		Malcom		27A7E0	278880
+		Ivor		27A55C	278768		Melodia		27A83C	2788A8
+		Clancy		27A5B8	278790		Alagar		27A898	2788D0
+		Kyrre		27A614	2787B8		Aeris		27A8F4	2788F8
+
+		ALCHEMISTS	DATA	BONUS		WIZARDS		DATA	BONUS
+		------------------------------		------------------------------
+		Piquedram	27A950	278920		Astral		27AC30	278A60
+		Thane		27A9AC	278948		Halon		27AC8C	278A88
+		Josephine	27AA08	278970		Serena		27ACE8	278AB0
+		Neela		27AA64	278998		Daremyth	27AD44	278AD8
+		Torosar		27AAC0	2789C0		Theodorus	27ADA0	278B00
+		Fafner		27AB1C	2789E8		Solmyr		27ADFC	278B28
+		Rissa		27AB78	278A10		Cyra		27AE58	278B50
+		Iona		27ABD4	278A38		Aine		27AEB4	278B78
+
+		DEMONIACS	DATA	BONUS		HERETICS	DATA	BONUS
+		------------------------------		------------------------------
+		Fiona		27AF10	278BA0		Ayden		27B1F0	278CE0
+		Rashka		27AF6C	278BC8		Xyron		27B24C	278D08
+		Marius		27AFC8	278BF0		Axsis		27B2A8	278D30
+		Ignatius	27B024	278C18		Olema		27B304	278D58
+		Octavia		27B080	278C40		Calid		27B360	278D80
+		Calh		27B0DC	278C68		Ash		27B3BC	278DA8
+		Pyre		27B138	278C90		Zydar		27B418	278DD0
+		Nymus		27B194	278CB8		Xarfax		27B474	278DF8
+
+		DEATH KNIGHTS	DATA	BONUS		NECROMANCERS	DATA	BONUS
+		------------------------------		------------------------------
+		Straker		27B4D0	278E20		Septienna	27B7B0	278F60
+		Vokial		27B52C	278E48		Aislinn		27B80C	278F88
+		Moandor		27B588	278E70		Sandro		27B868	278FB0
+		Charna		27B5E4	278E98		Nimbus		27B8C4	278FD8
+		Tamika		27B640	278EC0		Thant		27B920	279000
+		Isra		27B69C	278EE8		Xsi		27B97C	279028
+		Clavius		27B6F8	278F10		Vidomina	27B9D8	279050
+		Galthran	27B754	278F38		Nagash		27BA34	279078
+
+		OVERLORDS	DATA	BONUS		SORCERERS	DATA	BONUS
+		------------------------------		------------------------------
+		Lorelei		27BA90	2790A0		Alamar		27BD70	2791E0
+		Arlach		27BAEC	2790C8		Jaegar		27BDCC	279208
+		Dace		27BB48	2790F0		Malekith	27BE28	279230
+		Ajit		27BBA4	279118		Jeddite		27BE84	279258
+		Damacon		27BC00	279140		Geon		27BEE0	279280
+		Gunnar		27BC5C	279168		Deemer		27BF3C	2792A8
+		Synca		27BCB8	279190		Sephinroth	27BF98	2792D0
+		Shakti		27BD14	2791B8		Darkstorn	27BFF4	2792F8
+
+		BARBARIANS	DATA	BONUS		BATTLEMAGES	DATA	BONUS
+		------------------------------		------------------------------
+		Yog		27C050	279320		Gird		27C330	279460
+		Gurnisson	27C0AC	279348		Vey		27C38C	279488
+		Jabarkas	27C108	279370		Dessa		27C3E8	2794B0
+		Shiva		27C164	279398		Terek		27C444	2794D8
+		Gretchin	27C1C0	2793C0		Zubin		27C4A0	279500
+		Krellion	27C21C	2793E8		Gundula		27C4FC	279528
+		Crag Hack	27C278	279410		Oris		27C558	279550
+		Tyraxor		27C2D4	279438		Saurug		27C5B4	279578
+
+		BEASTMASTERS	DATA	BONUS		WITCHES		DATA	BONUS
+		------------------------------		------------------------------
+		Bron		27C610	2795A0		Mirlanda	27C8F0	2796E0
+		Drakon		27C66C	2795C8		Rosic		27C94C	279708
+		Wystan		27C6C8	2795F0		Voy		27C9A8	279730
+		Tazar		27C724	279618		Verdish		27CA04	279758
+		Alkin		27C780	279640		Merist		27CA60	279780
+		Korbac		27C7DC	279668		Styg		27CABC	2797A8
+		Gerwulf		27C838	279690		Andra		27CB18	2797D0
+		Broghild	27C894	2796B8		Tiva		27CB74	2797F8
+
+		PLANESWALKERS	DATA	BONUS		ELEMENTALISTS	DATA	BONUS
+		------------------------------		------------------------------
+		Pasis		27CBD0	279820		Luna		27CEB0	279960
+		Thunar		27CC2C	279848		Brissa		27CF0C	279988
+		Ignissa		27CC88	279870		Ciele		27CF68	2799B0
+		Lacus		27CCE4	279898		Labetha		27CFC4	2799D8
+		Monere		27CD40	2798C0		Inteus		27D020	279A00
+		Erdamon		27CD9C	2798E8		Aenain		27D07C	279A28
+		Fiur		27CDF8	279910		Gelare		27D0D8	279A50
+		Kalt		27CE54	279938		Grindan		27D134	279A78
+
+		(CAMPAIGN)	DATA	BONUS		(CAMPAIGN)	DATA	BONUS
+		------------------------------		------------------------------
+		Sir Mullich	27D190	279AA0		Lord Haart	27D3B8	279B90
+		Adrienne	27D1EC	279AC8		Mutare		27D414	279BB8
+		Catherine	27D248	279AF0		Roland		27D470	279BE0
+		Dracon		27D2A4	279B18		Mutare Drake	27D4CC	279C08
+		Gelu		27D300	279B40		Boragus		27D528	279C30
+		Kilgor		27D35C	279B68		Xeron		27D584	279C58
+
+---------------------------------------------------------------------------------------------------------
+
+					HERO DATA (92 bytes)
+					--------------------
+
+		BYTE 01: Gender				BYTE 37: 1st creature ID
+		BYTE 05: Race				BYTE 41: 2nd creature ID *OR* war machine
+		BYTE 09: Class				BYTE 45: 3rd creature ID
+		BYTE 13: 1st skill (ID)			BYTE 49: Small portrait
+		BYTE 17: 1st skill (level)		BYTE 53: Large portrait
+		BYTE 21: 2nd skill (ID)			BYTE 57: Allowed in RoE (Y/N)
+		BYTE 25: 2nd skill (level)		BYTE 58: Allowed in AB/SoD (Y/N)
+		BYTE 29: Spellbook (Y/N)		BYTE 59: Campaign-only hero (Y/N)
+		BYTE 33: Spell ID			BYTE 60: (Unused beyond this point)
+
+	   (*The min/max values of the starting creature stacks can be edited in HOtraits.txt)
+
+		   • To guarantee the 2nd stack, set 0C94A0 to 00 (default = 6E)
+		   • To guarantee the 3rd stack, set 0C9522 to 00 (default = 1D)
+
+---------------------------------------------------------------------------------------------------------
+
+				    HERO SPECIALTIES (28 bytes)
+				    ---------------------------
+
+			BYTE 01: Specialty type
+
+				00 = Skill
+				01 = Creature (scaling)
+				02 = Resource
+				03 = Spell
+				04 = Creature (static)
+				05 = Speed (Sir Mullich)
+				06 = Conversion (Gelu & Dracon)
+				07 = Dragon (Mutare)
+
+			BYTE 05: Skill, Creature, Resource, or Spell ID (type 0-4),
+				 1st creature ID allowed for conversion (type 6),
+				 (*)
+
+			BYTE 09: Attack bonus (type 4/7)
+
+			BYTE 13: Defense bonus (type 4/7)
+
+			BYTE 17: Damage bonus (type 4/7)
+
+			BYTE 21: 2nd creature ID allowed for conversion (type 6)
+
+			BYTE 25: Resulting creature ID after conversion (type 6)
+
+		(*The type 5 speed bonus is actually a global setting located at 0E6669)
+
+	-----------------------------------------------------------------------------------------
+
+	Skill bonuses are a flat 5% per level. This percentage can be changed at 23EAE4; refer to
+	the "Skills" section below for an explanation of how to change percentage-based values.
+
+	Scaling creature bonuses use a formula for attack and defense that becomes exponentially
+	weaker at higher tiers; the general concensus amongst fans is that this bonus is terrible
+	beyond the first (maybe second) tier aside from the +1 speed bonus that this specialty
+	also provides, which itself is really not all that useful on the higher tiers. I would
+	recommend switching to static creature bonuses (type 4) in most/all cases.
+
+	The exception to the above is a bonus to the Artillery skill, which is actually a scaling
+	creature bonus with the ballista (ID 92) set as the creature type. You can increase the
+	strength of the bonus by lowering the ballista's tier at 2745E4 (default: 04). You can
+	also want to edit the strength of the ballista itself when editing creatures.
+
+	The value of resource specialties is hard-coded; there is no known way to change them.
+
+	Spell bonuses vary per the spell in question; this will be discussed later.
+
+	-----------------------------------------------------------------------------------------
+
+The icons for hero specialties are stored in a .def archive called UN44.def located in the H3sprite.lod
+file. If you change ANY hero specialties, then this will need to be updated since it's basically a list
+in which order its images should be used that lines up with the hero index. If you add a new specialty,
+such as 7th-tier creature bonuses, then you'll need to create new images. The easiest way to do this is
+to extract the TwCrPort.def archive from H3sprite.lod, where all of the game's creature icons reside.
+They will then need to be resized to 44x44 in order to be accepted in the UN44.def archive.
+
+Of course, if that's exactly what you do, then the new creature icons will stick out like a sore thumb
+since they are in an obviously different style then the others. For consistency, you'll have to extract
+and resize all of the creature icons from TwCrPort.def. But this still leaves us with a problem wherein
+the creature specialty icons are still in a different style than other specialty types, so if you really
+want to go that extra mile then go ahead and extract SpellBon.def from H3sprite.lod, as well, to create
+new spell bonus icons. This gives each of the three primary bonus types a distinct appearance.
+
+Assuming you're following the above directives, I would recommend making use of H3DefTool's ability to
+resposition the images so that they "fit" neatly where they appear in-game. I've found an ideal setting
+to be a transparent border of two pixels on the top and left and one pixel on the bottom and right. To
+achieve this, reposition the image three pixels down and three to the right, save, then move it up one
+pixel and left one pixel, then save again. Just be careful that you have selected the "frame" option in
+the tool when doing this or else what you are doing will apply to every image in the archive.
+
+Does all of this sound like a lot of work? It is. When I finalize this guide, I'll include a link to all
+of the files already edited for you.
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				3. SKILLS
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+The effectiveness of most secondary skills can be edited in the .exe file in a table starting at 23E998.
+Each skill occupies 16 bytes: 1-4 for unskilled, 5-9 for basic, 9-12 for advanced, and 13-16 for expert.
+
+	Luck		23E998		Offense		23E9F8		Learning	23EA58
+	Leadership	23E9A8		Armorer		23EA08		Logistics	23EA68
+	Necromancy	23E9B8		Estates		23EA18		Sorcery		23EA78
+	Mysticism	23E9C8		Eagle Eye	23EA28		Intelligence	23EA88
+	Scouting	23E9D8		Diplomacy	23EA38		First Aid	23EA98
+	Archery		23E9E8		Resistance	23EA48
+
+	   Most of the above skills use percentages rather than static values. Some examples:
+
+	03% - 8F C2 F5 3C	05% - CD CC 4C 3D	07% - 29 5C 8F 3D	10% - CD CC CC 3D
+	15% - 9A 99 19 3E	20% - CD CC 4C 3E	25% - 00 00 80 3E	30% - 9A 99 99 3E
+	40% - CD CC CC 3E	50% - 00 00 00 3E	60% - 9A 99 19 3F
+
+	-----------------------------------------------------------------------------------------
+
+The First Aid skill is a slight exception to the above in that, while it does use percentages, they are
+based on a factor of 25 (notice that the "unskilled" value for First Aid is zero). Thus, the percentages
+are going to look a little different here:
+
+		25 = 00 00 00 00	50 = 00 00 80 3F	75 = 00 00 00 40
+		100 = 00 00 40 40	150 = 00 00 A0 40	200 = 00 00 E0 40
+
+Of course, the First Aid skill is going to be pretty bad no matter how high we set it unless we remove
+the random dice roll and have it always heal for the maximum amount. To do this, set 07852C~D to EB 0A.
+
+The Estates skill, in order to actually be viable, deals with static values greater than 255 (one byte).
+For this, the second byte is used as a "tens" column, so to speak, except each increment increases the
+number by 256. Therefore, a value of 500 would be expressed as F4 (244) 01 (256).
+
+Ballistics and Navigation can be edited in the Ballist.txt and Movement.txt files, respectively.
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				4. SPELLS
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+Most spell settings can be edited through the SPtraits.txt file, including: name and description, level,
+school(s), MP cost (per level), power/effectiveness, and appearance probabilities per town. If any spell
+from the game ye wish to remove, simply set the appearance rate to 0 for all towns, unset its school(s),
+and set the level to 4 (level 1-3 spells can appear randomly in shrines, while the Spellcaster's Hat can
+teach all level 5 spells). When editing appearance rates, just remember that, in each town, the possible
+results for each level all need to add up to 100 - not 112 like the skill probabilties for hero classes.
+
+	(Also remember that the spell may still be cast by creatures and/or artifacts!)
+
+As with heroes, there is a table in the .exe file containing various properties for spells beginning at
+2854A0, with 136 bytes per spell. There is very little to be done with these, however, as most of those
+bytes are dynamically filled during the game's runtime. The main thing that you can edit here is whether
+or not the spell has a mass version at expert level, but I'm not exactly clear enough on the details to
+say for certain how to change it - perhaps someone might see this paragraph and enlighten me.
+
+(Speaking of the above, my biggest current wishlist item is to allow mass effect spells as basic skill
+instead of expert. Notes on the forum inidcate that this is doable, but no details have emerged yet.)
+
+The main thing you'll probably be doing in the .exe file regarding spells is modifying their specialty
+bonuses. There are seven types of bonuses assigned on a per-spell basis in a single-byte table starting
+at 0E6368 (Fire Wall) and running to 0E6382 (Slayer). Although this range includes most of the spells in
+the game, it doesn't necessarily mean that all of them are eligible for a bonus due to the bonus failing
+to interact with the spell's effects. The default setting for most spells in this range is the "scaling"
+damage bonus, which simply has no effect on many of them. Feel free to experiment with other settings.
+
+	-----------------------------------------------------------------------------------------
+
+	Fire Wall	0E6368		Shield		0E6366		Bless		0E6374
+	Earthquake	0E6369		Air Shield	0E6367		Curse		0E6375
+	Magic Arrow	0E636A		Fire Shield	0E6368		Bloodlust	0E6376
+	Ice Bolt	0E636B		Resist Air	0E6369		Precision	0E6377
+	Lightning Bolt	0E636C		Resist Fire	0E636A		Weakness	0E6378
+	Implosion	0E636D		Resist Water	0E636B		Stoneskin	0E6379
+	Chain Lightning	0E635E		Resist Earth	0E636C		Disrupting Ray	0E637A
+	Frost Ring	0E635F		Anti-Magic	0E636D		Prayer		0E637B
+	Fireball	0E6360		Dispel		0E636E		Mirth		0E637C
+	Inferno		0E6361		Magic Mirror	0E636F		Sorrow		0E637D
+	Meteor Shower	0E6362		Cure		0E6370		Fortune		0E637E
+	Death Ripple	0E6363		Resurrection	0E6371		Misfortune	0E637F
+	Destroy Undead	0E6364		Animate Dead	0E6372		Haste		0E6380
+	Armageddon	0E6365		Sacrifice	0E6373		Slow		0E6381
+									Slayer		0E6382
+				00 = +100% damage
+				01 = +50% damage
+				02 = Static bonus (Bloodlust, Stoneskin, etc.)
+				03 = Static bonus (+2)
+				04 = Static bonus (Fortune)
+				05 = Static bonus (Slayer)
+				06 = Scaling bonus
+
+	-----------------------------------------------------------------------------------------
+
+	There are two tier-dependent static bonuses: one used by the Bloodlust, Stoneskin, Haste,
+	Precision, and Weakness spells (type 2), and the other by Slayer (type 5). Both receive a
+	static bonus based on the target's tier, which can be edited at the following locations:
+
+			      TYPE 2			      TYPE 5
+			      ------			      ------
+			Tier 1 - 23EAA8 (03)		Tier 1 - 23EAC4 (04)
+			Tier 2 - 23EAAC (03)		Tier 2 - 23EAC8 (03)
+			Tier 3 - 23EAB0 (02)		Tier 3 - 23EACC (02)
+			Tier 4 - 23EAB4 (02)		Tier 4 - 23EAD0 (01)
+			Tier 5 - 23EAB8 (01)		Tier 5 - 23EAD4 (00)
+			Tier 6 - 23EABC (01)		Tier 6 - 23EAD8 (00)
+			Tier 7 - 23EAC0 (00)		Tier 7 - 23EADC (00)
+
+	The +2 static bonus is used exclusively by Disrupting Ray and can be modified at 0E62E6.
+
+	The static bonus for Fortune simply sets the spell to maximum effect regardless of level;
+	I am unsure exactly how this effect works and thus how it would behave on other spells.
+
+	The scaling bonus, much like the scaling creature bonus, is going to be shitty no matter
+	what you do with it. The 3% scaling factor can be modified at 23AC08, but the exponential
+	(and unmodifiable) tier factor in the formula will ultimately result in a bonus that is
+	either ridiculously overpowered on low-tier units or just hot garbage. I would recommend
+	instead using the percentage-based bonuses (type 0 and 1) for direct damage spells.
+
+---------------------------------------------------------------------------------------------------------
+
+				    HARDCODED SPELL EFFECTS
+				    -----------------------
+	-------
+	BERSERK
+	-------
+
+	The settings in SPtraits.txt have no effect on Berserk's effect radius, as seen below.
+
+	242274 = Effect radius at no Fire Magic (0)
+	242278 = Basic (0)
+	24227C = Advanced (1)
+	242280 = Expert (2)
+
+	(Beware that values larger than 2 can cause graphical bugs)
+
+	-----------
+	TOWN PORTAL
+	-----------
+
+	01D51F = Movement cost below expert level
+	01D534 = Movement cost at expert level
+	01D6D4 = Skill level required to select destination
+
+	(Remember that you can use extra bytes for values greater than 255, as seen at 01D535)
+
+	--------------
+	DIMENSION DOOR
+	--------------
+
+	01D41C = Extra movement cost below expert level
+	01D41F = Movement cost at expert level
+
+	(I have no idea why Town Portal and Dimension Door are coded differently)
+
+	------------
+	RESURRECTION
+	------------
+
+	Setting 1A1C88 to EB should allow Basic (also unskilled?) Earth magic to be permanently
+	effective rather than simply lasting for the duration of the battle' it's not presently
+	known how to raise this requirement to expert level or simply remove it altogether.
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				5. CREATURES
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+The CRtraits.txt file in the H3bitmap.lod archive allows you to edit basic creature settings, which are
+their costs (in both gold and resources), base growth, and stats. The horde growth and descriptions are
+for reference only and are non-functional; refer to the "buildings" section below for how to edit the
+horde buildings. I'm unsure what effect, if any, the "adventure map" and "spells" settings have.
+
+All of the other creature settings, namely their unique abilities, are scattered all over the place in
+the .exe file. The main location is a table starting at 2703B8, storing 116 bytes per creature (though
+most of these are unused). Four other tables exist, two for resistances/weaknesses and two for special
+attack properties, each containing a single byte for each creature in its range. The offsets for each
+creature in all aplicable tables are as follows:
+
+
+		CASTLE CREATURE		DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Pikeman			2703B8	------	------	------	------
+		Halberdier		27042C	------	------	------	------
+		Archer			2704A0	------	------	------	------
+		Marksman		270514	------	------	------	------
+		Griffin			270588	------	------	------	------
+		Royal Griffin		2705FC	------	------	------	------
+		Swordsman		270670	------	------	------	------
+		Crusader		2706E4	------	------	------	------
+		Monk			270758	------	------	------	------
+		Zealot			2707CC	------	------	------	------
+		Cavalier		270840	------	------	------	------
+		Champion		2708B4	------	------	------	------
+		Angel			270928	------	------	------	------
+		Archangel		27099C	------	------	------	------
+
+		RAMPART CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Centaur			270A10	------	------	------	------
+		Centaur Captain		270A84	------	------	------	------
+		Dwarf			270AF8	04A658	------	------	------
+		Battle Dwarf		270B6C	04A659	------	------	------
+		Wood Elf		270BE0	04A65A	------	------	------
+		Grand Elf		270C54	04A65B	------	------	------
+		Pegasus			270CC8	04A65C	------	------	------
+		Silver Pegasus		270D3C	04A65D	------	------	------
+		Dendroid Guard		270DB0	04A65E	------	------	04065C
+		Dendroid Soldier	270E24	04A65F	------	------	04065D
+		Unicorn			270E98	04A660	------	------	04065E
+		War Unicorn		270F0C	04A661	------	------	04065F
+		Green Dragon		270F80	04A662	------	------	040660
+		Gold Dragon		270FF4	04A663	------	------	040661
+
+		TOWER CREATURE		DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Gremlin			271068	04A664	------	------	040662
+		Master Gremlin		2710DC	04A665	------	------	040663
+		Stone Gargoyle		271150	04A666	------	------	040664
+		Obsidian Gargoyle	2711C4	04A667	------	------	040665
+		Stone Golem		271238	04A668  04B280	------	040666
+		Iron Golem		2712AC	04A669	04B281	------	040667
+		Mage			271320	04A66A	04B282	------	040668
+		Arch Mage		271394	04A66B	04B283	------	040669
+		Genie			271408	04A66C	04B284	------	04066A
+		Master Genie		27147C	04A66D	04B285	------	04066B
+		Naga			2714F0	04A66E	04B286	------	04066C
+		Naga Queen		271564	04A66F	04B287	------	04066D
+		Giant			2715D8	04A670	04B288	------	04066E
+		Titan			27164C	04A671	04B289	------	04066F
+
+		INFERNO CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Imp			2716C0	04A672	04B28A	------	040670
+		Familiar		271734	04A673	04B28B	------	040671
+		Gog			2717A8	04A674	04B28C	------	040672
+		Magog			27181C	04A675	04B28D	------	040673
+		Hell Hound		271890	04A676	04B28E	------	040674
+		Cerberus		271904	04A677	04B28F	------	040675
+		Demon			271978	04A678	04B290	------	040676
+		Horned Demon		2719EC	04A679	04B291	------	040677
+		Pit Fiend		271A60	04A67A	04B292	------	040678
+		Pit Lord		271AD4	04A67B	04B293	------	040679
+		Efreeti			271B48	04A67C	04B294	------	04067A
+		Efreet Sultan		271BBC	04A67D	04B295	------	04067B
+		Devil			271C30	04A67E	04B296	------	04067C
+		Arch Devil		271CA4	04A67F	04B297	------	04067D
+
+		NECROPOLIS CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Skeleton		271D18	04A680	04B298	------	04067E
+		Skeleton Warrior	271D8C	04A681	04B299	------	04067F
+		Walking Dead		271E00	04A682	04B29A	------	040680
+		Zombie			271E74	04A683	04B29B	------	040681
+		Wight			271EE8	04A684	04B29C	------	040682
+		Wraith			271F5C	04A685	04B29D	------	040683
+		Vampire			271FD0	04A686	04B29E	------	040684
+		Vampire Lord		272044	04A687	04B29F	0412D8	040685
+		Lich			2720B8	04A688	04B2A0	0412D9	040686
+		Power Lich		27212C	04A689	04B2A1	0412DA	040687
+		Black Knight		2721A0	04A68A	04B2A2	0412DB	040688
+		Dread Knight		272214	04A68B	04B2A3	0412DC	040689
+		Bone Dragon		272288	04A68C	04B2A4	0412DD	04068A
+		Ghost Dragon		2722FC	04A68D	04B2A5	0412DE	04068B
+
+		DUNGEON CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Troglodyte		272370	04A68E	04B2A6	0412DF	04068C
+		Infernal Troglodyte	2723E4	04A68F	04B2A7	0412E0	04068D
+		Harpy			272458	04A690	04B2A8	0412E1	04068E
+		Harpy Hag		2724CC	04A691	04B2A9	0412E2	04068F
+		Beholder		272540	04A692	04B2AA	0412E3	040690
+		Evil Eye		2725B4	04A693	04B2AB	0412E4	040691
+		Medusa			272628	04A694	04B2AC	0412E5	040692
+		Medusa Queen		27269C	04A695	04B2AD	0412E6	040693
+		Minotaur		272710	04A696	04B2AE	0412E7	040694
+		Minotaur King		272784	04A697	04B2AF	0412E8	040695
+		Manticore		2727F8	04A698	04B2B0	0412E9	040696
+		Scorpicore		27286C	04A699	04B2B1	0412EA	040697
+		Red Dragon		2728E0	04A69A	04B2B2	0412EB	040698
+		Black Dragon		272954	04A69B	04B2B3	0412EC	040699
+
+		STRONGHOLD CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Goblin			2729C8	04A69C	04B2B4	0412ED	04069A
+		Hobgoblin		272A3C	04A69D	04B2B5	0412EE	04069B
+		Wolf Rider		272AB0	04A69E	04B2B6	0412EF	04069C
+		Wolf Raider		272B24	04A69F	04B2B7	0412F0	04069D
+		Orc			272B98	04A6A0	04B2B8	0412F1	04069E
+		Orc Chieftain		272C0C	04A6A1	04B2B9	0412F2	04069F
+		Ogre			272C80	04A6A2	04B2BA	0412F3	0406A0
+		Ogre Mage		272CF4	04A6A3	04B2BB	0412F4	0406A1
+		Roc			272D68	04A6A4	04B2BC	0412F5	0406A2
+		Thunderbird		272DDC	04A6A5	04B2BD	0412F6	0406A3
+		Cyclops			272E50	04A6A6	04B2BE	0412F7	0406A4
+		Cyclops King		272EC4	04A6A7	04B2BF	0412F8	0406A5
+		Behemoth		272F38	04A6A8	04B2C0	0412F9	0406A6
+		Ancient Behemoth	272FAC	04A6A9	04B2C1	0412FA	0406A7
+
+		FORTRESS CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Gnoll			273020	04A6AA	04B2C2	0412FB	0406A8
+		Gnoll Marauder		273094	04A6AB	04B2C3	0412FC	0406A9
+		Lizardman		273108	04A6AC	04B2C4	0412FD	0406AA
+		Lizard Warrior		27317C	04A6AD	04B2C5	0412FE	0406AB
+		Gorgon			2731F0	04A6AE	04B2C6	0412FF	0406AC
+		Mighty Gorgon		273264	04A6AF	04B2C7	041300	0406AD
+		Serpent Fly		2732D8	04A6B0	04B2C8	041301	0406AE
+		Dragon Fly		27334C	04A6B1	04B2C9	041302	0406AF
+		Basilisk		2733C0	04A6B2	04B2CA	041303	0406B0
+		Greater Basilisk	273434	04A6B3	04B2CB	041304	0406B1
+		Wyvern			2734A8	04A6B4	04B2CC	041305	0406B2
+		Wyvern Monarch		27351C	04A6B5	04B2CD	041306	0406B3
+		Hydra			273590	04A6B6	04B2CE	041307	0406B4
+		Chaos Hydra		273604	04A6B7	04B2CF	041308	0406B5
+
+		CONFLUX CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Pixie			273930	04A6BE	04B2D6	04130F	0406BC
+		Sprite			2739A4	04A6BF	04B2D7	041310	0406BD
+		Air Elemental		273678	04A6B8	04B2D0	041309	0406B6
+		Storm Elemental		273D44	04A6C7	04B2DF	041318	0406C5
+		Water Elemental		2737D4	04A6BB	04B2D3	04130C	0406B9
+		Ice Elemental		273B74	04A6C3	04B2DB	041314	0406C1
+		Fire Elemental		273760	04A6BA	04B2D2	04130B	0406B8
+		Energy Elemental	273E2C	04A6C9	04B2E1	04131A	0406C7
+		Earth Elemental		2736EC	04A6B9	04B2D1	04130A	0406B7
+		Magma Elemental		273C5C	04A6C5	04B2DD	041316	0406C3
+		Psychic Elemental	273A18	04A6C0	04B2D8	041311	0406BE
+		Magic Elemental		273A8C	04A6C1	04B2D9	041312	0406BF
+		Firebird		273EA0	04A6CA	------	04131B	0406C8
+		Phoenix			273F14	04A6CB	------	04131C	0406C9
+
+		NEUTRAL CREATURE	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Gold Golem		273848	04A6BC	04B2D4	04130D	0406BA
+		Diamond Golem		2738BC	04A6BD	04B2D5	04130E	0406BB
+		Azure Dragon		273F88	04A6CC	------	04131D	0406CA
+		Crystal Dragon		273FFC	04A6CD	------	04131E	0406CB
+		Faerie Dragon		274070	------	------	04131F	0406CC
+		Rust Dragon		2740E4	------	------	041320	0406CD
+		Enchanter		274158	------	------	------	0406CE
+		Sharpshooter		2741CC	------	------	------	0406CF
+		Halfling		274240	------	------	------	0406D0
+		Peasant			2742B4	------	------	------	0406D1
+		Boar			274328	------	------	------	0406D2
+		Mummy			27439C	------	------	------	0406D3
+		Nomad			274410	------	------	------	------
+		Rogue			274484	------	------	------	------
+		Troll			2744F8	------	------	------	------
+
+		WAR MACHINES/OTHER	DATA	RES.A	RES.B	ATK.A	ATK.B
+		----------------------------------------------------------------
+		Catapult		27456C	------	------	------	------
+		Ballista		2745E0	------	------	------	------
+		First Aid Tent		274654	------	------	------	------
+		Ammo Cart		2746C8	------	------	------	------
+		Arrow Tower		27473C	------	------	------	------
+
+---------------------------------------------------------------------------------------------------------
+
+				    CREATURE DATA (116 bytes)
+				    -------------------------
+
+				BYTE 01: Alignment
+
+					00 = Castle
+					01 = Rampart
+					02 = Tower
+					03 = Inferno
+					04 = Necropolis
+					05 = Dungeon
+					06 = Stronghold
+					07 = Fortress
+					08 = Conflux
+					FF = Neutral
+
+				BYTE 05: Tier
+
+				BYTE 09: Small portrait (?)
+
+				BYTE 13: Large portrait (?)
+
+		BYTE 17: Abilty flags			BYTE 18: Abilty flags
+
+		    BIT 1: *Slayer lv. 1		    BIT 1: Attacks twice
+		    BIT 2: War Machine			    BIT 2: Immune to fire
+		    BIT 3: Can attack walls		    BIT 3: (Unused)
+		    BIT 4: Living unit			    BIT 4: No melee penalty (ranged units)
+		    BIT 5: *Attack hits 2 hexes		    BIT 5: No ranged penalty (Sharpshooters)
+		    BIT 6: Ranged attack		    BIT 6: *Mind magic immunity
+		    BIT 7: Flying			    BIT 7: *Slayer lv. 3
+		    BIT 8: Unit occupies 2 hexes	    BIT 8: *Slayer lv. 2
+
+					(*Needs testing)
+
+		BYTE 19: Abilty flags			BYTE 20: Abilty flags
+
+		    BIT 1: (Unused)			    BIT 1: Unit is a dragon
+		    BIT 2: (Unused)			    BIT 2: (Unused)
+		    BIT 3: (Unused)			    BIT 3: (Unused)
+		    BIT 4: AoE ranged attack		    BIT 4: (Unused)
+		    BIT 5: AoE melee attack		    BIT 5: (Unused)
+		    BIT 6: Undead unit			    BIT 6: (Unused)
+		    BIT 7: Morale has no effect		    BIT 7: (Unused)
+		    BIT 8: No enemy retaliation		    BIT 8: (Unused)
+
+				BYTE 21: (Unused beyond this point)
+
+	(NOTE: to obtain the hex values for the ability flags, convert them from binary)
+
+---------------------------------------------------------------------------------------------------------
+
+		RESISTANCE A					RESISTANCE B
+		------------					------------
+	00 = 20% magic resist				00 = 50% spell damage resist
+	01 = 40% magic resist				01 = 75% spell damage resist
+	02 = Immune to lv. 1-3 spells			02 = Vulnerable to Lightning
+	03 = Immune to lv. 1-4 spells			03 = Vulnerable to Meteor Shower
+	04 = Immune to ALL spells			04 = Vulnerable to Ice
+	05 = Immune to Meteor Shower			05 = Vulnerable to Fire
+	06 = Immune to Lightning			06 = 85% spell damage resist
+	07 = Immune to Ice				07 = 95% spell damage resist
+	08 = None					08 = None
+
+		ATTACK A					ATTACK B
+		--------					--------
+	00 = Life Drain		(Vampire Lord)		00 = Entangle	    (Dendroid)
+	01 = Lightning Strike	(Thunderbird)		01 = Blind	    (Unicorn)
+	02 = Death Stare	(Mighty Gorgon)		02 = Disease	    (Zombie)
+	03 = Dispel		(Serpent Fly)		03 = Curse	    (Black Knight & Mummy)
+	04 = *Acid Breath	(Rust Dragon)		04 = Aging	    (Ghost Dragon)
+	05 = None					05 = Stone Gaze	    (Medusa)
+							06 = Paralyze	    (Scorpicore)
+							07 = Poison	    (Wyvern Monarch)
+							08 = *Acid Breath   (Rust Dragon)
+
+	   *Attack A is the defense reduction, Attack B is the 30% chance for extra damage
+
+	(NOTE: fire vunerability includes Fireball, Inferno, and Armageddon, but not Fire Wall)
+
+---------------------------------------------------------------------------------------------------------
+
+				  HARDCODED CREATURE EFFECTS
+				  --------------------------
+
+	------------
+	REGENERATION
+	------------
+
+	The magnitude of this effect is set at 046C2F and 046C35 (both addresses must be edited).
+	The default is 32 (50 HP), which is more than a full heal for all three units with this
+	abiliy (Wights/Wraiths and Trolls) - the primary reason to edit this value is that it's
+	also used by the Elixir of Life.
+
+	Which creatures possess this ability are specified at 046BD8 (Wight), 046BDD (Wraith),
+	and 046BE1 (Troll). This means that they can be changed, but adding to or removing from
+	this list is a chore beyond the scope of this guide.
+
+	------------------
+	MP DRAIN (WRAITHS)
+	------------------
+
+	The amount of MP drained by Wraiths is specified at 065176 (default is FE, or -2).
+
+	----------------
+	DAMPER (PEGASUS)
+	----------------
+
+	The amount of MP added to enemy spell costs by the Pegasus ability is set at 0E5568.
+	Unfortunately, it's not presently known how to specify which creatures possess this
+	ability. The opposing effect (Mages reducing your own spell costs) is in a similar
+	position, except it's also unknown how to edit the magnitude of their effect.
+
+	---------------------
+	AGING (GHOST DRAGONS)
+	---------------------
+
+	The 20% chance of this effect occurring can be edited at 040264.
+
+	(I am unsure if this address is shared by any other abilities)
+
+	-----------------
+	SUMMON (PIT LORDS)
+	------------------
+
+	The ID of the summoned creature is located at 1A776B.
+
+	---------------------
+	CREATURE SPELLCASTERS
+	---------------------
+
+	The parameters of spells cast by creatures can be edited at the following locations:
+
+	Storm Elementals	Ice Elementals		Energy Elementals	Magma Elementals
+	----------------	--------------		-----------------	----------------
+	048388 = Power		048398 = Spell 		0483A8 = Spell		0483B8 = Power
+	04838A = Level		04839A = Level		0483AA = Level		0483BA = Level
+	048391 = Spell ID	0483A1 = Spell ID	0483B1 = Spell ID	0483C1 = Spell ID
+
+	Ogre Mages		Master Genies		Enchanters
+	----------		-------------		----------
+	0483C8 = Power		047CE1 = Power		047F66 = Power
+	0483CA = Level		047CE3 = Level		047F68 = Level
+	0483D1 = Spell ID	(*)			(*)
+
+	(*Master Genies and Enchanters have spell lists from which they will cast randomly)
+
+	For Enchanters, there is a table starting at 2608B8 with the following values:
+
+			2608B8 = 35 00 00 00		2608D8 = 2B 00 00 00
+			2608BC = 0F 00 00 00		2608DC = 05 00 00 00
+			2608C0 = 1C 00 00 00		2608E0 = 29 00 00 00
+			2608C4 = 0A 00 00 00		2608E4 = 0F 00 00 00
+			2608C8 = 36 00 00 00		2608E8 = 25 00 00 00
+			2608CC = 0A 00 00 00		2608EC = 0A 00 00 00
+			2608D0 = 2E 00 00 00		2608F0 = 2D 00 00 00
+			2608D4 = 0F 00 00 00		2608F4 = 04 00 00 00
+
+					2608B8 = FF FF FF FF
+
+	The first byte of each entry is a spell ID, while the "FF FF FF FF" instructs the game to
+	stop counting and add up the results, then choose one at random. The final probabilities
+	are not weighted evenly, however, due to some spells appearing in the list more than once.
+
+	It is not currently known where this same table resides for Master Genies.
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				6. ARTIFACTS
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+The ARtraits.txt file in the H3bitmap.lod archive allows you to edit the value, class (treasure, minor,
+major, relic, etc.) equipment slot, and descriptions of artifacts. (Almost) all of their actual effects
+are hard-coded in the .exe. The primary attribute bonuses are stored in a table starting at 23E758, with
+4 bytes per artifact - 1 each for Attack, Defense, Spell Power, and Knowledge, respectively.
+
+		ATTACK BONUS				DEFENSE BONUS
+	--------------------------------	--------------------------------
+	23E774	Centaur's Axe			23E78C	Shield of the Dwarven Lords
+	23E778	Dead Knight's Blackshard	23E790	Shield of the Yawning Dead
+	23E77C	Greater Gnoll's Flail		23E794	Buckler of the Gnoll King
+	23E780	Ogre's Club of Havoc		23E798	Targe of the Rampaging Ogre
+	23E784	Sword of Hellfire		23E79C	Shield of the Damned
+	23E788	Titan's Gladius			23E7A0	Sentinel's Shield
+
+		KNOWLEDGE BONUS				SPELL POWER BONUS
+	--------------------------------	--------------------------------
+	23E7A4	Alabaster Unicorn Helm		23E7BC	Petrified Wood Breastplate
+	23E7A8	Skull Helmet			23E7C0	Rib Cage
+	23E7AC	Helm of Chaos			23E7C4	Scales of the Greater Basilisk
+	23E7B0	Crown of the Supreme Magi	23E7C8	Tunic of the Cyclops King
+	23E7B4	Hellstorm Helmet		23E7CC	Breastplate of Brimstone
+	23E7B8	Thunder Helmet			23E7D0	Titan's Cuirass
+
+		ANGELIC ALLIANCE			DRAGON FATHER
+	--------------------------------	--------------------------------
+	23E7D4	Armor of Wonder			23E7EC	Quiet Eye of the Dragon
+	23E7D8	Sandals of the Saint		23E7F0	Red Dragon Flametongue
+	23E7DC	Celestial Necklace of Bliss	23E7F4	Dragonscale Shield
+	23E7E0	Lion's Shield of Courage	23E7F8	Dragonscale Armor
+	23E7E4	Sword of Judgement		23E7FC	Dragonbone Greaves
+	23E7E8	Helm of Heavenly Enlightenment	23E800	Dragon Wing Tabard
+						23E804	Dragontoh Necklace
+						23E808	Dragontooth Crown
+
+		LUCK MODIFIERS				MORALE MODIFIERS
+	--------------------------------	--------------------------------
+	23E810	Clover of Fortune		23E81C	Badge of Courage
+	23E814	Cards of Prophecy		23E820	Crest of Valor
+	23E818	Ladybird of Luck		23E824	Glyph of Gallantry
+	23E8AC	Hourglass of the Evil Hour	23E8A8	Spirit of Oppression
+
+				~~~
+				23E80C	Still Eye of the Dragon
+				23E908	Pendant of Courage
+
+		MOVEMENT (LAND)				MOVEMENT (SEA)
+	--------------------------------	--------------------------------
+	23E870	Equestrian's Gloves		23E874	Necklace of Ocean Guidance
+	23E8E0	Boots of Speed			23E944	Sea Captain's Hat
+	23E878	Angel Wings			23E8C0	Boots of Levitation
+
+		UNIT SPEED BONUS			ELIXIR OF LIFE
+	--------------------------------	--------------------------------
+	23E8DC	Necklace of Swiftness		23E8D4	Ring of Life
+	23E86C	Ring of the Wayfarer		23E8D8	Vial of Lifeblood
+	23E8E4	Cape of Velocity		23E8D0	Ring of Vitality
+
+		WIZARD'S WELL				RING OF THE MAGI
+	--------------------------------	--------------------------------
+	23E87C	Charm of Mana			23E888	Collar of Conjuring
+	23E880	Talisman of Mana		23E88C	Ring of Conjuring
+	23E884	Mystic Orb of Mana		23E890	Cape of Conjuring
+
+		MAGIC POWER				MAGIC KNOWLEDGE
+	--------------------------------	--------------------------------
+	23E894	Orb of the Firmament		23E8B0	Tome of Fire Magic
+	23E898	Orb of Silt			23E8B4	Tome of Air Magic
+	23E89C	Orb of Tempestuous Fire		23E8B8	Tome of Water Magic
+	23E8A0	Orb of Driving Rain		23E8BC	Tome of Earth Magic
+						23E948	Spellbinder's Hat
+
+		MAGIC IMMUNITY				RESOURCE PRODUCTION
+	--------------------------------	--------------------------------
+	23E8C8	Sphere of Permanence		23E90C	Everflowing Crystal Cloak
+	23E8E8	Pendant of Dispassion		23E910	Ring of Infinite Gems
+	23E8EC	Pendant of Second Sight		23E914	Everpouring Vial of Mercury
+	23E8F0	Pendant of Holiness		23E918	Inexhaustible Cart of Ore
+	23E8F4	Pendant of Life			23E91C	Ring of Eversmoking Sulfur
+	23E8F8	Pendant of Death		23E920	Inexhaustible Cart of Lumber
+	23E8FC	Pendant of Free Will		23E924	Endless Sack of Gold
+	23E900	Pendant of Negativity		23E928	Endless Bag of Gold
+	23E904	Pendant of Total Recall		23E92C	Endless Purse of Gold
+
+		SPELL PRVENTION				STATUE OF LEGION
+	--------------------------------	--------------------------------
+	23E8A4	Recanter's Cloak		23E930	Legs of Legion
+	23E950	Orb of Inhibition		23E934	Loins of Legion
+						23E938	Torso of Legion
+						23E93C	Arms of Legion
+						23E940	Head of Legion
+		~~~
+		23E8CC	Orb of Vulnerability
+		23E94C	Shackles of War
+		23E954	Vial of Dragon Blood
+		23E958	Armageddon's Blade
+
+		NECROMANCY				ARCHERY
+	--------------------------------	--------------------------------
+	23E830	Amulet of the Undertaker	23E848	Elven Cherrywood Bow
+	23E834	Vampire's Cowl			23E84C	Unicorn's Mane Bowstring
+	23E838	Dead Man's Boots		23E850	Angel Feather Arrows
+						23E8C4	Golden Bow
+
+		SCOUTING				EAGLE EYE
+	--------------------------------	--------------------------------
+	23E828	Speculum			23E854	Bird of Perception
+	23E82C	Spyglass			23E858	Stoic Watchman
+						23E85C	Emblem of Cognizance
+
+		RESISTANCE				DIPLOMACY(ish)
+	--------------------------------	--------------------------------
+	23E83C	Garniture of Interference	23E860	Statesman's Medal
+	23E840	Surcoat of Counterpoise		23E864	Diplomat's Ring
+	23E844	Boots of Polarity		23E868	Ambassador's Sash
+
+
+				    COMBO ARTIFACTS
+	------------------------------------------------------------------------
+	23E95C	Angelic Alliance		23E974	Titan's Thunder
+	23E960	Cloak of the Undead King	23E978	Admiral's Hat
+	23E964	Elixir of Life			23E97C	Sharpshooter's Bow
+	23E968	Armor of the Damned		23E980	Wizard's Well
+	23E96C	Statue of Legion		23E984	Ring of the Magi
+	23E970	Power of the Dragon Father	23E988	Cornucopia
+
+		~~~
+		23E758	Spell Book
+		23E75C	Spell Scroll
+		23E760	The Grail
+		23E764	Catapult
+		23E768	Ballista
+		23E76C	Ammo Cart
+		23E770	First Aid Tent
+
+
+
+Note that the stats on "combo" artifacts are in addition to the core components, not in replacement of.
+If you wish to remove an artifact from the game, simply set it as class "S" (spellbook) in ARtraits.txt.
+This will prevent it from appearing as a random artifact, but it can still appear if it's specifically
+placed on a map or given via a campaign. Be sure to maintain as much balance as possible throughout the
+four classes (treasure, minor, major, and relic) to minimize the appearance of duplicate artifacts.
+
+---------------------------------------------------------------------------------------------------------
+
+				  OTHER ARTIFACT EFFECTS
+				  ----------------------
+
+	------------------------
+	MOVEMENT-BASED ARTIFACTS
+	------------------------
+
+	The four artifacts which grant movement bonuses can be edited in Movement.txt, but there
+	will be some confusion as this document is mislabeled as follows:
+
+		• The Boots of Speed are mislabeled as Ring of the Wayfarer
+
+		• The Sea Captain's Hat is mislabeled as Lighthouse
+
+		• Angel Wings do not actually give a speed bonus (this setting does nothing)
+
+	----------------
+	CAPE OF VELOCITY
+	----------------
+
+	The +2 unit speed bonus is located at 0E5DD4 & 0E6655 (both must be changed)
+
+	(The locations of the Necklace of Swiftness and Wayfarer's Ring bonuses are unknown)
+
+	------------------
+	PENDANT OF COURAGE
+	------------------
+
+	The morale and luck bonuses are stored at 0E3CE2 and 0E3A89, respectively.
+
+	(The locations of all other morale/luck artifact bonuses are unknown)
+
+	--------------
+	ELEMENTAL ORBS
+	--------------
+
+	The 50% damage bonus from these orbs is located at 0E5B17.
+
+	(I do not know how to correctly change this value)
+
+	------------------
+	ARMAGEDDON'S BLADE
+	------------------
+
+	The Armageddon immunity can be removed by setting 1A86E6 to 90 E9 (instead of 0F 84).
+
+	Setting 0E52FD to EB (instead of 75) causes the Armageddon spell to respect the hero's
+	Fire Magic level rather than always being cast at expert level.
+
+	-----------------------
+	NECROMANCER'S ARTIFACTS
+	-----------------------
+
+	The Necromancy skill bonuses for the three undead artifacts are located at:
+
+			Undertaker's Amulet	23EAE4	(CD CC 4C 3D, or 5%)
+			Vampire's Cowl		23B8D0	(CD CC CC 3D, or 10%)
+			Dead Man's Boots	23EB28	(9A 99 19 3E, or 15%)
+
+	(NOTE: HotA moves these bonuses to HotA.dll, so you'll need to find these hex values)
+
+	The creature IDs for units resurrected by the Cloak of the Undead King are specified at:
+
+			Necromancy Level 0	0E3F3A	(Default: Skeletons)
+			Necromancy Level 1	0E3F33	(Default: Walking Dead)
+			Necromancy Level 2	0E3F2A	(Default: Wights)
+			Necromancy Level 3	0E3F1F	(Default: Liches)
+
+	Finally, the additional 30% Necromancy bonus granted by the assembled cloak (which is in
+	addition to the 30% granted by the components, for a grand total of 60%) can be removed
+	by setting 0E413E to EB 3E (instead of 74 32). Something to bear in mind when changing
+	these settings is that the number of units resurrected by the Necromancy skill is based
+	on the total HP of all slain units relative to the HP of the target resurrected unit.
+	Thus, you will recieve far more Skeletons (6 HP) than Wights (18 HP) or Liches (30 HP).
+
+	----------------
+	ANGELIC ALLIANCE
+	----------------
+
+	The spell cast at the beginning of combat can be modified at the following addresses:
+
+					064FD8 = Spell ID (Prayer)
+					064FEF = Spell ID (*)
+					064FE5 = Power
+					064FE7 = Level
+
+			(*If editing spell IDs, both addresses must be changed)
+
+			(~~~to test: removing the spell by setting the ID to FF)
+
+	-------------------
+	ARMOR OF THE DAMNED
+	-------------------
+
+	Same deal as the above, except four spells are cast:
+
+	(Slow)			(Curse)			(Weakness)		(Misfortune)
+	-----------------	-----------------	-----------------	-----------------
+	065019 = Spell ID	065046 = Spell ID	065073 = Spell ID	0650A0 = Spell ID
+	065030 = Spell ID	06505D = Spell ID	06508A = Spell ID	0650B7 = Spell ID
+	065026 = Power		065053 = Power		065080 = Power		0650AD = Power
+	065028 = Level		065055 = Level		065082 = Level		0650AF = Level
+
+	----------
+	CORNUCOPIA
+	----------
+
+	To change how many of each resource the Cornucopia gives you, go to 0B8A19 and replace
+	"8D 14 80" with "6B C0 XX", where "XX" is the desired value, and then set 0B8A21 to 45.
+
+	----------------
+	STATUE OF LEGION
+	----------------
+
+	Changing the effects of the Legion Statue components is complicated, but doable. We'll
+	discuss how to change the growth values first before moving on to editing the creature
+	tiers. Each piece of the statue has two addresses where we must replace a long string of
+	code with a new one specifying the desire value (XX).
+
+	Legs of Legion					(Default String)
+	--------------					----------------
+	1BFE37 > 84 C0 74 06 83 C7 XX 90 90 90		(25 FF 00 00 00 8B F8 8D 3C BF)
+	1BFE53 > 84 C0 74 07 83 C7 XX 90 90 90 90	(25 FF 00 00 00 8D 0C 38 8D 3C 81)
+
+	Loins of Legion					(Default String)
+	---------------					----------------
+	1BFE74 > 84 C0 74 06 83 C7 XX 90 90 90		(25 FF 00 00 00 C1 E0 02 8B F8)
+	1BFE90 > 84 C0 74 04 83 C7 XX 90		(25 FF 00 00 00 8D 3C 87)
+
+	Torso of Legion					(Default String)
+	---------------					----------------
+	1BFEAE > 84 C0 74 06 83 C7 XX 90 90 90		(25 FF 00 00 00 8B F8 8D 3C 7F)
+	1BFEC6 > 84 C0 74 07 83 C7 XX 90 90 90 90	(25 FF 00 00 00 8D 14 38 8D 3C 42)
+
+	Arms of Legion					(Default String)
+	--------------					----------------
+	1BFEE7 > 84 C0 74 05 83 C7 XX 90 90		(25 FF 00 00 00 D1 E0 8B F8)
+	1BFEFE > 84 C0 74 04 83 C7 XX 90		(25 FF 00 00 00 8D 3C 47)
+
+	Head of Legion					(Default String)
+	--------------					----------------
+	1BFF1C > 84 C0 74 03 83 C7 XX			(25 FF 00 00 00 8B F8)
+	1BFF31 > 84 C0 74 03 83 C7 XX			(25 FF 00 00 00 03 F8)
+
+	----------------------------------------------------------------------------------------
+
+	Changing the creature tier is more involved. First, we'll need to modify the switch:
+
+					1BFE1B > FF (was FE)
+					1BFE1E > 06 (was 04)
+
+	Next, we look at the address of each tier and specify the artifact which grants a bonus
+	to that tier - this means that two pieces of the statue can't boost the same tier!
+
+			  Tier 1: 1BFF44		Legs <-- 2C FE 5B 00
+			  Tier 2: 1BFF48		Loins <- 69 FE 5B 00
+			  Tier 3: 1BFF4C		Torso <- A3 FE 5B 00
+			  Tier 4: 1BFF50		Arms <-- DC FE 5B 00
+			  Tier 5: 1BFF54		Head <-- 11 FF 5B 00
+			  Tier 6: 1BFF58		None <-- 38 FF 5B 00
+			  Tier 7: 1BFF5C
+
+	(NOTE: the original code uses "90 90 90 90" for "none", which must be changed here)
+
+	The above changes will grant the desired functionality, but the in-game descriptions will
+	remain incorrect without further modifications. First, we need to write a long string of
+	hex code beginning at 1C6297 and ending at 1C62C3:
+
+		42 83 FA 06 77 27 FF 24 95 A4 67 5C 00 6A 76 EB 1B 6A 77 EB 17 6A 78 EB
+		13 6A 79 EB 0F 6A 7A EB	0B 90 90 90 90 90 90 90 90 90 90 90 58
+
+				(Default code below for reference)
+
+		83 FA 04 77 28 FF 24 95 A4 67 5C 00 B8 76 00 00 00 EB 1A B8 77 00 00 00
+		EB 13 B8 78 00 00 00 EB 0C B8 79 00 00 00 EB 05 B8 7A 00 00 00
+
+	And then we basically repeat the above procedure, matching up each tier to its artifact.
+
+			  Tier 1: 1C67A4		Legs <-- A4 62 5C 00
+			  Tier 2: 1C67A8		Loins <- A8 62 5C 00
+			  Tier 3: 1C67AC		Torso <- AC 62 5C 00
+			  Tier 4: 1C67B0		Arms <-- B0 62 5C 00
+			  Tier 5: 1C67B4		Head <-- B4 62 5C 00
+			  Tier 6: 1C67B8		None <-- C4 62 5C 00
+			  Tier 7: 1C67BC
+
+	Finally, we get rid of the overpowered 50% bonus granted by the assembled statue:
+
+				1C0082 > E9 83 00 00 00 90
+				1BFC46 > E9 9F 00 00 00 90
+
+	(It would be nice if we could just reduce the bonus instead of eliminating it, though >.>)
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				7. BUILDINGS & MISC.
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+I haven't been able to figure out enough about building dependencies to write up anything coherent about
+them yet. At the moment, I only have some miscellaneous information on various buildings, most notably
+how to edit the creature ID and growth of the horde buildings. Unfortunately, the creature IDs all seem
+somehow offset in the code from what they actually are and I can't explain why; I also don't know where
+to edit the units produced by the "secondary" horde buildings from Rampart and Inferno.
+
+			TOWN		CREATURE ID	GROWTH RATES
+			---------------------------------------------------------
+			Castle		23CF88		2887F4 (+3)
+			Rampart		23CFA8		288814 (+4), 288824 (+2)
+			Tower		23CFC8		288834 (+4)
+			Inferno		23CFE8		288854 (+8), 288864 (+3)
+			Necropolis	23D008		288874 (+6)
+			Dungeon		23D028		288894 (+7)
+			Stronghold	23D048		2888B4 (+8)
+			Fortress	23D068		2888D4 (+6)
+			Conflux		23D088		2888F4 (+10)
+
+			(More to come in this section... hopefully)
+
+---------------------------------------------------------------------------------------------------------
+
+				  MISCELLANOUS SETTINGS
+				  ---------------------
+
+	-----------------
+	COVER OF DARKNESS
+	-----------------
+
+	The effective radius is specified at 0C78D5 (default value is 14, or 20 tiles)
+
+	-------------------
+	MONTH OF THE PLAGUE
+	-------------------
+
+	Can be removed by setting 0C8C53 to 90 90 90 90 90 (default: 83 F8 09 7F 1B)
+
+	------------------
+	EXTERNAL DWELLINGS
+	------------------
+
+	These can be made to accumulate creatures (and guards) rather than capping:
+
+			   Guards Accumulate: 0B8771 > 90 90 90 90 90
+			Creatures Accumulate: 0B87A1 > 01
+
+		(NOTE: the above edits reportedly only work in SoD, not in HotA)
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+				8. ID REFERENCE
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+	~~~(0 = Wood, 1 = Mercury, 2 = Ore, 3 = Sulfur, 4 = Crystal, 5 = Gems, 6 = Gold)
+
+	00 = Knight		09 = Necromancer	00 = Male		01 = Female
+	01 = Cleric		0A = Overlord		--------		--------
+	02 = Ranger		0B = Warlock		00 = Demon		07 = Human
+	03 = Druid		0C = Barbarian		01 = Dwarf		08 = Lich
+	04 = Alchemist		0D = Battle Mage	02 = Efreeti		09 = Lizardman
+	05 = Wizard		0E = Beastmaster	03 = Elf		0A = Minotaur
+	06 = Demoniac		0F = Witch		04 = Genie		0B = Ogre
+	07 = Heretic		10 = Planeswalker	05 = Gnoll		0C = Troglodyte
+	08 = Death Knight	11 = Elementalist	06 = Goblin		0D = Vampire
+
+---------------------------------------------------------------------------------------------------------
+
+	00 = Pathfinding	07 = Wisdom		0E = Fire Magic		15 = Learning
+	01 = Archery		08 = Mysticism		0F = Air Magic		16 = Offense
+	02 = Logistics		09 = Luck		10 = Water Magic	17 = Armorer
+	03 = Scouting		0A = Ballistics		11 = Earth Magic	18 = Intelligence
+	04 = Diplomacy		0B = Eagle Eye		12 = Scholar		19 = Sorcery
+	05 = Navigation		0C = Necromancy		13 = Tactics		1A = Resistance
+	06 = Leadership		0D = Estates		14 = Artillery		1B = First Aid
+
+---------------------------------------------------------------------------------------------------------
+
+	00 = Pikeman			0E = Centaur			1C = Gremlin
+	01 = Halberdier			0F = Centaur Capitan		1D = Master Gremlin
+	02 = Archer			10 = Dwarf			1E = Stone Gargoyle
+	03 = Marksman			11 = Battle Dwarf		1F = Obsidian Gargoyle
+	04 = Griffin			12 = Wood Elf			20 = Stone Golem
+	05 = Royal Griffin		13 = Grand Elf			21 = Iron Golem
+	06 = Swordsman			14 = Pegasus			22 = Mage
+	07 = Crusader			15 = Silver Pegasus		23 = Arch Mage
+	08 = Monk			16 = Dendroid			24 = Genie
+	09 = Zealot			17 = Dendroid Solider		25 = Master Genie
+	0A = Cavalier			18 = Unicorn			26 = Naga
+	0B = Champion			19 = War Unicorn		27 = Naga Queen
+	0C = Angel			1A = Green Dragon		28 = Giant
+	0D = Archangel			1B = Gold Dragon		29 = Titan
+
+	2A = Imp			38 = Skeleton			46 = Troglodyte
+	2B = Familiar			39 = Skeleton Warrior		47 = Infernal Troglodyte
+	2C = Gog			3A = Walking Dead		48 = Harpy
+	2D = Magog			3B = Zombie			49 = Harpy Hag
+	2E = Hell hound			3C = Wight			4A = Beholder
+	2F = Cerberus			3D = Wraith			4B = Evil eve
+	30 = Demon			3E = Vampire			4C = Medusa
+	31 = Horned Demon		3F = Vampire Lord		4D = Medusa Queen
+	32 = Pit Fiend			40 = Lich			4E = Minotaur
+	33 = Pit Lord			41 = Power Lich			4F = Minotaur King
+	34 = Efreet			42 = Black Knight		50 = Manticore
+	35 = Efreet Sultan		43 = Dread Knight		51 = Scorpicore
+	36 = Devil			44 = Bone Dragon		52 = Red Dragon
+	37 = Arch Devil			45 = Ghost Dragon		53 = Black Dragon
+
+	54 = Goblin			62 = Gnoll			76 = Pixies
+	55 = Hobgoblin			63 = Gnoll Marauder		77 = Sprites
+	56 = Wolf Rider			64 = Lizardman			70 = Air Elemental
+	57 = Wolf Raider		65 = Lizard Warrior		7F = Storm Elemental
+	58 = Orc			66 = Serpent Fly		73 = Water Elemental
+	59 = Orc Chieftain		67 = Dragonfly			7B = Ice Elemental
+	5A = Ogre			68 = Basilisk			72 = Fire Elemental
+	5B = Ogre Mage			69 = Greater Basilisk		81 = Energy Elemental
+	5C = Roc			6A = Gorgon			71 = Earth Elemental
+	5D = Thunderbird		6B = Mighty Gorgon		7D = Magma Elemental
+	5E = Cyclops			6C = Wyvern			78 = Psychic Elemental
+	5F = Cyclops King		6D = Wyvern Monarch		79 = Magic Elemental
+	60 = Behemoth			6E = Hydra			82 = Firebird
+	61 = Ancient Behemoth		6F = Chaos Hydra		83 = Phoenix
+
+			~~~
+			74 = Gold Golem
+			75 = Diamond Golem
+			84 = Azure Dragon
+			85 = Crystal Dragons
+			86 = Faerie Dragons
+			87 = Rust Dragon
+			88 = Enchanters
+			89 = Sharpshooters
+			8A = Halfling
+			8B = Peasant
+			8C = Boar
+			8D = Mummy
+			8E = Nomad
+			8F = Rogue
+			90 = Troll
+			91 = Catapult
+			92 = Ballista
+			93 = First Aid Tent
+			94 = Ammo Cart
+			95 = Arrow Tower
+
+---------------------------------------------------------------------------------------------------------
+
+	00 = Summon Boat		17 = Meteor Shower		2E = Stoneskin
+	01 = Scuttle Boat		18 = Death Ripple		2F = Disrupting Ray
+	02 = Visions			19 = Destroy Undead		30 = Prayer
+	03 = View Earth			1A = Armageddon			31 = Mirth
+	04 = Disguise			1B = Shield			32 = Sorrow
+	05 = View Air			1C = Air Shield			33 = Fortune
+	06 = Fly			1D = Fire Shield		34 = Misfortune
+	07 = Water Walk			1E = Air Resistance		35 = Haste
+	08 = Dimension Door		1F = Fire Resistance		36 = Slow
+	09 = Town Portal		20 = Water Resistance		37 = Slayer
+	0A = Quicksand			21 = Earth Resistance		38 = Frenzy
+	0B = Land Mine			22 = Anti-Magic			3A = Counterstrike
+	0C = Force Field		23 = Dispel			3B = Berserk
+	0D = Fire Wall			24 = Magic Mirror		3C = Hypnotize
+	0E = Earthquake			25 = Cure			3D = Forgetfulness
+	0F = Magic Arrow		26 = Resurrection		3E = Blind
+	10 = Ice Bolt			27 = Animate Dead		3F = Teleport
+	11 = Lightning Bolt		28 = Sacrifice			40 = Remove Obstacle
+	12 = Implosion			29 = Bless			41 = Clone
+	13 = Chain Lightning		2A = Curse			42 = Summon Fire
+	14 = Frost Ring			2B = Bloodlust			43 = Summon Earth
+	15 = Fireball			2C = Precision			44 = Summon Water
+	16 = Inferno			2D = Weakness			45 = Summon Air
+					~~~
+					39 = Titan's Bolt
+
+---------------------------------------------------------------------------------------------------------
+
+~~~
+00 = Spell Book			2F = Cards of Prophecy		5E = Ring of Vitality
+01 = Spell Scroll		30 = Ladybird of Luck		5F = Ring of Life
+02 = The Grail			31 = Badge of Courage		60 = Vial of Lifeblood
+03 = Catapult			32 = Crest of Valor		61 = Necklace of Swiftness
+04 = Ballista			33 = Glyph of Gallantry		62 = Boots of Speed
+05 = Ammo Cart			34 = Speculum			63 = Cape of Velocity
+06 = First Aid Tent		35 = Spyglass			64 = Pendant of Dispassion
+07 = Minotaur's Axe		36 = Amulet of the Undertaker	65 = Pendant of Second Sight
+08 = Dead Knight's Blackshard	37 = Vampire's Cowl		66 = Pendant of Holiness
+09 = Greater Gnoll's Flail	38 = Dead Man's Boots		67 = Pendant of Life
+0A = Ogre's Club of Havoc	39 = Garniture of Interference	68 = Pendant of Death
+0B = Sword of Hellfire		3A = Surcoat of Counterpoise	69 = Pendant of Free Will
+0C = Titan's Gladius		3B = Boots of Polarity		6A = Pendant of Negativity
+0D = Shield of the Dwarven Lords3C = Elven Cherrywood Bow	6B = Pendant of Total Recall
+0E = Shield of the Yawning Dead	3D = Unicorn's Mane Bowstring	6C = Pendant of Courage
+0F = Buckler of the Gnoll King	3E = Angel Feather Arrows	6D = Everflowing Crystal Cloak
+10 = Targe of the Rampaging Ogre3F = Bird of Perception		6E = Ring of Infinite Gems
+11 = Shield of the Damned	40 = Stoic Watchman		6F = Everpouring Vial of Mercury
+12 = Sentinel's Shield		41 = Emblem of Cognizance	70 = Inexhaustible Cart of Ore
+13 = Alabaster Unicorn Helm	42 = Statesman's Medal		71 = Ring of Eversmoking Sulfur
+14 = Skull Helmet		43 = Diplomat's Ring		72 = Inexhaustible Cart of Lumber
+15 = Helm of Chaos		44 = Ambassador's Sash		73 = Endless Sack of Gold
+16 = Crown of the Supreme Magi	45 = Ring of the Wayfarer	74 = Endless Bag of Gold
+17 = Hellstorm Helmet		46 = Equestrian's Gloves	75 = Endless Purse of Gold
+18 = Thunder Helmet		47 = Necklace of Ocean Guidance	76 = Legs of Legion
+19 = Petrified Wood Breastplate	48 = Angel Wings		77 = Loins of Legion
+1A = Rib Cage			49 = Charm of Mana		78 = Torso of Legion
+1B = Scales of the Greater Basilisk	4A = Talisman of Mana	79 = Arms of Legion
+1C = Tunic of the Cyclops King	4B = Mystic Orb of Mana		7A = Head of Legion
+1D = Breastplate of Brimstone	4C = Collar of Conjuring	7B = Sea Captain's Hat
+1E = Titan's Cuirass		4D = Ring of Conjuring		7C = Spellbinder's Hat
+1F = Armor of Wonder		4E = Cape of Conjuring		7D = Shackles of War
+20 = Sandals of the Saint	4F = Orb of the Firmament	7E = Orb of Inhibition
+21 = Celestial Necklace of Bliss50 = Orb of Silt		7F = Vial of Dragon Blood
+22 = Lion's Shield of Courage	51 = Orb of Tempestuous Fire	80 = Armageddon's Blade
+23 = Sword of Judgement		52 = Orb of Driving Rain	81 = Angelic Alliance
+24 = Helm of Heavenly Enlightenment	53 = Recanter's Cloak	82 = Cloak of the Undead King
+25 = Quiet Eye of the Dragon	54 = Spirit of Oppression	83 = Elixir of Life
+26 = Red Dragon Flametongue	55 = Hourglass of the Evil Hour	84 = Armor of the Damned
+27 = Dragonscale Shield		56 = Tome of Fire Magic		85 = Statue of Legion
+28 = Dragonscale Armor		57 = Tome of Air Magic		86 = Power of the Dragon Father
+29 = Dragonbone Greaves		58 = Tome of Water Magic	87 = Titan's Thunder
+2A = Dragon Wing Tabard		59 = Tome of Earth Magic	88 = Admiral's Hat
+2B = Dragontoh Necklace		5A = Seven League Boots		89 = Sharpshooter's Bow
+2C = Dragontooth Crown		5B = Golden Bow			8A = Wizard's Well
+2D = Still Eye of the Dragon	5C = Sphere of Permanence	8B = Ring of the Magi
+2E = Clover of Fortune		5D = Orb of Vulnerability	8C = Cornucopia
+
+---------------------------------------------------------------------------------------------------------
+
+	I'm afraid that's all we know, gentlemen.

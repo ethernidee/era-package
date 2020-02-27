@@ -1,3 +1,20 @@
+Version 2.9.11
+------------------------
+[+] Added Quest Dialog plugin by igrik. It allows to easily view quests contents and move view to seer huts.
+
+[+] Added %T(translatable_key_from_json) interpolation in ^...^ strings. Thus json texts without parameters may be inserted directly.
+    Example: !!IF:M^Welcome to {%T(mymod.woody_castle_object)}!^;
+
+[+] Heroes 3 PRNG was restored. VR:R uses it, as in old times. Mersenne Twister PRNG was moved to VR:T command.
+    Mersenne Twister generator state is NOT synchronized between remote PCs automatically. Do not use it in
+    battles for you mod to be compatible with multiplayer.
+
+[+] Included macros for Erm Editor, enabling automatical indentation and comment insertion via ALT + END. Credits: Algor.
+[+] Added "h3 structures and constants.txt" by BTB/RoseCavalier to Help directory.
+[*] Reallowed SN:K#1/#2/#3/#4 to work with strings.
+[-] Fixed OnUnequipArt and OnEquipArt named events. They were called instead of each other.
+
+
 Version 2.9.10
 ------------------------
 [+] ERM engine now supports any number of control characters (0x00..0x1F), including line breaks, between commands:
