@@ -1,0 +1,446 @@
+Version 3.0.0 (03/2020)
+------------------------
+-) Floating point variables (e-variables) are passed to ERM commands as raw 4 bytes value,
+   treated by most commands as integer, which may cause many bugs, unless you know, what you are doing.
+   The exception is !!VR:S command, allowing transparent conversion integer-float. To copy float value,
+   stored in raw format in integer variable to e-variable use !!VR:I command. It acts same as VR:S, but
+   without data conversion.
+
+   !!VR:S supports only SET-syntax? WHY??? GET is safe
+   !!VR$1:S#2/#3
+   $1 - integer variable.
+   #2 - float variable
+   #3 - rounding mode: < 0 for floor operation (round towards negative infinity), 0 for normal round (round half away from zero),
+        > 0 for ceil operation (round towards positive infinity).
+
+   !!VR: +/-/*/:/% convert both arguments to float if any is float before calculation and convert back to base var type on return.
+   Thus
+   !!VR(koef:e):S25 :10; koef = 2.5
+   !!VR(gold:y):S2 *koef; gold = 5, not 4
+
+   mass string concat VR command? Join? VR:J
+
+-) ВВЕДЕНИЕ floating point rounding будет причиной разного поведения на разных компьютерах и рассинхронизации
+
+-) Special command, converting e-var to integer with rounding to specified precision:
+  Se4/;
+
+[+] Call SN:F^GenerateDebugInfo^ to generate Debug directory contents, the same way as F11 does.
+
+[+] Exported "NameTrigger" function (void NameTrigger(int TriggerId, const char* Name)), allowing plugins to
+    give name to any ERM trigger, which can be used in ERM like !?FU(OnYourNewEvent).
+
+[+] Updated "wog native dialogs" plugin by igrik. From now it's possible to select item in message dialogs
+    using mouse double click.
+
+- s^^, ^^, i^^ in conditions
+новые d-модификаторы не реализованы для команд Эры
+переписать VR, исправить IF:Q, IF:M на использование z1000000000.
+не будет ли врменная ЕРТ строка интерполироваться дважды, сперва при присваивании, затем при ERM?
+в большинстве мест без интерполяции, но в ряде с
+
+[+] Rewritten ert-strings storage implementation. Removed limit on 50000 strings. Increased add/delete operations
+    performance (from linear search to binary tree search). Savegames format was changed.
+
+[+] Added VR:C alternative for SN:M arrays. New command !!SN:U#1/#2/$3...up to $21 allows to set/check/get/modify
+    many items of dynamical array.
+    #1 - SN:M array ID.
+    #2 - starting index
+    $3... - items at starting index, starting index + 1, starting index + 2, etc.
+
+[+] Added new command !!VR:R0/#min/#max, generating random value in specified range and assigning its to variable.
+    Example: !!VRy1:R0/100/300; set y1 to random value in 100..300 range
+
+[+] Introduced advanced ERM precompilation mode, called ERM 2.0 and activated via "ZVSE2" first line signature.
+  Main features:
+    - Named local variables to write human readable code instead of cryptic one.
+      Example: !!HE-1:C0/0/?(monType:y)/?(monNum:y) instead of !!HE-1:C0/0/?y23/?y24;
+    
+    - Global named constants instead of magic numbers to write self-explaining code:
+      Example: !?FU(OnKeyPressed)&x1=(KEY_1) instead of !?FU(OnKeyPressed)&x1=49; what is 49???
+    
+    - Strict distinguishing naming for functions, local variables and constants. No way to mix up.
+      Example: thisIsVariable, THIS_IS_CONSTANT, ThisIsFunction and era_ThisIsFunctionAgain.
+
+  ==== Named global constants ====
+  Constant is named value, that is defined once and never changes. Like 13 (Archangel monster type).
+  Constant can be used anywere, where numbers can be used. Era currently supports only integer numeric
+  constants, written in all capitals: (MON_ARCHANGEL), (OBJ_MINE), (PLAYER_RED).
+  Allowed characters are: [A-Z0-9_].
+  To define a constant use the following instruction !#DC(CONSTANT_NAME) = 777; where 777 is arbitrary number.
+  Examples:
+  !#DC(PLAYER_BLUE)     = 1;
+  !#DC(SKILL_FIRST_AID) = 27;
+
+  To use a constant simply write its name in parentheses:
+  !!OW:R(CURRENT_PLAYER)/(RES_GOLD)/d1000; give 1000 gold to current player
+
+  will be compiled to
+
+  !!OW:R-1/6/d1000; give 1000 gold to current player
+
+  --- Naming ---
+  Scripts writers must use unique prefix before constant names to prevent names collisions. Any constants without prefix
+  may be added to ERA in the future and break your script.
+  Example:
+  ; for mod Battle Heroes let's use prefix "BH_"
+  !#DC(BH_ART_RING_OF_POWER) = 160;
+  
+  !#DC(BH_CLASS_WARRIOR) = 1;
+  !#DC(BH_CLASS_MAGE)    = 2;
+  !#DC(BH_CLASS_RANGER)  = 3;
+
+  --- Globality ---
+  Constants are global. It means, that one script can use constants of another script. To ensure, that your constants
+  are always loaded before other scripts, place them in the script with high priority (ex. "1000 - phoenix consts.erm").
+  
+  --- Standard constants ---
+  ERA provides file "1000 - era consts.erm" with many predefined constants, covering most values, mentioned in ERM help.
+  Look through it before defining your own constant for secondary skill, monster or player color.
+
+
+  ==== Named local variables ====
+  Each ERM trigger (!?XX before next !?XX) can now declare and use own named local variables, allocated from
+  x1..x16, y1..y100, z-1..z-10, e1..e100 sets.
+  Named variables are replaced with regular variables during scripts compilation and do not influence the performance at all.
+  Example: (day) may be compiled to y5;
+
+  --- Naming ---
+  Names of variables must be in so called "camelCase" and contain only [a-zA-Z0-9] characters. They must be wrapped
+  in parantheses the same way, as function names are wrapped.
+  Example of valid variables: (hero), (monNum), (isAutocombatMode), (specialObject7).
+
+  --- Declaration ---
+  Variables must be declared on the first usage: i.e their type (x, y, z, e, v) and array length (for arrays) must be specified.
+  If you write '[some number]' after variable name, variable will become an array (sequence of variables) with specified length.
+  If you write ':e' after variable name or array length, it will mean, that variable type is "e" (floating point numbers).
+
+  Examples:
+  !!HE-1:N?(hero:y); give some y-variable name "hero" and write current hero ID to it
+  !#VA(arts[4]:y);   allocate 4 y-variables with sequential indexes and name the array "arts"
+
+  !#VA instruction is pseudo-command, that is dropped from final compiled code and that can be used to hold variables declarations.
+  Example:
+  !?FU(acm_Sum);
+  ; The function calculates sum of two numbers
+  !#VA(first:x) (second:x) (result:x); [bind "first" to x1, "second" to x2, "result" to x3]
+  !!VR(result):S(first) +(second);     [calculate result]
+
+  --- Usage ---
+  It's allowed to specify the same type and array length for variables in every variable usage place, but it's not necessary.
+  After you declared variable, there is no more any need to write its type/length.
+  Example:
+  !!HE-1:N?(hero:y);
+  !!HE(hero):K1; kill hero with ID in (hero) variable.
+
+  will be compiled to something like that:
+  !!HE-1:N?y5;
+  !!HEy5:K1;
+
+  --- Arrays ---
+  If you need not a single variable, but sequence of variables, for instance to hold [x, y, l] coordinates of objects,
+  then you need an array. Specify array length in square brackets right after variable name during declaration.
+  !#VA(coords[3]:y); allocate 3 y-variables named 'coords'
+
+  Items or elements of arrays are zero-indexed and can be accessed by direct index.
+  For 3-items array possible indexes are 0, 1, 2.
+  Example:
+  !!CM:P?(coords[0])/?(coords[1])/?(coords[2]);
+
+  will be compiled to something like that:
+  !!CM:P?y50/?y51/?y52;
+
+  If you don't specify array index, the first array element will be used. It means that
+  (test) and (test[0]) have the same sense. Regular variables are considered arrays of length 1.
+
+  --- Negative array indexes ---
+  Negative array index means n-th item from the end. -1 will point to the last item, -2 to the one before the last one and so on.
+  Example:
+  ; allocate array of 10 y-variables and assign the last one value 2000
+  !#VA(array[10]:y);
+  !!VR(array[-1]):S2000;
+
+  will be compiled to something like that:
+  ; allocate y1..y10
+  !!VRy10:S2000;
+
+  --- Releasing local variables ---
+  If you don't need large variable array anymore, but want to declare another big array, then free the previous one.
+  Syntax: !#VA(-variableName); will forget about specified variableName, allowing to reuse indexes, allocated for that variable.
+
+  Example:
+  !#VA(myArts[100]:y); allocate y1..y100 to hold artifact IDs
+  ...;                 use them
+  !#VA(-myArts);       release 'myArts' name and y1..y100 indexes.
+  !#VA(coords[3]:y);   allocate y1..y3 as 'coords' variable
+
+  --- Getting variable address (real index) ---
+  It's often necessary to get real index of variable or even array element. When you want to output "2" instead of
+  y2, use address operator '@'.
+  Example:
+  ; Initialize array with 3 artifacts
+  !#VA(arts[3]:y);
+  !!VR(arts):C(ART_SKULL_HELMET)/(ART_HELM_OF_CHAOS)/(ART_DEAD_MANS_BOOTS);
+  
+  ; Calculate array length as last index - first index + 1
+  !!VR(numArts):S(@arts[-1]) -(@arts) +1;
+????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+  ; Select one artifact randomly
+  !!VR(art:y):S(@arts) +1 R(@arts[-1]) -1;
+  
+  ; Give artifact to hero
+  !!HE-1:Ay(art);
+
+  will be compiled to something like that:
+  
+  !!VRy1:C20/21/56;
+  !!VRy4:S0 R2;
+  !!HE-1:Ayy4;
+
+  Address operator "@" compiles to real (final) variable index. For instance, for array "test[10]:y" mapped to y50..y59
+  (@test[1]) will compile to "51".
+
+  Example of declaring array of 10 y-variables and initializing all of them with -1.
+  !#VA(monTypes[10]:y);
+
+  !!re i/(@monTypes)/(@monTypes[-1]):; repeat from i = first array index to i = last array index
+    !!VRyi:S-1; set -1 for current array item
+  !!en:;
+
+  In other programming languages variables, holding other variables addresses/indexes are usually called "pointers"
+  and abbreviated as "ptr" or "Ptr". We will rewrite the previous example with named variable in place of quick "i" var
+  just for learning purposes.
+
+  !!re (monTypePtr:y)/(@monTypes)/(@monTypes[-1]):; repeat from (monTypePtr) = first array index to (monTypePtr) = last array index
+    !!VRy(monTypePtr):S-1; set -1 for current array item
+  !!en:;
+
+  --- Naming function arguments ---
+  Indexes for named local variables are allocated starting from the smallest possible value.
+  It means, that we can name even function arguments if we declare them in the same order, as arguments will be passed.
+  Example:
+
+  !?FU(bh_GetHeroSecSkill);
+  !#VA(hero:x) (skill:x) (result:x); now hero = x1, skill = x2, result = x3
+  !!HE(hero):S(skill)/?(result);
+
+  !?FU(...); some event
+  !!FU(bh_GetHeroSecSkill)/155/27/?(xeronFirstAidLevel:y); so what's the level of First Aid skill Xeron has? )
+
+  --- Redeclaration ---
+  If you need to declare variable in both branches of if-then block, specify type/length in both of them.
+
+  !!if&(day)>90:;
+    !!VR(price:y):S(day) *100;
+    ...
+  !!el:;
+    !!VR(price:y):S(day) *(difficultyLevel) +300;
+    ...
+  !!en:; 
+
+  --- Reusing same name in other trigger ---
+  Variable names are local to nearest trigger only. New trigger starts with no declared variables.
+  Example:
+
+  !?FU(OnHeroScreenMouseClick);
+  !!CM:F?(flags:y); flags = y1
+
+  !?FU(OnHeroScreenMouseClick);
+  !#VA(flags[23]:e); flags is array, binded to e1..e23
+
+  --- Interpolation ---
+  To substitute local variables in string literals use $(varName) syntax. Example:
+  !!VR(price:y):S600;
+  !!VR(heroName:z):S^Robin Hood^;
+  !!IF:Q2/^Would you like to hire $(heroName) for $(price) gold only?^;
+
+
+  ==== Named functions ====
+  Function names must consist of [A-Za-z0-9_] characters only, start with letter and contain at least
+  single lower case letter (a-z).
+  There are two allowed naming methods:
+  1) Start function with capital letter. (CalcHeroArmyPower), (ShowUpgradeDialog).
+  ERA reserves right to declare prefixless functions, starting with "On" for events. This method is not
+  recommended, due to possible names collisions in different mods. Two mods may declare functions
+  will the same names and thus produce hard to debug bugs.
+
+  2) Start function with any case unique prefix with '_' character. Prefix is usually mod abbreviation.
+  For instance, for "Dwellings Extended" mod the following functions are used:
+  !?FU(dex_SetDwellingSlotByTownType);
+  !?FU(dex_DwellingPopulation);
+  ...
+
+  --- Generating new events ---
+  You can call function, even if it has no handlers. For instance, in Upgrade All Creatures mod you
+  want to allow other scripts to be able to notify, what monster can be upgraded to in particular town.
+  Just call not existing function like !!FU(auc_OnDetermineMonsterUpgrade):P... in your script with all
+  necessary parameters and other scripts will be able to write new event handlers like:
+
+  !?FU(auc_OnDetermineMonsterUpgrade);
+  ...
+
+  --- Passing function as handlers or callbacks ---
+  You can use function as ordinary constant, compiled to number. You can assign it to variable or pass to
+  another function.
+  !!VR(spellHandler:y):S(newmagic_DesintegrationSpellHandler);
+  !!FU(spellHandler):P;
+
+  will compile in something like that
+
+  !!VRy20:S95003;
+  !!FUy20:P;
+
+
+[*] The following exported functions now return 4-bytes LONGBOOL value, 0 for false, -1 (0xFFFFFFFF) for true.
+    "ReadStrFromIni", "WriteStrToIni", "SaveIni", "PatchExists", "PluginExists", "Ask".
+
+[+] Added "1000 - era consts.erm" script to WoG mod with standard Era constants, including players,
+    player bits, heroes, resources, objects, monsters, artifacts, spells. The file contents may be corrected
+    and widened in the future. All constants were registered in Erm Editor, based on Sublime Text.
+
+[+] Added "1000 - era stdlib.erm" script with universal ERM functions and events. Currently "OnEveryDay"
+    event is enhanced with the following x-arguments: day, week day, once(0..1), owner (color), isAi (0..1).
+
+[*] Fixed WoG bug with tactics detection on the very first round. Do not use BU:R in !?BR or !?FU(OnCombatRound) for zero round,
+    because a few structures are not initialized at this moment and random crash may occur. First round code was moved after
+    combat theme initialization and tactics popup message appearance.
+
+[+] All *.ers files are loaded without name/quantity constraints. Previously only script00.ers..script99.ers were processed.
+
+[+] HE:P command behavior was fixed. Teleport function with sound is called only if any coordinate
+    was really changed. Advanced d-modifiers are supported for the first three parameters.
+
+[+] HE:C0 command was rewritten.
+    -1 and -2 values for creature type are not treated as "upgrade"/"degrade" anymore. Command supports any d-modifiers now.
+    Exp. modifier parameter is now SET-only. Previosly !!HE:C0/0/?y1/?y2/d5000/2 would not increase slot experience.
+    In fact, any GET syntax used to make ERM engine ignore stack experience at all. This bug was fixed.
+    Creature Type < 0 or Number <= 0 will be normalized to Type -1, Number 0 automatically.
+    Note, that in all cases the returned stack experience value is the one before applying any changes.
+
+[+] Rewritten HE:X command to accept any number of parameters and understand any d-modifiers.
+    Example: !!HE-1:X0/27 Xd1; become master of gold dragons
+
+[+] Introduces many new d-modifiers, except for GE:E/N, LE:E/N.
+
+[+] Function parameters (FU:P, DO:P), which were passed using GET-syntax, are now initialized with
+    original variable value. The behavior is similar to pass-by-reference in other programming languages.
+    Example:
+    !?FU(Add3):;
+    ; (value:x)
+    !!VR(value:x):+3;
+
+    !?CM0;
+    !!VR(numHeads:y):S10;
+    !!FU(Add3):P?(numHeads:y); 10 is passed to function as the first argument, 13 is result
+
+[+] Enhanced !!RD:I with new named parameters syntax.
+    !!RD:I^parameter name^/?$parameter_value;
+    ============================== Featured parameters: ==============================
+    ^dlgId^        - Unique recruit dialog ID. Used to distinguish between nested dialogs (yep, it's possible). Reusable.
+    ^townId^       - ID of town, for which dialog is opened or -1.
+    ^dwellingId^   - ID of town dwelling, for which dialog is opened or -1. 0..6 non upgraded, 7..13 for upgraded.
+                     Horde buildings (+X population) are treated as dwellings, they influence.
+    ^slot^         - Active logical slot index.
+    ^cost^         - Cost of single monster in current slot in gold.
+    ^resource^     - Special resource for monster in current slot.
+    ^resourceCost^ - Cost of single monster in current slot in special resource.
+    ^quantity^     - Number of monsters, currently selected for recruitment.
+    ^maxQuantity^  - Maximal number of monsters, the player can afford.
+
+    Example:
+    !?FU(OnRecruitDlgMouseClick);
+    !!RD:I^dlgId^/?(dlgId:y) I^townId^/?(townId:y) I^dwellingId^/?(dwellingId:y) I^slot^/?(slot:y) I^cost^/?(cost:y);
+    !!RD:I^resource^/?(resource:y) I^resourceCost^/?(resourceCost:y) I^quantity^/?(quantity:y) I^maxQuantity^/?(maxQuantity:y);
+    !!IF:M^(dlgId:y) (townId:y) (dwellingId:y) (slot:y) (cost:y) (resource:y) (resourceCost:y) (quantity:y) (maxQuantity:y)^;
+
+[+] Enhanced !!UN:C command. It supports all d-modifiers now. New syntax with offset from address is available:
+    !!UN:C#addr/#offset/#size/$value;
+    Era always calls GetRealAddr for #addr, thus !!UN:C supports all extended/relocated game structures.
+
+[+] WoG interface and WoG campaigns were extracted to appropriate standalone mods. ERA is now mostly Vanilla game with
+    enhanced ERM engine and other modding capabilities.
+
+[+] Added !!BM:Z?$addr command to get battle stack structure address.
+[+] Added !!HE:Z?$addr command to get hero structure address.
+
+[+] Introduced ERM 2.0 support for scripts, beginning with 'ZVSE2'.
+
+[+] Doubled stack size for h3era.exe executable to allow trigger depth level up to 150, but better avoid such depth.
+
+[+] WoG Campaign editor loads resources from hmm35wog.pac and uses virtual file system. No more Campaign Fix required.
+[+] Added extended resources redirection support with wav/bik/smk files, including missing resources redirection.
+[+] Added new plugins events "OnAfterLoadLods", occured right after lods/pacs are loaded and "OnAfterLoadMedia", occured
+    when lod/pacs/snd/vids are loaded.
+
+[*] ERA is recommended to be installed over Heroes 3 Complete only. Removed resources, which are already present in Complete lods.
+
+[-] Restored functionality of Data\Redirections\Missing\*.json files, which are used to setup redirections
+    for missing resources only.
+
+- MAKE QUICK VARS LOCAL!!!
+
+[!] Update ERM Editor
+[+] Rewritten core of ERM engine: GetNum. Greatly improved macro support.
+
+[+]-) Xd+, -, *, :, %, &, |, ~ (remove flags = and not)
+
+[+] i^^ vars are fully supported in regular ERM receivers
+[+] string literals (regular and with interpolation) are fully supported in receiver conditions.
+[+] Extracted WoG campaigns into standalone mod, which was removed from Era installer package.
+
+[+] Named constants and local vars
+
+[+] "remove exe protection.bin" was applied to h3era.exe and removed as patch.
+
+[+] Many resources and features were extracted from WoG mod into separate mods: Animated Object Flags, Animated Trees,
+    No Prebattle Music, Secondary Skills Scrolling, Quick Savings, Fast Battle Animation, Improved Battle Decorations,
+    WoG Interface, WoG Campaigns, Yona.
+
+[+] Added new event "OnDetermineMonInfoDlgUpgrade", occured, when game determines wether to show upgrade button
+    in monster info dialog. Parameters: MonType, UpgradedType or -1, Town ID or -1, Hero ID or -1.
+    -1 for UpgradedType means no upgrade button (because of wrong town type or appropriate building being not built, or monster having no upgrade).
+    You can change this value to allow universal Jelu-like behavior or any upgrade system.
+    Example:
+
+    ZVSE2
+    
+    !?FU(OnDetermineMonInfoDlgUpgrade);
+    !#VA(monType:x) (upgType:x) (town:x) (hero:x);
+    !!VR(upgType):S27; allow upgrade anything into Gold Dragons
+
+[+] SN/RD/MP receivers now support indexed parameters like vy6 or zi^myIndex^.
+
+[+] SN:D may be used now in battle, being equal to BU:R.
+
+[+] Added support for trigger local dynamical arrays. !!SN:M-1/#/#-1 will allocate new dynamical array
+    with ID, that will be automatically released after current trigger is exited. Thus no
+    corresponding !!SN:M# is necessary to release this temporary array. It can be used, for instance,
+    for large calculations or to pass string arguments to function.
+
+    Example:
+    !?FU(OnAdventureMapRightMouseClick);
+    !!SN:M-1/4/1/-1;        [allocate 4 strings array (-1 = auto ID, 4 = 4 items, 1 = of string type, -1 = local to current trigger)]
+    !!VR(dlgStrings:y):Sv1; [save array ID]
+    
+    ; Setup strings
+    !!SN:M(dlgStrings)/0/^Select commander bonus:^;
+    !!SN:M(dlgStrings)/1/^1) Attack^;
+    !!SN:M(dlgStrings)/2/^2) Speed^;
+    !!SN:M(dlgStrings)/3/^3) Health^;
+    
+    !!FU(PM_ShowDialog):P(dlgStrings); [pass 4 string to dialog showing function]
+    ; here array with (dlgStrings) ID will be automatically freed, same as SN:M(dlgStrings);
+
+    !?FU(PM_ShowDialog);
+    ; (dlgStrings:x) - dynamical array of 4 strings
+    ; (items[3]:z)
+    !!SN:M(dlgStrings)/0/?(caption:z);
+    !!SN:M(dlgStrings)/1/?(items[0]);
+    !!SN:M(dlgStrings)/2/?(items[1]);
+    !!SN:M(dlgStrings)/3/?(items[2]);
+    !!IF:M^{(caption)}
+    (items[0])
+    (items[1])
+    (items[2])^;
+
+[-] Fixed memory leakage in SN:M dynamical arrays deallocation and a few other places.

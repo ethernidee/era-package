@@ -1,1 +1,0 @@
-Speeds-up stacks animation in battle and shortens many spell sounds.
