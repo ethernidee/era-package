@@ -43,7 +43,7 @@ contexts:
         2: keyword.operator
       push: trigger
 
-    - match: ^ZVSE
+    - match: ^ZVSE2?
       scope: keyword.operator.erm
 
   erm_operator:
@@ -66,14 +66,12 @@ contexts:
     - match: \[[^\]]++\]
       scope: variable.label.erm
 
-    - match: '@'
+    - match: '@[^@]*+@?'
       scope: string.macro_declaration.erm
-      push:  macro_declaration
 
-    - match: '\$'
-      scope: string.macro_usage.erm
-      push:  macro_usage
-
+    - match: '\$[^\$]*+\$?'
+      scope: string.macro.erm
+ 
   comment:
     - meta_scope: comment.line.erm
     - match: $
@@ -83,7 +81,11 @@ contexts:
 
   string_caret:
     - meta_scope: string.caret.erm
-    - match: '(%)([SI]\([^);\^]*+\)?|[A-Z](?:[f-t]|-?\d*+))'
+    - match: '(%)(([a-zA-Z]?\([^\)^\r\n]*+\)?)|[a-zA-Z](?:[f-t]|-?\d*+))'
+      captures:
+        1: keyword.operator.interpolation.erm
+        2: string.interpolation.erm
+    - match: '(?<!%)(%)(\([^)]*+\)?)'
       captures:
         1: keyword.operator.interpolation.erm
         2: string.interpolation.erm
@@ -100,13 +102,3 @@ contexts:
   trigger:
     - meta_scope: trigger.erm
     - include:    erm_operator
-
-  macro_declaration:
-    - meta_scope: string.macro_declaration.erm
-    - match: '[;@]'
-      pop:   true
-
-  macro_usage:
-    - meta_scope: string.macro_usage.erm
-    - match: '[;$]'
-      pop:   true

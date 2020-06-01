@@ -3,6 +3,8 @@
 
    "completions":
    [
+      { "trigger": "va\t!#VA (declare variables)", "contents": "!#VA($0)" },
+      { "trigger": "dc\t!#DC (define consts)", "contents": "!#DC($0)" },
       { "trigger": "ai\t!!AI", "contents": "!!AI:" },
       { "trigger": "ar\t!!AR", "contents": "!!AR" },
       { "trigger": "ba\t!!BA", "contents": "!!BA:" },
@@ -88,7 +90,7 @@
       { "trigger": "_cm\t!?CM", "contents": "!?CM" },
       { "trigger": "_co\t!?CO", "contents": "!?CO" },
       { "trigger": "_dl\t!?DL", "contents": "!?DL" },
-      { "trigger": "_fu\t!?FU", "contents": "!?FU" },
+      { "trigger": "_fu\t!?FU", "contents": "!?FU($0)" },
       { "trigger": "_ge\t!?GE", "contents": "!?GE" },
       { "trigger": "_gm\t!?GM", "contents": "!?GM" },
       { "trigger": "_he\t!?HE", "contents": "!?HE" },

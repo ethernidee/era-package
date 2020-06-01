@@ -1,56 +1,5 @@
-Version 3.0.0 (03/2020)
+Version 3.0.0 (06/2020)
 ------------------------
--) Floating point variables (e-variables) are passed to ERM commands as raw 4 bytes value,
-   treated by most commands as integer, which may cause many bugs, unless you know, what you are doing.
-   The exception is !!VR:S command, allowing transparent conversion integer-float. To copy float value,
-   stored in raw format in integer variable to e-variable use !!VR:I command. It acts same as VR:S, but
-   without data conversion.
-
-   !!VR:S supports only SET-syntax? WHY??? GET is safe
-   !!VR$1:S#2/#3
-   $1 - integer variable.
-   #2 - float variable
-   #3 - rounding mode: < 0 for floor operation (round towards negative infinity), 0 for normal round (round half away from zero),
-        > 0 for ceil operation (round towards positive infinity).
-
-   !!VR: +/-/*/:/% convert both arguments to float if any is float before calculation and convert back to base var type on return.
-   Thus
-   !!VR(koef:e):S25 :10; koef = 2.5
-   !!VR(gold:y):S2 *koef; gold = 5, not 4
-
-   mass string concat VR command? Join? VR:J
-
--) ВВЕДЕНИЕ floating point rounding будет причиной разного поведения на разных компьютерах и рассинхронизации
-
--) Special command, converting e-var to integer with rounding to specified precision:
-  Se4/;
-
-[+] Call SN:F^GenerateDebugInfo^ to generate Debug directory contents, the same way as F11 does.
-
-[+] Exported "NameTrigger" function (void NameTrigger(int TriggerId, const char* Name)), allowing plugins to
-    give name to any ERM trigger, which can be used in ERM like !?FU(OnYourNewEvent).
-
-[+] Updated "wog native dialogs" plugin by igrik. From now it's possible to select item in message dialogs
-    using mouse double click.
-
-- s^^, ^^, i^^ in conditions
-новые d-модификаторы не реализованы для команд Эры
-переписать VR, исправить IF:Q, IF:M на использование z1000000000.
-не будет ли врменная ЕРТ строка интерполироваться дважды, сперва при присваивании, затем при ERM?
-в большинстве мест без интерполяции, но в ряде с
-
-[+] Rewritten ert-strings storage implementation. Removed limit on 50000 strings. Increased add/delete operations
-    performance (from linear search to binary tree search). Savegames format was changed.
-
-[+] Added VR:C alternative for SN:M arrays. New command !!SN:U#1/#2/$3...up to $21 allows to set/check/get/modify
-    many items of dynamical array.
-    #1 - SN:M array ID.
-    #2 - starting index
-    $3... - items at starting index, starting index + 1, starting index + 2, etc.
-
-[+] Added new command !!VR:R0/#min/#max, generating random value in specified range and assigning its to variable.
-    Example: !!VRy1:R0/100/300; set y1 to random value in 100..300 range
-
 [+] Introduced advanced ERM precompilation mode, called ERM 2.0 and activated via "ZVSE2" first line signature.
   Main features:
     - Named local variables to write human readable code instead of cryptic one.
@@ -177,24 +126,23 @@ Version 3.0.0 (03/2020)
   --- Getting variable address (real index) ---
   It's often necessary to get real index of variable or even array element. When you want to output "2" instead of
   y2, use address operator '@'.
+  
   Example:
   ; Initialize array with 3 artifacts
   !#VA(arts[3]:y);
   !!VR(arts):C(ART_SKULL_HELMET)/(ART_HELM_OF_CHAOS)/(ART_DEAD_MANS_BOOTS);
-  
-  ; Calculate array length as last index - first index + 1
-  !!VR(numArts):S(@arts[-1]) -(@arts) +1;
-????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+
   ; Select one artifact randomly
-  !!VR(art:y):S(@arts) +1 R(@arts[-1]) -1;
+  ; same as R0/0/2, generates random number in 0..2 range and assigns it to artPtr variable.
+  !!VR(artPtr:y):R0/(@arts)/(@arts[-1]);
   
   ; Give artifact to hero
-  !!HE-1:Ay(art);
+  !!HE-1:Ay(artPtr);
 
   will be compiled to something like that:
   
   !!VRy1:C20/21/56;
-  !!VRy4:S0 R2;
+  !!VRy4:R0/0/2;
   !!HE-1:Ayy4;
 
   Address operator "@" compiles to real (final) variable index. For instance, for array "test[10]:y" mapped to y50..y59
@@ -220,12 +168,12 @@ Version 3.0.0 (03/2020)
   It means, that we can name even function arguments if we declare them in the same order, as arguments will be passed.
   Example:
 
-  !?FU(bh_GetHeroSecSkill);
+  !?FU(BH_GetHeroSecSkill);
   !#VA(hero:x) (skill:x) (result:x); now hero = x1, skill = x2, result = x3
   !!HE(hero):S(skill)/?(result);
 
   !?FU(...); some event
-  !!FU(bh_GetHeroSecSkill)/155/27/?(xeronFirstAidLevel:y); so what's the level of First Aid skill Xeron has? )
+  !!FU(BH_GetHeroSecSkill)/(HERO_XERON)/(SKILL_FIRST_AID)/?(xeronFirstAidLevel:y); so what's the level of First Aid skill Xeron has? )
 
   --- Redeclaration ---
   If you need to declare variable in both branches of if-then block, specify type/length in both of them.
@@ -249,10 +197,12 @@ Version 3.0.0 (03/2020)
   !#VA(flags[23]:e); flags is array, binded to e1..e23
 
   --- Interpolation ---
-  To substitute local variables in string literals use $(varName) syntax. Example:
+  To substitute local variables in string literals use %(varName) syntax. Example:
   !!VR(price:y):S600;
   !!VR(heroName:z):S^Robin Hood^;
-  !!IF:Q2/^Would you like to hire $(heroName) for $(price) gold only?^;
+  !!IF:Q2/^Would you like to hire %(heroName) for %(price) gold only?^;
+
+  %y(varName) syntax is also supported and compiles to something like %yy5.
 
 
   ==== Named functions ====
@@ -285,11 +235,149 @@ Version 3.0.0 (03/2020)
   !!VR(spellHandler:y):S(newmagic_DesintegrationSpellHandler);
   !!FU(spellHandler):P;
 
-  will compile in something like that
+  will compile to something like that
 
   !!VRy20:S95003;
   !!FUy20:P;
 
+[+] Added 1000 era - stdlib.erm script, which will contain safe for all extra ERM functionality.
+    Currently !?FU(OnEvenyDay) event is enhanced. Its handlers will receive 5 parameters:
+
+    !?FU(OnEveryDay);
+    !#VA(day:x1) (weekDay:x) (once:x) (owner:x) (isAi:x);
+    !!IF:M^%(day) %(weekDay) %(once) %(owner) %(isAi)^;
+
+[+] Added 1000 era - consts.erm script with lots of constants to be used in ERM 2.0 scripts.
+    ERM Editor, based on Sublime Text, supports constants autocompletion.
+    Remember, that constants without mod name prefix are reserved for ERA.
+    Prefer BH_GOLD_PER_VICTORY to GOLD_PER_VICTORY for Battle Heroes mod, for instance.
+
+[+] Floating point variables (e-variables) are passed to ERM commands as raw 4 bytes value,
+    treated by most commands as integer, which may cause many bugs, unless you know, what you are doing.
+    The exception is !!VR:S command, allowing transparent conversion integer-float. To copy float value,
+    stored in raw format in integer variable to e-variable and vice versa use !!VR:C command. It acts same
+    as VR:S, but without data conversion.
+
+[+] New command !!VR$1:S#2/#3. Convert float to integer using specific rounding mode.
+    $1 - integer variable.
+    #2 - float variable
+    #3 - rounding mode:
+      < 0 for floor operation (round towards negative infinity),
+      0 for normal round (round half away from zero),
+      > 0 for ceil operation (round towards positive infinity).
+
+[+] !!VR: +/-/*/:/% convert both arguments to float if any is float before calculation and convert back
+    to base var type on return.
+    Thus
+    !!VR(koef:e):S25 :10; koef = 2.5
+    !!VR(gold:y):S2 *koef; gold = 5, not 4
+
+[+] New command !!VR$1:~#2
+    Unsets bits #2 in $1 integer variable.
+    Example:
+    !!VR(flags):~17; unset bits/flags 1 + 16 from (flags) variable.
+   
+[+] New command !!VR$1:Z#2. Creates trigger local temporary z-variable with given contents and assigns its index to integer variable.
+    $1 - integer variable.
+    #2 - any string.
+
+    The command can be used to create temporal z-variables to change, for example, artifact description,
+    show message and restore description.
+
+[+] ^....^ literal in any ERM command is interpolated and replaced by temporal z-variable index before receiver
+    execution. This z-variable is released right after receiver is executed.
+    Don't use string literals in WoG 3.58 hint/description setting commands, because such descriptions have short life time.
+
+    From now it's possible to pass strings to functions.
+
+    !?FU(ES_Ask);
+    ; Shows question dialog with caption. Returns boolean (1 on success and 0 on failure).
+    !#VA(captionPtr:x) (questionPtr:x) (result:x);
+    !!IF:Q1/^{%z(captionPtr)}
+
+    %z(questionPtr)^;
+    !!VR(result):S0;
+    !!VR(result)&1:S1;
+
+    !?OB(OBJ_TOWN)/(ANY_OBJ);
+    !!FU(ES_Ask):P^Sphinx asks you:^/^Do you really want to die, fighting my guards?^/?(answer:y);
+    !!HE(CURRENT_HERO)&(answer)=1:K1; let him die )))
+
+[+] Only regular ERT variables are interpolated automatically.
+    Regular z-variables and temporal ert variables are not interpolated in receivers.
+    It means, that !!VRz2:S^%%y5^; z2 is now really "%y5"
+
+    Previously interpolation would be performed again and again recursively, converting %y5 into y5 value like 0.
+    and even later using z2 in any command would run interpolation again.
+
+    !!IF:M1/z2; will display "%y5", not y5 value.
+
+[+] New VR$1:R/T syntax: 0/min/max - generates random value in given range and assignes it to $1 integer variable.
+[+] VR:R/T now both support syntaxes with 1/2/3 arguments.
+[+] VR:T uses Mersenne Twister qualitive generator, but it's not synchronized in multiplayer.
+[+] VR:M1. -1 as length means "till string end".
+
+[+] VR:M2 does not store token index in global variable anymore. Token index, that was ignored earlier, works now as expected.
+   Token delimiters are [#1..#31, ' ', ',', '.']. Don't use for huge text, because performance is O(n^2), where n is tokens number.
+
+[+] VR:M3 Base/radix is enforced to be in 2..16 range.
+
+[+] ERM interpolation (expanding variables starting with % in string literals ^...^ and ERT strings) was fully rewritten.
+    Upper case registry for old ERM variables is supported, but deprecated.
+    %X1 is good, but %x1 is better.
+
+    All new s^...^, i^...^ and named local variables are supported.
+    Indirect references is supported.
+
+    %s(named global variable)
+    %i(named global variable)
+    %xy7
+    %zi^named global variable^
+    %z(namedLocalVar)
+    %(namedLocalVar)
+
+    Quick vars are supported:
+    %i %g %k
+
+    Interpolation of %Vf...t meaning is changed to real v-indexing
+    %vi means v-var with i-index.
+    %f means quick 'f' var.
+    %i means quick 'i' var.
+
+    %F5 means flag 5
+    %Fx16 means flag with x16 index
+
+    Function IDs and constants can be interpolated in the same way, as named local variables:
+    %(CONST_NAME), %(era_FuncName), %(money), %y(moneyPtr)
+
+[+] IF:M# now works with any string
+[+] IF:N1/# now works with any string, not z1 only.
+[+] IF:N# now works with any string.
+[+] BA:B now can work with any string and integer.
+
+[+] Call SN:F^GenerateDebugInfo^ to generate Debug directory contents, the same way as F11 does.
+
+[+] Exported "NameTrigger" function (void NameTrigger(int TriggerId, const char* Name)), allowing plugins to
+    give name to any ERM trigger, which can be used in ERM like !?FU(OnYourNewEvent).
+
+[+] Updated "wog native dialogs" plugin by igrik. From now it's possible to select item in message dialogs
+    using mouse double click.
+
+[+] s^...^, ^...^, i^...^ can now be freely used in conditions.
+
+[+] New d-modifiers (d~, d%, d|, d&, d<<, d>>) work with all receivers.
+
+[+] Rewritten ert-strings storage implementation. Removed limit on 50000 strings. Increased add/delete operations
+    performance (from linear search to binary tree search). Savegames format was changed.
+
+[+] Added VR:C alternative for SN:M arrays. New command !!SN:U#1/#2/$3...up to $21 allows to set/check/get/modify
+    many items of dynamical array.
+    #1 - SN:M array ID.
+    #2 - starting index
+    $3... - items at starting index, starting index + 1, starting index + 2, etc.
+
+[+] Added new command !!VR:R0/#min/#max, generating random value in specified range and assigning its to variable.
+    Example: !!VRy1:R0/100/300; set y1 to random value in 100..300 range
 
 [*] The following exported functions now return 4-bytes LONGBOOL value, 0 for false, -1 (0xFFFFFFFF) for true.
     "ReadStrFromIni", "WriteStrToIni", "SaveIni", "PatchExists", "PluginExists", "Ask".
@@ -320,7 +408,17 @@ Version 3.0.0 (03/2020)
 [+] Rewritten HE:X command to accept any number of parameters and understand any d-modifiers.
     Example: !!HE-1:X0/27 Xd1; become master of gold dragons
 
-[+] Introduces many new d-modifiers, except for GE:E/N, LE:E/N.
+[+] Introduces many new d-modifiers for all ERM commands, except for GE:E/N, LE:E/N.
+    d+# - integer addition
+    d-# - integer substraction
+    d*# - integer multiplication
+    d:# - integer division
+    d|# sets bits from # (bitwise OR operation)
+    d& leaves only # bits, if any (bitwise AND operation)
+    d& unsets bits, specified in #. d&17 unsets bits 1 and 16
+    d%# calculates division modulo. 10%4 = 2, for instance.
+    d<<# shifts original value bits to the left by # positions (bitwise logical shift left).
+    d>># shifts original value bits to the right by # positions (bitwise logical shift right.
 
 [+] Function parameters (FU:P, DO:P), which were passed using GET-syntax, are now initialized with
     original variable value. The behavior is similar to pass-by-reference in other programming languages.
@@ -362,13 +460,12 @@ Version 3.0.0 (03/2020)
 
 [+] Added !!BM:Z?$addr command to get battle stack structure address.
 [+] Added !!HE:Z?$addr command to get hero structure address.
-
 [+] Introduced ERM 2.0 support for scripts, beginning with 'ZVSE2'.
-
 [+] Doubled stack size for h3era.exe executable to allow trigger depth level up to 150, but better avoid such depth.
 
 [+] WoG Campaign editor loads resources from hmm35wog.pac and uses virtual file system. No more Campaign Fix required.
 [+] Added extended resources redirection support with wav/bik/smk files, including missing resources redirection.
+
 [+] Added new plugins events "OnAfterLoadLods", occured right after lods/pacs are loaded and "OnAfterLoadMedia", occured
     when lod/pacs/snd/vids are loaded.
 
@@ -377,18 +474,12 @@ Version 3.0.0 (03/2020)
 [-] Restored functionality of Data\Redirections\Missing\*.json files, which are used to setup redirections
     for missing resources only.
 
-- MAKE QUICK VARS LOCAL!!!
+[+] ERM quick vars (f..t) are now local to triggers. Use them safely.
 
-[!] Update ERM Editor
-[+] Rewritten core of ERM engine: GetNum. Greatly improved macro support.
+[+] Update ERM Editor.
+[+] Rewritten core of ERM engine. Greatly improved old macro support ($macronam$). Just for perfection.
 
-[+]-) Xd+, -, *, :, %, &, |, ~ (remove flags = and not)
-
-[+] i^^ vars are fully supported in regular ERM receivers
-[+] string literals (regular and with interpolation) are fully supported in receiver conditions.
 [+] Extracted WoG campaigns into standalone mod, which was removed from Era installer package.
-
-[+] Named constants and local vars
 
 [+] "remove exe protection.bin" was applied to h3era.exe and removed as patch.
 
@@ -406,13 +497,13 @@ Version 3.0.0 (03/2020)
     
     !?FU(OnDetermineMonInfoDlgUpgrade);
     !#VA(monType:x) (upgType:x) (town:x) (hero:x);
-    !!VR(upgType):S27; allow upgrade anything into Gold Dragons
+    !!VR(upgType):S(MON_GOLD_DRAGON); allow upgrade anything into Gold Dragons
 
 [+] SN/RD/MP receivers now support indexed parameters like vy6 or zi^myIndex^.
 
 [+] SN:D may be used now in battle, being equal to BU:R.
 
-[+] Added support for trigger local dynamical arrays. !!SN:M-1/#/#-1 will allocate new dynamical array
+[+] Added support for trigger local dynamical arrays. !!SN:M-1/#/#/-1 will allocate new dynamical array
     with ID, that will be automatically released after current trigger is exited. Thus no
     corresponding !!SN:M# is necessary to release this temporary array. It can be used, for instance,
     for large calculations or to pass string arguments to function.

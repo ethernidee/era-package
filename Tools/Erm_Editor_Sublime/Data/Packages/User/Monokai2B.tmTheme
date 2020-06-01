@@ -51,7 +51,8 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#75715E</string>
+				<string>#827d68</string>
+				<!-- <string>#75715E</string> -->
 			</dict>
 		</dict>
 		<dict>
@@ -73,7 +74,8 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#AE81FF</string>
+				<string>#ceb3ff</string>
+				<!-- <string>#AE81FF</string> -->
 			</dict>
 		</dict>
 
@@ -649,7 +651,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#66D9EF</string>
+				<string>#6dd9ed</string>
 			</dict>
 		</dict>
 
@@ -659,7 +661,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#ceb3ff</string>
+				<string>#d6bfff</string>
 			</dict>
 		</dict>
 
@@ -735,7 +737,7 @@
 
 		<dict>
 			<key>scope</key>
-			<string>string.macro_declaration.erm</string>
+			<string>string.macro.erm</string>
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
@@ -745,7 +747,7 @@
 
 		<dict>
 			<key>scope</key>
-			<string>string.macro_usage.erm</string>
+			<string>string.macro_declaration.erm</string>
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
