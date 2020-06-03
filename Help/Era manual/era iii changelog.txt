@@ -1,3 +1,133 @@
+Version 3.0.1 (06/2020)
+------------------------
+[+] Added first ERA ERM tests. Tests library in "Tests/1000 era - testlib.erm" and tests, covering found
+    bugs and part of new functionality in "Tests/era - tests.erm".
+
+[+] Added new 3 magic constants. All are safe to use inside strings and as parameters:
+    (FILE) expands into current script file name.
+    (LINE) expands to current line number in script file.
+    (CODE) expands to excerpt of escaped current line source code.
+    These constants are specially useful for debugging, bug reporting and automated tests. See
+    "Tests/era - tests.erm" for examples.
+
+[+] Added new constants: TRUE, FALSE, SN_M_* (for SN:M parameters).
+
+[+] Added new escape sequences for string literals (^...^):
+    '%\:' expands into ';' (usually forbidden character for literals, marking receiver end).
+    '%\"' expands into '^' (usually forbidden character for literals, marking end of literal).
+    '%%'  expands into '%' (used to prevent possible variable interpolation, %%y5 => %y5, not y5 value).
+
+[+] !!FU/DO receivers can now be really called without arguments.
+    For all WoG 3.58 ERM receivers except SN/MP calling subcommand without parameters actually passes single
+    parameter with 0 value.
+    Example:
+    !!CM:R; is the same as !!CM:R0;
+
+    This is not suitable for functions, which could rely on arguments counting to implement default parameter values
+    and optional parameters.
+    From now !!FU:P; passes no parameters and !!FU:P6; passes single parameter.
+
+[!] Old-style ERM macros ($...$) are deprecated, though improved and fully working.
+    Note, that macro names are not cleared until game process is restarted, so prefer not to use them at all.
+
+[*] !!SN:U was renamed to !!SN:V (Vector).
+
+[+] !!SN:M was greatly improved. Negative indexes allow to access elements from the end of array.
+    -1 - the last element
+    -2 - the one before last, etc.
+    It became easy to access list tail like !!SN:M(arrayId)/-1/^New value^;
+
+    SN:M arrays resizing was improved so, that from now they can be used as lists without performance penalty.
+    Memory is allocated by blocks, growing exponentially, so most of the time no allocation is really performed,
+    just remembering new number of items.
+
+    Examples:
+    ; Create new list with 3 items, stored in saved games. Put its ID in i^heroNames^ global variable.
+    !!SN:M(SN_M_AUTO_ID)/3/(SN_M_STR)/(SN_M_STORED)/?i^heroNames^;
+
+    ; Set all items values at once
+    !!SN:Vi^heroNames^/^Corwin^/^Deo^/^Bers^;
+
+    ; Wait, forgot about 'Salamandre', add him too
+    !!SN:Mi^heroNames^/d1;              increased list size by 1
+    !!SN:Mi^heroNames^/-1/^Salamandre^; and written new item to the end
+
+[+] Updated ERM Editor, based on Sublime Text.
+[!] !!FU:C is deprecated and not supported anymore. It may be reused in future.
+
+[*] ErmLegacySupport is set to 0 by default in heroes3.ini. It was introduced for old scripts, relying on
+    negative y-vars automatical zeroing.
+
+[+] All function x-parameters, which were not passed, are now initialised with zeroes. This behavior is suitable for
+    optional arguments. Just don't pass odd arguments in !!FU:P/!!DO:P/etc, and they will have 0 value.
+
+[+] Added new syntax to !!FU:A command. Set default values for parameters.
+    !!FU:A#1/[#2.../#3...];
+    #1 - default value for the first parameter (x1)
+    #2 - default value for the second parameter...
+    The command changes values only if the are not specified during function call.
+
+    Example:
+    ; Find object with given type and subtype
+    !?FU(acl_FindObj);
+    ; Declare two optional parameters
+    !#VA / (objType:x) (objSubtype:x);
+    ; Provide default -1 value for both parameters
+    !!FU:A(NO_OBJ)/(NO_OBJ);
+    ...
+
+    Another example with string parameters.
+    'Ptr' means 'pointer', index of z-variable.
+    
+    !?FU(acl_ShowMessage);
+    !#VA / (messagePtr);
+    
+    !!FU:A?(numArgs:y);    get number of passed arguments
+    !!VR(message:z):S^OK^; set up default message text
+    !!VR(message)&(numArgs)>=(@messagePtr):Sz(messagePtr); override message text with provided value, if it's passed
+
+    !!IF:M^%(message)^;    display message
+
+    The last line works, because @messagePtr for the first argument (x1) will return 1.
+    This is handy way to check if particular parameter was passed.
+
+[+] It's proposed to decorate functions declarations in the following variants:
+
+  ; Bried function description like:
+  ; Hides rectangular area on the map.
+  !?FU(es_HideMapSquare);
+  !#VA(x1:x) (y1:x) (x2:x) (y2:x) (level:x); fast declare all parameters without description
+
+  ; Alternative declaration with arguments explained:
+  !?FU(es_HideMapSquare);
+  !#VA(x1:x); top-left x-coordinate
+  !#VA(y1:x); top-left y-coordinate
+  !#VA(x2:x); bottom-right x-coordinate
+  !#VA(y2:x); bottom-right y-coordinate
+
+  Remember, that everything in !#VA before closing ';' and except of (variableName) is simply deleted
+  from compiled code.
+
+  For functions with optional arguments it's proposed to separate optional arguments from required ones by '/'.
+
+  ; Adds monsters stack to hero army. Default quantity is 1.
+  !?FU(es_AddMonster);
+  !#VA(hero:x) (monType:x) / (monNum:x);
+  !!FU:A0/0/1; specify default argument values
+  !!HE(hero):C2/(monType)/(monNum)/1;
+
+  Alternatively argument optionality may be specified in its description.
+  !?FU(es_AddMonster);
+  !#VA(hero:x);    hero ID
+  !#VA(monType:x); monster type
+  !#VA(monNum:x);  optional. Default: 1
+
+[-] Added missing 1000 era - const.erm and 1000 era - stdlib.erm files to WoG mod.
+[-] Fixed bug: z-variables with invalid negative indexes were considered mutable. Credits: gamemaster.
+[-] Unknown macro names $...$ are now reported as errors, same as it was in ERA 2.x.
+[-] Fixed bug: ERM must stop evaluating cached receiver parameters after first error.
+
+
 Version 3.0.0 (06/2020)
 ------------------------
 [+] Introduced advanced ERM precompilation mode, called ERM 2.0 and activated via "ZVSE2" first line signature.
@@ -370,8 +500,8 @@ Version 3.0.0 (06/2020)
 [+] Rewritten ert-strings storage implementation. Removed limit on 50000 strings. Increased add/delete operations
     performance (from linear search to binary tree search). Savegames format was changed.
 
-[+] Added VR:C alternative for SN:M arrays. New command !!SN:U#1/#2/$3...up to $21 allows to set/check/get/modify
-    many items of dynamical array.
+[+] Added VR:C alternative for SN:M arrays. New command !!SN:V#1/#2/$3...up to $21 allows to set/check/get/modify
+    many items of dynamical array (working with Vector).
     #1 - SN:M array ID.
     #2 - starting index
     $3... - items at starting index, starting index + 1, starting index + 2, etc.

@@ -81,7 +81,7 @@ contexts:
 
   string_caret:
     - meta_scope: string.caret.erm
-    - match: '(%)(([a-zA-Z]?\([^\)^\r\n]*+\)?)|[a-zA-Z](?:[f-t]|-?\d*+))'
+    - match: '(%)(%|\\:|\\"|([a-zA-Z]?\([^\)^\r\n]*+\)?)|[a-zA-Z](?:[f-t]|-?\d*+))'
       captures:
         1: keyword.operator.interpolation.erm
         2: string.interpolation.erm

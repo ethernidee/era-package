@@ -3,6 +3,19 @@
 
    "completions":
    [      
+      { "trigger": "FILE", "contents": "FILE" },
+      { "trigger": "LINE", "contents": "LINE" },
+      { "trigger": "CODE", "contents": "CODE" },
+      
+      { "trigger": "NO_PLAYER", "contents": "NO_PLAYER" },
+      { "trigger": "TRUE", "contents": "TRUE" },
+      { "trigger": "FALSE", "contents": "FALSE" },
+      { "trigger": "SN_M_AUTO_ID", "contents": "SN_M_AUTO_ID" },
+      { "trigger": "SN_M_INT", "contents": "SN_M_INT" },
+      { "trigger": "SN_M_STR", "contents": "SN_M_STR" },
+      { "trigger": "SN_M_STORED", "contents": "SN_M_STORED" },
+      { "trigger": "SN_M_TEMP", "contents": "SN_M_TEMP" },
+      { "trigger": "SN_M_TRIGGER_LOCAL", "contents": "SN_M_TRIGGER_LOCAL" },
       { "trigger": "NO_PLAYER", "contents": "NO_PLAYER" },
       { "trigger": "ANY_PLAYER", "contents": "ANY_PLAYER" },
       { "trigger": "NO_OWNER", "contents": "NO_OWNER" },
