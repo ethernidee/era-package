@@ -102,7 +102,6 @@ Version 2.9.8
     
     On !!re it's checked, if counter reached stop-value or exceeds it. If true, execution is passed to corresponding !!en block.
     On !!en counter is increased by step and if stop condition is not met, next receiver after closest !!re will be executed.
-    If stop condition is not met, execution goes to the next receiver after closest !!re.
 
     !!br (BREAK) with optional condition immediately jumps after loop !!en receiver.
     !!co (CONTINUE) with optional condition immediately jumps to loop !!en receiver, which will be executed as usual.

@@ -63,7 +63,27 @@ ZVSE2
 ; ======================================
 
 
+!?FU(era_TestHeroSpecsSupport);
+!!FU(et_EnterTest):P^Test HE:X^;
+
+!!HE10:X0/1/2/3/4/5/6;
+!!HE10:X?y1/?y2/?y3/?y4/?y5/?y6/?y7;
+!!FU(et_Fail)|y1<>0/y2<>1/y3<>2/y4<>3/y5<>4/y6<>5/y7<>6:P^HE:X with 7 arguments produces wrong result^/(FILE)/(LINE)/(CODE)/^Expected: 0/1/2/3/4/5/6. Got: %y1/%y2/%y3/%y4/%y5/%y6/%y7^;
+; ----------------------------
+!!HE10:X0/0/0/0/0/0/0;
+!!HE10:X6/50/51/13;
+!!HE10:X?y1/?y2/?y3/?y4/?y5/?y6/?y7;
+!!FU(et_Fail)|y1<>6/y2<>50/y6<>51/y7<>13:P^HE:X6 produces wrong result^/(FILE)/(LINE)/(CODE)/^Expected: 6/50/51/13. Got: %y1/%y2/%y6/%y7^;
+; ----------------------------
+!!HE10:X0/0/0/0/0/0/0;
+!!HE10:X7/33/66;
+!!HE10:X?y1/?y2/?y3/?y4/?y5/?y6/?y7;
+!!FU(et_Fail)|y1<>7/y3<>33/y4<>66:P^HE:X7 produces wrong result^/(FILE)/(LINE)/(CODE)/^Expected: 7/33/66. Got: %y1/%y3/%y4^;
+
+!!FU(et_LeaveTest):P;
+
 !?PI;
 !!FU(era_TestStringsInterpolation):P;
 !!FU(era_TestNativeMacroVars):P;
 !!FU(era_TestFunctionsSupport):P;
+!!FU(era_TestHeroSpecsSupport):P;

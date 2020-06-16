@@ -1,3 +1,9 @@
+Version 3.0.2 (06/2020)
+------------------------
+[+] Added support for %Vf..t syntax in interpolated strings, that was present in WoG 3.58.
+[+] Restored short !!HE:X6 syntax support and fixed ERM HE:X7 bug: short syntax worked as X7/a/d/0/0/0/0 instead of X7/0/a/d/0/0/0.
+
+
 Version 3.0.1 (06/2020)
 ------------------------
 [+] Added first ERA ERM tests. Tests library in "Tests/1000 era - testlib.erm" and tests, covering found
