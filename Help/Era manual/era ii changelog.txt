@@ -1,4 +1,22 @@
-Version 2.9.12 (02/2020)
+Version 2.9.14 (2020/06)
+------------------------
+[-] Fixed small issue with commander frames in "wog native dialogs" plugin. Credits: igrik.
+[-] Restored old SN:X functionality, including short SN:X6 syntax.
+
+Version 2.9.13 (2020/04)
+------------------------
+[+] Enhanced !!UN:C command. It supports all d-modifiers now. New syntax with offset from address is available:
+    !!UN:C#addr/#offset/#size/$value;
+    Era always calls GetRealAddr for #addr, thus !!UN:C supports all extended/relocated game structures.
+
+[+] Added !!BM:Z?$addr command to get battle stack structure address.
+[+] Added !!HE:Z?$addr command to get hero structure address.
+
+[*] x-variables are copied to RetXVars even if ERM is disabled, thus allowing event triggers to function identically.
+    Probably fixes a few network crashes.
+
+
+Version 2.9.12 (2020/02)
 ------------------------
 [*] Restructured WoG Campaigns files.
 
@@ -89,7 +107,6 @@ Version 2.9.8
     
     On !!re it's checked, if counter reached stop-value or exceeds it. If true, execution is passed to corresponding !!en block.
     On !!en counter is increased by step and if stop condition is not met, next receiver after closest !!re will be executed.
-    If stop condition is not met, execution goes to the next receiver after closest !!re.
 
     !!br (BREAK) with optional condition immediately jumps after loop !!en receiver.
     !!co (CONTINUE) with optional condition immediately jumps to loop !!en receiver, which will be executed as usual.
@@ -662,7 +679,8 @@ Version 2.8.7
     WoG summons Santa's guardians in this phase (because now stacks are in their final positions).
 
     Event: 'OnBattlefieldVisible'.
-    Occurs when battlefield becomes visible. Game changes theme to combat right after this phase.
+    Occurs when battlefield becomes visible. Game changes theme to combat and display tactics popup message (if case of active tactics skill)
+    right before this phase.
     
     Event: 'OnCombatRound'. A drop-in replacement for !?BR aka 'OnBattleRound'. Occurs only for visible real rounds.
     v997 is round number. For tactics phase it starts from -1000000000. For normal phase, counting starts from 0.
