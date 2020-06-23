@@ -1,7 +1,18 @@
 Version 3.0.2 (06/2020)
 ------------------------
+[+] Added new ERM event 'OnAdvMapObjectHint', allowing to get/set hint for any tile, mouse is currently over.
+    Parameters: x, y, z, object type, object subtype.
+    Example:
+
+    !?FU(OnAdvMapTileHint); display tile coordinates and original hint
+    !#VA(x:x) (y:x) (z:x) (objType:x) (objSubtype:x);
+    !!MM:M?(existingHint:z);
+    !!MM:M^%(x) %(y) %(z) %(objType) %(objSubtype): %(existingHint)^;
+
 [+] Added support for %Vf..t syntax in interpolated strings, that was present in WoG 3.58.
 [+] Restored short !!HE:X6 syntax support and fixed ERM HE:X7 bug: short syntax worked as X7/a/d/0/0/0/0 instead of X7/0/a/d/0/0/0.
+[+] Updated VFS.dll to version 1.0.5.
+[-] Fixed bug in "era - testlib.erm": !?FU(et_ExpectError) didn't restore error suppression option.
 
 
 Version 3.0.1 (06/2020)

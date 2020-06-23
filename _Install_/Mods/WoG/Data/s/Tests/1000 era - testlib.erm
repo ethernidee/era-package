@@ -70,5 +70,5 @@ ZVSE2
 ; Ensures, that ERM error occured since the last call to et_ErrorsOff and reenables error displaying.
 !?FU(et_ExpectError);
 !#VA / (errorTextPtr:x) (fileNamePtr:x) (line:x) (codePtr:x);
-!!UN:P905/?(isError:y) P905/0;
+!!UN:P905/?(isError:y) P904/0 P905/0;
 !!FU(et_Fail)&(isError)=0:P(errorTextPtr)/(fileNamePtr)/(line)/(codePtr)/^ERM error must have been reported, but nothing happened^;

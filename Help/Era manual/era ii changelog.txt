@@ -1,3 +1,8 @@
+Version 2.9.14 (2020/06)
+------------------------
+[-] Fixed small issue with commander frames in "wog native dialogs" plugin. Credits: igrik.
+[-] Restored old SN:X functionality, including short SN:X6 syntax.
+
 Version 2.9.13 (2020/04)
 ------------------------
 [+] Enhanced !!UN:C command. It supports all d-modifiers now. New syntax with offset from address is available:
