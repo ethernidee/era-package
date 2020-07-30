@@ -1,3 +1,29 @@
+Version 3.0.3 (07/2020)
+------------------------
+[+] Added command SN:H^art^/art ID/0 (name) or 1 (description)/$text
+    allowing to get/set any artifact name/description without z-variables dependency.
+
+[+] ERS-files parser was rewritten. No more H3 bugs, caused by 12-character path length restriction.
+    Any ers file name like "some loooooong script.ers" is supported.
+
+[+] Added OnBeforeBattleStackTurn event. It occurs right before OnBattleRegenerationPhase event.
+    Parameters: Stack ID (0..41). Change the first parameter to give turn to another stack.
+    
+    Note, that similar OnBattleStackObtainsTurn event occurs when stack becomes active and is not related to regeneration phase at all.
+    Normally OnBattleStackObtainsTurn occurs after OnBattleRegenerationPhase but may also be triggered manually by calling
+    464F10 (THISCALL, ecx = CombatManager, Side 0..1, StackInd 0..21).
+
+[-] HE:P without 4-th parameter now works as in WoG 3.58f for compatibility reasons. If hero belongs to current player,
+    teleport sound is played and screen redrawn. Otherwise teleportation is silent without visual update.
+
+[-] Fixed bug: each reloading reduced ERT strings length by one. Credits: ArnoVanClaire.
+[-] Included missing ztower1.def in hmm35wog.pac. Credits: ArnoVanClaire.
+[-] Fixed invalid Sorceress fight value in zcrtraits.txt. Credits: Archer30.
+[-] ztport01.def monolith will not be used on random maps anymore (removed from zaobjts.txt).
+[*] IF:N fix was improved. Credits: igrik.
+[*] Era exported functions with boolean results now return int32 0 or 1 (0 or -1 previously).
+
+
 Version 3.0.2 (06/2020)
 ------------------------
 [+] Added new ERM event 'OnAdvMapObjectHint', allowing to get/set hint for any tile, mouse is currently over.
@@ -486,7 +512,7 @@ Version 3.0.0 (06/2020)
     Quick vars are supported:
     %i %g %k
 
-    Interpolation of %Vf...t meaning is changed to real v-indexing
+    Interpolation of %Vf...t is the same as in WoG 3.58, but %vf...t means real v-indexing
     %vi means v-var with i-index.
     %f means quick 'f' var.
     %i means quick 'i' var.

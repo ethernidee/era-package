@@ -33,6 +33,7 @@
       { "trigger": "OnBeforeBattleBeforeDataSend", "contents": "OnBeforeBattleBeforeDataSend" },
       { "trigger": "OnBeforeBattlefieldVisible", "contents": "OnBeforeBattlefieldVisible" },
       { "trigger": "OnBeforeBattleForThisPcDefender", "contents": "OnBeforeBattleForThisPcDefender" },
+      { "trigger": "OnBeforeBattleStackTurn", "contents": "OnBeforeBattleStackTurn" },
       { "trigger": "OnBeforeBattleUniversal", "contents": "OnBeforeBattleUniversal" },
       { "trigger": "OnBeforeHeroInteraction", "contents": "OnBeforeHeroInteraction" },
       { "trigger": "OnBeforeSaveGame", "contents": "OnBeforeSaveGame" },
