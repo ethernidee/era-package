@@ -1,3 +1,43 @@
+Version 3.0.4 (09/2020)
+------------------------
+[+] Extended town income limits from -32768..32767 to -2147483648..+2147483648 and added new event OnCalculateTownIncome
+    with three parameters: Town ID, Income (gold amount), Account resource silo? (0 or 1).
+
+[+] Introduced extended !!re syntax: !!re counter/start/stop/step/stop_modifier, where stop_modifier is any integer value,
+    that will be added to stop value. New syntax allows to express such loops as FROM 0 to SOME_VAR - 1, for instance.
+
+    Example:
+    !!re i/0/(numStacks)/1/-1:;
+      ...
+    !!en:;
+
+[+] !!re allows to use any variables now, including global named s/i variables.
+
+[+] Improved ERM stability. Now all non-specified parameters are treated as 0 in X# syntax and ignored in X$ syntax.
+    As a result, !!DL:A without the 4-th parameter will not randomly crash anymore and !!TR may be used with any number of parameters,
+    while exactly 8 were required previously. Note, that many ERM commands still require exact number of obligatory parameters.
+
+[+] !!DL:A was improved, accepting any string including string literal as the 3-d parameter.
+
+[+] Included updated "wog native dialogs" plugin by igrik. From now plugins exports function __cdecl int UseWin32InputControl (int newState).
+    The function allows to switch between Heroes 3 native input control and Windows input control. The latter allows to input Asian and '{', '}' characters.
+    Mode can be switched any time even using ERM. UseWin32InputControl returns previous state.
+
+[*] Fully restored Nagash and Jeddite original portraits, descriptions and specialties.
+
+[*] Changed ERM error report generating: not only ERM memory dump is made, but the whole debug information is saved, like
+    if you press F11 manually.
+
+[-] Fixed WoG bug, disallowing to set dialog hints twice using DL:H command. Credits: gamecreator.
+[-] Fixed bug in ERM caching engine: GET-syntax could produce garbage values on cache hit.
+[-] Fixed bug in ERM engine, causing crashes in !!UR:S and a few other possible commands.
+[-] Fixed bug: IF:N$ used to cause ERM errors and crashes. Credits: helgtla.
+[-] Fixed bug: HE:P used to return unsigned 65535 instead of signed -1.
+[-] Fixed bug: ERM compiler didn't process post-triggers.
+[-] Fixed bug, causing many Era commands to return garbage after valid string contents. Credits: PerryR.
+[-] Fixed map editor => WoG tools menu shortcuts to actual programs. Credits: Archer30.
+
+
 Version 3.0.3 (07/2020)
 ------------------------
 [+] Added command SN:H^art^/art ID/0 (name) or 1 (description)/$text
@@ -89,7 +129,7 @@ Version 3.0.1 (06/2020)
     !!SN:M(SN_M_AUTO_ID)/3/(SN_M_STR)/(SN_M_STORED)/?i^heroNames^;
 
     ; Set all items values at once
-    !!SN:Vi^heroNames^/^Corwin^/^Deo^/^Bers^;
+    !!SN:Vi^heroNames^/0/^Corwin^/^Deo^/^Bers^;
 
     ; Wait, forgot about 'Salamandre', add him too
     !!SN:Mi^heroNames^/d1;              increased list size by 1

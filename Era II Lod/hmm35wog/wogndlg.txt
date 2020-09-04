@@ -18,10 +18,6 @@ Click to dismiss this Commander.
 Exit Commander screen
 Click to increase selected skill.
 
-; general descriptions
-kills:
-Attack %s (damage: %s)
-Shoot %s (%d shots left, damage: %s)
-Shoot %s (last shot, damage: %s)
 {WoG Options}
-End the battle instantly?
+Finish with Quick Combat?
+, kills: %s

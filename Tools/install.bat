@@ -30,21 +30,12 @@ move /Y %ROOT_FILES%\*.* .
 rem [Install mods]
 if exist Mods (
   rmdir /S /Q Mods\WoG
-  rmdir /S /Q "Mods\WoG Scripts"
-  rmdir /S /Q "Mods\Fast Battle Animation"
-  rmdir /S /Q Mods\Yona
-  rmdir /S /Q "Mods\Secondary Skills Scrolling"
-  rmdir /S /Q "Mods\Quick Savings"
   for /d %%i in (%MOD_FILES%\*) do move /y "%%i" Mods
 )
 
 if not exist Mods (
   move /y %MOD_FILES% .
   Tools\installmod WoG
-  rem Tools\installmod "Fast Battle Animation"
-  rem Tools\installmod Yona
-  rem Tools\installmod "Secondary Skills Scrolling"
-  rem Tools\installmod "Quick Savings"
 )
 
 rem Fix previous installations
