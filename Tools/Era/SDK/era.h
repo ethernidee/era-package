@@ -290,7 +290,7 @@ namespace Era
 
   /**
    * Returns translation for given complex key ('xxx.yyy.zzz') with substituted parameters.
-   * Pass vector of (parameter name, parameter value) pairs to substiture named parameters.
+   * Pass vector of (parameter name, parameter value) pairs to substitute named parameters.
    * Example: Mod\Lang\*.json file: { "eqs": { "greeting": "Hello, @name@" } }
    * Example: ShowMessage(tr("eqs.greeting", { "name", "igrik" }).c_str());
    * 
@@ -308,9 +308,10 @@ namespace Era
     }
 
     char* buf = _tr(key, _params, numParams - 1);
+    std::string result = buf;
     MemFree(buf);
 
-    return buf;
+    return result;
   }
 
   std::string IntToStr (int value) {

@@ -1,5 +1,6 @@
 OnAdventureMapLeftMouseClick
 OnAdventureMapRightMouseClick
+OnAdvMapTileHint
 OnAfterAdventureMagic
 OnAfterBattle
 OnAfterBattleAction
@@ -28,10 +29,12 @@ OnBeforeBattleAfterDataReceived
 OnBeforeBattleBeforeDataSend
 OnBeforeBattlefieldVisible
 OnBeforeBattleForThisPcDefender
+OnBeforeBattleStackTurn
 OnBeforeBattleUniversal
 OnBeforeHeroInteraction
 OnBeforeSaveGame
 OnBuildTownBuilding
+OnCalculateTownIncome
 OnChat
 OnCloseCommanderWindow
 OnCloseHeroScreen
@@ -39,6 +42,7 @@ OnCloseRecruitDlg
 OnCloseTownScreen
 OnCombatRound
 OnCustomDialogEvent
+OnDetermineMonInfoDlgUpgrade
 OnDwarfMagicResistance
 OnEnterTownHall
 OnEquipArt

@@ -30,12 +30,14 @@ move /Y %ROOT_FILES%\*.* .
 rem [Install mods]
 if exist Mods (
   rmdir /S /Q Mods\WoG
+  rmdir /S /Q "Mods\Era Erm Framework"
   for /d %%i in (%MOD_FILES%\*) do move /y "%%i" Mods
 )
 
 if not exist Mods (
   move /y %MOD_FILES% .
   Tools\installmod WoG
+  Tools\installmod "Era Erm Framework"
 )
 
 rem Fix previous installations

@@ -34,6 +34,8 @@
       { "trigger": "ho\t!!HO", "contents": "!!HO" },
       { "trigger": "ht\t!!HT", "contents": "!!HT" },
       { "trigger": "iff\t!!IF", "contents": "!!IF:" },
+      { "trigger": "ifl\t!!IF", "contents": "!!IF:L^$0^;" },
+      { "trigger": "ifm\t!!IF", "contents": "!!IF:M^$0^;" },
       { "trigger": "ip\t!!IP", "contents": "!!IP:" },
       { "trigger": "kt\t!!KT", "contents": "!!KT" },
       { "trigger": "le\t!!LE", "contents": "!!LE" },

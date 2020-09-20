@@ -1,3 +1,215 @@
+Version 3.0.5 (09/2020)
+------------------------
+[+] Updated "wog native dialogs" plugin. All localized string were moved to json file.
+    Added possibility to tune fonts, used in different dialogs. Credits: igrik.
+
+[+] Updated "skeleton transformer fix.bin" patch. Hell Hydra is transformed into Bone Dragon.
+    Returned original transformation for mummies. Credits: Bes.
+
+[+] SN:V now supports negative indexes, meaning n-th from end, the same as SN:M.
+
+[+] Added possibility to query SN:M arrays information.
+    !!SN:M#1/(?)$2/(?)$3/?($4)[/?$5];
+    #1 - array ID
+    $2 - items count
+    $3 - items type (0 - integers, 1 - strings)
+    $4 - items storage type (-1 - trigger local, 0 - temporary, 1 - with savegame stored contents)
+    $5 - unsafe temporary address of array first item in memory
+    At least single #2..#4 parameter should use GET syntax. SET-syntax parameters are ignored in this case.
+
+    Example:
+    !!SN:M(array)/d/?(itemsType:y)/d; check if it's array of integers or strings
+    !!if&(itemsType)=(M_INT):; ...
+
+[+] Added new constants to "Era Erm Framework" mod:
+  - TOWN_XXX constants for each town type in the game.
+  - CALLCONV_XXX constants for possible SN:E calling conventions.
+  - BATTLE_XXX constants for battle sides and stack limits.
+  - FLOAT_INF and FLOAT_NEG_INF, representing infinity values for float numbers.
+  Usage:
+  !!VR(inf:e):C(FLOAT_INF);                   Assign positive infinity to (inf) variable without type conversion
+  !!IF&(someValue)=(inf):M^Value is too big^; Check some e-var for positive infinity
+
+[+] Extended OnEveryDay trigger in "Era Erm Framework" mod. The following global variables are automatically set:
+    - i^timerDay^:        1..+inf
+    - i^timerWeekDay^:    1..7
+    - i^timerMonthDay^:   1..28
+    - i^timerWeek^:       1..+inf
+    - i^timerMonthWeek^:  1..4
+    - i^timerMonth^:      1..+inf
+    - i^timerOnce^:       0..1
+    - i^timerOwner^:      0..7
+    - i^timerIsAi^:       0..1
+    - i^timerIsHuman^:    0..1
+
+[+] Added mathemetical functions to "Era Erm Framework" mod.
+
+  !?FU(Pow);
+  ; Raises value to specified power. All arguments and result are floats.
+  ; Example: 2^3 = 8, i.e. 2 * 2 * 2 = 8
+  !#VA(base:x) (power:x) (result:x);
+
+  !?FU(Sqrt);
+  ; Returns value square root. All arguments and result are floats.
+  !#VA(value:x) (result:x);
+
+  !?FU(IntLog2);
+  ; Returns Ceil(Log2(N)) or 0 for invalid values (<= 0).
+
+  Examples:
+
+  !!FU(IntLog2):P100/?(res:y);
+  !!IF:M^%(res)^; displays 7, because 2^7 = 128 and 2^6 = 64
+  ; It means that 7 bits are necessary to hold data with 100 possible values.
+  ; It also means, that if one value is 100x greater than the other one, then
+  ; it would take 7 multiplications by 2 before the second value will become >= the first one.
+
+  
+  !!VR(base:e):S123 :10; base = 12.3
+  !!VR(power:e):S35 :10; power = 3.5
+  !!FU(Pow):P(base)/(power)/?(float:e);
+  !!IF:M^%(float)^; 12.3 ^ 3.5 = 6526.31287
+
+
+  !!VR(value:e):S123 :10;
+  !!FU(Sqrt):P(value)/?(float:e);
+  !!IF:M^%(float)^; 12.3 ^ 0.5 = 3.507. I.e. 3.507 * 3.507 = 12.3
+
+[+] Added functions for SN:M arrays handling to "Era Erm Framework" mod.
+
+  !?FU(Array_Join);
+  ; Concatenates array items into single string, using passed glue string. Works with both numeric and string arrays.
+  ; Example: ['one', 'two', 'three'] with glue ' --- ' become 'one --- two --- three'.
+  ; Returns s^result^
+  ; Uses s^_^
+  !#VA(list:x);    Array ID.
+  !#VA(gluePtr:x); Optional. Glue string. Default: ''.
+
+  Example:
+
+  ; Create list with names of the first 10 heroes
+  !!SN:M(M_AUTO_ID)/10/(M_STR)/(M_TRIGGER_LOCAL)/?(names:y);
+
+  !!re i/0/10/1/-1:;
+    !!HEi:B0/?(heroName:z);
+    !!SN:V(names)/i/(heroName);
+  !!en:;
+
+  ; Display joined list items
+  !!FU(Join):P(names)/^
+  ^;
+  !!VR(textPtr:y):Zs^result^;
+  !!IF:M^%z(textPtr)^;
+
+
+  !?FU(Array_Sort);
+  ; Sorts array items in ascending order. Allows to sort specific array subrange.
+  !#VA(list:x);     Array ID.
+  !#VA(startInd:x); Optional Start index of array subrange to sort. Default: 0.
+  !#VA(endInd:x);   Optional End index of array subrange to sort. Default: numItems - 1.
+
+  Example:
+  ; Let (names) variable hold SN:M array ID with heroes names (see example with Join function)
+  !!FU(Array_Sort):P(names); will sort it
+
+
+  !?FU(Array_CustomSort);
+  ; Sorts array items in ascending order user custom comparator function. Allows to sort specific array subrange.
+  ; It's possible to perform any complex sorting in any direction and by unlimited number of criteria, using this method.
+  ; It's a stable sorting method, i.e. items, which we be reported as equal, will retain their relative position to each other.
+  ; For example, if sorting 'Ann', 'David' and 'Ken' by name length, the result will be 'Ann', 'Ken', 'David' and not 'Ken', 'Ann', 'David'.
+  ; When sorting string array, comparator function will receive z-indexes of strings as arguments.
+  !#VA(list:x);        Array ID.
+
+  !#VA(compareFunc:x); Comparison ERM function ID. It will be called multiple times with the following arguments:
+                     ; (value1, value2, state), where 'state' is any custom value, you specify on call to Array_CustomSort.
+                     ; Usually state is some array ID or external structure address, that client use to compare items.
+                     ;
+                     ; The function must return value:
+                     ; < 0 if value1-item should be placed before value2-item
+                     ; > 0 if value1-item should be placed after value2-item
+                     ; 0 if the ordering between two items should be left as is.
+
+  !#VA(state:x);    Optional. Custom value to be always passed to comparison function as the third argument. Default: 0.
+  !#VA(startInd:x); Optional. Start index of array subrange to sort. Default: 0.
+  !#VA(endInd:x);   Optional. End index of array subrange to sort. Default: numItems - 1.
+
+  Example 1. Sorting monsters IDs array by HP of each monster
+
+  !!SN:M(M_AUTO_ID)/10/(M_INT)/(M_TRIGGER_LOCAL)/?(mons:y);
+  !!SN:V(mons)/0/39/12/20/92/78/17/13/43/6/32;
+  !!FU(Array_CustomSort):P(mons)/(tst_CompareByMonHp);
+  !!FU(Array_Join):P(mons)/^ ^;
+  !!IF:M^Monster IDs: %s(result)^;
+
+  !?FU(tst_CompareByMonHp);
+  !#VA(mon1:x) (mon2:x) (state:x) (result:x);
+  !!VR(result):S0;
+
+  !!MA:P(mon1)/?(hp1:y);
+  !!MA:P(mon2)/?(hp2:y);
+
+  !!if&(hp1)>(hp2):;
+    !!VR(result):S1;
+  !!el&(hp1)<(hp2):;
+    !!VR(result):S-1;
+  !!en;
+
+  Example 2. Sorting visitor names by name length
+
+  !!SN:M(M_AUTO_ID)/4/(M_STR)/(M_TRIGGER_LOCAL)/?(visitors:y);
+  !!SN:V(visitors)/0/^Laura^/^Den^/^Agriel^/^Ken^;
+  !!FU(Array_CustomSort):P(visitors)/(tst_CompareByStrLen);
+  !!FU(Array_Join):P(visitors)/^ ^;
+  !!IF:M^Visitors: %s(result)^;
+
+  !?FU(tst_CompareByStrLen);
+  !#VA(str1Ptr:x) (str2Ptr:x) (state:x) (result:x);
+  !!VRz(str1Ptr):M4/?(str1Len:y);
+  !!VRz(str2Ptr):M4/?(str2Len:y);
+  !!VR(result):S(str1Len) -(str2Len);
+
+
+  !?FU(Array_Revert);
+  ; Reverts order of itmes in the array. Allows to reverse the order of specific array subrange only.
+  !#VA(list:x);     Array ID.
+  !#VA(startInd:x); Optional Start index of array subrange. Default: 0.
+  !#VA(endInd:x);   Optional End index of array subrange. Default: numItems - 1.
+
+  Example:
+  ; Let (names) variable hold SN:M array ID with heroes names (see example with Join function)
+  !!FU(Array_Revert):P(names); will revert items order
+
+
+  !?FU(Array_Fill);
+  ; Fills array or arrays subrange with incrementing/decrementing values.
+  ; Example: FU(Array_Fill):P(array)/100/2; Will fill items with 100, 102, 104, 106...
+  !#VA(list:x);       Array ID.
+  !#VA(startValue:x); Starting value to fill with.
+  !#VA(step:x);       Value to add to increase filler on each step. Default: 0.
+  !#VA(startInd:x);   Optional. Start index of array subrange. Default: 0.
+  !#VA(endInd:x);     Optional. End index of array subrange. Default: numItems - 1.
+
+  Example:
+  ; Let (array) is some array of integer numbers. Let's fill it with 100, 98, 96...
+  !!FU(Array_Fill):P(array)/100/-2;
+
+[*] Creating array using SN:M with 5 parameters does not change v1 anymore.
+[*] Extracted all Era supplied ERM scripts into "Era Erm Framework" mod.
+[*] Extracted ERM testing code into separate mod "Era Erm Tests".
+[*] Updated ERM editor snippets and autocompletion files. Added fast 'ifm', 'ifl' and 'snm' snippets.
+
+[-] Applied fixes to ERM constants (Era Erm Framework mod):
+  Fixed constant name: MON_SUPREMEARCHANGEL => MON_SUPREME_ARCHANGEL.
+  Fixed constant MON_LAST_WOG => 196 instead of 197. Credits: igrik.
+  Fixed primary skills constants. Credits: Algor.
+
+[-] Fixed crash on !#VA(-varName) syntax usage.
+[-] Fixed ERM memory dump generation: slots reporting use to contain information about reserved items.
+[-] Fixed x-variables reporting in ERM tracking module. Previosly garbage x0 value was output as the first one.
+[-] Fixed Nagash portrait name in game and map editor executables. No more "missing hpsz001.pcx" error.
+
+
 Version 3.0.4 (09/2020)
 ------------------------
 [+] Extended town income limits from -32768..32767 to -2147483648..+2147483648 and added new event OnCalculateTownIncome
@@ -51,7 +263,7 @@ Version 3.0.3 (07/2020)
     
     Note, that similar OnBattleStackObtainsTurn event occurs when stack becomes active and is not related to regeneration phase at all.
     Normally OnBattleStackObtainsTurn occurs after OnBattleRegenerationPhase but may also be triggered manually by calling
-    464F10 (THISCALL, ecx = CombatManager, Side 0..1, StackInd 0..21).
+    464F10 (THISCALL, ecx = CombatManager, Side 0..1, StackInd 0..20).
 
 [-] HE:P without 4-th parameter now works as in WoG 3.58f for compatibility reasons. If hero belongs to current player,
     teleport sound is played and screen redrawn. Otherwise teleportation is silent without visual update.

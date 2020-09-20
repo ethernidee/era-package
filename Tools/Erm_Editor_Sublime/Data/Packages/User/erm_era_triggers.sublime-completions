@@ -5,6 +5,7 @@
    [     
       { "trigger": "OnAdventureMapLeftMouseClick", "contents": "OnAdventureMapLeftMouseClick" },
       { "trigger": "OnAdventureMapRightMouseClick", "contents": "OnAdventureMapRightMouseClick" },
+      { "trigger": "OnAdvMapTileHint", "contents": "OnAdvMapTileHint" },
       { "trigger": "OnAfterAdventureMagic", "contents": "OnAfterAdventureMagic" },
       { "trigger": "OnAfterBattle", "contents": "OnAfterBattle" },
       { "trigger": "OnAfterBattleAction", "contents": "OnAfterBattleAction" },
@@ -38,6 +39,7 @@
       { "trigger": "OnBeforeHeroInteraction", "contents": "OnBeforeHeroInteraction" },
       { "trigger": "OnBeforeSaveGame", "contents": "OnBeforeSaveGame" },
       { "trigger": "OnBuildTownBuilding", "contents": "OnBuildTownBuilding" },
+      { "trigger": "OnCalculateTownIncome", "contents": "OnCalculateTownIncome" },
       { "trigger": "OnChat", "contents": "OnChat" },
       { "trigger": "OnCloseCommanderWindow", "contents": "OnCloseCommanderWindow" },
       { "trigger": "OnCloseHeroScreen", "contents": "OnCloseHeroScreen" },
@@ -45,6 +47,7 @@
       { "trigger": "OnCloseTownScreen", "contents": "OnCloseTownScreen" },
       { "trigger": "OnCombatRound", "contents": "OnCombatRound" },
       { "trigger": "OnCustomDialogEvent", "contents": "OnCustomDialogEvent" },
+      { "trigger": "OnDetermineMonInfoDlgUpgrade", "contents": "OnDetermineMonInfoDlgUpgrade" },
       { "trigger": "OnDwarfMagicResistance", "contents": "OnDwarfMagicResistance" },
       { "trigger": "OnEnterTownHall", "contents": "OnEnterTownHall" },
       { "trigger": "OnEquipArt", "contents": "OnEquipArt" },
