@@ -271,7 +271,7 @@ Version 2.9.5
     town screen for particular town. Both events occur, whether town screen is opened/closed or switched.
     They can be used to pre-change buildings/names/dwellings and revert changes afterwards, for instance.
 
-[+] Events "OnOpenHeroScreen", "OnCloseHeroScreen" and "OnUpdateHeroScreen" now receive x1 = Hero ID parameter.
+[+] Events "OnOpenHeroScreen", "OnCloseHeroScreen" and "OnLoadHeroScreen" now receive x1 = Hero ID parameter.
     In "OnCloseHeroScreen" x1 is the same as in "OnOpenHeroScreen", thus it's the first hero, screen was opened for.
     Hero screen dialog allows to switch between heroes, without generating new Open/Close events.
 

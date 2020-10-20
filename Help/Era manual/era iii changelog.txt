@@ -1,3 +1,263 @@
+Version 3.1.0 (10/2020)
+------------------------
+[+] Updated "wog native dialogs" plugin. Added support for IF:B/P dialogs and extended IF:Q/IF:N dialogs.
+    Implemented advanced battle log dialog. To open it press "H" or click LMB on log bar in battle.
+    Improved compatibility with majaczek's plugins. Credits: igrik.
+
+[+] Updated "quest dialog" plugin. Provided compatibility with improved Heroes 3 dialogs. Credits: igrik.
+
+[+] Implemented support for IF:Q with message type 7 (MSG_TYPE_CHOOSE_PIC) and 3-picture selection. The result is 1, 2, 3 or 0 for cancel.
+    Prefer to use IF:N instead for better dialog control.
+
+[+] Implemented extended complex dialogs support in ERM. Credits: igrik, Berserker.
+    IF:N(msgType)/^text^[/?result/(textAlignment)/(preselectedPicId)].
+    Display dialog with up to selectable 8 pictures.
+
+    msgType           is one of MSG_TYPE_XXX constants (message, question, popup, picture selection with optional cancel button).
+    textAlignment     is bit mask of TEXT_ALIGN_XXX flags. Both vertical and horisontal alignment are supported. -1 means "use default".
+    preselectedPicId  is preselected picture index: 0-7 or -1 for none
+    result            will contain -1 in most cases, (TRUE) or (FALSE) for questions, 0-7 (picture index) for picture selection and -1 for cancelled selection.
+
+    Example:
+
+    !?FU(OnAfterErmInstructions);
+    !!IF:N(PIC_TYPE_SPELL)/(SPELL_TOWN_PORTAL)/(PIC_TYPE_RES_GOLD)/300/
+          (PIC_TYPE_RES_WOOD)/5/(PIC_TYPE_RES_MERCURY)/10/(PIC_TYPE_RES_ORE)/15/
+          (PIC_TYPE_RES_SULFUR)/20/(PIC_TYPE_RES_CRYSTAL)/25/(PIC_TYPE_MONEY)/5000;
+
+    !!IF:N(MSG_TYPE_CHOOSE_PIC_OR_CANCEL)/^Take anything you need, bro!^/?(chosenItem:y)/(TEXT_ALIGN_LEFT);
+
+    !!IF:M^%(chosenItem)^;
+
+[+] IF:N and IF:Q dialogs with pictures now support special picture type flag: (PIC_TYPE_FLAG_DISPLAY_ZEROS).
+    If it's set, zero quantities (resources, monsters, experience, etc) will be displayed like "0 Archangels" instead of "Archangels" or empty caption.
+
+    Example:
+    !!VR(picType:y):S(PIC_TYPE_EXPERIENCE) |(PIC_TYPE_FLAG_DISPLAY_ZEROS);
+    !!VR(picSubtype:y):S0;
+    !!IF:Q2/(picType)/(picSubtype)/(MSG_TYPE_QUESTION)/^Wanna nothing?^;
+
+[+] Updated "Era Erm Framework" mod constants: data types, wog flags and options, town constants, game limits,
+    magic levels, battle actions, hero artifact slots, dialog IDs, picture types, text alignment and many others.
+
+[+] Added file "9999 era - key codes.erm" to "Era Erm Framework" with 150+ key codes constants.
+
+[+] Added "OnAfterErmInited" event to "Era Erm Framework", occuring right in the end of !?PI / "OnAfterErmInstructions" event.
+    The event allows to perform actions after most scripts initialized their variables and performed basic map/memory configuration.
+
+[+] Added new events to "Era Erm Framework": "OnKeyPressed_AdvMap", "OnKeyPressed_Battle", "OnKeyPressed_HeroScreen",
+    "OnKeyPressed_HeroMeetingScreen", "OnKeyPressed_Town", occuring right after "OnKeyPressed" events and taking two arguments:
+    x1 - key code
+    x2 - prevent default reaction (0 - no, 1 - yes).
+
+    Example:
+    !?FU(OnKeyPressed_Battle)&x1=(KEY_F1):;
+    !#VA(key:x) (preventDefault:x);
+    !!VR(preventDefault):S(TRUE);
+    !!IF:M^Pressed F1 in battle!^;
+
+[+] SN:F now supports 'user32.dll' functions.
+
+[+] Added new functions to "Era Erm Framework".
+  !?FU(Array_SortedUnique);
+  ; Leaves only unique sorted integer items in the array.
+  ; Calling on [15, 4, 3, 3, 1, 20, 15] list will rearrange and truncate list to the following:
+  ; [1, 3, 4, 15, 20]
+  !#VA(list:x); Array ID
+
+  !?FU(Array_EnsureMinSize);
+  ; Checks, if array has at least specified minimal size and increasing the size if not, filling new items
+  ; with optional default value.
+  !#VA(list:x);      Array ID.
+  !#VA(minSize:x);   Minimal desired array size.
+  !#VA(fillValue:x); Optional. Fill value for new items. Default: ^^ or 0.
+
+  !?FU(ConstructBitMask);
+  ; Accepts up to 15 bit/flag positions (0..31). Returns mask with corresponding bit flags set.
+  ; Actually, given Xi arguments, returns Sum(2 ^ xi).
+  ; For example, P0/3/7/?(mask:y) will give 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137.
+  !#VA(args:x);   ... Up to 15 bit/flag positions.
+  !#VA(result:x); The last argument will contain the result mask.
+
+  !?FU(DeconstructBitMask);
+  ; Deconstructs bit mask into list of bit/flag positions (each with 0..31 value).
+  ; For example, P137/(list) will fill the list with [0, 3, 7] values, because
+  ; 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137. It means, that bits 0, 3 and 7 are set.
+  !#VA(mask:x); Bit mask.
+  !#VA(list:x); Array ID to fill with bit/flag positions.
+
+  !?FU(MonCountToFuzzyText);
+  ; Converts monster quantity to human readable value range like "50-99" or "2K+".
+  ; Returns result in s^result^
+  !#VA(monNum:x);
+
+  !?FU(DisableErrors);
+  ; Disables ERM error messages and resets error option.
+
+  !?FU(EnableErrors);
+  ; Enables ERM error messages and returns last error flag (TRUE or FALSE).
+  !#VA(result:x);
+
+  !?FU(StrToUpper);
+  ; Converts given string to upper case. Result is returned in s^result^.
+  !#VA(strPtr:x);
+  
+  !?FU(StrToLower);
+  ; Converts given string to lower case. Result is returned in s^result^.
+  !#VA(strPtr:x);
+
+  !?FU(GetStrAtAddr);
+  ; Reads null terminated string at specified address into s^result^ variable.
+  ; Null address (0) results in empty string.
+  !#VA(strAddr:x);
+
+[+] Added Era exported function ShowErmError (Error: pchar); stdcall;
+    The function shows regular ERM error dialog and can be used for ERM scripts error reporting and debugging.
+
+    Example:
+
+    !!if|(baseFaction)<(NO_TOWN)/(baseFaction)>(MIX_MAX_POSSIBLE_FACTION_ID):;
+      !!SN:F^ShowErmError^/^Invalid "baseFaction" argument: %(baseFaction)^;
+      !!FU:E;
+    !!en;
+
+[+] Added possibility to extend lifetime of trigger-local SN:M array to parent scope. It's now possible to return
+    trigger-local arrays to caller function without necessity to free that array afterwards. Thus automatical memory
+    management is preserved.
+
+    Example:
+    ; Deep level function returns trigger-local array of 3 strings to another function, which in its case returns the same array
+    ; to "OnAfterErmInstructions" trigger. The array will be freed after "OnAfterErmInstructions" execution block ends.
+
+    !?FU(FuncB);
+    !#VA(result:x);
+    !!SN:M(M_AUTO_ID)/3/(M_STR)/(M_TRIGGER_LOCAL)/?(result);
+    !!SN:V(result)/0/^one^/^two^/^three^;
+    !!SN:F^ExtendArrayLifetime^/(result);
+
+    !?FU(FuncA);
+    !#VA(result:x);
+    !!FU(FuncB):P?(result);
+    !!SN:F^ExtendArrayLifetime^/(result);
+
+    !?(OnAfterErmInstructions);
+    !!FU(FuncA):P?(arr:y);
+    !!FU(Array_Join):P(arr)/^ ^;
+    !!IF:M^%s(result)^; Display "one two three"
+
+    !?(OnAfterErmInstructions);
+    ; here the (arr) array is already deleted
+
+[+] Added support for local z-strings as function parameters. They will be converted to temporary read-only z-variable indexes.
+    
+    Example:
+    !!VR(str:z):S^haVe A nIce day!^;
+    !!FU(StrToUpper):P(str); here z-1 will be converted into something like "10000002" which is z10000002 index
+    !!IF:M^%s(result)^; Display "HAVE A NICE DAY!"
+
+[+] Added possibility to define ERM 2 constant aliases.
+    Example:
+
+    !#DC(PIC_TYPE_RES_FIRST) = (PIC_TYPE_RES_WOOD);
+    !#DC(PIC_TYPE_RES_LAST)  = (PIC_TYPE_RES_MITHRIL);
+
+    Now (PIC_TYPE_RES_FIRST) will have the same value as (PIC_TYPE_RES_WOOD) constant.
+
+[+] Added possiblity to use constants in local array declarations. Previously array size could be number only.
+    Now it's possible to specify constant name instead of number without parenthesis.
+
+    Example:
+    !#DC(MAX_DWELLING_ALT_CREATURES) = 4;
+
+    !#VA(dwellingMonTypes[MAX_DWELLING_ALT_CREATURES]:y); Define array of 4 items to hold dwelling monster types
+
+[+] Added support for e-variables in VR:C. !!VR(floats[3]:e):C0/0/0;
+    Do not forget, that no integer-float conversion is performed in VR:C, all values are copied as is. The only safe constant
+    for e-variables is 0.
+
+[+] Improved TR:T to allow any number of arguments.
+
+[+] Improved UN:U command. It does not raise error if no more objects are found, but sets x-coordinate to -1 instead. Thus no premature
+    objects counting is required. A new syntax with 6 parameters was added to allow using arbitrary integer variables instead of v-variables.
+    !!UN:U(objectType)/(objectSubtype)/(direction like -1/-2 or object index)/(x)/(y)/(z).
+
+    Example:
+    ; Let's traverse through all map monsters, doubling their quantity
+
+    !#VA(x:y) (y:y) (z:y); define variables to store object coordinates
+    !!VR(x):S-1;           setting x-coordinate to -1 will force to start search from scratch
+    
+    !!re i; endless loop
+      !!UN:U(OBJ_MONSTER)/(ANY_OBJ)/-1/(x)/(y)/(z); find next monster, (x) = -1 on failure
+      !!br&(x)<0:;                                  exit loop if nothing found
+      !!MO(x)/(y)/(z):Gd*2;                         double monsters quantity
+    !!en:;
+
+[+] Heroes 3 "DisplayComplexDialog" function (4F7D20) was improved. The last argument "closeTimeoutMsec" was overloaded to "Opts".
+    Opts is:
+    16 bits for closeTimeoutMsec,
+    4 bits for msgType (1 - ok, 2 - question, 4 - popup, etc), // 0 is treated as 1.
+    4 bits for text alignment bit mask (0..15),
+    8 bits for internal H3 usage, usually 0
+
+    Thus it's became possible to display dialogs with up to 8 images and of any type (message, question, popup, picture selection).
+
+[+] Added exported function FindNextObject (ObjType, ObjSubtype: integer; var x, y, z: integer; Direction: integer): integer; stdcall;
+    It works the same as UN:U with fast search syntax, but does not raise error on no more objects, returns success flag and allows
+    to use non-v variables to store coordinates. You won't need to count objects before searching for them anymore.
+
+    Direction is -1 for FORWARD and -2 for BACKWARD.
+
+    Example:
+    ; Let's traverse through all map monsters, doubling their quantity
+
+    !#VA(x:y) (y:y) (z:y); define variables to store object coordinates
+    !!VR(x):S-1;           setting x-coordinate to -1 will force to start search from scratch
+    
+    !!re i; endless loop
+      !!SN:F^FindNextObject^/(OBJ_MONSTER)/(ANY_OBJ)/?(x)/?(y)/?(z)/-1; find next monster, v1 is (TRUE) on success
+      !!br&v1=(FALSE):;                                                 exit loop if nothing found
+      !!MO(x)/(y)/(z):Gd*2;                                             double monsters quantity
+    !!en:;
+
+[*] Local named e-variables are allocated from index 2 to preserve e1 for functions result.
+
+[*] x16 can now be allocated as local named variable. Previosly the following code would lead to error:
+    !!VA(args[16]:x);
+
+[*] SN:G is DEPRECATED and may be removed in future versions.
+
+[-] Fixed SN:O. No more boat/hero hiding.
+[-] Fixed HE receiver to support any ERM variable like !!HEi^heroId^.
+[-] Fixed VR:C indexes checking, allowing to override protected memory by commands like VRy-99:C1/2/3;
+
+[-] Fixed ERM 2 compiler part, responsible for local z-arrays indexes allocation.
+    Previosly !#VA(names[3]:z) used to allocate array of [z-3, z-4, z-5] (decreasing indexes).
+    Now the appropriate array will be [z-5, z-4, z-3] (increasing indexes). Thus it's possible to use
+    safely index arithmetics like:
+
+    !#VA(names[3]:z);
+    !!VR(names[2]):S^Have a nice day!^;
+    !!VRi:S2;                     i is array item logical index
+    !!VR(itemPtr:y):S(@array) +i; itemPtr holds real z-index of array item
+    !!IF:M^%z(itemPtr)^;          display i-th item value
+
+[-] Fixed UN:C. It didn't accept negative size argument, while -1, -2 and -4 are valid sizes.
+    Prefer to use (UNC_XXX) constants to specify valid data type.
+
+[-] Fixed creature experience overflow after battle. Credits: igrik.
+
+[-] Fixed check for multiplayer in attack type selection dialog, causing wrong
+    "This feature does not work in Human vs Human network baced battle" message.
+
+[-] Removed rest files from "Animated Trees" mod. Credits: Archer30.
+
+[!] Note, that SN:O does not work with global named variables.
+
+[!] Note, that v1 must not be used to store anything non-temporal, because from Era 2.X it's changed in every SN:E/SN:F call.
+    It's a dirty variable for fast result return. Use v2/v3/v4 instead.
+
+
 Version 3.0.5 (09/2020)
 ------------------------
 [+] Updated "wog native dialogs" plugin. All localized string were moved to json file.
@@ -278,7 +538,7 @@ Version 3.0.3 (07/2020)
 
 Version 3.0.2 (06/2020)
 ------------------------
-[+] Added new ERM event 'OnAdvMapObjectHint', allowing to get/set hint for any tile, mouse is currently over.
+[+] Added new ERM event 'OnAdvMapTileHint', allowing to get/set hint for any tile, mouse is currently over.
     Parameters: x, y, z, object type, object subtype.
     Example:
 
@@ -840,7 +1100,7 @@ Version 3.0.0 (06/2020)
     d:# - integer division
     d|# sets bits from # (bitwise OR operation)
     d& leaves only # bits, if any (bitwise AND operation)
-    d& unsets bits, specified in #. d&17 unsets bits 1 and 16
+    d~ unsets bits, specified in #. d~17 unsets bits 1 and 16
     d%# calculates division modulo. 10%4 = 2, for instance.
     d<<# shifts original value bits to the left by # positions (bitwise logical shift left).
     d>># shifts original value bits to the right by # positions (bitwise logical shift right.

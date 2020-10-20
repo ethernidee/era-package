@@ -1,0 +1,14 @@
+ZVSE2
+!?FU(OnAfterErmInstructions);
+!!FU(OnAfterErmInited):P;
+
+; Implement new events with the same parameters, as OnKeyPressed, but for particular dialogs.
+; OnKeyPressed_AdvMap, OnKeyPressed_Battle, OnKeyPressed_HeroScreen, OnKeyPressed_HeroMeetingScreen, OnKeyPressed_Town
+!?FU(OnKeyPressed);
+!#VA(key:x) (preventDefault:x);
+!!SN:F^GetGameState^/?(mainDialogs[2]:y);
+!!FU(OnKeyPressed_AdvMap)&(mainDialogs[1])=(DLG_ADVMAP):P?(key)/?(preventDefault);
+!!FU(OnKeyPressed_Battle)&(mainDialogs[1])=(DLG_BATTLE):P?(key)/?(preventDefault);
+!!FU(OnKeyPressed_HeroScreen)&(mainDialogs[1])=(DLG_HERO_SCREEN):P?(key)/?(preventDefault);
+!!FU(OnKeyPressed_HeroMeetingScreen)&(mainDialogs[1])=(DLG_HERO_MEETING_SCREEN):P?(key)/?(preventDefault);
+!!FU(OnKeyPressed_Town)&(mainDialogs[1])=(DLG_TOWN_SCREEN):P?(key)/?(preventDefault);

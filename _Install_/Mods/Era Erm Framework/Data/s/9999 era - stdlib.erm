@@ -1,0 +1,512 @@
+ZVSE2
+
+!?PI;
+
+; ========== EVENTS ==========
+!?FU(OnAfterErmInstructions);
+!!SN:W^era_everyDayTimerLastDay^/-1;
+
+; Extended OnEveryDay trigger. The following global variables are automatically set:
+; - i^timerDay^:        1..+inf
+; - i^timerWeekDay^:    1..7
+; - i^timerMonthDay^:   1..28
+; - i^timerWeek^:       1..+inf
+; - i^timerMonthWeek^:  1..4
+; - i^timerMonth^:      1..+inf
+; - i^timerOnce^:       0..1
+; - i^timerOwner^:      0..7
+; - i^timerIsAi^:       0..1
+; - i^timerIsHuman^:    0..1
+!?FU(OnEveryDay);
+!#VA(day:x) (weekDay:x) (once:x) (owner:x) (isAi:x);
+!!OW:C?(owner) I(owner)/?(isAi);
+!!VR(day):Sc;
+!!VR(weekDay):S(day) -1 %7 +1;
+
+!!SN:W^era_everyDayTimerLastDay^/?(lastTimerDay:y);
+!!SN:W^era_everyDayTimerLastDay^/(day);
+!!VR(once):S0;
+!!VR(once)&(lastTimerDay)<>(day):S1;
+
+!!VRi^timerDay^:S(day);
+!!VRi^timerWeekDay^:S(weekDay);
+!!VRi^timerMonthDay^:S(day) -1 %28 +1;
+!!VRi^timerWeek^:S(day) -1 :7 +1;
+!!VRi^timerMonthWeek^:S(day) -1 %28 :7 +1;
+!!VRi^timerMonth^:S(day) -1 :28 +1;
+!!VRi^timerOnce^:S(once);
+!!VRi^timerOwner^:S(owner);
+!!VRi^timerIsAi^:S(isAi);
+!!VRi^timerIsHuman^:S(TRUE) -(isAi);
+; ======== END EVENTS ========
+
+
+; ========== MISCELLANEOUS ==========
+; ======== END MISCELLANEOUS ========
+
+
+; ========== ARRAYS ==========
+!?FU(Array_Join);
+; Concatenates array items into single string, using passed glue string. Works with both numeric and string arrays.
+; Example: ['one', 'two', 'three'] with glue ' --- ' become 'one --- two --- three'.
+; Returns s^result^
+; Uses s^_^
+!#VA(list:x);    Array ID.
+!#VA(gluePtr:x); Optional. Glue string. Default: ''.
+
+!!VRs^result^:S^^;
+!!VR(emptyStr:z):S^^;
+!!VR(gluePtr)&(gluePtr)=0:S(@emptyStr);
+
+!!VR(numItems:y):S0;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d;
+!!VR(lastItemInd:y):S(numItems) -1;
+
+!!if&(itemsType)=(M_INT):;
+  !!re i/0/(numItems)/1/-1:;
+    !!SN:V(list)/i/?(item:y);
+    !!VR(itemStr:z):M3/(item);
+    !!VRs^result^:+(itemStr);
+    !!VRs^result^&i<(lastItemInd):+z(gluePtr);
+  !!en:;
+!!el:;
+  !!re i/0/(numItems)/1/-1:;
+    !!SN:V(list)/i/?s^_^;
+    !!VRs^result^:+s^_^;
+    !!VRs^result^&i<(lastItemInd):+z(gluePtr);
+  !!en:;
+
+  !!VRs^_^:S^^;
+!!en;
+
+!?FU(Array_Sort);
+; Sorts array items in ascending order. Allows to sort specific array subrange.
+!#VA(list:x);     Array ID.
+!#VA(startInd:x); Optional. Start index of array subrange to sort. Default: 0.
+!#VA(endInd:x);   Optional. End index of array subrange to sort. Default: numItems - 1.
+
+; Get num items, exit for invalid array
+!!VR(numItems:y):S0;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d/?(listAddr:y);
+!!FU&(numItems)<=0:E;
+
+; Handle optional parameters
+!!FU:A?(numArgs:y);
+!!VR(startInd)&(numArgs)<(@startInd):S0;
+!!VR(endInd)  &(numArgs)<(@endInd):S(numItems) -1;
+
+; Normalize range to process
+!!VR(startInd)&(startInd)<0:S0;
+!!VR(endInd)&(endInd)>=(numItems):S(numItems) -1;
+!!FU&(startInd)>=(endInd):E;
+
+; Perform sorting
+!!VR(savedV1:y):Sv1;
+
+!!if&(itemsType)=(M_STR):;
+  !!SN:F^Erm_SortStrArray^/(listAddr)/(startInd)/(endInd);
+!!el:;
+  !!SN:F^Erm_SortInt32Array^/(listAddr)/(startInd)/(endInd);
+!!en;
+
+!!VRv1:S(savedV1);
+
+!?FU(CompareStrings_Bridge_INTERNAL);
+; Uses s^_^
+!#VA(str1Addr:x) (str2Addr:x) (bridgeState:x) (result:x);
+!!if&(str1Addr)<>0:;
+  !!SN:X?t X(str1Addr) X?s^_^ Xt;
+  !!VR(value1:y):Zs^_^;
+  !!VRs^_^:S^^;
+!!el:;
+  !!VR(value1:y):Zs^^;
+!!en;
+
+!!if&(str2Addr)<>0:;
+  !!SN:X?t X(str2Addr) X?s^_^ Xt;
+  !!VR(value2:y):Zs^_^;
+  !!VRs^_^:S^^;
+!!el:;
+  !!VR(value2:y):Zs^^;
+!!en;
+
+!!SN:V(bridgeState)/0/?(compareFunc:y)/?(compareFuncState:y);
+!!FU(compareFunc):P(value1)/(value2)/(compareFuncState)/?(result);
+
+!?FU(Array_CustomSort);
+; Sorts array items in ascending order user custom comparator function. Allows to sort specific array subrange.
+; It's possible to perform any complex sorting in any direction and by unlimited number of criteria, using this method.
+; It's a stable sorting method, i.e. items, which we be reported as equal, will retain their relative position to each other.
+; For example, if sorting 'Ann', 'David' and 'Ken' by name length, the result will be 'Ann', 'Ken', 'David' and not 'Ken', 'Ann', 'David'.
+; When sorting string array, comparator function will receive z-indexes of strings as arguments.
+!#VA(list:x);        Array ID.
+
+!#VA(compareFunc:x); Comparison ERM function ID. It will be called multiple times with the following arguments:
+                   ; (value1, value2, state), where 'state' is any custom value, you specify on call to Array_CustomSort.
+                   ; Usually state is some array ID or external structure address, that client use to compare items.
+                   ;
+                   ; The function must return value:
+                   ; < 0 if value1-item should be placed before value2-item
+                   ; > 0 if value1-item should be placed after value2-item
+                   ; 0 if the ordering between two items should be left as is.
+
+!#VA(state:x);    Optional. Custom value to be always passed to comparison function as the third argument. Default: 0.
+!#VA(startInd:x); Optional. Start index of array subrange to sort. Default: 0.
+!#VA(endInd:x);   Optional. End index of array subrange to sort. Default: numItems - 1.
+
+; Get num items, exit for invalid array
+!!VR(numItems:y):S0;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d/?(listAddr:y);
+!!FU&(numItems)<=0:E;
+
+; Check compare function
+!!if&(compareFunc)<0:;
+  !!SN:F^ShowErmError^/^Invalid comparison custom function for Array_CustomSort: %(compareFunc)^;
+  !!FU:E;
+!!en;
+
+; Handle optional parameters
+!!FU:A?(numArgs:y);
+!!VR(startInd)&(numArgs)<(@startInd):S0;
+!!VR(endInd)  &(numArgs)<(@endInd):S(numItems) -1;
+
+; Normalize range to process
+!!VR(startInd)&(startInd)<0:S0;
+!!VR(endInd)&(endInd)>=(numItems):S(numItems) -1;
+!!FU&(startInd)>=(endInd):E;
+
+; Perform sorting
+!!VR(savedV1:y):Sv1;
+
+!!if&(itemsType)=(M_STR):;
+  !!SN:M(M_AUTO_ID)/2/(M_INT)/(M_TRIGGER_LOCAL)/?(bridgeState:y);
+  !!SN:V(bridgeState)/0/(compareFunc)/(state);
+  !!SN:F^Erm_CustomStableSortInt32Array^/(listAddr)/(startInd)/(endInd)/(CompareStrings_Bridge_INTERNAL)/(bridgeState);
+!!el:;
+  !!SN:F^Erm_CustomStableSortInt32Array^/(listAddr)/(startInd)/(endInd)/(compareFunc)/(state);
+!!en;
+
+!!VRv1:S(savedV1);
+
+!?FU(Array_SortedUnique);
+; Leaves only unique sorted integer items in the array.
+; Calling on [15, 4, 3, 3, 1, 20, 15] list will rearrange and truncate list to the following:
+; [1, 3, 4, 15, 20]
+!#VA(list:x); Array ID
+
+!!SN:M(list)/?(listSize:y)/?(itemsType:y)/d;
+!!FU&(listSize)<=1:E;
+
+!!if&(itemsType)<>(M_INT):;
+  !!SN:F^ShowErmError^/^Array_SortedUnique function supports only integer arrays^;
+  !!FU:E;
+!!en;
+
+!!FU(Array_Sort):P(list);
+!!SN:V(list)/0/?(prevItem:y);
+
+; Find first non-unique item
+!!re i/1/(listSize)/1/-1:;
+  !!SN:V(list)/i/?(item:y);
+  !!br&(item)=(prevItem):;
+  !!VR(prevItem):S(item);
+!!en:;
+
+; Non-unique item was found
+!!if&i<(listSize):;
+  ; Loop though rest items, copying only unique to the left part
+  !!VRj:Si +1;
+
+  !!re j/j/(listSize)/1/-1:;
+    !!SN:V(list)/j/?(item:y);
+
+    !!if&(item)<>(prevItem):;
+      !!SN:V(list)/i/(item);
+      !!VRi:+1;
+    !!en;
+
+    !!VR(prevItem):S(item);
+  !!en:;
+
+  ; Truncate non-unique items
+  !!SN:M(list)/i;
+!!en;
+
+!?FU(Array_Revert);
+; Reverts order of itmes in the array. Allows to reverse the order of specific array subrange only.
+!#VA(list:x);     Array ID.
+!#VA(startInd:x); Optional. Start index of array subrange. Default: 0.
+!#VA(endInd:x);   Optional. End index of array subrange. Default: numItems - 1.
+
+; Get num items, exit for invalid array
+!!VR(numItems:y):S0;
+!!SN:M(list)/?(numItems)/d/d/?(listAddr:y);
+!!FU&(numItems)<=0:E;
+
+; Handle optional parameters
+!!FU:A?(numArgs:y);
+!!VR(startInd)&(numArgs)<(@startInd):S0;
+!!VR(endInd)  &(numArgs)<(@endInd):S(numItems) -1;
+
+; Normalize range to process
+!!VR(startInd)&(startInd)<0:S0;
+!!VR(endInd)&(endInd)>=(numItems):S(numItems) -1;
+!!FU&(startInd)>=(endInd):E;
+
+; Perform reversing
+!!VR(savedV1:y):Sv1;
+!!SN:F^Erm_RevertInt32Array^/(listAddr)/(startInd)/(endInd);
+!!VRv1:S(savedV1);
+
+!?FU(Array_Fill);
+; Fills array or arrays subrange with incrementing/decrementing values.
+; Example: FU(Array_Fill):P(array)/100/2; Will fill items with 100, 102, 104, 106...
+!#VA(list:x);       Array ID.
+!#VA(startValue:x); Starting value to fill with.
+!#VA(step:x);       Value to add to increase filler on each step. Default: 0.
+!#VA(startInd:x);   Optional. Start index of array subrange. Default: 0.
+!#VA(endInd:x);     Optional. End index of array subrange. Default: numItems - 1.
+
+; Get num items, exit for invalid array
+!!VR(numItems:y):S0;
+!!SN:M(list)/?(numItems)/d/d/?(listAddr:y);
+!!FU&(numItems)<=0:E;
+
+; Handle optional parameters
+!!FU:A?(numArgs:y);
+!!VR(startInd)&(numArgs)<(@startInd):S0;
+!!VR(endInd)  &(numArgs)<(@endInd):S(numItems) -1;
+
+; Normalize range to process
+!!VR(startInd)&(startInd)<0:S0;
+!!VR(endInd)&(endInd)>=(numItems):S(numItems) -1;
+!!FU&(startInd)>(endInd):E;
+
+; Perform filling
+!!VR(savedV1:y):Sv1;
+!!SN:F^Erm_FillInt32Array^/(listAddr)/(startInd)/(endInd)/(startValue)/(step);
+!!VRv1:S(savedV1);
+
+!?FU(Array_Resize);
+; Changes array size, optionally filling new items with default value.
+!#VA(list:x);      Array ID.
+!#VA(newSize:x);   New array size.
+!#VA(fillValue:x); Optional. Fill value for new items. Default: ^^ or 0.
+
+; Get num items, exit for invalid array
+!!VR(numItems:y):S-1;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d;
+!!FU&(numItems)<0:E;
+
+; Perform resizing
+!!SN:M(list)/(newSize);
+!!FU&(newSize)<=(numItems):E;
+
+; Exit if no fill value is set
+!!FU&(fillValue)=0:E;
+!!FU&(itemsType)=(M_STR)/z(fillValue)=^^:E;
+
+; Fill new items value
+!!if&(itemsType)=(M_INT):;
+  !!re i/(numItems)/(newSize)/1/-1:;
+    !!SN:V(list)/i/(fillValue);
+  !!en:;
+!!el:;
+  !!re i/(numItems)/(newSize)/1/-1:;
+    !!SN:V(list)/i/z(fillValue);
+  !!en:;
+!!en;
+
+!?FU(Array_EnsureMinSize);
+; Checks, if array has at least specified minimal size and increasing the size if not, filling new items
+; with optional default value.
+!#VA(list:x);      Array ID.
+!#VA(minSize:x);   Minimal desired array size.
+!#VA(fillValue:x); Optional. Fill value for new items. Default: ^^ or 0.
+
+!!VR(numItems:y):S-1;
+!!SN:M(list)/?(numItems);
+!!FU|(numItems)<0/(numItems)>=(minSize):E;
+
+!!FU(Array_Resize):P(list)/(minSize)/(fillValue);
+; ======== END ARRAYS ========
+
+
+; ========== MATH ==========
+
+!?FU(Pow);
+; Raises value to specified power. All arguments and result are floats.
+!#VA(base:x) (power:x) (result:x);
+!!SN:L^era.dll^/?(era:y) A(era)/^Erm_Pow^/?(func:y) E(func)/(CALLCONV_STDCALL_FLOAT)(base)/(power);
+!!VR(result):Ce1;
+
+!?FU(Sqrt);
+; Returns value square root. All arguments and result are floats.
+!#VA(value:x) (result:x);
+!!SN:L^era.dll^/?(era:y) A(era)/^Erm_Sqrt^/?(func:y) E(func)/(CALLCONV_STDCALL_FLOAT)/(value);
+!!VR(result):Ce1;
+
+!?FU(IntLog2);
+; Returns Ceil(Log2(N)) or 0 for invalid values (<= 0).
+!#VA(value:x) (result:x);
+
+!!if&(value)<=0:;
+  !!VR(result):S0;
+  !!FU:E;
+!!en;
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^Erm_IntLog2^/(value);
+!!VR(result):Sv1;
+!!VRv1:S(savedV1);
+
+!?FU(ConstructBitMask);
+; Accepts up to 15 bit/flag positions (0..31). Returns mask with corresponding bit flags set.
+; Actually, given Xi arguments, returns Sum(2 ^ xi).
+; For example, P0/3/7/?(mask:y) will give 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137.
+!#VA(args:x);   ... Up to 15 bit/flag positions.
+!#VA(result:x); The last argument will contain the result mask.
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@result):;
+  !!SN:F^ShowErmError^/^ConstructBitMask function expects at least 2 arguments. Given %(numArgs) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(mask:y):S0;
+
+!!re i/(@args)/(numArgs)/1/-1:;
+  !!VR(arg:y):Sxi;
+
+  !!if&(arg)>=0/(arg)<=31:;
+    !!VR(bit:y):S1 Sd<<(arg);
+    !!VR(mask):|(bit);
+  !!el:;
+    !!SN:F^ShowErmError^/^Invalid bit/flag position: %(arg). Arg #%i. Expected value 0..31^;
+    !!FU:E;
+  !!en;
+!!en:;
+
+!!VRxi:S(mask);
+
+!?FU(DeconstructBitMask);
+; Deconstructs bit mask into list of bit/flag positions (each with 0..31 value).
+; For example, P137/(list) will fill the list with [0, 3, 7] values, because
+; 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137. It means, that bits 0, 3 and 7 are set.
+!#VA(mask:x); Bit mask.
+!#VA(list:x); Array ID to fill with bit/flag positions.
+
+; Check if valid array of integers is given
+!!VR(numItems:y):S-1;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d;
+!!FU&(numItems)<0:E;
+
+!!if&(itemsType)<>(M_INT):;
+  !!SN:F^ShowErmError^/^Expected list of integers to hold deconstructed big/flag positions. Given list of strings^;
+  !!FU:E;
+!!en;
+
+!!SN:M(list)/0;
+!!VR(bit:y):S1;
+
+!!re i/0/31:;
+  !!VR(test:y):S(mask) &(bit);
+  !!SN&(test)<>0:M(list)/d1 V(list)/-1/i;
+  !!VR(bit):Sd<<1;
+!!en:;
+; ======== END MATH ========
+
+
+; ================ STRINGS ================
+!?FU(GetStrAtAddr);
+; Reads null terminated string at specified address into s^result^ variable.
+; Null address (0) results in empty string.
+!#VA(strAddr:x);
+!!SN:X?t X(strAddr) X?s^result^ Xt;
+
+!?FU(CompareStrings);
+; Compares two strings. Returns value <0, =0 or >0, corresponding to items relation.
+!#VA(str1Ptr:x) (str2Ptr:x) (result:x);
+!!VR(result):S0;
+
+!!if&z(str1Ptr)<z(str2Ptr):;
+  !!VR(result):S-1;
+!!el&z(str1Ptr)>z(str2Ptr):;
+  !!VR(result):S1;
+!!en;
+
+!?FU(StrToUpper);
+; Converts given string to upper case. Result is returned in s^result^.
+!#VA(strPtr:x);
+!!SN:M(M_AUTO_ID)/1/(M_STR)/(M_TRIGGER_LOCAL)/?(buf:y) M(buf)/0/z(strPtr) M(buf)/?(strAddr:y)/0;
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^CharUpperA^/(strAddr);
+!!VRv1:S(savedV1);
+
+!!SN:M(buf)/0/?s^result^;
+
+!?FU(StrToLower);
+; Converts given string to lower case. Result is returned in s^result^.
+!#VA(strPtr:x);
+!!SN:M(M_AUTO_ID)/1/(M_STR)/(M_TRIGGER_LOCAL)/?(buf:y) M(buf)/0/z(strPtr) M(buf)/?(strAddr:y)/0;
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^CharLowerA^/(strAddr);
+!!VRv1:S(savedV1);
+
+!!SN:M(buf)/0/?s^result^;
+; ============== END STRINGS ==============
+
+
+; ============== ERROR HANDLING ==============
+!?FU(DisableErrors);
+; Disables ERM error messages and resets error option.
+!!UN:P(WOG_OPT_MUTE_ERRORS)/(TRUE) P(WOG_OPT_LAST_ERROR)/(FALSE);
+
+!?FU(EnableErrors);
+; Enables ERM error messages and returns last error flag (TRUE or FALSE).
+!#VA(result:x);
+!!UN:P(WOG_OPT_MUTE_ERRORS)/(TRUE) P(WOG_OPT_LAST_ERROR)/?(result);
+; ============ END ERROR HANDLING ============
+
+
+; ============== MONSTERS ==============
+!?FU(MonCountToFuzzyText);
+; Converts monster quantity to human readable value range like "50-99" or "2K+".
+; Returns result in s^result^
+!#VA(monNum:x);
+
+!!if&(monNum)<=4:;
+  !!VRs^result^:S^1-4^;
+!!el&(monNum)<=9:;
+  !!VRs^result^:S^5-9^;
+!!el&(monNum)<=19:;
+  !!VRs^result^:S^10-19^;
+!!el&(monNum)<=49:;
+  !!VRs^result^:S^20-49^;
+!!el&(monNum)<=99:;
+  !!VRs^result^:S^50-99^;
+!!el&(monNum)<=249:;
+  !!VRs^result^:S^100-249^;
+!!el&(monNum)<=499:;
+  !!VRs^result^:S^250-499^;
+!!el&(monNum)<=999:;
+  !!VRs^result^:S^500-999^;
+!!el&(monNum)<1000000:;
+  !!VR(thousandInd:y):S(monNum) :1000;
+  !!FU(IntLog2):P(thousandInd)/?(thousandPower:y);
+  !!VR(borderValue:y):S1 Sd<<(thousandPower) *1000 -1;
+  !!VR(thousandPower)&(monNum)<=(borderValue):-1;
+  !!VR(rangeStart:y):S1 Sd<<(thousandPower);
+  !!VRs^result^:S^%(rangeStart)K+^;
+!!el:;
+  !!VR(billionInd:y):S(monNum) :1000000;
+  !!FU(IntLog2):P(billionInd)/?(billionPower:y);
+  !!VR(borderValue:y):S1 Sd<<(billionPower) *1000000 -1;
+  !!VR(borderValue)&(borderValue)<0:S(INT_MAX);
+  !!VR(billionPower)&(monNum)<=(borderValue):-1;
+  !!VR(rangeStart:y):S1 Sd<<(billionPower);
+  !!VRs^result^:S^%(rangeStart)M+^;
+!!en;
+; ============ END MONSTERS ============
