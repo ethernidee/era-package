@@ -1,0 +1,80 @@
+ZVSE2
+
+!?PI;
+!!SN:M(M_AUTO_ID)/1/(M_STR)/(M_TEMP)/?i^et_testNames^;
+
+; Starts new named test block
+!?FU(et_EnterTest);
+!#VA(testNamePtr:x);
+!!SN:Mi^et_testNames^/d1 Mi^et_testNames^/-1/z(testNamePtr);
+
+; Leaves previously entered named test block
+!?FU(et_LeaveTest);
+!!SN:Mi^et_testNames^/d-1;
+
+; Generates debug info and displays error dialog with optional file/line/code excerpt and custom error.
+!?FU(et_Fail);
+!#VA / (errorTextPtr:x) (fileNamePtr:x) (line:x) (codePtr:x) (customTextPtr:x);
+!!SN:F^GenerateDebugInfo^;
+!!FU:A?(numArgs:y);
+
+!!VR(fileName:z):S^???^;
+!!VR(fileName)&(numArgs)>=(@fileNamePtr)/(fileNamePtr)<>0:Sz(fileNamePtr);
+
+!!VR(lineStr:z):S^?^;
+!!VR(lineStr)&(numArgs)>=(@line):S^%(line)^;
+
+!!VR(code:z):S^...^;
+!!VR(code)&(numArgs)>=(@codePtr)/(codePtr)<>0:Sz(codePtr);
+
+!!VR(nil:z):S^^;
+!!VR(customTextPtr)&(numArgs)<(@customTextPtr)/(customTextPtr)<>0:S(@nil);
+
+!!VR(error:z):S^^;
+!!VR(error)&(numArgs)>=(@errorTextPtr)/(errorTextPtr)<>0:Sz(errorTextPtr);
+!!VR(error)&(error)=^^:S^Assert violation^;
+
+!!SN:Mi^et_testNames^/-1/?(testName:z);
+
+!!IF:M^{~r}%(error){~}
+{Failed in} "%(fileName)" at line %(lineStr)
+{Test name}: "%(testName)"
+
+{Code}:
+%(code)
+
+%z(customTextPtr)^;
+
+; Ensures, that computed integer value is the same as the expected one.
+!?FU(et_ExpectInt);
+!#VA(computedValue:x) (expectedValue:x) / (errorTextPtr:x) (fileNamePtr:x) (line:x) (codePtr:x);
+
+!!FU(et_Fail)&(computedValue)<>(expectedValue):P(errorTextPtr)/(fileNamePtr)/(line)/(codePtr)/^{Given value}: %(computedValue)
+{Expected value}: %(expectedValue)^;
+
+; Ensures, that computed string value is the same as expected one.
+!?FU(et_ExpectStr);
+!#VA(computedStrPtr:x) (expectedStrPtr:x) / (errorTextPtr:x) (fileNamePtr:x) (line:x) (codePtr:x);
+!!VR(text:z):M3/(expectedStrPtr)/16;
+!!FU(et_Fail)&z(computedStrPtr)<>z(expectedStrPtr):P(errorTextPtr)/(fileNamePtr)/(line)/(codePtr)/^{Given value}: %z(computedStrPtr)
+{Expected value}: %z(expectedStrPtr)^;
+
+; Disables ERM error dialogs and clears last error flag.
+!?FU(et_ErrorsOff);
+!!UN:P904/1 P905/0;
+
+; Enables ERM error dialgos and clears last error flag.
+!?FU(et_ErrorsOn);
+!!UN:P904/0 P905/0;
+
+; Ensures, that ERM error occured since the last call to et_ErrorsOff and reenables error displaying.
+!?FU(et_ExpectError);
+!#VA / (errorTextPtr:x) (fileNamePtr:x) (line:x) (codePtr:x);
+!!UN:P905/?(isError:y) P904/0 P905/0;
+!!FU(et_Fail)&(isError)=0:P(errorTextPtr)/(fileNamePtr)/(line)/(codePtr)/^ERM error must have been reported, but nothing happened^;
+
+; Ensures, that ERM error didn't occured since the last call to et_ErrorsOff and reenables error displaying.
+!?FU(et_ExpectNoError);
+!#VA / (errorTextPtr:x) (fileNamePtr:x) (line:x) (codePtr:x);
+!!UN:P905/?(isError:y) P904/0 P905/0;
+!!FU(et_Fail)&(isError)<>0:P(errorTextPtr)/(fileNamePtr)/(line)/(codePtr)/^ERM error must not have been occured, but it occured^;

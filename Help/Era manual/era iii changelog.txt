@@ -1,3 +1,65 @@
+Version 3.1.1 (10/2020)
+------------------------
+[+] Included updated "game bug fixes extended" plugin with many crash/overflow/bug fixes. Game stability increased. Credits: Ben, igrik, RoseKavalier and others.
+    Old "game bug fixes" plugin by RoseKavalier was removed.
+
+[+] Added "no prisons on random maps.bin.off" and "one slot combo arts.bin.off" patches by igrik.
+    The first one disables prison generation on random maps. The second one makes combo artifacts to occupy one slot without possibility of further disassembling.
+
+[+] Santa Gremlins now become a regular unit with normal weekly growth (16 per week), without gifts and with the following Ice Bold spell power:
+    (Number of santas - 1) / 2 + Random(0, 1) if number of santas is even.
+
+    Table of santa gremlin quantity and final damage:
+    1 - 10
+    2 - 10 or 30
+    3 - 30
+    4 - 30 or 50
+    5 - 50
+    6 - 50 or 70
+    etc.
+
+[+] Replaced Heroes 3 pseudo random number generator with high quality Mersenne Twister generator.
+    Native generator is still used for battle obstacles generation and in multiplayer battles, excluding Hot Seat.
+
+[+] Added new functions to "Era Erm Framework" mod:
+
+  !?FU(Array_Copy);
+  ; Resizes destination array to match source array size and copies all source items into destination array.
+  ; Both arrays must have the same items type.
+  !#VA(srcArray:x); ID of array to copy items from (source).
+  !#VA(dstArray:x); ID of array to copy items to (destination).
+  
+  !?FU(Array_Clone);
+  ; Creates trigger local copy of array.
+  !#VA(srcArray:x); ID of array to clone.
+  !#VA(result:x);   ID of result trigger local array.
+
+  !?FU(Tm32Encode);
+  ; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
+  !#VA(value:x) (result:x);
+  
+  !?FU(Tm32Decode);
+  !#VA(value:x) (result:x);
+
+[+] Updated the following functions of "Era Erm Framework" mod:
+
+  !?FU(MonCountToFuzzyText);
+  ; Converts monster quantity to stringish value range like "50-99" or "2K+" of maximum 7 characters length.
+  ; Returns result in s^result^
+  !#VA(monNum:x);
+  !#VA(withDescription:x); ?boolean. If true, the result will be native H3 text like "A pack (10-19) of". Default: false.
+
+  !?FU(DeconstructBitMask);
+  ; Deconstructs bit mask into list of bit/flag positions (each with 0..31 value).
+  ; For example, P137/(list) will fill the list with [0, 3, 7] values, because
+  ; 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137. It means, that bits 0, 3 and 7 are set.
+  !#VA(mask:x);   Bit mask.
+  !#VA(result:x); Will contain new trigger local array ID with bit/flag positions.
+
+[*] Removed type checking from SN:M(array)/(itemIndex)/(value), allowing to use integer addresses to set string item values.
+
+[-] Fixed crash in "quest log" plugin by igrik.
+
 Version 3.1.0 (10/2020)
 ------------------------
 [+] Updated "wog native dialogs" plugin. Added support for IF:B/P dialogs and extended IF:Q/IF:N dialogs.

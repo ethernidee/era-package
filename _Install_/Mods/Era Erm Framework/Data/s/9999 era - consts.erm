@@ -1193,6 +1193,7 @@ ZVSE2
 !#DC(SIZEOF_UINT16) = 2;
 !#DC(SIZEOF_INT32)  = 4;
 !#DC(SIZEOF_UINT32) = 4;
+!#DC(SIZEOF_PTR)    = 4;
 ; ===========  END DATA TYPES  ===========
 
 

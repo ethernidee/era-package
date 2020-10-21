@@ -46,6 +46,48 @@ ZVSE2
 
 
 ; ========== ARRAYS ==========
+!?FU(Array_Copy);
+; Resizes destination array to match source array size and copies all source items into destination array.
+; Both arrays must have the same items type.
+!#VA(srcArray:x); ID of array to copy items from (source).
+!#VA(dstArray:x); ID of array to copy items to (destination).
+!!VR(numSrcItems:y):S-1;
+!!SN:M(srcArray)/?(numSrcItems)/?(srcItemsType:y)/d;
+!!FU&(numSrcItems)<0:E;
+
+!!VR(numDstItems:y):S-1;
+!!SN:M(dstArray)/?(numDstItems)/?(dstItemsType:y)/d;
+!!FU&(numDstItems)<0:E;
+
+!!if&(srcItemsType)<>(dstItemsType):;
+  !!SN:F^ShowErmError^/^Array_Copy: cannot copy items between arrays of different types^;
+  !!FU:E;
+!!en;
+
+!!SN:M(dstArray)/(numSrcItems);
+!!FU&(numSrcItems)<=0:E;
+
+!!if&(srcItemsType)=(M_INT):;
+  !!SN:M(srcArray)/?(srcArrayAddr:y)/0 M(dstArray)/?(dstArrayAddr:y)/0;
+  !!VR(numBytesToCopy:y):S(numSrcItems) *(SIZEOF_INT);
+  !!SN:K(numBytesToCopy)/(srcArrayAddr)/(dstArrayAddr)/1;
+!!el:;
+  !!re i/0/(numSrcItems)/1/-1:;
+    !!SN:M(srcArray)/?(strAddr:y)/i M(dstArray)/i/(strAddr);
+  !!en:;
+!!en;
+
+!?FU(Array_Clone);
+; Creates trigger local copy of array.
+!#VA(srcArray:x); ID of array to clone.
+!#VA(result:x);   ID of result trigger local array.
+!!VR(numSrcItems:y):S-1;
+!!SN:M(srcArray)/?(numSrcItems)/?(srcItemsType:y)/d;
+!!FU&(numSrcItems)<0:E;
+
+!!SN:M(M_AUTO_ID)/0/(srcItemsType)/(M_TRIGGER_LOCAL)/?(result) F^ExtendArrayLifetime^/(result);
+!!FU(Array_Copy):P(srcArray)/(result);
+
 !?FU(Array_Join);
 ; Concatenates array items into single string, using passed glue string. Works with both numeric and string arrays.
 ; Example: ['one', 'two', 'three'] with glue ' --- ' become 'one --- two --- three'.
@@ -393,27 +435,31 @@ ZVSE2
 ; Deconstructs bit mask into list of bit/flag positions (each with 0..31 value).
 ; For example, P137/(list) will fill the list with [0, 3, 7] values, because
 ; 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137. It means, that bits 0, 3 and 7 are set.
-!#VA(mask:x); Bit mask.
-!#VA(list:x); Array ID to fill with bit/flag positions.
+!#VA(mask:x);   Bit mask.
+!#VA(result:x); Will contain new trigger local array ID with bit/flag positions.
+!!SN:M(M_AUTO_ID)/0/(M_INT)/(M_TRIGGER_LOCAL)/?(result) F^ExtendArrayLifetime^/(result);
 
-; Check if valid array of integers is given
-!!VR(numItems:y):S-1;
-!!SN:M(list)/?(numItems)/?(itemsType:y)/d;
-!!FU&(numItems)<0:E;
-
-!!if&(itemsType)<>(M_INT):;
-  !!SN:F^ShowErmError^/^Expected list of integers to hold deconstructed big/flag positions. Given list of strings^;
-  !!FU:E;
-!!en;
-
-!!SN:M(list)/0;
 !!VR(bit:y):S1;
 
 !!re i/0/31:;
   !!VR(test:y):S(mask) &(bit);
-  !!SN&(test)<>0:M(list)/d1 V(list)/-1/i;
+  !!SN&(test)<>0:M(result)/d1 V(result)/-1/i;
   !!VR(bit):Sd<<1;
 !!en:;
+
+!?FU(Tm32Encode);
+; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
+!#VA(value:x) (result:x);
+!!VRf:S(value) Sd>>16 X(value) *73244475;
+!!VRg:Sf Sd>>16 Xf *73244475;
+!!VR(result):Sg Sd>>16 Xg;
+
+!?FU(Tm32Decode);
+; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
+!#VA(value:x) (result:x);
+!!VRf:S(value) Sd>>16 X(value) *295559667;
+!!VRg:Sf Sd>>16 Xf *295559667;
+!!VR(result):Sg Sd>>16 Xg;
 ; ======== END MATH ========
 
 
@@ -473,26 +519,39 @@ ZVSE2
 
 ; ============== MONSTERS ==============
 !?FU(MonCountToFuzzyText);
-; Converts monster quantity to human readable value range like "50-99" or "2K+".
+; Converts monster quantity to stringish value range like "50-99" or "2K+" of maximum 7 characters length.
 ; Returns result in s^result^
 !#VA(monNum:x);
+!#VA(withDescription:x); ?boolean. If true, the result will be native H3 text like "A pack (10-19) of". Default: false.
+!!VR(h3HintsBaseAddr:y):S6970400;
+!!VR(rangeInd:y):-1;
 
 !!if&(monNum)<=4:;
   !!VRs^result^:S^1-4^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S0;
 !!el&(monNum)<=9:;
   !!VRs^result^:S^5-9^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S1;
 !!el&(monNum)<=19:;
   !!VRs^result^:S^10-19^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S2;
 !!el&(monNum)<=49:;
   !!VRs^result^:S^20-49^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S3;
 !!el&(monNum)<=99:;
   !!VRs^result^:S^50-99^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S4;
 !!el&(monNum)<=249:;
   !!VRs^result^:S^100-249^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S5;
 !!el&(monNum)<=499:;
   !!VRs^result^:S^250-499^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S6;
 !!el&(monNum)<=999:;
   !!VRs^result^:S^500-999^;
+  !!VR(rangeInd)&(withDescription)<>(FALSE):S7;
+!!el&(monNum)<2000/(withDescription)<>(FALSE):;
+  !!VR(rangeInd):S8;
 !!el&(monNum)<1000000:;
   !!VR(thousandInd:y):S(monNum) :1000;
   !!FU(IntLog2):P(thousandInd)/?(thousandPower:y);
@@ -508,5 +567,11 @@ ZVSE2
   !!VR(billionPower)&(monNum)<=(borderValue):-1;
   !!VR(rangeStart:y):S1 Sd<<(billionPower);
   !!VRs^result^:S^%(rangeStart)M+^;
+!!en;
+
+!!if&(rangeInd)<>-1:;
+  !!VRf:S(rangeInd) *(SIZEOF_INT) *3 +(SIZEOF_INT) +(h3HintsBaseAddr);
+  !!UN:Cf/(SIZEOF_PTR)/?(strAddr:y);
+  !!FU(GetStrAtAddr):P(strAddr);
 !!en;
 ; ============ END MONSTERS ============

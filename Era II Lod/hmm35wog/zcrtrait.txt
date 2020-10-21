@@ -241,7 +241,7 @@ Lava Sharpshooter	Lava Sharpshooters	0	0	0	0	0	0	500	500	700	3	0	15	9	12	11	8	10
 No fear. Fire shield."	SHOOTING_ARMY | const_no_wall_penalty
 Nightmare	Nightmares	0	0	0	0	0	0	1500	2050	2400	2	0	110	9	18	16	20	24	0	0	5	10	"Extended Death stare. No fear.
 Mind spell immunity."	DOUBLE_WIDE
-Santa Gremlin	Santa Gremlins	0	0	0	0	0	0	200	500	200	1	0	5	5	5	5	2	3	0	1000	20	50	"Ice Bolt attack. Can gift
+Santa Gremlin	Santa Gremlins	0	0	0	0	0	0	200	500	200	16	0	5	5	5	5	2	3	0	1000	20	50	"Ice Bolt attack. Can gift
 Summon guards."	0
 Paladin	Paladins	0	0	0	0	0	0	140	130	156	9	0	50	5	5	5	10	10	24	0	16	25		SHOOTING_ARMY
 Hierophant	Hierophants	0	0	0	0	0	0	140	130	156	9	0	50	5	5	5	10	10	24	0	16	25		SHOOTING_ARMY
