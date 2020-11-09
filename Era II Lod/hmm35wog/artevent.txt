@@ -138,7 +138,7 @@ You've found a Goblin weapon smithy making weapons for use against humans.  With
 "You trip over the Bow of the Sharpshooter, dust it off, and stick it in your pack."	
 "You trip over the Wizard's Well, dust it off, and stick it in your pack."	
 "You trip over the Ring of the Magi, dust it off, and stick it in your pack."	
-"You trip over the Town of Plenty, dust it off, and stick it in your pack."	
+"You trip over the Cornucopia, dust it off, and stick it in your pack."	
 "You find the Magic Wand, dust it off, and stick it in your pack."	
 "You find the Gold Tower Arrow, dust it off, and stick it in your pack."	
 "You find the Monster's Power, dust it off, and stick it in your pack."	

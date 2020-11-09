@@ -1,7 +1,4 @@
 ZVSE2
-
-!?PI;
-
 ; ========== EVENTS ==========
 !?FU(OnAfterErmInstructions);
 !!SN:W^era_everyDayTimerLastDay^/-1;
@@ -19,38 +16,204 @@ ZVSE2
 ; - i^timerIsHuman^:    0..1
 !?FU(OnEveryDay);
 !#VA(day:x) (weekDay:x) (once:x) (owner:x) (isAi:x);
+
 !!OW:C?(owner) I(owner)/?(isAi);
 !!VR(day):Sc;
 !!VR(weekDay):S(day) -1 %7 +1;
 
-!!SN:W^era_everyDayTimerLastDay^/?(lastTimerDay:y);
-!!SN:W^era_everyDayTimerLastDay^/(day);
-!!VR(once):S0;
-!!VR(once)&(lastTimerDay)<>(day):S1;
+!!VR(lastTimerDay:y):Si^era_everyDayTimerLastDay^;
+!!VRi^era_everyDayTimerLastDay^:S(day);
+!!VR(once):S(FALSE);
+!!VR(once)&(lastTimerDay)<>(day):S(TRUE);
 
 !!VRi^timerDay^:S(day);
 !!VRi^timerWeekDay^:S(weekDay);
-!!VRi^timerMonthDay^:S(day) -1 %28 +1;
-!!VRi^timerWeek^:S(day) -1 :7 +1;
-!!VRi^timerMonthWeek^:S(day) -1 %28 :7 +1;
-!!VRi^timerMonth^:S(day) -1 :28 +1;
+!!VRi^timerMonthDay^:S(day) -1 %(DAYS_IN_MONTH) +1;
+!!VRi^timerWeek^:S(day) -1 :(DAYS_IN_WEEK) +1;
+!!VRi^timerMonthWeek^:S(day) -1 %(DAYS_IN_MONTH) :(DAYS_IN_WEEK) +1;
+!!VRi^timerMonth^:S(day) -1 :(DAYS_IN_MONTH) +1;
 !!VRi^timerOnce^:S(once);
 !!VRi^timerOwner^:S(owner);
 !!VRi^timerIsAi^:S(isAi);
 !!VRi^timerIsHuman^:S(TRUE) -(isAi);
+
+!?FU(OnBeforeBattle);
+!!VRi^battle_round^:S(INT_MIN);
+!!FU(UpdateBattleVars):P;
+
+!?FU(OnBeforeBattleUniversal);
+!!VRi^battle_round^:S(INT_MIN);
+!!VRi^battle_current_side^:S(BATTLE_LEFT);
+!!VRi^battle_current_stack^:S(NO_STACK);
+!!VRi^battle_acting_stack^:S(NO_STACK);
+!!VRi^battle_acting_side^:S(BATTLE_LEFT);
+!!FU(UpdateBattleVars):P;
+
+!?FU(OnBattleRound);
+!!VRi^battle_round^:Sv997;
+
+!?FU(OnBeforeBattleStackTurn);
+!#VA(activeStack:x);
+!!VRi^battle_current_side^:S(activeStack) :(BATTLE_STACKS_PER_SIDE);
+!!VRi^battle_current_stack^:S(activeStack);
+
+!?FU(OnBattleStackObtainsTurn);
+!#VA(stackSide:x) (stackInd:x);
+!!VRi^battle_current_side^:S(stackSide);
+!!VRi^battle_current_stack^:S(stackSide) *(BATTLE_STACKS_PER_SIDE) +(stackInd);
+
+!?FU(OnBeforeBattleAction);
+!!BG:N?i^battle_acting_stack^;
+!!VRi^battle_acting_side^:Si^battle_acting_stack^ :(BATTLE_STACKS_PER_SIDE);
 ; ======== END EVENTS ========
 
 
-; ========== MISCELLANEOUS ==========
-; ======== END MISCELLANEOUS ========
-
-
 ; ========== ARRAYS ==========
+!?FU(NewIntArray);
+; Creates and returns trigger local array of integers.
+; Alternative function arguments:
+;  (?result)                     The result array will have 0 items.
+;  (size)/(?result)              The result array will have (size) items with 0 value.
+;  (size)/(fillValue)/(?result)  The result array will have (size) items will (fillValue) value
+;  You may optionally specify (storageType) parameter after (?result) argument with value like M_STORED or M_TEMP.
+!#VA(arg1:x);
+!#VA(arg2:x);
+!#VA(arg3:x);
+
+!!FU:A?(numArgs:y);
+!!VR(storageType:y):S(M_TRIGGER_LOCAL);
+
+!!if&(numArgs)>=2:;
+  !!VR(penultimateArgInd:y):S(numArgs) -1;
+  !!FU:S(penultimateArgInd)/?(penultimateArgSyntax:y);
+
+  !!if&(penultimateArgSyntax)=(ARG_SYNTAX_GET):;
+    !!VR(storageType):Sx(numArgs);
+    !!VR(numArgs):-1;
+  !!en;
+!!en;
+
+!!if&(numArgs)<=1:;
+  !!SN:M(M_AUTO_ID)/0/(M_INT)/(storageType)/?(arg1:x) F^ExtendArrayLifetime^/(arg1);
+!!el&(numArgs)<=2:;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_INT)/(storageType)/?(arg2:x) F^ExtendArrayLifetime^/(arg2);
+!!el&(numArgs)<=3:;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_INT)/(storageType)/?(arg3:x) F^ExtendArrayLifetime^/(arg3);
+  !!FU(Array_Fill):P(arg3)/(arg2)/0;
+!!en;
+
+!?FU(NewStrArray);
+; Creates and returns trigger local array of strings.
+; Alternative function arguments:
+;  (?result)                     The result array will have 0 items.
+;  (size)/(?result)              The result array will have (size) items with ^^ value.
+;  (size)/(fillValue)/(?result)  The result array will have (size) items will (fillValue) value
+;  You may optionally specify (storageType) parameter after (?result) argument with value like M_STORED or M_TEMP.
+!#VA(arg1:x);
+!#VA(arg2:x);
+!#VA(arg3:x);
+
+!!FU:A?(numArgs:y);
+!!VR(storageType:y):S(M_TRIGGER_LOCAL);
+
+!!if&(numArgs)>=2:;
+  !!VR(penultimateArgInd:y):S(numArgs) -1;
+  !!FU:S(penultimateArgInd)/?(penultimateArgSyntax:y);
+
+  !!if&(penultimateArgSyntax)=(ARG_SYNTAX_GET):;
+    !!VR(storageType):Sx(numArgs);
+    !!VR(numArgs):-1;
+  !!en;
+!!en;
+
+!!if&(numArgs)<=1:;
+  !!SN:M(M_AUTO_ID)/0/(M_STR)/(storageType)/?(arg1:x) F^ExtendArrayLifetime^/(arg1);
+!!el&(numArgs)<=2:;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_STR)/(storageType)/?(arg2:x) F^ExtendArrayLifetime^/(arg2);
+!!el&(numArgs)<=3:;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_STR)/(storageType)/?(arg3:x) F^ExtendArrayLifetime^/(arg3);
+  
+  !!re i/0/(arg1)/1/-1:;
+    !!SN:V(arg3)/i/z(arg2);
+  !!en:;
+!!en;
+
+!?FU(Array_Push);
+; Adds new items to the end of the array, resizing it automatically.
+!#VA(list:x);      ID of array to push items to
+!#VA(firstItem:x); ... Up to 15 arguments to append to list
+
+!!VR(listSize:y):S-1;
+!!SN:M(list)/?(listSize)/?(itemsType:y)/d;
+!!FU&(listSize)<0:E;
+
+!!FU:A?(numArgs:y);
+!!FU&(numArgs)<=(@list):E;
+
+!!VR(newListSize:y):S(listSize) +(numArgs) -1;
+!!SN:M(list)/(newListSize);
+
+!!re i/(listSize)/(newListSize)/1/-1:;
+  !!VR(arg:y):Si -(listSize) +(@firstItem) Sx(arg);
+
+  !!if&(itemsType)=(M_INT):;
+    !!SN:V(list)/i/(arg);
+  !!el:;
+    !!SN:V(list)/i/z(arg);
+  !!en;  
+!!en:;
+
+!?FU(Array_Pop);
+; Removes items from the end of the array one by one, returning their values and resizing array automatically.
+; At least single item is removed from the array, if possible.
+; Example: P{list}/?{lastItem}/?{beforeLastItem}.
+!#VA(list:x);      ID of array to pop items from.
+!#VA(firstItem:x); OUT parameters... Up to 15 arguments to pop from the list. If item cannot be popped, it will be assigned zero value or empty string.
+
+!!VR(listSize:y):S-1;
+!!SN:M(list)/?(listSize)/?(itemsType:y)/d;
+!!FU&(listSize)<0:E;
+
+!!FU:A?(numArgs:y);
+!!VR(emptyStr:z):S^^;
+
+!!VR(numPops:y):S(numArgs) -(@firstItem) +1;
+!!VR(numPops)&(numPops)<1:S1;
+
+!!VR(newListSize:y):S(listSize) -(numPops);
+!!VR(newListSize)&(newListSize)<0:S0;
+!!VR(numRealPops:y):S(listSize) -(newListSize);
+
+!!re i/0/(numPops)/1/-1:;
+  !!VR(argInd:y):S(@firstItem) +i;
+
+  !!if&i<(numRealPops):;
+    !!VR(listInd:y):S-1 -i;
+
+    !!if&(itemsType)=(M_INT):;
+      !!SN:V(list)/(listInd)/?x(argInd);
+    !!el:;
+      !!SN:V(list)/(listInd)/?s^temp^;
+      !!VRx(argInd):Zs^temp^;
+    !!en;
+  !!el:;
+    !!if&(itemsType)=(M_INT):;
+      !!VRx(argInd):S0;
+    !!el:;
+      !!VRx(argInd):S(@emptyStr);
+    !!en;
+  !!en; el
+!!en:; re
+
+!!SN:M(list)/(newListSize);
+!!VRs^temp^:S^^;
+
 !?FU(Array_Copy);
 ; Resizes destination array to match source array size and copies all source items into destination array.
 ; Both arrays must have the same items type.
 !#VA(srcArray:x); ID of array to copy items from (source).
 !#VA(dstArray:x); ID of array to copy items to (destination).
+
 !!VR(numSrcItems:y):S-1;
 !!SN:M(srcArray)/?(numSrcItems)/?(srcItemsType:y)/d;
 !!FU&(numSrcItems)<0:E;
@@ -81,6 +244,7 @@ ZVSE2
 ; Creates trigger local copy of array.
 !#VA(srcArray:x); ID of array to clone.
 !#VA(result:x);   ID of result trigger local array.
+
 !!VR(numSrcItems:y):S-1;
 !!SN:M(srcArray)/?(numSrcItems)/?(srcItemsType:y)/d;
 !!FU&(numSrcItems)<0:E;
@@ -91,35 +255,39 @@ ZVSE2
 !?FU(Array_Join);
 ; Concatenates array items into single string, using passed glue string. Works with both numeric and string arrays.
 ; Example: ['one', 'two', 'three'] with glue ' --- ' become 'one --- two --- three'.
-; Returns s^result^
-; Uses s^_^
-!#VA(list:x);    Array ID.
-!#VA(gluePtr:x); Optional. Glue string. Default: ''.
+!#VA(list:x);      Array ID.
+!#VA(resultPtr:x); OUT. Result string
+!#VA(gluePtr:x);   Optional. Glue string. Default: ''.
 
 !!VRs^result^:S^^;
 !!VR(emptyStr:z):S^^;
+
+!!VR(numItems:y):S-1;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d;
+!!FU&(numItems)<0:E;
+
 !!VR(gluePtr)&(gluePtr)=0:S(@emptyStr);
 
-!!VR(numItems:y):S0;
-!!SN:M(list)/?(numItems)/?(itemsType:y)/d;
 !!VR(lastItemInd:y):S(numItems) -1;
 
 !!if&(itemsType)=(M_INT):;
   !!re i/0/(numItems)/1/-1:;
     !!SN:V(list)/i/?(item:y);
-    !!VR(itemStr:z):M3/(item);
-    !!VRs^result^:+(itemStr);
+    !!VRs^result^:+^%(item)^;
     !!VRs^result^&i<(lastItemInd):+z(gluePtr);
   !!en:;
 !!el:;
   !!re i/0/(numItems)/1/-1:;
-    !!SN:V(list)/i/?s^_^;
-    !!VRs^result^:+s^_^;
+    !!SN:V(list)/i/?s^temp^;
+    !!VRs^result^:+s^temp^;
     !!VRs^result^&i<(lastItemInd):+z(gluePtr);
   !!en:;
 
-  !!VRs^_^:S^^;
+  !!VRs^temp^:S^^;
 !!en;
+
+!!VR(resultPtr):Zs^result^;
+!!VRs^result^:S^^;
 
 !?FU(Array_Sort);
 ; Sorts array items in ascending order. Allows to sort specific array subrange.
@@ -154,22 +322,22 @@ ZVSE2
 !!VRv1:S(savedV1);
 
 !?FU(CompareStrings_Bridge_INTERNAL);
-; Uses s^_^
 !#VA(str1Addr:x) (str2Addr:x) (bridgeState:x) (result:x);
+
 !!if&(str1Addr)<>0:;
-  !!SN:X?t X(str1Addr) X?s^_^ Xt;
-  !!VR(value1:y):Zs^_^;
-  !!VRs^_^:S^^;
+  !!SN:X?t X(str1Addr) X?s^temp^ Xt;
+  !!VR(value1:y):Zs^temp^;
+  !!VRs^temp^:S^^;
 !!el:;
-  !!VR(value1:y):Zs^^;
+  !!VR(value1:y):Z^^;
 !!en;
 
 !!if&(str2Addr)<>0:;
-  !!SN:X?t X(str2Addr) X?s^_^ Xt;
-  !!VR(value2:y):Zs^_^;
-  !!VRs^_^:S^^;
+  !!SN:X?t X(str2Addr) X?s^temp^ Xt;
+  !!VR(value2:y):Zs^temp^;
+  !!VRs^temp^:S^^;
 !!el:;
-  !!VR(value2:y):Zs^^;
+  !!VR(value2:y):Z^^;
 !!en;
 
 !!SN:V(bridgeState)/0/?(compareFunc:y)/?(compareFuncState:y);
@@ -379,13 +547,15 @@ ZVSE2
 !?FU(Pow);
 ; Raises value to specified power. All arguments and result are floats.
 !#VA(base:x) (power:x) (result:x);
-!!SN:L^era.dll^/?(era:y) A(era)/^Erm_Pow^/?(func:y) E(func)/(CALLCONV_STDCALL_FLOAT)(base)/(power);
+
+!!SN:F^.Erm_Pow^/(base)/(power);
 !!VR(result):Ce1;
 
 !?FU(Sqrt);
 ; Returns value square root. All arguments and result are floats.
 !#VA(value:x) (result:x);
-!!SN:L^era.dll^/?(era:y) A(era)/^Erm_Sqrt^/?(func:y) E(func)/(CALLCONV_STDCALL_FLOAT)/(value);
+
+!!SN:F^.Erm_Sqrt^/(value);
 !!VR(result):Ce1;
 
 !?FU(IntLog2);
@@ -408,6 +578,7 @@ ZVSE2
 ; For example, P0/3/7/?(mask:y) will give 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137.
 !#VA(args:x);   ... Up to 15 bit/flag positions.
 !#VA(result:x); The last argument will contain the result mask.
+
 !!FU:A?(numArgs:y);
 
 !!if&(numArgs)<(@result):;
@@ -437,6 +608,7 @@ ZVSE2
 ; 2 ^ 0 + 2 ^ 3 + 2 ^ 7 = 1 + 8 + 128 = 137. It means, that bits 0, 3 and 7 are set.
 !#VA(mask:x);   Bit mask.
 !#VA(result:x); Will contain new trigger local array ID with bit/flag positions.
+
 !!SN:M(M_AUTO_ID)/0/(M_INT)/(M_TRIGGER_LOCAL)/?(result) F^ExtendArrayLifetime^/(result);
 
 !!VR(bit:y):S1;
@@ -450,6 +622,7 @@ ZVSE2
 !?FU(Tm32Encode);
 ; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
 !#VA(value:x) (result:x);
+
 !!VRf:S(value) Sd>>16 X(value) *73244475;
 !!VRg:Sf Sd>>16 Xf *73244475;
 !!VR(result):Sg Sd>>16 Xg;
@@ -457,6 +630,7 @@ ZVSE2
 !?FU(Tm32Decode);
 ; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
 !#VA(value:x) (result:x);
+
 !!VRf:S(value) Sd>>16 X(value) *295559667;
 !!VRg:Sf Sd>>16 Xf *295559667;
 !!VR(result):Sg Sd>>16 Xg;
@@ -467,12 +641,17 @@ ZVSE2
 !?FU(GetStrAtAddr);
 ; Reads null terminated string at specified address into s^result^ variable.
 ; Null address (0) results in empty string.
-!#VA(strAddr:x);
-!!SN:X?t X(strAddr) X?s^result^ Xt;
+!#VA(strAddr:x);   Address of null-terminated string in memory or 0.
+!#VA(resultPtr:x); String variable, to copy string contents to.
+
+!!SN:X?t X(strAddr) X?s^temp^ Xt;
+!!VR(resultPtr):Zs^temp^;
+!!VRs^temp^:S^^;
 
 !?FU(CompareStrings);
 ; Compares two strings. Returns value <0, =0 or >0, corresponding to items relation.
 !#VA(str1Ptr:x) (str2Ptr:x) (result:x);
+
 !!VR(result):S0;
 
 !!if&z(str1Ptr)<z(str2Ptr):;
@@ -482,26 +661,64 @@ ZVSE2
 !!en;
 
 !?FU(StrToUpper);
-; Converts given string to upper case. Result is returned in s^result^.
-!#VA(strPtr:x);
+; Converts given string to upper case.
+!#VA(strPtr:x);    Source string.
+!#VA(resultPtr:x); OUT. Result string.
+
 !!SN:M(M_AUTO_ID)/1/(M_STR)/(M_TRIGGER_LOCAL)/?(buf:y) M(buf)/0/z(strPtr) M(buf)/?(strAddr:y)/0;
 
 !!VR(savedV1:y):Sv1;
 !!SN:F^CharUpperA^/(strAddr);
 !!VRv1:S(savedV1);
 
-!!SN:M(buf)/0/?s^result^;
+!!SN:M(buf)/0/?s^temp^;
+!!VR(resultPtr):Zs^temp^;
+!!VRs^temp^:S^^;
 
 !?FU(StrToLower);
-; Converts given string to lower case. Result is returned in s^result^.
-!#VA(strPtr:x);
+; Converts given string to lower case.
+!#VA(strPtr:x);    Source string.
+!#VA(resultPtr:x); OUT. Result string.
+
 !!SN:M(M_AUTO_ID)/1/(M_STR)/(M_TRIGGER_LOCAL)/?(buf:y) M(buf)/0/z(strPtr) M(buf)/?(strAddr:y)/0;
 
 !!VR(savedV1:y):Sv1;
 !!SN:F^CharLowerA^/(strAddr);
 !!VRv1:S(savedV1);
 
-!!SN:M(buf)/0/?s^result^;
+!!SN:M(buf)/0/?s^temp^;
+!!VR(resultPtr):Zs^temp^;
+!!VRs^temp^:S^^;
+
+!?FU(DecorateInt);
+; Converts integer to string, separating each three digit group by "era.locale.thousand_separator" characer.
+; Example: P74276689 => "74 276 689"
+!#VA(value:x);              Number to decorate.
+!#VA(resultPtr:x);          OUT. Result string.
+!#VA(ignoreSmallNumbers:x); Optional boolean. If set to DONT_DECORATE_SMALL_INTS, values <= 9999 are not decorated. Default: false.
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^DecorateInt^/(value)/?(text:z)/(ignoreSmallNumbers);
+!!VR(resultPtr):S(@text);
+!!VRv1:S(savedV1);
+
+!?FU(FormatQuantity);
+; Formats given positive or negative quantity to human-readable string with desired constraints on length and maximal number of digits.
+; Uses game locale settings and metric suffixes like "K", "M" and "G".
+; Example: P-1234567890/6/4 => "-1.23G"
+!#VA(value:x);     Quantity to format.
+!#VA(resultPtr:x); OUT. Result string.
+!#VA(maxLen:x);    Optional. Maximum desired string length in logical characters. Default: 5.
+!#VA(maxDigits:x); Optional. Maximum number of digits to use in result (the more digits to display, the slower the number is read by humans). Default: 4.
+
+!!FU:A?(numArgs:y);
+!!VR(maxLen)&(numArgs)<(@maxLen):S5;
+!!VR(maxDigits)&(numArgs)<(@maxDigits):S4;
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^FormatQuantity^/(value)/?(text:z)/(SIZEOF_ZSTR)/(maxLen)/(maxDigits);
+!!VR(resultPtr):S(@text);
+!!VRv1:S(savedV1);
 ; ============== END STRINGS ==============
 
 
@@ -517,40 +734,290 @@ ZVSE2
 ; ============ END ERROR HANDLING ============
 
 
+; =============== DIALOGS ===============
+!?FU(H3Dlg_StopAnimation);
+; Stops current dialogs animation
+!!SN:E5864096/1;
+
+!?FU(H3Dlg_ResumeAnimation);
+; Resumes stopped dialogs animation
+!!SN:E5864272/1;
+
+!?FU(H3Dlg_ShowPopup);
+; Shows H3 dialog as RMB popup.
+!#VA(h3Dlg:x); H3 dialog object address
+!!FU(H3Dlg_StopAnimation):P;
+!!SN:E6245264/2/(h3Dlg);
+!!FU(H3Dlg_ResumeAnimation):P;
+
+!?FU(H3Dlg_Coords);
+; Allows to access H3 dialog display coordinates. Automatically fixed invalid coordinates.
+!#VA(h3Dlg:x); H3 dialog object address.
+!#VA(x:x);     X-coordinate, supports GET/SET/ADD syntax
+!#VA(y:x);     Y-coordinate, supports GET/SET/ADD syntax
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@y):;
+  !!SN:F^ShowErmError^/^H3Dlg_Coords: invalid number of argumnets^;
+  !!FU:E;
+!!en;
+
+!!if&(h3Dlg)=(NULL):;
+  !!SN:F^ShowErmError^/^H3Dlg_Coords: h3Dlg is NULL^;
+  !!FU:E;
+!!en;
+
+!!FU:S(@x)/?(xSyntax:y) S(@y)/?(ySyntax:y);
+
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_X)/(UNC_INT)/?(origX:y);
+
+!!if&(xSyntax)=(ARG_SYNTAX_GET):;
+  !!VR(x):S(origX);
+!!el:;
+  !!UN:C(h3Dlg)/(STRUCT_H3DLG_WIDTH)/(UNC_INT)/?(dlgWidth:y);
+  !!UN:C(ADDR_GAME_SCREEN_WIDTH)/(UNC_INT16)/?(gameScreenWidth:y);
+  !!VR(maxX:y):S(gameScreenWidth) -(dlgWidth) -(DLG_BOX_SHADOW_WIDTH);
+  
+  !!VR(x)&(xSyntax)=(ARG_SYNTAX_ADD):+(origX);
+  !!VR(x):F0/(maxX);
+  
+  !!UN:C(h3Dlg)/(STRUCT_H3DLG_X)/(UNC_INT)/(x);
+!!en;
+
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/?(origY:y);
+
+!!if&(ySyntax)=(ARG_SYNTAX_GET):;
+  !!VR(y):S(origY);
+!!el:;
+  !!UN:C(h3Dlg)/(STRUCT_H3DLG_HEIGHT)/(UNC_INT)/?(dlgHeight:y);
+  !!UN:C(ADDR_GAME_SCREEN_HEIGHT)/(UNC_INT16)/?(gameScreenHeight:y);
+  !!VR(maxY:y):S(gameScreenHeight) -(dlgHeight) -(DLG_BOX_SHADOW_WIDTH);
+  
+  !!VR(y)&(ySyntax)=(ARG_SYNTAX_ADD):+(origY);
+  !!VR(y):F0/(maxY);
+  
+  !!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/(y);
+!!en;
+
+!?FU(DL_FindById);
+; Returns DL dialog object address by DL id or (NULL) .
+!#VA(dlgId:x);
+!#VA(result:x);
+!!SN:E7510739/1/(dlgId);
+!!VR(result):Sv1;
+
+!?FU(DL_Destroy);
+; Destroys DL dialog object.
+!#VA(dlgObj:x);
+!!SN:E7518240/2/(dlgObj);
+
+!?FU(DL_ShowPopup);
+; Shows DL dialog as RMB popup.
+; The dialog will be destroyed after showing. Call DL:N again to recreate it.
+; © GrayFace
+!#VA(dlgId:x); DL dialog ID.
+!!VR(savedV1:y):Sv1;
+!!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
+
+!!if&(dlgObj)<>(NULL):;
+  !!UN:C(dlgObj)/(UNC_INT)/?(h3Dlg:y);
+  !!FU(H3Dlg_ShowPopup):P(h3Dlg);
+  !!FU(DL_Destroy):P(dlgObj);
+!!en;
+
+!!VRv1:S(savedV1);
+
+!?FU(DL_Coords);
+; Allows to access DL-dialog display coordinates. Call DL:N before trying to access coordinates.
+; © igrik
+!#VA(dlgId:x); DL dialog ID
+!#VA(x:x);     X-coordinate, supports GET/SET/ADD syntax
+!#VA(y:x);     Y-coordinate, supports GET/SET/ADD syntax
+
+!!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@y):;
+  !!SN:F^ShowErmError^/^DL_Coords: invalid number of argumnets^;
+  !!FU:E;
+!!en;
+
+!!if&(dlgObj)=(NULL):;
+  !!SN:F^ShowErmError^/^DL_Coords: DL-dialog %(dlgId) is not loaded^;
+  !!FU:E;
+!!en;
+
+!!UN:C(dlgObj)/(UNC_INT)/?(h3Dlg:y);
+!!FU:S(@x)/?(xSyntax:y) S(@y)/?(ySyntax:y);
+
+!!FU(H3Dlg_Coords):P(h3Dlg)/?(origX:y)/?(origY:y);
+
+!!VR(x)&(xSyntax)=(ARG_SYNTAX_GET):S(origX);
+!!VR(x)&(xSyntax)=(ARG_SYNTAX_ADD):+(origX);
+!!VR(y)&(ySyntax)=(ARG_SYNTAX_GET):S(origY);
+!!VR(y)&(ySyntax)=(ARG_SYNTAX_ADD):+(origY);
+
+!!FU(H3Dlg_Coords)|(xSyntax)<>(ARG_SYNTAX_GET)/(ySyntax)<>(ARG_SYNTAX_GET):P(h3Dlg)/(x)/(y);
+
+!?FU(DL_GetSize);
+; Returns DL-dialog width and height.
+!#VA(dlgId:x);  DL dialog ID
+!#VA(width:x);  OUT. Dialog width
+!#VA(height:x); OUT. Dialog height
+
+!!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
+
+!!if&(dlgObj)=(NULL):;
+  !!SN:F^ShowErmError^/^DL_GetSize: DL-dialog %(dlgId) is not loaded^;
+  !!FU:E;
+!!en;
+
+!!UN:C(dlgObj)/(UNC_INT)/?(h3Dlg:y);
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_WIDTH)/(UNC_INT)/?(width);
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_HEIGHT)/(UNC_INT)/?(height);
+
+!?FU(DL_AlignDlg);
+; Aligns dialog display position. Call DL:N before trying to use this function.
+!#VA(dlgId:x);     DL dialog ID
+!#VA(alignment:x); Bit-mask of TEXT_ALIGN_XXX constants.
+
+!!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
+
+!!if&(dlgObj)=(NULL):;
+  !!SN:F^ShowErmError^/^DL_AlignDlg: DL-dialog %(dlgId) is not loaded^;
+  !!FU:E;
+!!en;
+
+!!UN:C(dlgObj)/(UNC_INT)/?(h3Dlg:y);
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_WIDTH)/(UNC_INT)/?(dlgWidth:y);
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_HEIGHT)/(UNC_INT)/?(dlgHeight:y);
+!!UN:C(ADDR_GAME_SCREEN_WIDTH)/(UNC_INT16)/?(gameScreenWidth:y);
+!!UN:C(ADDR_GAME_SCREEN_HEIGHT)/(UNC_INT16)/?(gameScreenHeight:y);
+
+!!VR(alignCenter:y):S(alignment) &(TEXT_ALIGN_CENTER);
+!!VR(alignRight:y):S(alignment) &(TEXT_ALIGN_RIGHT);
+!!VR(alignMiddle:y):S(alignment) &(TEXT_ALIGN_MIDDLE);
+!!VR(alignBottom:y):S(alignment) &(TEXT_ALIGN_BOTTOM);
+
+!!VR(x:y):S0;
+
+!!if&(alignCenter)<>(FALSE):;
+  !!VR(x):S(gameScreenWidth) -(dlgWidth) :2;
+!!el&(alignRight)<>(FALSE):;
+  !!VR(x):S(gameScreenWidth) -(dlgWidth);
+!!en;
+
+!!VR(y:y):S0;
+
+!!if&(alignMiddle)<>(FALSE):;
+  !!VR(y):S(gameScreenHeight) -(dlgHeight) :2;
+!!el&(alignBottom)<>(FALSE):;
+  !!VR(y):S(gameScreenHeight) -(dlgHeight);
+!!en;
+
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_X)/(UNC_INT)/(x);
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/(y);
+; ============= END DIALOGS =============
+
+
+; =============== BATTLE ===============
+!?FU(UpdateBattleVars);
+; Updates global variables with most of "OnBeforeBattle/Universal" event parameters.
+; Call this function if you change anything, except monsters, via BA command.
+!!BA:Q?i^battle_isQuick^ P?i^battle_x^/?i^battle_y^/?i^battle_z^;
+!!BA:O?i^battle_owner_0^/?i^battle_owner_1^;
+!!BA:H0/?i^battle_hero_0^ H1/?i^battle_hero_1^;
+
+; Replace invalid defender hero values like (NO_DEFENDING_HERO) with normalized (NO_HERO)
+!!VRi^battle_hero_1^&i^battle_hero_1^<(HERO_FIRST):S(NO_HERO);
+
+!!VRi^battle_ai_0^:S(TRUE);
+!!VRi^battle_ai_1^:S(TRUE);
+!!VRi^battle_remote_0^:S(FALSE);
+!!VRi^battle_remote_1^:S(FALSE);
+
+!!if&i^battle_owner_0^<>(NO_OWNER):;
+  !!OW:Ii^battle_owner_0^/?i^battle_ai_0^ Gi^battle_owner_0^/?(isLocalHuman:y);
+  !!VRi^battle_remote_0^&i^battle_ai_0^=(FALSE)/(isLocalHuman)=(FALSE):S(TRUE);
+!!en;
+
+!!if&i^battle_owner_1^<>(NO_OWNER):;
+  !!OW:Ii^battle_owner_1^/?i^battle_ai_1^ Gi^battle_owner_1^/?(isLocalHuman:y);
+  !!VRi^battle_remote_1^&i^battle_ai_1^=(FALSE)/(isLocalHuman)=(FALSE):S(TRUE);
+!!en;
+
+!!VRi^battle_local_0^:S(TRUE) Xi^battle_remote_0^;
+!!VRi^battle_local_1^:S(TRUE) Xi^battle_remote_1^;
+!!VRi^battle_human_0^:S(TRUE) Xi^battle_ai_0^;
+!!VRi^battle_human_1^:S(TRUE) Xi^battle_ai_1^;
+!!VRi^battle_localHuman_0^:Si^battle_local_0^ &i^battle_human_0^;
+!!VRi^battle_localHuman_1^:Si^battle_local_1^ &i^battle_human_1^;
+
+!!VRi^battle_hasHuman^:S(FALSE);
+!!VRi^battle_hasHuman^|i^battle_human_0^<>(FALSE)/i^battle_human_1^<>(FALSE):S(TRUE);
+
+!!VRi^battle_humanOnly^:Si^battle_human_0^ &i^battle_human_1^;
+!!VRi^battle_aiOnly^:Si^battle_ai_0^ &i^battle_ai_1^;
+!!VRi^battle_isVisible^:Si^battle_withoutHuman^ |i^battle_isQuick^ X(TRUE);
+!!VRi^battle_isNetwork^:Si^battle_remote_0^ |i^battle_remote_1^;
+
+!!VR(battleType:y):S0;
+!!VR(battleType)&i^battle_human_0^<>(FALSE):    |(BATTLE_TYPE_FLAG_LEFT_IS_HUMAN);
+!!VR(battleType)&i^battle_human_1^<>(FALSE):    |(BATTLE_TYPE_FLAG_RIGHT_IS_HUMAN);
+!!VR(battleType)&i^battle_owner_0^<>(NO_OWNER): |(BATTLE_TYPE_FLAG_LEFT_HAS_OWNER);
+!!VR(battleType)&i^battle_owner_1^<>(NO_OWNER): |(BATTLE_TYPE_FLAG_RIGHT_HAS_OWNER);
+!!VR(battleType)&i^battle_hero_0^<>(NO_HERO):   |(BATTLE_TYPE_FLAG_LEFT_HAS_HERO);
+!!VR(battleType)&i^battle_hero_1^<>(NO_HERO):   |(BATTLE_TYPE_FLAG_RIGHT_HAS_HERO);
+!!VRi^battle_type^:S(battleType);
+; ============= END BATTLE =============
+
+
 ; ============== MONSTERS ==============
 !?FU(MonCountToFuzzyText);
-; Converts monster quantity to stringish value range like "50-99" or "2K+" of maximum 7 characters length.
-; Returns result in s^result^
-!#VA(monNum:x);
-!#VA(withDescription:x); ?boolean. If true, the result will be native H3 text like "A pack (10-19) of". Default: false.
+; Converts monster quantity to stringish value range like "50-99" or "2K+" with maximum length restriction.
+; Example P777/?{result}/(MON_FUZZY_COUNT_SHORT) => "500-999".
+!#VA(monNum:x);         Number of monsters to convert to text.
+!#VA(resultPtr:x);      OUT. Result string
+!#VA(maxTextLength:x);  Optional. Result length restriction in the form of MON_FUZZY_COUNT_XXX constant. Default: MON_FUZZY_COUNT_SHORT
+
+!!if&(monNum)<0:;
+  !!SN:F^ShowErmError^/^MonCountToFuzzyText: negative monster quantity %(monNum)^;
+  !!FU:E;
+!!en;
+
 !!VR(h3HintsBaseAddr:y):S6970400;
 !!VR(rangeInd:y):-1;
 
 !!if&(monNum)<=4:;
   !!VRs^result^:S^1-4^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S0;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S0;
 !!el&(monNum)<=9:;
   !!VRs^result^:S^5-9^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S1;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S1;
 !!el&(monNum)<=19:;
   !!VRs^result^:S^10-19^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S2;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S2;
 !!el&(monNum)<=49:;
   !!VRs^result^:S^20-49^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S3;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S3;
 !!el&(monNum)<=99:;
   !!VRs^result^:S^50-99^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S4;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S4;
 !!el&(monNum)<=249:;
   !!VRs^result^:S^100-249^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S5;
+  !!VRs^result^&(maxTextLength)=(MON_FUZZY_COUNT_EXTRA_SHORT):S^100+^;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S5;
 !!el&(monNum)<=499:;
   !!VRs^result^:S^250-499^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S6;
+  !!VRs^result^&(maxTextLength)=(MON_FUZZY_COUNT_EXTRA_SHORT):S^250+^;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S6;
 !!el&(monNum)<=999:;
   !!VRs^result^:S^500-999^;
-  !!VR(rangeInd)&(withDescription)<>(FALSE):S7;
-!!el&(monNum)<2000/(withDescription)<>(FALSE):;
+  !!VRs^result^&(maxTextLength)=(MON_FUZZY_COUNT_EXTRA_SHORT):S^500+^;
+  !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S7;
+!!el&(monNum)<2000/(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):;
   !!VR(rangeInd):S8;
 !!el&(monNum)<1000000:;
   !!VR(thousandInd:y):S(monNum) :1000;
@@ -572,6 +1039,9 @@ ZVSE2
 !!if&(rangeInd)<>-1:;
   !!VRf:S(rangeInd) *(SIZEOF_INT) *3 +(SIZEOF_INT) +(h3HintsBaseAddr);
   !!UN:Cf/(SIZEOF_PTR)/?(strAddr:y);
-  !!FU(GetStrAtAddr):P(strAddr);
+  !!FU(GetStrAtAddr):P(strAddr)/?s^result^;
 !!en;
+
+!!VR(resultPtr):Zs^result^;
+!!VRs^result^:S^^;
 ; ============ END MONSTERS ============

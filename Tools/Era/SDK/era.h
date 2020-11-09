@@ -199,6 +199,7 @@ namespace Era
   typedef void  (__stdcall *TRestoreEventParams) ();
   typedef void  (__stdcall *TReportPluginVersion) (const char* VersionLine);
   typedef const char* (__stdcall *TGetEraVersion) ();
+  typedef char* (__stdcall *ToStaticStr) (const char* Str);
   typedef char* (__stdcall *TTr) (const char* key, const char** params, int highParams);
   typedef void  (__stdcall *TMemFree) (const void* buf);
   typedef void  (__stdcall *TNotifyError) (const char* error);
@@ -283,6 +284,7 @@ namespace Era
   TSaveEventParams      SaveEventParams       = NULL;
   TSaveIni              SaveIni               = NULL;
   TSplice               Splice                = NULL;
+  TToStaticStr          ToStaticStr           = NULL;
   TTr                   _tr                   = NULL;
   TWriteAtCode          WriteAtCode           = NULL;
   TWriteSavegameSection WriteSavegameSection  = NULL;
@@ -383,6 +385,7 @@ namespace Era
     ReportPluginVersion   = (TReportPluginVersion)  GetProcAddress(hEra, "ReportPluginVersion");
     SaveIni               = (TSaveIni)              GetProcAddress(hEra, "SaveIni");
     Splice                = (TSplice)               GetProcAddress(hEra, "Splice");
+    ToStaticStr           = (TToStaticStr)          GetProcAddress(hEra, "ToStaticStr");
     WriteAtCode           = (TWriteAtCode)          GetProcAddress(hEra, "WriteAtCode");
     WriteSavegameSection  = (TWriteSavegameSection) GetProcAddress(hEra, "WriteSavegameSection");
     WriteStrToIni         = (TWriteStrToIni)        GetProcAddress(hEra, "WriteStrToIni");

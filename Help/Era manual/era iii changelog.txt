@@ -1,3 +1,387 @@
+Version 3.2.0 (11/2020)
+------------------------
+[@] Special thanks to Andarium for project support.
+
+[+] Updated "wog native dialogs" plugin. Added support to override any zsetup00.txt part using json config files.
+    See example of full WoG Options tabs/pages replacement in Mods/WoG/Lang/wog options.json.example.
+    Added support for controlling, which pictures may be selected in IF:N-like dialogs.
+    Fixed possible crashes, related to usage freed language data buffers. Credits: igrik.
+
+[+] Updated "game bug fixes extended.dll" plugin by igrik. Fixed stack block damage ability bug and WoG experience creature cloning bug.
+
+[+] Updated events and constants autocompletion files in Sublime Text Erm Editor.
+
+[+] Included reworked un44.def file by Bes.
+
+[+] Added support for d- syntax in function parameters.
+    !!FU(edu_Test):Pd-200; will pass -200, previously 200
+
+[+] Added locale settings to Lang/era.json:
+
+  "era.locale.decimal_separator"  - separator of fractional part in numbers (like dot in 3.14 for English)
+  "era.locale.thousand_separator" - separator of each 3 digits group in decorated numbers. It's recommended to use universal space for that. Example: "19 841".
+  "era.locale.non_breaking_space" - space character, that is treated as part of the word and is not word-wrapped.
+  "era.locale.metric_suffixes.0"  - quantity metric suffix for thousands like "K". Example number: "15.3K" for "15 300".
+  "era.locale.metric_suffixes.1"  - quantity metric suffix for millions like  "M". Example number: "1.2M" for "1 200 000".
+  "era.locale.metric_suffixes.2"  - quantity metric suffix for billions like "G". Example number: "1.06G" for "1 060 000 000".
+
+[+] Improved Heroes 3 complex dialogs support. Credits: Berserker, igrik.
+    IF:N(msgType)/^text^[/?result/(textAlignment)/(preselectedPicId)/(selectablePicsMask)].
+      selectablePicsMask - bit mask of pictures, allowed for selection. Default value is -1 (all pictures).
+    
+    To make the first and the forth pictures selectable only specify mask 1 ^ 0 + 1 ^ 3 = 1 + 8 = 9.
+    This setting allows some pictures to act as decoration only and the others to act as selectable items.
+
+    Example:
+    ; Let's display selection of two army types in the center and two resource costs at the edges.
+    ; Monster pictures will be selectable, resource pictures will not be selectable.
+    !!FU(ConstructBitMask):P(DLG_RESULT_PIC_2)/(DLG_RESULT_PIC_3)/?(selectablePicsMask:y);
+    !!IF:N(PIC_TYPE_RES_CRYSTAL)/100/(PIC_TYPE_MONSTER)/(MON_CYCLOPS)/(PIC_TYPE_MONSTER)/(MON_EFREETI)/(PIC_TYPE_RES_SULFUR)/100;
+    !!IF:N(MSG_TYPE_CHOOSE_PIC)/^What army do you want to call?^/?(choice:y)/(TEXT_ALIGN_CENTER)/(DLG_NO_SELECTION)/(selectablePicsMask);
+
+[+] Added new events "OnBeforeBattleReplay" and "OnAfterBattleReplay", depending on third-party plugins like "BattleReplay" by igrik.
+    The engine now handles "OnBeforeBattleReplay" to fix issues with battlefield obstacles generation.
+
+[+] Duplicate constant declarations with the same value are allowed from now.
+
+  !#DC(TRUE) = 1;
+  !#DC(TRUE) = 1; does not produce error
+  !#DC(TRUE) = 3; error: constant TRUE is already defined with value 1
+
+[+] Added new ERM command VR:F in the form of !!VR(numericVar):F(minValue)/(maxValue).
+    It's used to force value to be in specific range and can be used instead of ToRange, Min and Max math functions.
+    All arguments must be of the same type.
+    
+    (numericVar) - any integer or float variable.
+    (minValue)   - minimum range value (integer or float).
+    (maxValue)   - maximum range value (integer or float).
+
+    If range is invalid (minValue) > (maxValue), the result is (minValue).
+
+    Examples:
+    !!VR(value:y):S77 F10/100; force 77 to be in 10..100 range
+    !!IF:M^%(value)^;          displays 77
+
+    !!VR(value:y):S444 F10/100; force 444 to be in 10..100 range
+    !!IF:M^%(value)^;           displays "100" (maximum possible value)
+
+    !!VR(value:y):S-7 F10/100; force -7 to be in 10..100 range
+    !!IF:M^%(value)^;           displays "10" (minimum possible value)
+
+    !!VR(value:y):S4 F6/2; force 4 to be in invalid 6..2 range
+    !!IF:M^%(value)^;      displays "6" (range start value is used in case of invalid range)
+
+    !!VR(value1:y):S93;
+    !!VR(value2:y):S50;
+    !!VR(value1):F(INT_MIN)/(value2); value1 = minimum of (value1, value2)
+    !!IF:M^%(value)^;                 displays "50" (the smallest of 2 values)
+
+    !!VR(value1:y):S93;
+    !!VR(value2:y):S50;
+    !!VR(value1):F(value2)/(INT_MAX); value1 = maximum of (value1, value2)
+    !!IF:M^%(value)^;                 displays "93" (the biggest of 2 values)
+
+[+] Added possibility to call functions, returning float values using SN:F. Simply prepend dot (".") before function name.
+
+[+] Added possibility to return strings from functions using P?(someStr) syntax.
+    If (someStr) is string variable, then an appropriate x-argument is set to 0 before function execution.
+    It's expected, that function will assign z-string index of result to x-argument. It can be local string,
+    global string, trigger local string, ERT string. The value of this string will be assigned to (someStr) variable
+    on function exit.
+
+    Example:
+
+    !?FU(test_AppendHeroName);
+    !#VA(introTextPtr:x); text to append hero name to
+    !#VA(resultPtr:x);    result string
+    !!VR(result:z):Sz(introTextPtr) +^Corwin^;
+    !!VR(resultPtr):Z(result); create trigger local variable with result and assign its index to resultPtr argument
+
+    !?FU(OnAfterErmInstructions);
+    !!VR(greetingBeginning:z):S^Hello, ^;
+    !!FU(test_AppendHeroName):P(greetingBeginning)/?(greeting:z);
+    !!IF:M^%(greeting)^; display "Hello, Corwin"
+
+[+] Implemented saving and loading global constants in savegames.
+
+[+] Added new ERM command SN:C(constantName)/?(constantValue)[/?(constantExists)]
+  It allows to get constant value by name in runtime. It's possible to use constants in json configs, for instance.
+
+  Short example:
+  !!SN:C^OBJ_MONSTER^/?(constValue:y)/?(constExists:y);
+  !!IF:M^OBJ_MONSTER = %(constValue). Constant exists: %(constExists)^; OBJ_MONSTER = 54. Constant exists: 1
+
+  Let's allow to use constants in json configuration file for key 'edu.banned_obj_type'.
+  !!VR(key:z):S^edu.banned_obj_type^;            Prepare key to load from json
+  !!SN:T(key)/?(valueStr:z);                     Load translation for given key as string
+  !!SN:C(valueStr)/?(value:y)/?(constExists:y);  Try to find constant with the same name as value
+  !!VR(value)&(constExists)=(FALSE):V(valueStr); If no constant is found, convert string value to integer
+  !!IF:M^edu.banned_obj_type = %(value)^;        Display loaded config value
+
+[+] Added new constants to "Era Erm Framework" mod:
+  - ARG_SYNTAX_GET, ARG_SYNTAX_SET, ARG_SYNTAX_ADD for FU:S argument syntax types.
+  - Numerous other new constants.
+
+[+] Added new events to "Era Erm Framework" mod:
+
+  - "OnAfterBattleSetup", occuring right after "OnBeforeBattle" and "OnBeforeBattleUniversal" events.
+  New event allows to be sure, that basic battle parameters (heroes, quick battle, coordinates) are set up.
+
+[+] The following improvements were introduced in "Era Erm Framework" mod:
+  
+  - "OnBeforeBattle" and "OnBeforeBattleUniversal" events were improved, storing most of prebattle parameters in global variables.
+  i^battle_isQuick^:       (TRUE) if quick battle is enabled, (FALSE) otherwise
+  i^battle_x^:             Battle x-coordinate
+  i^battle_y^:             Battle y-coordinate
+  i^battle_z^:             Battle z-coordinate
+  i^battle_owner_0^:       Left side owner or (NO_OWNER)
+  i^battle_owner_1^:       Right side owner or (NO_OWNER)
+  i^battle_hero_0^:        Left side hero or (NO_HERO)
+  i^battle_hero_1^:        Right side hero or (NO_HERO). Any negative value is normalized into (NO_HERO)
+  i^battle_ai_0^:          (TRUE) if left side is controlled by AI, (FALSE) otherwise.
+  i^battle_ai_1^:          (TRUE) if right side is controlled by AI, (FALSE) otherwise.
+  i^battle_human_0^:       (TRUE) if left side is controlled by human, (FALSE) otherwise.
+  i^battle_human_1^:       (TRUE) if right side is controlled by human, (FALSE) otherwise.
+  i^battle_remote_0^:      (TRUE) if left side is controlled by remote human, (FALSE) otherwise.
+  i^battle_remote_1^:      (TRUE) if right side is controlled by remote human, (FALSE) otherwise.
+  i^battle_local_0^:       (TRUE) if left side is controlled by local human or AI, (FALSE) otherwise.
+  i^battle_local_1^:       (TRUE) if right side is controlled by local human or AI, (FALSE) otherwise.
+  i^battle_localHuman_0^:  (TRUE) if left side is controlled by local human, (FALSE) otherwise.
+  i^battle_localHuman_1^:  (TRUE) if right side is controlled by local human, (FALSE) otherwise.
+  i^battle_hasHuman^:      (TRUE) if least one side is controlled by human, (FALSE) otherwise.
+  i^battle_humanOnly^:     (TRUE) if all sides are controlled by humans, (FALSE) otherwise.
+  i^battle_aiOnly^:        (TRUE) if all sides are controlled by AI, (FALSE) otherwise.
+  i^battle_isVisible^:     (TRUE) if at least one side is human and quick battle is off, (FALSE) otherwise.
+  i^battle_isNetwork^:     (TRUE) if it's network human vs human battle, (FALSE) otherwise.
+  i^battle_type^:          Battle type bit mask: a collection of BATTLE_TYPE_FLAG_XXX constants.
+  i^battle_current_side^:  Current/active stack battle side (BATTLE_LEFT = 0 or BATTLE_RIGHT = 1). Changes in "OnBeforeBattleStackTurn" and "OnBattleStackObtainsTurn" events.
+  i^battle_current_stack^: Current/active stack ID. Changes in "OnBeforeBattleStackTurn" and "OnBattleStackObtainsTurn" events.
+  i^battle_acting_stack^:  ID of stack, performing action. It's set in "OnBeforeBattleAction" only.
+  i^battle_acting_side^:   Side (BATTLE_LEFT = 0 or BATTLE_RIGHT = 1) of stack, performing action. It's set in "OnBeforeBattleAction" only.
+
+  - i^battle_round^ keeps current valid round and can be used throughout battle triggers and in OnBattleRound condition
+  like !?FU(OnBattleRound)&i^battle_round^=0 instead of v997.
+
+[+] Added the following functions to "Era Erm Framework" mod:
+
+  !?FU(NewIntArray);
+  ; Creates and returns trigger local array of integers.
+  ; Alternative function arguments:
+  ;  (?result)                     The result array will have 0 items.
+  ;  (size)/(?result)              The result array will have (size) items with 0 value.
+  ;  (size)/(fillValue)/(?result)  The result array will have (size) items will (fillValue) value
+  ;  You may optionally specify (storageType) parameter after (?result) argument with value like M_STORED or M_TEMP.
+  
+  !?FU(NewStrArray);
+  ; Creates and returns trigger local array of strings.
+  ; Alternative function arguments:
+  ;  (?result)                     The result array will have 0 items.
+  ;  (size)/(?result)              The result array will have (size) items with ^^ value.
+  ;  (size)/(fillValue)/(?result)  The result array will have (size) items will (fillValue) value
+  ;  You may optionally specify (storageType) parameter after (?result) argument with value like M_STORED or M_TEMP.
+
+  !?FU(Array_Push);
+  ; Adds new items to the end of the array, resizing it automatically.
+  !#VA(list:x);      ID of array to push items to
+  !#VA(firstItem:x); ... Up to 15 arguments to append to list
+
+  !?FU(Array_Pop);
+  ; Removes items from the end of the array one by one, returning their values and resizing array automatically.
+  ; At least single item is removed from the array, if possible.
+  ; Example: P{list}/?{lastItem}/?{beforeLastItem}.
+  !#VA(list:x);      ID of array to pop items from.
+  !#VA(firstItem:x); OUT parameters... Up to 15 arguments to pop from the list. If item cannot be popped, it will be assigned zero value or empty string.
+
+  -------- EXAMPLES ---------
+
+  !!FU(NewStrArray):P?(list:y);                                            create trigger-local string array
+  !!FU(Array_Push):P(list)/^igrik^/^PerryR^/^Panda^;                       fill it with 3 values
+  !#VA(items[4]:z);                                                        declare array of 4 local z-strings
+  !!FU(Array_Pop):P(list)/?(items[0])/?(items[1])/?(items[2])/?(items[3]); pop items from array one by one
+  !!IF:M^%(items[0]) %(items[1]) %(items[2]) %(items[3])^;                 displays "Panda PerryR igrik "
+                                                         ;                 now (list) contains no items
+  ------ END EXAMPLES -------
+
+  !?FU(H3Dlg_StopAnimation);
+  ; Stops current dialogs animation
+  
+  !?FU(H3Dlg_ResumeAnimation);
+  ; Resumes stopped dialogs animation
+  
+  !?FU(H3Dlg_ShowPopup);
+  ; Shows H3 dialog as RMB popup.
+  !#VA(h3Dlg:x); H3 dialog object address
+
+  !?FU(H3Dlg_Coords);
+  ; Allows to access H3 dialog display coordinates. Automatically fixed invalid coordinates.
+  !#VA(h3Dlg:x); H3 dialog object address.
+  !#VA(x:x);     X-coordinate, supports GET/SET/ADD syntax
+  !#VA(y:x);     Y-coordinate, supports GET/SET/ADD syntax
+  
+  !?FU(DL_FindById);
+  ; Returns DL dialog object address by DL id or (NULL) .
+  !#VA(dlgId:x);
+  !#VA(result:x);
+  
+  !?FU(DL_Destroy);
+  ; Destroys DL dialog object.
+  !#VA(dlgObj:x);
+  
+  !?FU(DL_ShowPopup);
+  ; Shows DL dialog as RMB popup.
+  ; The dialog will be destroyed after showing. Call DL:N again to recreate it.
+  ; © GrayFace
+  !#VA(dlgId:x); DL dialog ID.
+
+  Example:
+  !?FU(OnAdventureMapRightMouseClick);
+  !!CM:R(FALSE);           disable default reaction
+  !!DL89:N^cmenu.txt^;     load custom DL dialog
+  !!FU(DL_ShowPopup):P89;  display DL dialog while right mouse button is holded
+
+  !?FU(DL_Coords);
+  ; Allows to access DL-dialog display coordinates. Call DL:N before trying to access coordinates.
+  ; © igrik
+  !#VA(dlgId:x); DL dialog ID
+  !#VA(x:x);     X-coordinate, supports GET/SET/ADD syntax
+  !#VA(y:x);     Y-coordinate, supports GET/SET/ADD syntax
+
+  !?FU(DL_GetSize);
+  ; Returns DL-dialog width and height.
+  !#VA(dlgId:x);  DL dialog ID
+  !#VA(width:x);  OUT. Dialog width
+  !#VA(height:x); OUT. Dialog height
+
+  !?FU(DL_AlignDlg);
+  ; Aligns dialog display position. Call DL:N before trying to use this function.
+  !#VA(dlgId:x);     DL dialog ID
+  !#VA(alignment:x); Bit-mask of TEXT_ALIGN_XXX constants.
+
+  !?FU(DecorateInt);
+  ; Converts integer to string, separating each three digit group by "era.locale.thousand_separator" characer.
+  ; Example: P74276689 => "74 276 689"
+  !#VA(value:x);              Number to decorate.
+  !#VA(resultPtr:x);          OUT. Result string.
+  !#VA(ignoreSmallNumbers:x); Optional boolean. If set to DONT_DECORATE_SMALL_INTS, values <= 9999 are not decorated. Default: false.
+
+  !?FU(FormatQuantity);
+  ; Formats given positive or negative quantity to human-readable string with desired constraints on length and maximal number of digits.
+  ; Uses game locale settings and metric suffixes like "K", "M" and "G".
+  ; Example: P-1234567890/6/4 => "-1.23G"
+  !#VA(value:x);     Quantity to format.
+  !#VA(resultPtr:x); OUT. Result string.
+  !#VA(maxLen:x);    Optional. Maximum desired string length in logical characters. Default: 5.
+  !#VA(maxDigits:x); Optional. Maximum number of digits to use in result (the more digits to display, the slower the number is read by humans). Default: 4.
+
+[+] Changed the following functions in "Era Erm Framework" mod:
+
+  !?FU(Array_Join);
+  ; Concatenates array items into single string, using passed glue string. Works with both numeric and string arrays.
+  ; Example: ['one', 'two', 'three'] with glue ' --- ' become 'one --- two --- three'.
+  !#VA(list:x);      Array ID.
+  !#VA(resultPtr:x); OUT. Result string
+  !#VA(gluePtr:x);   Optional. Glue string. Default: ''.
+
+  !?FU(GetStrAtAddr);
+  ; Reads null terminated string at specified address into s^result^ variable.
+  ; Null address (0) results in empty string.
+  !#VA(strAddr:x);   Address of null-terminated string in memory or 0.
+  !#VA(resultPtr:x); String variable, to copy string contents to.
+  
+  !?FU(StrToUpper);
+  ; Converts given string to upper case.
+  !#VA(strPtr:x);    Source string.
+  !#VA(resultPtr:x); OUT. Result string.
+  
+  !?FU(StrToLower);
+  ; Converts given string to lower case.
+  !#VA(strPtr:x);    Source string.
+  !#VA(resultPtr:x); OUT. Result string.
+
+  !?FU(MonCountToFuzzyText);
+  ; Converts monster quantity to stringish value range like "50-99" or "2K+" with maximum length restriction.
+  ; Example P777/?{result}/(MON_FUZZY_COUNT_SHORT) => "500-999".
+  !#VA(monNum:x);         Number of monsters to convert to text.
+  !#VA(resultPtr:x);      OUT. Result string
+  !#VA(maxTextLength:x);  Optional. Result length restriction in the form of MON_FUZZY_COUNT_XXX constant. Default: MON_FUZZY_COUNT_SHORT
+
+[+] Added exported function "ToStaticStr" ({n} Str: pchar): {n} pchar;
+    It accepts pointer to null-terminated string or null. Returns null on null argument. Otherwise returns permanent static string address for given string contents.
+    The result is always the same for the same string contents. The result is read only and will never be deallocated.
+
+    The function serves two purposes:
+    - Convert string from temporary buffer into static buffer with endless lifetime without wasting memory for
+      multiple calls for the same string contents.
+    - The result can be treated as unique string hash/ID. Thus comparing two results of "ToStaticStr" can be
+      performed using pointers only.
+
+    For instance, you write plugin, where you need static string addresses for dialog items, hints, in-game structures.
+    You get those string from json language file and want to support F12 reloading key.
+    Simply use ToStaticStr(tr(...)). If translation is not changed during the game, ToStaticStr will return the same buffer
+    addresses for the same string contents. Otherwise memory cunsumption will be growing, but F12 key will work well.
+    No crashes, no dangling pointers.
+
+[+] Added exported function "DecorateInt", which converts integer to string, separating each three digit group by "era.locale.thousand_separator" character.
+    function DecorateInt (Value: integer; Buf: pchar; IgnoreSmallNumbers: integer): integer; stdcall;
+
+    Returns final string length in bytes.
+    Specify IgnoreSmallNumbers to leave values <= 9999 as is. Uses game locale settings.
+    Example: 2138945 => "2 138 945"
+
+[+] Added exported function "FormatQuantity", which formats given positive or negative quantity to human-readable string with desired constraints on length
+    and maximal number of digits. Uses game locale settings and metric suffixes like "K", "M" and "G".
+
+    function FormatQuantity (Value: integer; Buf: pchar; BufSize: integer; MaxLen, MaxDigits: integer): integer;
+
+    Returns final string length in bytes;
+    MaxLen    - maximum desired string length in logical characters.
+    MaxDigits - maximum number of digits to use in result (the more digits to display, the slower the number is read by humans).
+    Optimal settings, for damage or neutrals quantity, for instance, will be MaxLen = 5, MaxDigits = 4.
+
+    Examples:
+     FormatQuantity(1234567890, 10, 10) = '1234567890'
+     FormatQuantity(-1234567890, 6, 4)  = '-1.23G'
+     FormatQuantity(123, 2, 4)          = '0K'
+     FormatQuantity(1234567890, 6, 2)   = '1G'
+     FormatQuantity(1234567890, 1, 2)   = '9'
+     FormatQuantity(1234567890, 1, 0)   = ''
+
+[*] Restored old IF:Q functionality for message types MSG_TYPE_CHOOSE_PIC and MSG_TYPE_CHOOSE_PIC_OR_CANCEL: the third picture cannot be selected.
+[*] Trigger-local strings and array lifetime was increased. Such items are disposed only after the whole chain of same trigger handlers is processed.
+[*] Changed zcrtrait.txt: Santa Gremlin Fight Value and AI Value changed from 500 to 300. Removed "Can gift" from description.
+
+[*] Totally disabled old buggy "OnBattleRound" event behavior. From now "OnBattleRound" is an alias of "OnCombatRound".
+    v997 contains valid battle round throughout the whole battle. Do not use "OnCombatRound" in plugins, it's an alias for
+    ERM only. Use "OnBattleRound" instead.
+
+[*] (TRUE) and (FALSE) ERM constants are now predefined.
+
+[-] Fixed re/FU/DO/OB/...dozens of commands... didn't support global named variables in receiver parameters.
+    Examples:
+    !!FUi^edu_someFunc^:P;
+    !!OBi^edu_x^/i^edu_y^/i^edu_z^:T?(objType:y);
+
+[-] Fixed bug: FU:S used to return corrupted values.
+[-] Fixed bug in HookCode: hooking short jumps resulted in memory corruption.
+[-] Fixed IF:Q with message type 7 (MSG_TYPE_CHOOSE_PIC): result is now valid 1/0 flag, not 1/2 value, as it was before.
+[-] Fixed "Cornucopia" artefact name in artevent.txt. Credits: Valery (Salamandre).
+
+
+Version 3.1.2 (10/2020)
+------------------------
+[*] Fixed Json library to allow sequential comment lines. Example:
+  {
+    "mix": {
+      // comment line 1
+      // comment line 2
+
+      "global": {
+        "test":"best"
+      }
+    }
+  }
+
+
 Version 3.1.1 (10/2020)
 ------------------------
 [+] Included updated "game bug fixes extended" plugin with many crash/overflow/bug fixes. Game stability increased. Credits: Ben, igrik, RoseKavalier and others.

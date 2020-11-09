@@ -1,4 +1,5 @@
 ZVSE2
+; Implement new event "OnAfterErmInited", occuring after all instructions and postinstruction triggers are executed
 !?FU(OnAfterErmInstructions);
 !!FU(OnAfterErmInited):P;
 
@@ -12,3 +13,14 @@ ZVSE2
 !!FU(OnKeyPressed_HeroScreen)&(mainDialogs[1])=(DLG_HERO_SCREEN):P?(key)/?(preventDefault);
 !!FU(OnKeyPressed_HeroMeetingScreen)&(mainDialogs[1])=(DLG_HERO_MEETING_SCREEN):P?(key)/?(preventDefault);
 !!FU(OnKeyPressed_Town)&(mainDialogs[1])=(DLG_TOWN_SCREEN):P?(key)/?(preventDefault);
+
+; Implement new "OnAfterBattleSetup" event, occuring right after "OnBeforeBattle" and "OnBeforeBattleUniversal" events.
+; New event allows to to be sure, that basic battle parameters (heroes, quick battle, coordinates) are set up.
+!?FU(OnBeforeBattleUniversal);
+!!FU(OnAfterBattleSetup):P;
+
+!?FU(OnBeforeBattle);
+!!FU(UpdateBattleVars):P;
+
+!?FU(OnBeforeBattleUniversal);
+!!FU(UpdateBattleVars):P;

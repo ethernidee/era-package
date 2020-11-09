@@ -14,6 +14,11 @@ ZVSE2
 !#DC(M_STORED)        = 1;  array contents is preserved in saved games
 !#DC(M_TEMP)          = 0;  array size is preserved in saved games, but contents does not
 !#DC(M_TRIGGER_LOCAL) = -1; array will be automatically freed on current trigger exit
+
+; FU:S argument syntax types
+!#DC(ARG_SYNTAX_GET) = 0;
+!#DC(ARG_SYNTAX_SET) = 1;
+!#DC(ARG_SYNTAX_ADD) = 2;
 ; ===============  ERM COMMANDS  ===============
 
 
@@ -537,6 +542,20 @@ ZVSE2
 !#DC(MON_DRACOLICH)           = 196;
 !#DC(MON_LAST_WOG)            = 196;
 ; =============  END MONSTERS  =============
+
+
+; =======  MONSTER AGGRESSION LEVEL  =======
+!#DC(ADV_MON_AGGRESSION_MIN)            = 0;
+!#DC(ADV_MON_AGGRESSION_COMPLIENT)      = 0;
+!#DC(ADV_MON_AGGRESSION_FRIENDLY_MIN)   = 1;
+!#DC(ADV_MON_AGGRESSION_FRIENDLY_MAX)   = 7;
+!#DC(ADV_MON_AGGRESSION_AGGRESSIVE_MIN) = 1;
+!#DC(ADV_MON_AGGRESSION_AGGRESSIVE_MAX) = 10;
+!#DC(ADV_MON_AGGRESSION_HOSTILE_MIN)    = 4;
+!#DC(ADV_MON_AGGRESSION_HOSTILE_MAX)    = 10;
+!#DC(ADV_MON_AGGRESSION_SAVAGE)         = 10;
+!#DC(ADV_MON_AGGRESSION_MAX)            = 10;
+; =====  END MONSTER AGGRESSION LEVEL  =====
 
 
 ; =======  SPELL SCHOOLS  =======
@@ -1120,15 +1139,35 @@ ZVSE2
 
 
 ; =============  BATTLE  =============
+!#DC(NO_STACK)                    = -1;
+!#DC(BATTLE_STACK_FIRST)          = 0;
+!#DC(BATTLE_STACK_LAST)           = 41;
 !#DC(BATTLE_MAX_STACKS)           = 42;
+!#DC(BATTLE_ATTACKER_STACK_FIRST) = 0;
+!#DC(BATTLE_ATTACKER_STACK_LAST)  = 20;
+!#DC(BATTLE_DEFENDER_STACK_FIRST) = 21;
+!#DC(BATTLE_DEFENDER_STACK_LAST)  = 41;
 !#DC(BATTLE_STACKS_PER_SIDE)      = 21;
 !#DC(BATTLE_BASE_STACKS_PER_SIDE) = 7;
 !#DC(BATTLE_LEFT)                 = 0;
 !#DC(BATTLE_RIGHT)                = 1;
+!#DC(FIRST_TACTICS_ROUND)         = -1000000000;
+!#DC(FIRST_NON_TACTICS_ROUND)     = 0;
 ; ===========  END BATTLE  ===========
 
 
+; =============  BATTLE TYPE FLAGS  =============
+!#DC(BATTLE_TYPE_FLAG_LEFT_IS_HUMAN)   = 1;
+!#DC(BATTLE_TYPE_FLAG_RIGHT_IS_HUMAN)  = 2;
+!#DC(BATTLE_TYPE_FLAG_LEFT_HAS_OWNER)  = 4;
+!#DC(BATTLE_TYPE_FLAG_RIGHT_HAS_OWNER) = 8;
+!#DC(BATTLE_TYPE_FLAG_LEFT_HAS_HERO)   = 16;
+!#DC(BATTLE_TYPE_FLAG_RIGHT_HAS_HERO)  = 32;
+; ===========  END BATTLE TYPE FLAGS  ===========
+
+
 ; =============  BATTLE ACTIONS  =============
+!#DC(NO_BATTLE_ACTION)              = -1;
 !#DC(BATTLE_ACTION_CANCEL)          = 0;
 !#DC(BATTLE_ACTION_HERO_CAST)       = 1;
 !#DC(BATTLE_ACTION_WALK)            = 2;
@@ -1145,10 +1184,31 @@ ZVSE2
 ; ===========  END BATTLE ACTIONS  ===========
 
 
+; =============  BM:G FIELD OFFSETS  =============
+!#DC(BMG_FIELD_VALUE_VISIBLE)               = 4; stack is visible
+!#DC(BMG_FIELD_VALUE_INVISIBLE)             = 8; stack is invisible before any action
+!#DC(BMG_FIELD_VALUE_DISPLAY_REAL_NUM_MONS) = -1; real number of stack monsters will be displayed
+
+!#DC(BMG_FIELD_VISIBILITY)         = -100; BMG_FIELD_VALUE_VISIBLE or BMG_FIELD_VALUE_INVISIBLE
+!#DC(BMG_FIELD_HIDDEN_QUANTITY)    = -90;  boolean. Controls, whether stack quantity is displayed or not. Reset on any action
+!#DC(BMG_FIELD_MON_TYPE)           = -89;  stack monsters type
+!#DC(BMG_FIELD_MON_POS)            = -88;  stack position on battlefield
+!#DC(BMG_FIELD_DEF_GROUP_IND)      = -87;  def group index
+!#DC(BMG_FIELD_DEF_FRAME_IND)      = -86;  def frame index
+!#DC(BMG_FIELD_NUM_MONS)           = -83;  number of monsters in the stack
+!#DC(BMG_FIELD_NUM_DISPLAYED_MONS) = -82;  number of displayed monsters or BMG_FIELD_VALUE_DISPLAY_REAL_NUM_MONS. May differ from real number and is changed in many events
+!#DC(BMG_FIELD_IRRECOVERABLE_LOSS) = -81;  number of monsters, that will disappear from stack after battle
+!#DC(BMG_FIELD_MORALE)             = 212;  value is recalculated before "OnBeforeAction" and "OnAfterAction" events
+; ===========  END BM:G FIELD OFFSETS  ===========
+
+
 ; =============  GAME LIMITS  =============
 !#DC(MONS_PER_TOWN)            = 14;
 !#DC(HERO_BACKPACK_CAPACITY)   = 64;
 !#DC(ADV_MAP_MON_MAX_QUANTITY) = 4095;
+!#DC(DAYS_IN_MONTH)            = 28;
+!#DC(WEEKS_IN_MONTH)           = 4;
+!#DC(DAYS_IN_WEEK)             = 7;
 ; ===========  END GAME LIMITS  ===========
 
 
@@ -1174,6 +1234,8 @@ ZVSE2
 !#DC(UNC_INT16)  = 2;
 !#DC(UNC_UINT32) = -4;
 !#DC(UNC_INT32)  = 4;
+!#DC(UNC_INT)    = 4;
+!#DC(UNC_UINT)   = 4;
 ; ===========  END UN:C DATA TYPES  ===========
 
 
@@ -1194,6 +1256,7 @@ ZVSE2
 !#DC(SIZEOF_INT32)  = 4;
 !#DC(SIZEOF_UINT32) = 4;
 !#DC(SIZEOF_PTR)    = 4;
+!#DC(SIZEOF_ZSTR)   = 512;
 ; ===========  END DATA TYPES  ===========
 
 
@@ -1201,25 +1264,56 @@ ZVSE2
 !#DC(RADIO_DLG_SINGLE)   = 0;
 !#DC(RADIO_DLG_MULTIPLE) = 1;
 
+!#DC(DLG_BOX_SHADOW_WIDTH) = 8;
+
 !#DC(DLG_ADVMAP)              = 4205280;
 !#DC(DLG_BATTLE)              = 4662240;
 !#DC(DLG_HERO_SCREEN)         = 5117840;
 !#DC(DLG_HERO_MEETING_SCREEN) = 5957344;
 !#DC(DLG_TOWN_SCREEN)         = 6053040;
 
+!#DC(DLG_NO_SELECTION)     = -1;
+!#DC(DLG_RESULT_CANCEL)    = -1;
+!#DC(DLG_RESULT_PIC_FIRST) = 0;
+!#DC(DLG_RESULT_PIC_1)     = 0;
+!#DC(DLG_RESULT_PIC_2)     = 1;
+!#DC(DLG_RESULT_PIC_3)     = 2;
+!#DC(DLG_RESULT_PIC_4)     = 3;
+!#DC(DLG_RESULT_PIC_5)     = 4;
+!#DC(DLG_RESULT_PIC_6)     = 5;
+!#DC(DLG_RESULT_PIC_7)     = 6;
+!#DC(DLG_RESULT_PIC_8)     = 7;
+!#DC(DLG_RESULT_PIC_LAST)  = 7;
+; =================  DIALOGS  =================
+
+
+; =========  H3 MESSAGE DIALOG TYPES  =========
 !#DC(MSG_TYPE_MES)                  = 1;
 !#DC(MSG_TYPE_QUESTION)             = 2;
 !#DC(MSG_TYPE_POPUP)                = 4;
 !#DC(MSG_TYPE_CHOOSE_PIC)           = 7;
 !#DC(MSG_TYPE_CHOOSE_PIC_OR_CANCEL) = 10;
+; =======  END H3 MESSAGE DIALOG TYPES  =======
 
+
+; =========  H3 DIALOG TEXT ALIGNMENT  =========
 !#DC(TEXT_ALIGN_LEFT)   = 0;
 !#DC(TEXT_ALIGN_CENTER) = 1;
 !#DC(TEXT_ALIGN_RIGHT)  = 2;
 !#DC(TEXT_ALIGN_TOP)    = 0;
 !#DC(TEXT_ALIGN_MIDDLE) = 4;
 !#DC(TEXT_ALIGN_BOTTOM) = 8;
+; =======  END H3 DIALOG TEXT ALIGNMENT  =======
 
+
+; =========  H3 DIALOG COMMANDS  =========
+!#DC(DLG_CMD_SET_TEXT)      = 3;
+!#DC(DLG_CMD_SET_DEF_FRAME) = 4;
+!#DC(DLG_CMD_SET_PCX)       = 11;
+; =======  END H3 DIALOG COMMANDS  =======
+
+
+; =========  H3 DIALOG PICTURE TYPES  =========
 !#DC(NO_PIC_TYPE)                       = -1;
 !#DC(PIC_TYPE_FLAG_DISPLAY_ZEROS)       = -2147483648;
 !#DC(PIC_TYPE_RES_WOOD)                 = 0;
@@ -1267,7 +1361,35 @@ ZVSE2
 !#DC(PIC_TYPE_PRIM_SKILL_LAST)          = 34;
 !#DC(PIC_TYPE_SPELL_POINTS)             = 35;
 !#DC(PIC_TYPE_MONEY)                    = 36;
-; =================  DIALOGS  =================
+; =======  END H3 DIALOG PICTURE TYPES  =======
+
+
+; =============  USEFUL ADDRESSES  =============
+!#DC(ADDR_GAME_SCREEN_WIDTH)  = 4199496;
+!#DC(ADDR_GAME_SCREEN_HEIGHT) = 4199503;
+; ===========  END USEFUL ADDRESSES  ===========
+
+
+; =============  GAME STRUCTURES  =============
+!#DC(STRUCT_H3DLG_WIDTH)  = 32;
+!#DC(STRUCT_H3DLG_HEIGHT) = 36;
+!#DC(STRUCT_H3DLG_X)      = 24;
+!#DC(STRUCT_H3DLG_Y)      = 28;
+; ===========  END GAME STRUCTURES  ===========
+
+
+; =============  SPECIAL ENUMS  =============
+!#DC(MON_COUNT_EXTRA_SHORT)    = 0; maximum 5 characters in length
+!#DC(MON_COUNT_SHORT)          = 1; maximum 7 characters in length
+!#DC(MON_COUNT_HUMAN_FRIENDLY) = 2; unspecified length with spaces between each 3 digits group like "5 487"
+!#DC(MON_COUNT_LONG)           = 3; ordinary integer to string conversion like "12345678"
+
+!#DC(MON_FUZZY_COUNT_EXTRA_SHORT)    = 5; maximum 5 characters in length
+!#DC(MON_FUZZY_COUNT_SHORT)          = 7; maximum 7 characters in length
+!#DC(MON_FUZZY_COUNT_HUMAN_FRIENDLY) = 999999; unspecified length with Heroes 3 default text like "Lots (20-49) of"
+
+!#DC(DONT_DECORATE_SMALL_INTS) = (TRUE); used in DecorateInt function
+; =============  SPECIAL ENUMS  =============
 
 
 ; =============  DEPRECATED  =============
