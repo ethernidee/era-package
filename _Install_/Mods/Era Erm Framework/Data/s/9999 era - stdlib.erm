@@ -1,7 +1,182 @@
 ZVSE2
 ; ========== EVENTS ==========
+; Temporary stack to hold events chain saved data
+!#SN:M(M_AUTO_ID)/0/(M_INT)/(M_TEMP)/?i^savedEventData^;
+!#VRi^savedEventDataPos^:S0;
+
+!?FU(ClearEventChainData);
+!!SN:Mi^savedEventData^/0;
+!!VRi^savedEventDataPos^:S0;
+
+!?FU(SaveEventData);
+; Saves all passed integer arguments in event data storage. You MUST restore the same number of arguments
+; in the same order by calling RestoreEventData function in the same event.
+!#VA(firstArg:x); ... Integer arguments to save
+
+!!FU:A?(numArgs:y);
+!!FU&(numArgs)<=0:E;
+
+!!VR(allocSpace:y):S(numArgs) +1;
+!!VR(savedEventData:y):Si^savedEventData^;
+!!SN:M(savedEventData)/?(listSize:y);
+!!VR(eventDataPos:y):Si^savedEventDataPos^;
+!!VR(finalEventDataPos:y):S(eventDataPos) +(allocSpace);
+!!VRi^savedEventDataPos^:S(finalEventDataPos);
+!!SN&(finalEventDataPos)>(listSize):M(savedEventData)/(finalEventDataPos);
+
+!!VR(argPtr:y):S(@firstArg);
+
+!!re i/1/(numArgs);
+  !!SN:V(savedEventData)/(eventDataPos)/x(argPtr);
+  !!VR(eventDataPos):+1;
+  !!VR(argPtr):+1;
+!!en:;
+
+!!SN:V(savedEventData)/(eventDataPos)/(numArgs);
+!!VR(eventDataPos):+1;
+
+!?FU(RestoreEventData);
+; Restores previously saved arguments from event data storage. They same number of arguments in the same order MUST HAVE BEEN
+; saved in the same event previously using SaveEventData function.
+!#VA(firstArg:x); ... Integer arguments to restore using ?$ syntax
+
+!!FU:A?(numArgs:y);
+!!FU&(numArgs)<=0:E;
+
+!!VR(dataSpace:y):S(numArgs) +1;
+!!VR(savedEventData:y):Si^savedEventData^;
+!!SN:M(savedEventData)/?(listSize:y);
+
+!!if&(listSize)<(dataSpace):;
+  !!SN:F^ShowErmError^/^Invalid number of arguments for RestoreEventData. Asked to restore %(numArgs) arguments from buffer of size %(listSize)^;
+  !!FU(ClearEventChainData):P;
+  !!SN:Q;
+!!en;
+
+!!SN:V(savedEventData)/-1/?(savedNumArgs:y);
+
+!!if&(listSize)<(dataSpace):;
+  !!SN:F^ShowErmError^/^Invalid number of arguments for RestoreEventData. Asked to restore %(numArgs) arguments, while %(listSize)^;
+  !!FU(ClearEventChainData):P;
+  !!SN:Q;
+!!en;
+
+!!VR(eventDataPos:y):Si^savedEventDataPos^ -(dataSpace);
+!!VRi^savedEventDataPos^:-(dataSpace);
+
+!!VR(argPtr:y):S(@firstArg);
+
+!!re i/1/(numArgs);
+  !!SN:V(savedEventData)/(eventDataPos)/?x(argPtr);
+  !!VR(eventDataPos):+1;
+  !!VR(argPtr):+1;
+!!en:;
+
+!?FU(SavePrevKeyModsState);
+!!FU(SaveEventData):Pi^key^/i^key_leftAlt^/i^key_rightAlt^/i^key_alt^/i^key_leftCtrl^/i^key_rightCtrl^/i^key_ctrl^/i^key_leftShift^/i^key_rightShift^/i^key_shift^;
+
+!?FU(RestorePrevKeyModsState);
+!!FU(RestoreEventData):P?i^key^/?i^key_leftAlt^/?i^key_rightAlt^/?i^key_alt^/?i^key_leftCtrl^/?i^key_rightCtrl^/?i^key_ctrl^/?i^key_leftShift^/?i^key_rightShift^/?i^key_shift^;
+
+!?FU(GetKeyModsState);
+!!SN:F^GetKeyState^/(KEY_LMENU);
+!!VR(leftKeyPressed:y):Sv1 Sd>>7 &1;
+!!VRi^key_leftAlt^:S(leftKeyPressed);
+
+!!SN:F^GetKeyState^/(KEY_RMENU);
+!!VR(rightKeyPressed:y):Sv1 Sd>>7 &1;
+!!VRi^key_rightAlt^:S(rightKeyPressed);
+
+!!VRi^key_alt^:S(leftKeyPressed) |(rightKeyPressed);
+
+!!SN:F^GetKeyState^/(KEY_LCONTROL);
+!!VR(leftKeyPressed:y):Sv1 Sd>>7 &1;
+!!VRi^key_leftCtrl^:S(leftKeyPressed);
+
+!!SN:F^GetKeyState^/(KEY_RCONTROL);
+!!VR(rightKeyPressed:y):Sv1 Sd>>7 &1;
+!!VRi^key_rightCtrl^:S(rightKeyPressed);
+
+!!VRi^key_ctrl^:S(leftKeyPressed) |(rightKeyPressed);
+
+!!SN:F^GetKeyState^/(KEY_LSHIFT);
+!!VR(leftKeyPressed:y):Sv1 Sd>>7 &1;
+!!VRi^key_leftShift^:S(leftKeyPressed);
+
+!!SN:F^GetKeyState^/(KEY_RSHIFT);
+!!VR(rightKeyPressed:y):Sv1 Sd>>7 &1;
+!!VRi^key_rightShift^:S(rightKeyPressed);
+
+!!VRi^key_shift^:S(leftKeyPressed) |(rightKeyPressed);
+
+!?FU(CollectMouseEventData);
+!!CM:A?i^mouse_x^/?i^mouse_y^ D?i^mouse_battleHex^ F?i^mouse_flags^ H?i^mouse_hero_0^/?i^mouse_hero_1^ I?i^mouse_item^ P?i^mouse_mapX^/?i^mouse_mapY^/?i^mouse_mapZ^
+     S?i^mouse_action^;
+
+; Replace non-standard MOUSE_LMB_RELEASED_ON_TOWN_OK_BTN action with regular MOUSE_LMB_RELEASED action
+!!VRi^mouse_action^&i^mouse_action^=(MOUSE_LMB_RELEASED_ON_TOWN_OK_BTN):S(MOUSE_LMB_RELEASED);
+
+!?FU(SavePrevMouseEventData);
+!!FU(SaveEventData):Pi^mouse_x^/i^mouse_y^/i^mouse_battleHex^/i^mouse_flags^/i^mouse_hero_0^/i^mouse_item^/i^mouse_mapX^/i^mouse_mapY^/i^mouse_mapZ^/i^mouse_action^;
+
+!?FU(RestorePrevMouseEventData);
+!!FU(RestoreEventData):P?i^mouse_x^/?i^mouse_y^/?i^mouse_battleHex^/?i^mouse_flags^/?i^mouse_hero_0^/?i^mouse_item^/?i^mouse_mapX^/?i^mouse_mapY^/?i^mouse_mapZ^/?i^mouse_action^;
+
+!?FU(OnSavegameRead);
+!!FU(ClearEventChainData):P;
+
+!?FU(OnKeyPressed);
+!#VA(key:x) (preventDefault:x);
+!!FU(SavePrevKeyModsState):P;
+
+!!VRi^key^:S(key);
+!!FU(GetKeyModsState):P;
+
+!?FU(EnterMouseEvent);
+!!FU(SavePrevKeyModsState):P;
+!!FU(SavePrevMouseEventData):P;
+!!FU(GetKeyModsState):P;
+!!FU(CollectMouseEventData):P;
+
+!?FU(LeaveMouseEvent);
+!!FU(RestorePrevMouseEventData):P;
+!!FU(RestorePrevKeyModsState):P;
+
+!?FU(OnAdventureMapRightMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnTownMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnHeroScreenMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnHeroesMeetScreenMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnBattleScreenMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnAdventureMapLeftMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnRecruitDlgMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnTownHallMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnKingdomOverviewMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnBattleMouseHint);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnTownMouseHint);
+!!FU(EnterMouseEvent):P;
+
 !?FU(OnAfterErmInstructions);
-!!SN:W^era_everyDayTimerLastDay^/-1;
+!!VRi^era_everyDayTimerLastDay^:S-1;
 
 ; Extended OnEveryDay trigger. The following global variables are automatically set:
 ; - i^timerDay^:        1..+inf
@@ -252,6 +427,119 @@ ZVSE2
 !!SN:M(M_AUTO_ID)/0/(srcItemsType)/(M_TRIGGER_LOCAL)/?(result) F^ExtendArrayLifetime^/(result);
 !!FU(Array_Copy):P(srcArray)/(result);
 
+!?FU(Array_Merge);
+; Given destination array and arbitrary number of source arrays. Appends all items from all source arrays
+; to the destination array.
+; Example. Given listA = [100, 200, 300], listB = [500, 600]. P(listA)/(listB) => [100, 200, 300, 500, 600]
+!#VA(dstArray:x);          Destination array to append new items to.
+!#VA(firstArrayToMerge:x); ... Arrays to merge with the first one
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@firstArrayToMerge):;
+  !!SN:F^ShowErmError^/^Array_Merge: invalid arguments number. Expected at least %(@firstArrayToMerge) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(dstArraySize:y):S-1;
+!!SN:M(dstArray)/?(dstArraySize)/?(dstArrayItemsType:y)/d;
+!!FU&(dstArraySize)<0:E;
+
+!!VR(numNewItems:y):S0;
+
+!!re (argInd:y)/(@firstArrayToMerge)/(numArgs):;
+  !!VR(array:y):Sx(argInd);
+  !!VR(arraySize:y):S-1;
+  !!SN:M(array)/?(arraySize)/?(arrayItemsType:y)/d;
+  !!FU&(arraySize)<0:E;
+
+  !!if&(arrayItemsType)<>(dstArrayItemsType):;
+    !!SN:F^ShowErmError^/^Array_Merge: cannot merge arrays of different types. Invalid argument #%(argInd)^;
+    !!FU:E;
+  !!en;
+
+  !!VR(numNewItems):+(arraySize);
+!!en:;
+
+!!FU&(numNewItems)<=0:E;
+!!SN:M(dstArray)/d(numNewItems) M(dstArray)/?t/d/d/?(dstArrayAddr:y);
+!!VRi:S(dstArraySize);
+
+!!re (argInd:y)/(@firstArrayToMerge)/(numArgs):;
+  !!VR(array:y):Sx(argInd);
+  !!SN:M(array)/?(arraySize)/d/d/?(arrayAddr:y);
+  !!co&(arraySize)<=0:E;
+
+  !!if&(dstArrayItemsType)=(M_INT):;
+    !!VR(numBytesToCopy:y):S(arraySize) *(SIZEOF_INT);
+    !!VR(dstAddr:y):Si *(SIZEOF_INT) +(dstArrayAddr);
+    !!SN:K(numBytesToCopy)/(arrayAddr)/(dstAddr)/(DUMMY);
+    !!VRi:+(arraySize);
+  !!el:;
+    !!re j/0/(arraySize)/1/-1:;
+      !!VR(itemAddr:y):Sj *(SIZEOF_PTR) +(arrayAddr);
+      !!UN:C(itemAddr)/(UNC_INT)/?(strAddr:y);
+      !!SN&(strAddr)<>(NULL):M(dstArray)/i/(strAddr);
+      !!VRi:+1;
+    !!en:; re
+  !!en; el
+!!en:; re
+
+!?FU(Array_Slice);
+; Returns part of original array as new trigger-local array.
+!#VA(list:x);   Array to get slice of.
+!#VA(start:x);  Initial index, starting from zero. Negative offset means 'from the end'.
+!#VA(count:x);  Number of items to copy. Negative value means "skipping" that number of items from list end.
+!#VA(result:x); Result array.
+!#VA(arrayStorageType:x); OPT. Special storage type for result like M_STORED. Default: M_TRIGGER_LOCAL.
+
+!!VR(result):S(NULL);
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@result):;
+  !!SN:F^ShowErmError^/^Array_Slice: invalid arguments number. Expected at least %(@result) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(listSize:y):S-1;
+!!SN:M(list)/?(listSize)/?(listItemsType:y)/d/?(listAddr:y);
+!!FU&(listSize)<=0:E;
+
+!!VR(arrayStorageType)&(numArgs)<(@arrayStorageType):S(M_TRIGGER_LOCAL);
+!!SN:M(M_AUTO_ID)/0/(listItemsType)/(arrayStorageType)/?(result);
+!!SN&(arrayStorageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(result);
+
+!!VR(start)&(start)<0:+(listSize) F0/(INT_MAX);
+!!FU&(start)>=(listSize):E;
+
+!!VR(maxItemsToCopy:y):S(listSize) -(start);
+
+!!if&(count)<0:;
+  !!VR(maxItemsToCopy):+(count);
+  !!VR(count):S(maxItemsToCopy);
+!!en;
+
+!!VR(count):F0/(maxItemsToCopy);
+!!FU&(count)<=0:E;
+
+!!SN:M(result)/(count) M(result)/?t/d/d/?(resultAddr:y);
+
+!!if&(listItemsType)=(M_INT):;
+  !!VR(srcAddr:y):S(start) *(SIZEOF_INT) +(listAddr);
+  !!VR(numBytesToCopy:y):S(count) *(SIZEOF_INT);
+  !!SN:K(numBytesToCopy)/(srcAddr)/(resultAddr)/(DUMMY);
+!!el:;
+  !!VR(lastIndToCopy:y):S(start) +(count) -1;
+  !!VRj:S0;
+
+  !!re i/(start)/(lastIndToCopy):;
+    !!VR(itemAddr:y):Si *(SIZEOF_INT) +(listAddr);
+    !!UN:C(itemAddr)/(UNC_INT)/?(strAddr:y);
+    !!SN&(strAddr)<>(NULL):M(result)/j/(strAddr);
+    !!VRj:+1;
+  !!en:;
+!!en;
+
 !?FU(Array_Join);
 ; Concatenates array items into single string, using passed glue string. Works with both numeric and string arrays.
 ; Example: ['one', 'two', 'three'] with glue ' --- ' become 'one --- two --- three'.
@@ -352,7 +640,7 @@ ZVSE2
 !#VA(list:x);        Array ID.
 
 !#VA(compareFunc:x); Comparison ERM function ID. It will be called multiple times with the following arguments:
-                   ; (value1, value2, state), where 'state' is any custom value, you specify on call to Array_CustomSort.
+                   ; (value1, value2, state, result), where 'state' is any custom value, you specify on call to Array_CustomSort.
                    ; Usually state is some array ID or external structure address, that client use to compare items.
                    ;
                    ; The function must return value:
@@ -441,6 +729,28 @@ ZVSE2
   ; Truncate non-unique items
   !!SN:M(list)/i;
 !!en;
+
+!?FU(Array_Shuffle);
+; Randomly shuffles all items in the list.
+!#VA(list:x); Array ID.
+
+!!VR(numItems:y):S-1;
+!!SN:M(list)/?(numItems)/?(itemsType:y)/d/?(listAddr:y);
+!!FU&(numItems)<=1:E;
+
+!!VR(lastIndex:y):S(numItems) -1;
+
+!!re i/0/(numItems)/1/-1:;
+  !!VR(randomInd:y):R0/i/(lastIndex);
+
+  !!if&(itemsType)=(M_INT):;
+    !!SN:V(list)/(randomInd)/?t V(list)/i/?(currItem:y) V(list)/(randomInd)/(currItem) V(list)/i/t;
+  !!el:;
+    !!VR(currItemAddr:y):Si *(SIZEOF_INT) +(listAddr);
+    !!VR(randomItemAddr:y):S(randomInd) *(SIZEOF_INT) +(listAddr);
+    !!UN:C(randomItemAddr)/(UNC_INT)/?(randomItem:y) C(currItemAddr)/(UNC_INT)/?(currItem:y) C(randomItemAddr)/(UNC_INT)/(currItem) C(currItemAddr)/(UNC_INT)/(randomItem);
+  !!en;
+!!en:;
 
 !?FU(Array_Revert);
 ; Reverts order of itmes in the array. Allows to reverse the order of specific array subrange only.
@@ -619,6 +929,99 @@ ZVSE2
   !!VR(bit):Sd<<1;
 !!en:;
 
+!?FU(PackUnion);
+; Safely packs union fields into single 32-bits integer, allowing to store multiple values in a single variable.
+; Arguments are pairs of (field value, field size in bits). The first field is written at bit 0-th position.
+; The last argument is result.
+; Example: P(x)/8/ (y)/8/ (z)/8/ (heroId)/8/ ?(result:y);
+!#VA(firstArg:x); ... Pairs of (field value)/(field size)
+
+!!FU:A?(numArgs:y);
+!!VRt:S(numArgs) %2;
+
+!!if&t<>1:;
+  !!SN:F^ShowErmError^/^PackUnion: invalid arguments number: %(numArgs)^;
+  !!FU:E;
+!!en;
+
+!!VRx(numArgs):S0;
+!!FU&(numArgs)<=1:E;
+
+!!VR(result:y):S0;
+!!VR(numPairs:y):S(numArgs) :2;
+!!VR(totalFieldsSize:y):S0;
+
+!!re i/0/(numPairs)/1/-1:;
+  !!VR(argInd:y):Si *2 +(@firstArg);
+  !!VR(fieldValue:y):Sx(argInd);
+  !!VR(argInd):+1;
+  !!VR(fieldSize:y):Sx(argInd);
+
+  !!if|(fieldSize)<0/(fieldSize)>(BITS_IN_INT32):;
+    !!SN:F^ShowErmError^/^PackUnion: invalid field size: %(fieldSize). Expected 1..%(BITS_IN_INT32)^;
+    !!FU:E;
+  !!en;
+
+  !!VR(fieldMask:y):S1 Sd<<(fieldSize) -1;
+
+  !!if&(fieldValue)>(fieldMask):;
+    !!VRi:+1;
+    !!SN:F^ShowErmError^/^PackUnion: value in pair #%i = %(fieldValue) exceeds maximum possible value %(fieldMask) for field of %(fieldSize) bits^;
+    !!FU:E;
+  !!en;
+
+  !!VR(fieldValue):&(fieldMask) Sd<<(totalFieldsSize);
+  !!VR(totalFieldsSize):+(fieldSize);
+
+  !!if&(totalFieldsSize)>(BITS_IN_INT32):;
+    !!SN:F^ShowErmError^/^PackUnion: total fields size %(totalFieldsSize) exceeds maximum of %(BITS_IN_INT32) bits^;
+    !!FU:E;
+  !!en;
+
+  !!VR(result):|(fieldValue);
+!!en:; re
+
+!!VRx(numArgs):S(result);
+
+!?FU(UnpackUnion);
+; Safely unpacks single 32-bits integer value into multiple field values.
+; The first argument is packed value.
+; Other arguments are pairs of (?field value, field size in bits). The first field is read at bit 0-th position.
+; Example: P45683/ ?(x:y)/8/ ?(y:y)/8/ ?(z:y)/8/ ?(heroId:y)/8;
+!#VA(packedValue:x);
+!#VA(firstFieldArg:x);
+
+!!FU:A?(numArgs:y);
+!!VRt:S(numArgs) %2;
+
+!!if|t<>1/(numArgs)<(@firstFieldArg):;
+  !!SN:F^ShowErmError^/^UnpackUnion: invalid arguments number: %(numArgs)^;
+  !!FU:E;
+!!en;
+
+!!VR(numPairs:y):S(numArgs) :2;
+!!VR(totalFieldsSize:y):S0;
+
+!!re i/0/(numPairs)/1/-1:;
+  !!VR(argInd:y):Si *2 +(@firstFieldArg) +1;
+  !!VR(fieldSize:y):Sx(argInd);
+  !!VR(argInd):-1;
+
+  !!if|(fieldSize)<0/(fieldSize)>(BITS_IN_INT32):;
+    !!SN:F^ShowErmError^/^UnpackUnion: invalid field size: %(fieldSize). Expected 1..%(BITS_IN_INT32)^;
+    !!FU:E;
+  !!en;
+
+  !!VR(fieldMask:y):S1 Sd<<(fieldSize) -1;
+  !!VRx(argInd:y):S(packedValue) Sd>>(totalFieldsSize) &(fieldMask);
+  !!VR(totalFieldsSize):+(fieldSize);
+
+  !!if&(totalFieldsSize)>(BITS_IN_INT32):;
+    !!SN:F^ShowErmError^/^UnpackUnion: total fields size %(totalFieldsSize) exceeds maximum of %(BITS_IN_INT32) bits^;
+    !!FU:E;
+  !!en;
+!!en:; re
+
 !?FU(Tm32Encode);
 ; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
 !#VA(value:x) (result:x);
@@ -644,7 +1047,7 @@ ZVSE2
 !#VA(strAddr:x);   Address of null-terminated string in memory or 0.
 !#VA(resultPtr:x); String variable, to copy string contents to.
 
-!!SN:X?t X(strAddr) X?s^temp^ Xt;
+!!SN:B(strAddr)/d/?s^temp^;
 !!VR(resultPtr):Zs^temp^;
 !!VRs^temp^:S^^;
 
@@ -690,6 +1093,59 @@ ZVSE2
 !!VR(resultPtr):Zs^temp^;
 !!VRs^temp^:S^^;
 
+!?FU(Substr);
+; Returns substring from existing string.
+!#VA(strPtr:x); Original string.
+!#VA(start:x);  Initial offset, starting from zero. Negative offset means 'from the end'.
+!#VA(count:x);  Number of characters to copy. Negative value means "skipping" that number of characters from string end.
+!#VA(result:x); Result substring.
+
+!!VR(emptyStr:z):S^^;
+!!VR(result):S(@emptyStr);
+
+!!if&(strPtr)=(NULL):;
+  !!SN:F^ShowErmError^/^Substr: invalid strPtr argument: 0^;
+  !!FU:E;
+!!en;
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@count):;
+  !!SN:F^ShowErmError^/^Substr: invalid arguments number. Expected at least %(@count) arguments^;
+  !!FU:E;
+!!en;
+
+!!VRz(strPtr):M4/?(strLen:y);
+!!FU&(strLen)<=0:E;
+
+!!VR(start)&(start)<0:+(strLen) F0/(INT_MAX);
+!!FU&(start)>=(strLen):E;
+
+!!VR(maxCharsToCopy:y):S(strLen) -(start);
+
+!!if&(count)<0:;
+  !!VR(maxCharsToCopy):+(count);
+  !!VR(count):S(maxCharsToCopy);
+!!en;
+
+!!VR(count):F0/(maxCharsToCopy);
+!!FU&(count)<=0:E;
+
+!!SN:Bz(strPtr)/?(startAddr:y);
+!!VR(startAddr):+(start);
+!!VR(endAddr:y):S(startAddr) +(count);
+!!VR(resultSize:y):S(count) +1;
+!!VR(savedV1:y):Sv1;
+
+!!SN:E(FUNC_MEM_ALLOC)/(CALLCONV_CDECL)/(resultSize);
+!!VR(buf:y):Sv1;
+!!SN:K(count)/(startAddr)/(buf)/0 K(buf)/(count)/^^ B(buf)/d/?s^temp^;
+!!SN:E(FUNC_MEM_FREE)/(CALLCONV_CDECL)/(buf);
+
+!!VRv1:S(savedV1);
+!!VR(result):Zs^temp^;
+!!VRs^temp^:S^^;
+
 !?FU(DecorateInt);
 ; Converts integer to string, separating each three digit group by "era.locale.thousand_separator" characer.
 ; Example: P74276689 => "74 276 689"
@@ -722,6 +1178,282 @@ ZVSE2
 ; ============== END STRINGS ==============
 
 
+; ================ FILE SYSTEM ================
+!?FU(SaveIni);
+; Saves ini file, if it was earlier cached in memory (any read/write operation was performed).
+!#VA(filePathPtr:x); Absolute or relative path to ini file
+!!SN:F^SaveIni^/z(filePathPtr);
+
+!?FU(WriteIniInts);
+; Writes multiple integer values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
+; Example: P^Runtime/my mod.ini^/^hero levels^/(HERO_ORRIN)/13/(HERO_XERON)/41;
+!#VA(filePathPtr:x);    Absolute or relative path to ini file
+!#VA(sectionNamePtr:x); Section name in ini file.
+!#VA(firstKeyPtr:x);    ... Up to 7 key, value pairs to write.
+!#VA(firstValue:x);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@firstValue):;
+  !!SN:F^ShowErmError^/^WriteIniInts: invalid arguments number. Expected at least %(@firstValue) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(numKeyValueArgs:y):S(numArgs) -(@firstKeyPtr) +1;
+!!VR(numPairs:y):S(numKeyValueArgs) :2;
+
+!!VRt:S(numKeyValueArgs) %2;
+
+!!if&t<>0:;
+  !!SN:F^ShowErmError^/^WriteIniInts: invalid arguments number. The last key-value pair is lack of value argument^;
+  !!FU:E;
+!!en;
+
+!!re i/0/(numPairs)/1/-1:;
+  !!VR(keyArgInd:y):Si *2 +(@firstKeyPtr);
+  !!VR(keyPtr:y):Sx(keyArgInd);
+  !!VR(valueArgInd:y):S(keyArgInd) +1;
+  
+  !!SN:F^WriteStrToIni^/z(keyPtr)/^%x(valueArgInd)^/z(sectionNamePtr)/z(filePathPtr);
+!!en:;
+
+!?FU(WriteIniStrings);
+; Writes multiple string values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
+; Example: P^Runtime/my mod.ini^/^custom hero names^/^%(HERO_ORRIN)^/^Perrin R^/^%(HERO_XERON)^/^Berson^;
+!#VA(filePathPtr:x);    Absolute or relative path to ini file
+!#VA(sectionNamePtr:x); Section name in ini file.
+!#VA(firstKeyPtr:x);    ... Up to 7 key, value pairs to write.
+!#VA(firstValue:x);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@firstValue):;
+  !!SN:F^ShowErmError^/^WriteIniStrings: invalid arguments number. Expected at least %(@firstValue) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(numKeyValueArgs:y):S(numArgs) -(@firstKeyPtr) +1;
+!!VR(numPairs:y):S(numKeyValueArgs) :2;
+
+!!VRt:S(numKeyValueArgs) %2;
+
+!!if&t<>0:;
+  !!SN:F^ShowErmError^/^WriteIniStrings: invalid arguments number. The last key-value pair is lack of value argument^;
+  !!FU:E;
+!!en;
+
+!!re i/0/(numPairs)/1/-1:;
+  !!VR(keyArgInd:y):Si *2 +(@firstKeyPtr);
+  !!VR(keyPtr:y):Sx(keyArgInd);
+  !!VR(valueArgInd:y):S(keyArgInd) +1;
+  !!VR(valuePtr:y):Sx(valueArgInd);
+  
+  !!SN:F^WriteStrToIni^/z(keyPtr)/z(valuePtr)/z(sectionNamePtr)/z(filePathPtr);
+!!en:;
+
+!?FU(ReadIniStrings);
+; Reads multiple string values from ini file or from memory if ini file was read/written to earlier.
+; Example: P(filePath)/(sectionName)/^%(HERO_ORRIN)^/?(orrinName:z)/^Orrin^/^%(HERO_XERON)^/?(xeronName:z)/^Xeron^;
+!#VA(filePathPtr:x);    Absolute or relative path to ini file
+!#VA(sectionNamePtr:x); Section name in ini file.
+!#VA(firstKeyPtr:x);    ... Up to 4 (key, ?value, defaultValue) tripples to read.
+!#VA(firstValue:x);
+!#VA(firstValueDefault:x);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@firstValueDefault):;
+  !!SN:F^ShowErmError^/^ReadIniStrings: invalid arguments number. Expected at least %(@firstValueDefault) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(numVariadicArgs:y):S(numArgs) -(@firstKeyPtr) +1;
+!!VR(numTripples:y):S(numVariadicArgs) :3;
+
+!!VRt:S(numVariadicArgs) %3;
+
+!!if&t<>0:;
+  !!SN:F^ShowErmError^/^ReadIniStrings: invalid arguments number. The last (key, value, default value) tripple is incomplete^;
+  !!FU:E;
+!!en;
+
+!!re i/0/(numTripples)/1/-1:;
+  !!VR(keyArgInd:y):Si *3 +(@firstKeyPtr);
+  !!VR(keyPtr:y):Sx(keyArgInd);
+  !!VR(valueArgInd:y):S(keyArgInd) +1;
+  !!VR(defValueArgInd:y):S(valueArgInd) +1;
+  !!VR(defValuePtr:y):Sx(defValueArgInd);
+  
+  !!SN:F^ReadStrFromIni^/z(keyPtr)/z(sectionNamePtr)/z(filePathPtr)/?(valueStr:z);
+
+  !!VR(valueStr)&(valueStr)=^^:Sz(defValuePtr);
+  !!VRx(valueArgInd):Z(valueStr);
+!!en:;
+
+!?FU(ReadIniInts);
+; Reads multiple integer values from ini file or from memory if ini file was read/written to earlier.
+; Example: P(filePath)/^hero levels^/^%(HERO_ORRIN)^/?(orrinLevel:y)/1/^%(HERO_XERON)^/?(xeronLevel:y)/1;
+!#VA(filePathPtr:x);    Absolute or relative path to ini file
+!#VA(sectionNamePtr:x); Section name in ini file.
+!#VA(firstKeyPtr:x);    ... Up to 4 (key, ?value, defaultValue) tripples to read.
+!#VA(firstValue:x);
+!#VA(firstValueDefault:x);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@firstValueDefault):;
+  !!SN:F^ShowErmError^/^ReadIniInts: invalid arguments number. Expected at least %(@firstValueDefault) arguments^;
+  !!FU:E;
+!!en;
+
+!!VR(numVariadicArgs:y):S(numArgs) -(@firstKeyPtr) +1;
+!!VR(numTripples:y):S(numVariadicArgs) :3;
+
+!!VRt:S(numVariadicArgs) %3;
+
+!!if&t<>0:;
+  !!SN:F^ShowErmError^/^ReadIniInts: invalid arguments number. The last (key, value, default value) tripple is incomplete^;
+  !!FU:E;
+!!en;
+
+!!re i/0/(numTripples)/1/-1:;
+  !!VR(keyArgInd:y):Si *3 +(@firstKeyPtr);
+  !!VR(keyPtr:y):Sx(keyArgInd);
+  !!VR(valueArgInd:y):S(keyArgInd) +1;
+  !!VR(defValueArgInd:y):S(valueArgInd) +1;
+  !!VR(defValue:y):Sx(defValueArgInd);
+  
+  !!SN:F^ReadStrFromIni^/z(keyPtr)/z(sectionNamePtr)/z(filePathPtr)/?(valueStr:z);
+
+  !!if&(valueStr)=^^:;
+    !!VRx(valueArgInd):S(defValue);
+  !!el:;
+    !!VRx(valueArgInd):V(valueStr);
+  !!en;  
+!!en:;
+
+!?FU(LoadIntGlobalsFromJson);
+; Loads global mod/script settings from json config right into prefixed named global variables.
+; Supports usage of any constant name instead of numbers in JSON. For example, you want to load
+; json values "umt.randomizationIntervalDays" and "umt.playAltThemesSequently" to global variables
+; i^umt_randomizationIntervalDays^ and i^umt_playAltThemesSequently^ and want to be able to write in json:
+; "umt.playAltThemesSequently": "TRUE".
+;
+; Example: P^umt.^/^umt_^/^randomizationIntervalDays^/^playAltThemesSequently^;
+!#VA(jsonKeysPrefixPtr:x);   Name of json keys prefix like ^mix.globals.^ for {"mix": {"globals": { ... }}}
+!#VA(globalVarsPrefixPtr:x); Name of global variables prefix. Usually mod prefix like "mix_" or "umt_".
+!#VA(firstKeyNamePtr:x);     ... Up to 14 json key names to read and convert into global variables
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@firstKeyNamePtr):;
+  !!SN:F^ShowErmError^/^LoadIntGlobalsFromJson: invalid arguments number^;
+  !!FU:E;
+!!en;
+
+!!VR(numConfigKeys:y):S(numArgs) -(@firstKeyNamePtr) +1;
+
+!!re i/0/(numConfigKeys)/1/-1:;
+  !!VR(configKeyPtr:y):S(@firstKeyNamePtr) +i Sx(configKeyPtr);
+  !!VR(key:z):S^%z(jsonKeysPrefixPtr)%z(configKeyPtr)^;
+  !!SN:T(key)/?(strValue:z);
+  !!SN:C(strValue)/?(intValue:y)/?(constExists:y);
+
+  !!if&(constExists)=(TRUE):;
+    !!VRi^%z(globalVarsPrefixPtr)%z(configKeyPtr)^:S(intValue);
+  !!el&(key)<>(strValue):;
+    !!VR(intValue):V(strValue);
+    !!VRi^%z(globalVarsPrefixPtr)%z(configKeyPtr)^:S(intValue);
+  !!en;
+!!en:;
+
+!?FU(ScanDir);
+; Reads directory contents, filling specified list with file names.
+; Example: P^Np3^/(fileList)/(SCAN_FILES_ONLY);
+!#VA(dirPathPtr:x); Absolute or relative path to directory to scan.
+!#VA(fileList:x);   ID of array to store file names in.
+!#VA(itemsType:x);  OPT. Type of items to collect: files, directories or both. One of SCAN_XXX constants. Default: SCAN_FILES_AND_DIRS.
+!#VA(fullPaths:x);  OPT boolean. If true, result items will be have dirPath predended. Default: false.
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<(@fileList):;
+  !!SN:F^ShowErmError^/^ScanDir: invalid arguments number^;
+  !!FU:E;
+!!en;
+
+!!VR(listSize:y):S-1;
+!!SN:M(fileList)/?(listSize)/?(listItemsType:y)/d;
+!!FU&(listSize)<0:E;
+
+!!if&(listItemsType)<>(M_STR):;
+  !!SN:F^ShowErmError^/^ScanDir: expected list of strings to store file names^;
+  !!FU:E;
+!!en;
+
+!!VR(savedV1:y):Sv1;
+!#VA(foundData[SIZEOF_WIN32_FIND_DATA_IN_INTS]:y);
+
+!!SN:M(fileList)/0;
+
+!!SN:B?(foundData)/?(foundDataAddr:y);
+!!VR(fileAttrsAddr:y):S(foundDataAddr) +(STRUCT_WIN32_FIND_DATA_ATTRS);
+!!VR(fileNameBuf:y):S(foundDataAddr) +(STRUCT_WIN32_FIND_DATA_FILENAME);
+
+!!SN:F^FindFirstFileA^/^%z(dirPathPtr)/*^/?(foundData);
+!!VR(searchHandle:y):Sv1;
+!!FU&(searchHandle)=(INVALID_HANDLE_VALUE):E;
+
+!!re i:;
+  !!SN:B(fileNameBuf)/d/?(fileName:z);
+
+  !!if&(fileName)<>^.^/(fileName)<>^..^:;
+    !!SN:B(fileAttrsAddr)/d/?(fileAttrs:y);
+    !!VR(isDir:y):S(fileAttrs) &(FILE_ATTRIBUTE_DIRECTORY) F0/1;
+    
+    !!VR(itemMatches:y):S(TRUE);
+    !!VR(itemMatches)&(itemsType)=(SCAN_FILES_ONLY)/(isDir)=(TRUE):S(FALSE);
+    !!VR(itemMatches)&(itemsType)=(SCAN_DIRS_ONLY)/(isDir)=(FALSE):S(FALSE);
+    
+    !!if&(itemMatches)=(TRUE):;
+      !!VR(fileName)&(fullPaths)<>(FALSE):S^%z(dirPathPtr)/%(fileName)^;
+      !!SN:M(fileList)/d1 V(fileList)/-1/(fileName);
+    !!en;
+  !!en;
+
+  !!SN:F^FindNextFileA^/(searchHandle)/?(foundData);
+  !!br&v1=0:;
+!!en:; re
+
+!!SN:F^FindClose^/(searchHandle);
+
+!!VRv1:S(savedV1);
+; ============== END FILE SYSTEM ==============
+
+
+; ============== GAME PROCESS ==============
+!?FU(SaveGame);
+!#VA(fileNamePtr:x);     File name without extension to save game to.
+!#VA(appendExtension:x); OPT boolean. If true, automatical extension will be appended to file name. Default: TRUE.
+!#VA(compressFile:x);    OPT boolean. If true, saved file is gzipped. Otherwise the file is written without compression. Default: TRUE.
+!#VA(saveToData:x);      OPT boolean. If true, saving is performed to Data directory instead of "Games" directory. Default: FALSE.
+!#VA(markInList:x);      OPT boolean. If true, saved game will be marked in Save/Load dialogs as selected. Default: TRUE.
+
+!!VR(savedV1:y):Sv1;
+!!FU:A?(numArgs:y);
+
+!!VR(appendExtension)&(numArgs)<(@appendExtension):S(TRUE);
+!!VR(compressFile)&(numArgs)<(@compressFile):S(TRUE);
+!!VR(markInList)&(numArgs)<(@markInList):S(TRUE);
+
+!!UN:C(GAME_MANAGER)/(UNC_INT)/?(gameManager:y);
+!!SN:E4975456/(CALLCONV_THISCALL)/(gameManager)/z(fileNamePtr)/(appendExtension)/1/(compressFile)/(saveToData);
+
+!!SN&(markInList)<>(FALSE):F^lstrcpyA^/(ADDR_MARKED_SAVEGAME_NAME)/z(fileNamePtr);
+!!VRv1:S(savedV1);
+; ============ END GAME PROCESS ============
+
+
 ; ============== ERROR HANDLING ==============
 !?FU(DisableErrors);
 ; Disables ERM error messages and resets error option.
@@ -746,6 +1478,7 @@ ZVSE2
 !?FU(H3Dlg_ShowPopup);
 ; Shows H3 dialog as RMB popup.
 !#VA(h3Dlg:x); H3 dialog object address
+
 !!FU(H3Dlg_StopAnimation):P;
 !!SN:E6245264/2/(h3Dlg);
 !!FU(H3Dlg_ResumeAnimation):P;
@@ -800,16 +1533,88 @@ ZVSE2
   !!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/(y);
 !!en;
 
+!?FU(H3Dlg_GetRootDlg);
+; Returns root dialog object or NULL. Most of the time it's Adventure Map dialog.
+!#VA(result:x);
+
+!!UN:C(WND_MANAGER)/(UNC_INT)/?(wndMan:y) C(wndMan)/80/(UNC_INT)/?(result);
+
+!?FU(H3Dlg_GetCurrentDlg);
+; Returns topmost dialog object or NULL. It may be message box, custom dialog or any in-game dialog.
+!#VA(result:x);
+
+!!UN:C(WND_MANAGER)/(UNC_INT)/?(wndMan:y) C(wndMan)/84/(UNC_INT)/?(result);
+
+!?FU(H3Dlg_SendCmdToItem);
+; Sends command to h3 dialog item like DL:A.
+!#VA(h3Dlg:x);      H3 dialog object address.
+!#VA(itemId:x);     Dialog item ID.
+!#VA(cmdSubtype:x); Command subtype. See DLG_CMD_XXX constants.
+!#VA(param:x);      User-specified value. Some numeric parameter or string in case of DLG_CMD_SET_TEXT.
+!#VA(cmdType:x);    Optional. Type of command/action. Default: (DLG_CMD_TYPE_DEFAULT)
+
+!!if&(h3Dlg)=(NULL):;
+  !!SN:F^ShowErmError^/^H3Dlg_SendCmdToItem: h3Dlg is NULL^;
+  !!FU:E;
+!!en;
+
+!!FU:A?(numArgs:y);
+!!VR(cmdType)&(numArgs)<(@cmdType):S(DLG_CMD_TYPE_DEFAULT);
+
+!!VR(savedV1:y):Sv1;
+
+!!if&(cmdSubtype)=(DLG_CMD_SET_TEXT):;
+  !!SN:E6288384/(CALLCONV_THISCALL)/(h3Dlg)/(cmdType)/(cmdSubtype)/(itemId)/z(param);
+!!el:;
+  !!SN:E6288384/(CALLCONV_THISCALL)/(h3Dlg)/(cmdType)/(cmdSubtype)/(itemId)/(param);
+!!en;
+
+!!VRv1:S(savedV1);
+
+!?FU(H3Dlg_DrawItemOnScreen);
+; WoG function, drawing dialog item or the whole dialog on the screen.
+!#VA(h3Dlg:x);
+!#VA(itemId:x); Dialog item ID or (ALL_ITEMS).
+
+!!if&(h3Dlg)=(NULL):;
+  !!SN:F^ShowErmError^/^H3Dlg_DrawItemOnScreen: h3Dlg is NULL^;
+  !!FU:E;
+!!en;
+
+!!VR(dlgAddr:y):S(h3Dlg);
+!!VR(savedV1:y):Sv1;
+!!SN:E7510525/(CALLCONV_THISCALL)/?(dlgAddr)/(itemId);
+!!VRv1:S(savedV1);
+
+!?FU(H3Dlg_UpdateItemRange);
+; Sends update command (0/0) to dialog items in specified range. Additionally forces dialog to update its internal state.
+; Use the function after sending commands to native H3 dialogs and before trying to redraw them.
+!#VA(h3Dlg:x);     H3 dialog object address
+!#VA(minItemId:x); Minimal item ID to update
+!#VA(maxItemId:x); Maximal item ID to update
+
+!!if&(h3Dlg)=(NULL):;
+  !!SN:F^ShowErmError^/^H3Dlg_UpdateItemRange: h3Dlg is NULL^;
+  !!FU:E;
+!!en;
+
+!!VR(savedV1:y):Sv1;
+!!UN:C(h3Dlg)/(STRUCT_H3DLG_VTABLE)/(UNC_INT)/?(dlgVirtTable:y) C(dlgVirtTable)/20/(UNC_INT)/?(redrawDlgFunc:y);
+!!SN:E(redrawDlgFunc)/(CALLCONV_THISCALL)/(h3Dlg)/0/200/200; 0 is drawVideoFrame?
+!!VRv1:S(savedV1);
+
 !?FU(DL_FindById);
 ; Returns DL dialog object address by DL id or (NULL) .
 !#VA(dlgId:x);
 !#VA(result:x);
+
 !!SN:E7510739/1/(dlgId);
 !!VR(result):Sv1;
 
 !?FU(DL_Destroy);
 ; Destroys DL dialog object.
 !#VA(dlgObj:x);
+
 !!SN:E7518240/2/(dlgObj);
 
 !?FU(DL_ShowPopup);
@@ -817,6 +1622,7 @@ ZVSE2
 ; The dialog will be destroyed after showing. Call DL:N again to recreate it.
 ; © GrayFace
 !#VA(dlgId:x); DL dialog ID.
+
 !!VR(savedV1:y):Sv1;
 !!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
 
@@ -919,10 +1725,37 @@ ZVSE2
 
 !!UN:C(h3Dlg)/(STRUCT_H3DLG_X)/(UNC_INT)/(x);
 !!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/(y);
+
+!?FU(ClearScreenLog);
+; Clears green screen log messages
+!!VR(savedV1:y):Sv1;
+!!SN:E5588144/2/6936576;
+!!VRv1:S(savedV1);
+
+!?FU(AdvMap_SetHint);
+; Immediately shows adventure map hint with new text. Chat box text may become hidden until new character input.
+!#VA(newHint:x); New hint string.
+
+!!FU(H3Dlg_GetRootDlg):P?(rootDlg:y);
+!!FU&(rootDlg)=(NULL):E;
+
+!!UN:C(rootDlg)/(STRUCT_H3DLG_VTABLE)/(UNC_INT)/?(virtTable:y) C(virtTable)/(UNC_INT)/?(dlgId:y);
+!!FU&(dlgId)<>(DLG_ADVMAP):E;
+
+!!FU(H3Dlg_SendCmdToItem):P(rootDlg)/(ITEM_ADVMAP_HINT)/(DLG_CMD_SET_TEXT)/z(newHint);
+!!FU(H3Dlg_UpdateItemRange):P(rootDlg)/(ITEM_ADVMAP_HINT)/(ITEM_ADVMAP_HINT);
+!!FU(H3Dlg_DrawItemOnScreen):P(rootDlg)/(ITEM_ADVMAP_HINT);
 ; ============= END DIALOGS =============
 
 
 ; =============== BATTLE ===============
+!?FU(BattleStack_Shoot);
+; Forces one stack to shoot at another one.
+!#VA(attackerStackId:x) (defenderStackId:x);
+!!BM(attackerStackId):Z?(attackerStackStruct:y);
+!!BM(defenderStackId):Z?(defenderStackStruct:y);
+!!SN:E4453920/(CALLCONV_THISCALL)/(attackerStackStruct)/(defenderStackStruct);
+
 !?FU(UpdateBattleVars);
 ; Updates global variables with most of "OnBeforeBattle/Universal" event parameters.
 ; Call this function if you change anything, except monsters, via BA command.
@@ -972,6 +1805,31 @@ ZVSE2
 !!VR(battleType)&i^battle_hero_1^<>(NO_HERO):   |(BATTLE_TYPE_FLAG_RIGHT_HAS_HERO);
 !!VRi^battle_type^:S(battleType);
 ; ============= END BATTLE =============
+
+
+; ============== TIME ==============
+!?FU(GetTimeMsec);
+; Returns current time in milliseconds (time from computer start, overflowing each 49.71 days)
+!#VA(result:x);
+!!UN:C6529876/(UNC_INT)/?(timeGetTime:y);
+!!VR(savedV1:y):Sv1;
+!!SN:E(timeGetTime)/(CALLCONV_STDCALL);
+!!VR(result):Sv1;
+!!VRv1:S(savedV1);
+; ============ END TIME ============
+
+
+; ============== UTILITIES ==============
+!?FU(GetProcessGuid);
+; Returns unique 32-character ID of game process run. Each game process start will generate different value.
+; Modders can use this value to check, whether player restarted the game process or not.
+!#VA(result:x);
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^GetProcessGuid^/?(processGuid:z);
+!!VR(result):Z(processGuid);
+!!VRv1:S(savedV1);
+; ============ END UTILITIES ============
 
 
 ; ============== MONSTERS ==============
@@ -1039,9 +1897,51 @@ ZVSE2
 !!if&(rangeInd)<>-1:;
   !!VRf:S(rangeInd) *(SIZEOF_INT) *3 +(SIZEOF_INT) +(h3HintsBaseAddr);
   !!UN:Cf/(SIZEOF_PTR)/?(strAddr:y);
-  !!FU(GetStrAtAddr):P(strAddr)/?s^result^;
+  !!SN:B(strAddr)/d/?s^result^;
 !!en;
 
 !!VR(resultPtr):Zs^result^;
 !!VRs^result^:S^^;
+
+!?FU(GetMaxMonsterId);
+; Returns ID of the last supported monster in game. Some plugins, extending creature limit, add many blank
+; monsters, resulting in max ID = 9999, for instance.
+!#VA(result:x);
+
+!!UN:C7549734/(UNC_INT)/?(result);
+!!VR(result):-1;
+
+!?FU(GetUpgradedMonster);
+; Returns ID of upgraded monster or NO_MON if no upgrade exists.
+!#VA(monId:x);  ID of monster to get upgrade for.
+!#VA(result:x); OUT. ID of upgraded monster or -1.
+
+!!VR(savedV1:y):Sv1;
+!!SN:E7662803/(CALLCONV_CDECL)/(monId);
+!!VR(result):Sv1;
+!!VRv1:S(savedV1);
+
+!?FU(GetDegradedMonCandidates);
+; Returns temporary list of all monsters, which can be upgraded to specified monster.
+; There may exist multiple monster, upgrading to the same type. Function performance is low.
+!#VA(monId:x);        Upgraded monster ID.
+!#VA(degradesList:x); ID of temporary SN:M array with degraded monster candidates.
+
+!!SN:M(M_AUTO_ID)/0/(M_INT)/(M_TRIGGER_LOCAL)/?(degradesList) F^ExtendArrayLifetime^/(degradesList);
+!!FU(GetMaxMonsterId):P?(lastMonsterId:y);
+
+!!re i/(MON_FIRST)/(lastMonsterId):;
+  !!FU(GetUpgradedMonster):Pi/?(upgradedMonId:y);
+  !!SN&(upgradedMonId)=(monId):M(degradesList)/d1 V(degradesList)/-1/i;
+!!en:;
 ; ============ END MONSTERS ============
+
+
+; ============== HEROES ==============
+!?FU(GetMaxHeroId);
+; Returns ID of the last supported hero in game.
+!#VA(result:x);
+
+!!UN:C4960750/(UNC_INT)/?(result);
+!!VR(result):-1;
+; ============ END HEROES ============

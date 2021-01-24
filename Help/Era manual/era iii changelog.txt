@@ -1,3 +1,381 @@
+Version 3.3.0 (01/2020)
+------------------------
+[+] Implemented support for colored texts and Era Markup Language in general for all HD mod modes now.
+[+] It became possible to enter invisible tags in edit fields using "{" and "}". This behavior may be changed in future.
+
+[+] Implemented transparency support for colored texts using {~RRGGBBAA}...{~} tags, where AA stands for alpha channel, which determines text opaqueness. 0 means transparant, 255 is fully opaque, $80 is 50% transparent. Old-style tags in {~RRGGBB} format works as fully opaque.
+
+Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} some{~} gold{~}^;
+
+[+] Greatly improved European, Asian and mixed language colored texts support, including valid characters/words/lines width calculation and word-wrapping.
+[+] Chinese font detection depends on H3 font size from now, not on H3 font file name.
+
+[+] Added support for displaying inline def-images right in texts as a part of Era Markup Language (EML).
+
+  To embed image in text use the following tags:
+  {~>def_name.def}                          Will display the first frame from the first group of def_name.def image in place of text cursor.
+  {~>def_name.def:frame_index}              Will display specified frame from the first group of def_name.def image or nothing if index is invalid.
+  {~>def_name.def:group_index:frame_index}  Will display specified frame from specified group of def_name.def image or nothing if index is invalid.
+
+  Frames and frame groups are counted from 0. Frames are automatically trimmed.
+  By default images are rendered "inline". It means, that they are treated as non-wrapping sequence of white space characters. Images do not allocate
+  vertical space except the height of current font. But they automatically allocate necessary width.
+
+  Images can be aligned vertically using the following attribute: valign=top|middle|bottom.
+  Examples:
+    {~>ava0037.def valign=bottom}
+    {~>smalres.def:5}
+
+  Vertical alignment modes:
+  - 'top'.    Image is drawn from the top left pixel of current character box.
+  - 'middle'. Image is vertically centered relative to current text line height. This is the default mode for inline images.
+  - 'bottom'. Image is drawn so, that it's bottom edge matches current text line bottom edge.
+
+  It's possible to display image in a horizontally mirrored form. Just add "mirror" attribute.
+  Example: {~>ava0037.def mirror}
+
+[+] Updated "game bug fixes extended" plugin by igrik:
+  - Removed screen redraw when AI visits teleports if "do not show enemy movement" option is on.
+  - Stack experience marks are drawn in leave/join creature dialogs, but only for hero slots.
+  - Fixed bugs caused by ALT usage during stack combining in leave/join creature dialogs.
+  - Other fixes.
+
+[+] Updated "wog native dialogs" by igrik:
+  - Removed possibility to show settings window from main menu by F5 key. Removed automatical MAX selection in creature recruiting dialogs.
+  - It's possible to select pictures in native H3 selection dialogs using keyboard arrow keys LEFT and RIGHT.
+  - Leaving monsters/artefacts on map is trigged by CTRL + RMB instead of single RMB now.
+
+[+] Included "monprt44.def" def with 44x44 monster portraits, sorted by monster ID. Credits: Bes.
+
+[+] Event "OnKeyPressed" now handles ALT key.
+
+[+] Added "Runtime" directory to Heroes 3 directory. Mods should read/write data, created or modified at runtime there.
+    If you need config, that player will be able to alter using GUI interface, read data from "Runtime\you mod.ini", fallbacking to json config values from "Lang" directory. Thus cleaning "Runtime" directory will have the same effect as reinstalling all mods from scratch.
+
+[+] 'Runtime', 'Games' and 'Random_Maps' directories are recreated automatically on game start.
+
+[+] ERM syntax can be safely beautified for all Era 3.X versions by skipping trailing ":" before ";".
+  !!re 0/7/1;
+    ...
+  !!en;
+
+  !!if&(heroId)=(HERO_XERON);
+    ...
+  !!en;
+
+[+] Restored VR:S?$ syntax support from Era 2.
+
+[+] Extended !!OW:C command with the following syntax: OW:C?(owner)/?(thisPcOwner).
+    It became possible to get not only current player, who may play at remote PC, but also this PC human player, who possibly waits for his turn and triggers interface events.
+
+[+] Added new ERM command SN:B to work with binary buffers on a low level. It allows to:
+    - get address of local or static global ERM variable;
+    - read/write integer/string from/to specific address.
+
+    !!SN:B(intAddress) or ?(intVar) or (strVar) or ?(strVar)[/?(addressValue) or (dummy)/$valueAtAddress]
+
+    The first argument determines variable address to work with. For strings it's always first string character address, regardless GET/SET syntax.
+    For floats/ints SET syntax mean value of variable as address. GET syntax means address of specified variable.
+
+    !!VR(test:y):S8943200;
+    !!SN:B(test);  means use 8943200 as address
+    !!SN:B?(test); means use address of (test) y-variable.
+
+    !!VR(text:z):S^hello world^;
+    !!SN:B(text);  means use address of (text) first character
+    !!SN:B?(text); means use address of (text) first character too.
+
+    Example:
+    Let us declare integer y-variable and determine its address to use with external API function.
+    !!VR(fileHandle:y):S(INVALID_HANDLE_VALUE);
+    !!SN:B?(fileHandle)/?(fileHandleAddr:y); (fileHandlerAddr) is now address of (fileHandle) variable.
+
+    Let us read last savegame name from H3 static buffer
+    !!SN:B(ADDR_MARKED_SAVEGAME_NAME)/d/?(lastSavegameName:z);
+    !!IF:M^You last savegame name was %(lastSavegameName)^;
+
+[+] Added new events to "Era Erm Framework" mod:
+
+  - "OnStartOrLoad": occures after map start or savegame is loaded. Safe alternative to "OnGameStart", which is triggered before adventure map display.
+  The event occurs after (OnAfterErmInstructions, OnAfterErmInited) and after (OnAfterLoadGame) event.
+  The only argument is (isNewGame:x), which is (TRUE) for map start and (FALSE) for map loading.
+
+[+] Added many new constants to "Era Erm Framework" mod for bits, bit masks, game managers addresses, dialog item ids, etc.
+
+[+] The following improvements were introduced in "Era Erm Framework" mod:
+  
+  - "OnKeyPressed" event and all mouse click events were improved, storing keyboard special keys in global variables.
+  i^key^:            Pressed key virtual key code (not scan code) for "OnKeyPressed" event only. Use KEY_XXX constants for it.
+  i^key_leftAlt^:    TRUE if left ALT is pressed.
+  i^key_rightAlt^:   TRUE if right alt is pressed.
+  i^key_alt^:        TRUE if any alt is pressed.
+  i^key_leftCtrl^:   TRUE if left control is pressed.
+  i^key_rightCtrl^:  TRUE if right control is pressed.
+  i^key_ctrl^:       TRUE if any control is pressed.
+  i^key_leftShift^:  TRUE if left shift is pressed.
+  i^key_rightShift^: TRUE if right shift is pressed.
+  i^key_shift^:      TRUE if any shift is pressed.
+
+  - All mouse click events were improved, storing event parameters in global variables.
+  i^mouse_x^:         Cursor x-coordinate in game window.
+  i^mouse_y^:         Cursor y-coordinate in game window.
+  i^mouse_battleHex^: Battle hex ID for battle clicks.
+  i^mouse_flags^:     Mouse flags mask: set of MOUSE_FLAG_XXX constants.
+  i^mouse_hero_0^:    Hero screen hero ID or hero meeting screen left hero ID.
+  i^mouse_hero_1^:    Hero meeting screen right hero ID.
+  i^mouse_item^:      Clicked dialog item ID (CM:I). See ITEM_XXX constants.
+  i^mouse_mapX^:      Map tile x-coordinate.
+  i^mouse_mapY^:      Map tile y-coordinate.
+  i^mouse_mapZ^:      Map tile z-coordinate.
+  i^mouse_action^:    Action ID. One of MOUSE_XXX constants like MOUSE_LMB_RELEASED or MOUSE_RMB_PRESSED.
+
+  Examples:
+  !?FU(OnKeyPressed_AdvMap)&i^key^=(KEY_F)/i^key_ctrl^=(TRUE);
+  !!IF:M^CTRL+F on adventure map!^;
+
+  !?FU(OnAdventureMapRightMouseClick)&i^mouse_item^=(ITEM_ADVMAP_HERO_LIST_MOVE_BAR_2)/i^mouse_action^=(MOUSE_RMB_PRESSED)/i^key_ctrl^=(TRUE);
+  !!IF:N(NO_PIC_TYPE)/(NO_PIC_TYPE)/(NO_PIC_TYPE)/(NO_PIC_TYPE) N(MSG_TYPE_POPUP)/^ctrl + RMB on the second hero move bar!^;
+
+[+] Added the following functions to "Era Erm Framework" mod:
+
+  !?FU(GetTimeMsec);
+  ; Returns current time in milliseconds (time from computer start, overflowing each 49.71 days)
+  !#VA(result:x);
+
+  !?FU(PackUnion);
+  ; Safely packs union fields into single 32-bits integer, allowing to store multiple values in a single variable.
+  ; Arguments are pairs of (field value, field size in bits). The first field is written at bit 0-th position.
+  ; The last argument is result.
+  ; Example: P(x)/8/ (y)/8/ (z)/8/ (heroId)/8/ ?(result:y);
+
+  !?FU(UnpackUnion);
+  ; Safely unpacks single 32-bits integer value into multiple field values.
+  ; The first argument is packed value.
+  ; Other arguments are pairs of (?field value, field size in bits). The first field is read at bit 0-th position.
+  ; Example: P45683/ ?(x:y)/8/ ?(y:y)/8/ ?(z:y)/8/ ?(heroId:y)/8;
+
+  !?FU(Array_Shuffle);
+  ; Randomly shuffles all items in the list.
+  !#VA(list:x); Array ID.
+
+  !?FU(Array_Merge);
+  ; Given destination array and arbitrary number of source arrays. Appends all items from all source arrays
+  ; to the destination array.
+  ; Example. Given listA = [100, 200, 300], listB = [500, 600]. P(listA)/(listB) => [100, 200, 300, 500, 600]
+  !#VA(dstArray:x);          Destination array to append new items to.
+  !#VA(firstArrayToMerge:x); ... Arrays to merge with the first one
+
+  Examples:
+  !!FU(NewStrArray):P?(listA:y);
+  !!FU(Array_Push):P(listA)/^one^/^two^/^three^;
+  !!FU(NewStrArray):P?(listB:y);
+  !!FU(Array_Push):P(listB)/^wog^/^era^;
+  !!FU(Array_Merge):P(listA)/(listB)/(listB);
+  !!FU(Array_Join):P(listA)/?(text:z)/^ ^;
+  !!IF:M^%(text)^; "one two three wog era wog era"
+
+  !?FU(Array_Slice);
+  ; Returns part of original array as new trigger-local array.
+  !#VA(list:x);   Array to get slice of.
+  !#VA(start:x);  Initial index, starting from zero. Negative offset means 'from the end'.
+  !#VA(count:x);  Number of items to copy. Negative value means "skipping" that number of items from list end.
+  !#VA(result:x); Result array.
+  !#VA(arrayStorageType:x); OPT. Special storage type for result like M_STORED. Default: M_TRIGGER_LOCAL.
+
+  Examples:
+  !!FU(NewStrArray):P?(listA:y);
+  !!FU(Array_Push):P(listA)/^one^/^two^/^three^/^four^/^five^;
+  !!FU(Array_Slice):P(listA)/-4/-1/?(listB:y);
+  !!FU(Array_Join):P(listB)/?(text:z)/^ ^;
+  !!IF:M^%(text)^; "two three four"
+
+  !?FU(Substr);
+  ; Returns substring from existing string.
+  !#VA(strPtr:x); Original string.
+  !#VA(start:x);  Initial offset, starting from zero. Negative offset means 'from the end'.
+  !#VA(count:x);  OPT. Number of characters to copy. Negative value means "skipping" that number of characters from string end.
+  !#VA(result:x); Result substring.
+
+  Examples:
+  !!VRs^message^:S^Have a nice day dear Perry^;
+  !!FU(Substr):Ps^message^/-5/(INT_MAX)/?s^submessage^; copy up to 5 characters from the end
+  !!IF:M^%s(submessage)^; "Perry"
+
+  !!VRs^message^:S^Have a nice day dear Perry^;
+  !!FU(Substr):Ps^message^/5/(INT_MAX)/?s^submessage^; copy, skipping the first 5 characters
+  !!IF:M^%s(submessage)^; "a nice day dear Perry"
+
+  !!VRs^message^:S^Have a nice day dear Perry^;
+  !!FU(Substr):Ps^message^/5/-6/?s^submessage^; copy from 6-th character to the end, not including the last 6 characters
+  !!IF:M^%s(submessage)^; "a nice day dear"
+
+  !?FU(ScanDir);
+  ; Reads directory contents, filling specified list with file names.
+  ; Example: P^Np3^/(fileList)/(SCAN_FILES_ONLY);
+  !#VA(dirPathPtr:x); Absolute or relative path to directory to scan.
+  !#VA(fileList:x);   ID of array to store file names in.
+  !#VA(itemsType:x);  OPT. Type of items to collect: files, directories or both. One of SCAN_XXX constants. Default: SCAN_FILES_AND_DIRS.
+  !#VA(fullPaths:x);  OPT boolean. If true, result items will be have dirPath predended. Default: false.
+
+  !?FU(SaveIni);
+  ; Saves ini file, if it was earlier cached in memory (any read/write operation was performed).
+  !#VA(filePathPtr:x); Absolute or relative path to ini file
+  
+  !?FU(WriteIniInts);
+  ; Writes multiple integer values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
+  ; Example: P^Runtime/my mod.ini^/^hero levels^/(HERO_ORRIN)/13/(HERO_XERON)/41;
+  !#VA(filePathPtr:x);    Absolute or relative path to ini file
+  !#VA(sectionNamePtr:x); Section name in ini file.
+  !#VA(firstKeyPtr:x);    ... Up to 7 key, value pairs to write.
+  !#VA(firstValue:x);
+  
+  !?FU(WriteIniStrings);
+  ; Writes multiple string values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
+  ; Example: P^Runtime/my mod.ini^/^custom hero names^/^%(HERO_ORRIN)^/^Perrin R^/^%(HERO_XERON)^/^Berson^;
+  !#VA(filePathPtr:x);    Absolute or relative path to ini file
+  !#VA(sectionNamePtr:x); Section name in ini file.
+  !#VA(firstKeyPtr:x);    ... Up to 7 key, value pairs to write.
+  !#VA(firstValue:x);
+  
+  !?FU(ReadIniStrings);
+  ; Reads multiple string values from ini file or from memory if ini file was read/written to earlier.
+  ; Example: P(filePath)/(sectionName)/^%(HERO_ORRIN)^/?(orrinName:z)/^Orrin^/^%(HERO_XERON)^/?(xeronName:z)/^Xeron^;
+  !#VA(filePathPtr:x);    Absolute or relative path to ini file
+  !#VA(sectionNamePtr:x); Section name in ini file.
+  !#VA(firstKeyPtr:x);    ... Up to 4 (key, ?value, defaultValue) tripples to read.
+  !#VA(firstValue:x);
+  !#VA(firstValueDefault:x);
+
+  !?FU(ReadIniInts);
+  ; Reads multiple integer values from ini file or from memory if ini file was read/written to earlier.
+  ; Example: P(filePath)/^hero levels^/^%(HERO_ORRIN)^/?(orrinLevel:y)/1/^%(HERO_XERON)^/?(xeronLevel:y)/1;
+  !#VA(filePathPtr:x);    Absolute or relative path to ini file
+  !#VA(sectionNamePtr:x); Section name in ini file.
+  !#VA(firstKeyPtr:x);    ... Up to 4 (key, ?value, defaultValue) tripples to read.
+  !#VA(firstValue:x);
+  !#VA(firstValueDefault:x);
+
+  !?FU(GetMaxMonsterId);
+  ; Returns ID of the last supported monster in game.
+  !#VA(result:x);
+
+  !?FU(GetUpgradedMonster);
+  ; Returns ID of upgraded monster or NO_MON if no upgrade exists.
+  !#VA(monId:x);  ID of monster to get upgrade for.
+  !#VA(result:x); OUT. ID of upgraded monster or -1.
+
+  !?FU(GetDegradedMonCandidates);
+  ; Returns temporary list of all monsters, which can be upgraded to specified monster.
+  ; There may exist multiple monster, upgrading to the same type. Function performance is low.
+  !#VA(monId:x);        Upgraded monster ID.
+  !#VA(degradesList:x); ID of temporary SN:M array with degraded monster candidates.
+
+  !?FU(BattleStack_Shoot);
+  ; Forces one stack to shoot at another one.
+  !#VA(attackerStackId:x) (defenderStackId:x);
+  !!BM(attackerStackId):Z?(attackerStackStruct:y);
+  !!BM(defenderStackId):Z?(defenderStackStruct:y);
+  !!SN:E4453920/(CALLCONV_THISCALL)/(attackerStackStruct)/(defenderStackStruct);
+
+  !?FU(GetMaxHeroId);
+  ; Returns ID of the last supported hero in game.
+  !#VA(result:x);
+
+  !?FU(LoadIntGlobalsFromJson);
+  ; Loads global mod/script settings from json config right into prefixed named global variables.
+  ; Supports usage of any constant name instead of numbers in JSON. For example, you want to load
+  ; json values "umt.randomizationIntervalDays" and "umt.playAltThemesSequently" to global variables
+  ; i^umt_randomizationIntervalDays^ and i^umt_playAltThemesSequently^ and want to be able to write in json:
+  ; "umt.playAltThemesSequently": "TRUE".
+  ;
+  ; Example: P^umt.^/^umt_^/^randomizationIntervalDays^/^playAltThemesSequently^;
+  !#VA(jsonKeysPrefixPtr:x);   Name of json keys prefix like ^mix.globals.^ for {"mix": {"globals": { ... }}}
+  !#VA(globalVarsPrefixPtr:x); Name of global variables prefix. Usually mod prefix like "mix_" or "umt_".
+  !#VA(firstKeyNamePtr:x);     ... Up to 14 json key names to read and convert into global variables
+
+  !?FU(SaveGame);
+  !#VA(fileNamePtr:x);     File name without extension to save game to.
+  !#VA(appendExtension:x); OPT boolean. If true, automatical extension will be appended to file name. Default: TRUE.
+  !#VA(compressFile:x);    OPT boolean. If true, saved file is gzipped. Otherwise the file is written without compression. Default: TRUE.
+  !#VA(saveToData:x);      OPT boolean. If true, saving is performed to Data directory instead of "Games" directory. Default: FALSE.
+  !#VA(markInList:x);      OPT boolean. If true, saved game will be marked in Save/Load dialogs as selected. Default: TRUE.
+
+  !?FU(ClearScreenLog);
+  ; Clears green screen log messages
+
+  !?FU(H3Dlg_GetRootDlg);
+  ; Returns root dialog object or NULL. Most of the time it's Adventure Map dialog.
+  !#VA(result:x);
+
+  !?FU(H3Dlg_GetCurrentDlg);
+  ; Returns topmost dialog object or NULL. It may be message box, custom dialog or any in-game dialog.
+  !#VA(result:x);
+
+  !?FU(H3Dlg_SendCmdToItem);
+  ; Sends command to h3 dialog item like DL:A.
+  !#VA(h3Dlg:x);      H3 dialog object address.
+  !#VA(itemId:x);     Dialog item ID.
+  !#VA(cmdSubtype:x); Command subtype. See DLG_CMD_XXX constants.
+  !#VA(param:x);      User-specified value. Some numeric parameter or string in case of DLG_CMD_SET_TEXT.
+  !#VA(cmdType:x);    Optional. Type of command/action. Default: (DLG_CMD_TYPE_DEFAULT)
+
+  !?FU(H3Dlg_DrawItemOnScreen);
+  ; WoG function, drawing dialog item or the whole dialog on the screen.
+  !#VA(h3Dlg:x);
+  !#VA(itemId:x); Dialog item ID or (ALL_ITEMS).
+
+  !?FU(H3Dlg_UpdateItemRange);
+  ; Sends update command (0/0) to dialog items in specified range. Additionally forces dialog to update its internal state.
+  ; Use the function after sending commands to native H3 dialogs and before trying to redraw them.
+  !#VA(h3Dlg:x);     H3 dialog object address
+  !#VA(minItemId:x); Minimal item ID to update
+  !#VA(maxItemId:x); Maximal item ID to update
+
+  !?FU(AdvMap_SetHint);
+  ; Immediately shows adventure map hint with new text. Chat box text may become hidden until new character input.
+  !#VA(newHint:x); New hint string.
+
+[+] OnKeyPressed event does not occur anymore in dialogs where an input element has focus. It became possible to handle keyboard safely without routine checks for chat enter/leave events.
+
+[+] Added GetProcessGuid exported function, allowing to retrieve unique 32-character ID of game process run.
+    Each game process start will generate different value. Modders can use this value to check, whether player restarted the game process or not.
+    
+    procedure GetProcessGuid (Buf: pchar); stdcall;
+
+    Usage:
+    !!SN:F^GetProcessGuid^/?(processGuid:z);
+    !!IF:M^%(processGuid)^;
+
+[!] Be sure not to use stack experience commands for battle stacks in OnBeforeBattle(Universal) triggers. Use them starting from "OnSetupBattlefield" event.
+[!] Starting from version 5.2 RC 14 HD mod does not influence Era "OnGameEnter" and "OnGameLeave" events, which work reliably now.
+
+[!] HE:L command was rewritten to support #/^...^ Era 3 syntax. Automatical adventure map redrawing was removed.
+    From now command supports any ERM string. HE:L3 does not need the second argument.
+
+[!] Improved "OnAdvMapTileHint" event. It will not occur on RMB popup anymore and will have extended arguments:
+
+  !?FU(OnAdvMapTileHint);
+  !#VA(x:x) (y:x) (z:x);             Object entrance coordinates
+  !#VA(objType:x) (objSubtype:x);    Type and subtype of object. For active hero it's object under hero.
+  !#VA(tileX:x) (tileY:x) (tileZ:x); Real tile coordinates.
+
+[*] "OnAdvMapTileHint" event objSubtype argument is -1 for no object instead of previous 65535.
+[*] Exported function WriteStrToIni creates empty ini in memory if no file exists on disk.
+
+[-] Fixed FU/DO argument skipping handling. Previosly continuous slashes were ignored and Px1/x2/x3//////x9/x10 didn't work as it was expected.
+[-] Fixed Era 2.0 bug: calling SN:E with floating point result used to leave garbage value in FPU stack.
+[-] Fixed WoG 3.58 bug: CO:A used to automatically execute CO:N# due to missing final 'break' keyword in the source code.
+[-] Fixed Era bug: %Dm and %Dd results were displayed in place of each other.
+[-] Fixed bug in Array_CustomSort, causing invalid final list items ordering.
+
+[-] Fixed EA:E, command, used to return on the first GET-parameter. From now E?(exp:y)/d/?(monType:y)/?(monNum:y) returns valid data.
+    Use either SET syntax for all 4 commands to change data or GET/mixed syntax to get data.
+
+[-] Removed ini option "Debug.TrackErm.IgnoreRealTimeTimers". ERA does no trace triggers without handlers anyway.
+[-] Fixed missing "botcasw.pcx" file by redirecting it to existing "botcastw.pcx" resource.
+[-] Fixed un44.def dragon specialty frame.
+
+
 Version 3.2.0 (11/2020)
 ------------------------
 [@] Special thanks to Andarium for project support.
@@ -985,7 +1363,7 @@ Version 3.0.3 (07/2020)
 Version 3.0.2 (06/2020)
 ------------------------
 [+] Added new ERM event 'OnAdvMapTileHint', allowing to get/set hint for any tile, mouse is currently over.
-    Parameters: x, y, z, object type, object subtype.
+    Parameters: x, y, z, object type, object subtype. All parameters are given for object entrance.
     Example:
 
     !?FU(OnAdvMapTileHint); display tile coordinates and original hint

@@ -150,6 +150,7 @@
 !#DC(KEY_OEM_PERIOD)          = 190;
 !#DC(KEY_OEM_2)               = 191;
 !#DC(KEY_OEM_3)               = 192;
+!#DC(KEY_TILDE)               = (KEY_OEM_3);
 !#DC(KEY_OEM_4)               = 219;
 !#DC(KEY_OEM_5)               = 220;
 !#DC(KEY_OEM_6)               = 221;

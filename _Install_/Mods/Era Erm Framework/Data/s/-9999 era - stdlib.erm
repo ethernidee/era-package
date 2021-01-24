@@ -2,6 +2,11 @@ ZVSE2
 ; Implement new event "OnAfterErmInited", occuring after all instructions and postinstruction triggers are executed
 !?FU(OnAfterErmInstructions);
 !!FU(OnAfterErmInited):P;
+!!FU(OnStartOrLoad):P(TRUE);
+
+; Implement new "OnStartOrLoad" event, occuring after map start or savegame loaded. Safe alternative to OnGameStart, which is triggered before adventure map display.
+!?FU(OnAfterLoadGame);
+!!FU(OnStartOrLoad):P(FALSE);
 
 ; Implement new events with the same parameters, as OnKeyPressed, but for particular dialogs.
 ; OnKeyPressed_AdvMap, OnKeyPressed_Battle, OnKeyPressed_HeroScreen, OnKeyPressed_HeroMeetingScreen, OnKeyPressed_Town
@@ -13,6 +18,41 @@ ZVSE2
 !!FU(OnKeyPressed_HeroScreen)&(mainDialogs[1])=(DLG_HERO_SCREEN):P?(key)/?(preventDefault);
 !!FU(OnKeyPressed_HeroMeetingScreen)&(mainDialogs[1])=(DLG_HERO_MEETING_SCREEN):P?(key)/?(preventDefault);
 !!FU(OnKeyPressed_Town)&(mainDialogs[1])=(DLG_TOWN_SCREEN):P?(key)/?(preventDefault);
+
+!!FU(RestorePrevKeyModsState):P;
+
+!?FU(OnAdventureMapRightMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnTownMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnHeroScreenMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnHeroesMeetScreenMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnBattleScreenMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnAdventureMapLeftMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnRecruitDlgMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnTownHallMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnKingdomOverviewMouseClick);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnBattleMouseHint);
+!!FU(EnterMouseEvent):P;
+
+!?FU(OnTownMouseHint);
+!!FU(EnterMouseEvent):P;
 
 ; Implement new "OnAfterBattleSetup" event, occuring right after "OnBeforeBattle" and "OnBeforeBattleUniversal" events.
 ; New event allows to to be sure, that basic battle parameters (heroes, quick battle, coordinates) are set up.

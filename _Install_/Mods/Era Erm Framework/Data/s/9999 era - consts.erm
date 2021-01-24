@@ -3,6 +3,7 @@ ZVSE2
 !#DC(TRUE)  = 1;
 !#DC(FALSE) = 0;
 !#DC(NULL)  = 0;
+!#DC(DUMMY) = 0;
 ; =============  END UNIVERSAL  =============
 
 
@@ -136,6 +137,7 @@ ZVSE2
 !#DC(SKILL_ADVANCED)    = 2;
 !#DC(SKILL_EXPERT)      = 3;
 
+!#DC(NO_SKILL)           = -1;
 !#DC(SEC_SKILL_FIRST)    = 0;
 !#DC(SKILL_PATHFINDING)  = 0;
 !#DC(SKILL_ARCHERY)      = 1;
@@ -1139,20 +1141,24 @@ ZVSE2
 
 
 ; =============  BATTLE  =============
-!#DC(NO_STACK)                    = -1;
-!#DC(BATTLE_STACK_FIRST)          = 0;
-!#DC(BATTLE_STACK_LAST)           = 41;
-!#DC(BATTLE_MAX_STACKS)           = 42;
-!#DC(BATTLE_ATTACKER_STACK_FIRST) = 0;
-!#DC(BATTLE_ATTACKER_STACK_LAST)  = 20;
-!#DC(BATTLE_DEFENDER_STACK_FIRST) = 21;
-!#DC(BATTLE_DEFENDER_STACK_LAST)  = 41;
-!#DC(BATTLE_STACKS_PER_SIDE)      = 21;
-!#DC(BATTLE_BASE_STACKS_PER_SIDE) = 7;
-!#DC(BATTLE_LEFT)                 = 0;
-!#DC(BATTLE_RIGHT)                = 1;
-!#DC(FIRST_TACTICS_ROUND)         = -1000000000;
-!#DC(FIRST_NON_TACTICS_ROUND)     = 0;
+!#DC(NO_STACK)                         = -1;
+!#DC(BATTLE_STACK_FIRST)               = 0;
+!#DC(BATTLE_STACK_LAST)                = 41;
+!#DC(BATTLE_MAX_STACKS)                = 42;
+!#DC(BATTLE_ATTACKER_STACK_FIRST)      = 0;
+!#DC(BATTLE_ATTACKER_STACK_LAST)       = 20;
+!#DC(BATTLE_DEFENDER_STACK_FIRST)      = 21;
+!#DC(BATTLE_DEFENDER_STACK_LAST)       = 41;
+!#DC(BATTLE_ATTACKER_BASE_STACK_FIRST) = 0;
+!#DC(BATTLE_ATTACKER_BASE_STACK_LAST)  = 6;
+!#DC(BATTLE_DEFENDER_BASE_STACK_FIRST) = 21;
+!#DC(BATTLE_DEFENDER_BASE_STACK_LAST)  = 27;
+!#DC(BATTLE_STACKS_PER_SIDE)           = 21;
+!#DC(BATTLE_BASE_STACKS_PER_SIDE)      = 7;
+!#DC(BATTLE_LEFT)                      = 0;
+!#DC(BATTLE_RIGHT)                     = 1;
+!#DC(FIRST_TACTICS_ROUND)              = -1000000000;
+!#DC(FIRST_NON_TACTICS_ROUND)          = 0;
 ; ===========  END BATTLE  ===========
 
 
@@ -1202,6 +1208,11 @@ ZVSE2
 ; ===========  END BM:G FIELD OFFSETS  ===========
 
 
+; =============  STACK EXPERIENCE  =============
+!#DC(STACK_EXP_MAX_BONUS_LINES) = 20;
+; ===========  END STACK EXPERIENCE  ===========
+
+
 ; =============  GAME LIMITS  =============
 !#DC(MONS_PER_TOWN)            = 14;
 !#DC(HERO_BACKPACK_CAPACITY)   = 64;
@@ -1209,7 +1220,53 @@ ZVSE2
 !#DC(DAYS_IN_MONTH)            = 28;
 !#DC(WEEKS_IN_MONTH)           = 4;
 !#DC(DAYS_IN_WEEK)             = 7;
+!#DC(MON_MIN_LEVEL)            = 0;
+!#DC(MON_MAX_LEVEL)            = 6;
+!#DC(MON_NUM_LEVELS)           = 7;
 ; ===========  END GAME LIMITS  ===========
+
+
+; =================  GAME SETTINGS  =================
+!#DC(GAME_SETTING_SHOW_INTRO)             = 6919184;
+!#DC(GAME_SETTING_MUSIC_VOLUME)           = 6916016;
+!#DC(GAME_SETTING_SOUND_VOLUME)           = 6916020;
+!#DC(GAME_SETTING_LAST_MUSIC_VOLUME)      = 6916024;
+!#DC(GAME_SETTING_LAST_SOUND_VOLUME)      = 6916028;
+!#DC(GAME_SETTING_WALK_SPEED)             = 6916012;
+!#DC(GAME_SETTING_COMP_WALK_SPEED)        = 6916008;
+!#DC(GAME_SETTING_SHOW_ROUTE)             = 6916036;
+!#DC(GAME_SETTING_MOVE_REMINDER)          = 6916040;
+!#DC(GAME_SETTING_QUICK_COMBAT)           = 6916044;
+!#DC(GAME_SETTING_VIDEO_SUBTITLES)        = 6916048;
+!#DC(GAME_SETTING_TOWN_OUTLINES)          = 6916052;
+!#DC(GAME_SETTING_ANIMATE_SPELLBOOK)      = 6916056;
+!#DC(GAME_SETTING_WINDOW_SCROLL_SPEED)    = 6916060;
+!#DC(GAME_SETTING_BLACKOUT_COMPUTER)      = 6916064;
+!#DC(GAME_SETTING_FIRST_TIME)             = 6919540;
+!#DC(GAME_SETTING_TEST_DECOMP)            = 6919544;
+!#DC(GAME_SETTING_TEST_READ)              = 6919548;
+!#DC(GAME_SETTING_TEST_BLIT)              = 6919552;
+!#DC(GAME_SETTING_BINK_VIDEO)             = 6916088;
+!#DC(GAME_SETTING_UNIQUE_SYSTEM_ID)       = 6916152;
+!#DC(GAME_SETTING_NETWORK_DEF_NAME)       = 6916199;
+!#DC(GAME_SETTING_AUTOSAVE)               = 6916032;
+!#DC(GAME_SETTING_SHOW_COMBAT_GRID)       = 6916108;
+!#DC(GAME_SETTING_SHOW_COMBAT_MOUSE_HEX)  = 6916112;
+!#DC(GAME_SETTING_COMBAT_SHADE_LEVEL)     = 6916116;
+!#DC(GAME_SETTING_COMBAT_ARMY_INFO_LEVEL) = 6916120;
+!#DC(GAME_SETTING_COMBAT_AUTO_CREATURES)  = 6916068;
+!#DC(GAME_SETTING_COMBAT_AUTO_SPELLS)     = 6916072;
+!#DC(GAME_SETTING_COMBAT_CATAPULT)        = 6916076;
+!#DC(GAME_SETTING_COMBAT_BALLISTA)        = 6916080;
+!#DC(GAME_SETTING_COMBAT_FIRST_AID_TENT)  = 6916084;
+!#DC(GAME_SETTING_COMBAT_SPEED)           = 6916156;
+!#DC(GAME_SETTING_MAIN_GAME_SHOW_MENU)    = 6916092;
+!#DC(GAME_SETTING_MAIN_GAME_X)            = 6916096;
+!#DC(GAME_SETTING_MAIN_GAME_Y)            = 6916100;
+!#DC(GAME_SETTING_MAIN_GAME_FULL_SCREEN)  = 6916104;
+!#DC(GAME_SETTING_APP_PATH)               = 6915604;
+!#DC(GAME_SETTING_CD_DRIVE)               = 6916232;
+; ===============  END GAME SETTINGS  ===============
 
 
 ; =============  CALLING CONVENTIONS  =============
@@ -1257,6 +1314,9 @@ ZVSE2
 !#DC(SIZEOF_UINT32) = 4;
 !#DC(SIZEOF_PTR)    = 4;
 !#DC(SIZEOF_ZSTR)   = 512;
+
+!#DC(SIZEOF_WIN32_FIND_DATA)         = 320; size of WIN32_FIND_DATAA structure
+!#DC(SIZEOF_WIN32_FIND_DATA_IN_INTS) = 80; size of WIN32_FIND_DATAA structure in int32 integers
 ; ===========  END DATA TYPES  ===========
 
 
@@ -1284,7 +1344,99 @@ ZVSE2
 !#DC(DLG_RESULT_PIC_7)     = 6;
 !#DC(DLG_RESULT_PIC_8)     = 7;
 !#DC(DLG_RESULT_PIC_LAST)  = 7;
-; =================  DIALOGS  =================
+; ===============  END DIALOGS  ===============
+
+
+; =========================  DIALOG ITEM IDS  =========================
+!#DC(ALL_ITEMS)                                        = -1;
+!#DC(ITEM_ADVMAP_BACK)                                 = 0;
+!#DC(ITEM_ADVMAP_MINI_MAP)                             = 1;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_BORDER)                 = 2;
+!#DC(ITEM_ADVMAP_KINGDOM_OVERVIEW_BTN)                 = 3;
+!#DC(ITEM_ADVMAP_SURFACE_UNDERWORLD_BTN)               = 4;
+!#DC(ITEM_ADVMAP_QUEST_LOG_BTN)                        = 5;
+!#DC(ITEM_ADVMAP_SLEEP_WAKE_HERO_BTN)                  = 6;
+!#DC(ITEM_ADVMAP_MOVE_HERO_BTN)                        = 7;
+!#DC(ITEM_ADVMAP_CAST_SPELL_BTN)                       = 8;
+!#DC(ITEM_ADVMAP_ADVENTURE_OPTIONS_BTN)                = 9;
+!#DC(ITEM_ADVMAP_SYSTEM_OPTIONS_BTN)                   = 10;
+!#DC(ITEM_ADVMAP_NEXT_HERO_BTN)                        = 11;
+!#DC(ITEM_ADVMAP_END_TURN_BTN)                         = 12;
+!#DC(ITEM_ADVMAP_HERO_LIST_SCROLL_UP_ARROW)            = 13;
+!#DC(ITEM_ADVMAP_HERO_LIST_SCROLL_DOWN_ARROW)          = 14;
+!#DC(ITEM_ADVMAP_HERO_LIST_MOVE_BAR_1)                 = 20;
+!#DC(ITEM_ADVMAP_HERO_LIST_MOVE_BAR_2)                 = 21;
+!#DC(ITEM_ADVMAP_HERO_LIST_MOVE_BAR_3)                 = 22;
+!#DC(ITEM_ADVMAP_HERO_LIST_MOVE_BAR_4)                 = 23;
+!#DC(ITEM_ADVMAP_HERO_LIST_MOVE_BAR_5)                 = 24;
+!#DC(ITEM_ADVMAP_HERO_LIST_MANA_BAR_1)                 = 25;
+!#DC(ITEM_ADVMAP_HERO_LIST_MANA_BAR_2)                 = 26;
+!#DC(ITEM_ADVMAP_HERO_LIST_MANA_BAR_3)                 = 27;
+!#DC(ITEM_ADVMAP_HERO_LIST_MANA_BAR_4)                 = 28;
+!#DC(ITEM_ADVMAP_HERO_LIST_MANA_BAR_5)                 = 29;
+!#DC(ITEM_ADVMAP_TOWN_LIST_SCROLL_UP_ARROW)            = 30;
+!#DC(ITEM_ADVMAP_TOWN_LIST_SCROLL_DOWN_ARROW)          = 31;
+!#DC(ITEM_ADVMAP_TOWN_LIST_TOWN_1)                     = 32;
+!#DC(ITEM_ADVMAP_TOWN_LIST_TOWN_2)                     = 33;
+!#DC(ITEM_ADVMAP_TOWN_LIST_TOWN_3)                     = 34;
+!#DC(ITEM_ADVMAP_TOWN_LIST_TOWN_4)                     = 35;
+!#DC(ITEM_ADVMAP_TOWN_LIST_TOWN_5)                     = 36;
+!#DC(ITEM_ADVMAP_ADVENTURE_MAP)                        = 37;
+!#DC(ITEM_ADVMAP_CHAT_BAR)                             = 38;
+!#DC(ITEM_ADVMAP_HERO_LIST_HERO_1)                     = 39;
+!#DC(ITEM_ADVMAP_HERO_LIST_HERO_2)                     = 40;
+!#DC(ITEM_ADVMAP_HERO_LIST_HERO_3)                     = 41;
+!#DC(ITEM_ADVMAP_HERO_LIST_HERO_4)                     = 42;
+!#DC(ITEM_ADVMAP_HERO_LIST_HERO_5)                     = 43;
+!#DC(ITEM_ADVMAP_HINT)                                 = 200;
+!#DC(ITEM_ADVMAP_RESOURCE_DATE_BAR_BACK)               = 1000;
+!#DC(ITEM_ADVMAP_WOOD_VALUE)                           = 1001;
+!#DC(ITEM_ADVMAP_MERCURY_VALUE)                        = 1002;
+!#DC(ITEM_ADVMAP_ORE_VALUE)                            = 1003;
+!#DC(ITEM_ADVMAP_SULPHUR_VALUE)                        = 1004;
+!#DC(ITEM_ADVMAP_CRYSTAL_VALUE)                        = 1005;
+!#DC(ITEM_ADVMAP_GEMS_VALUE)                           = 1006;
+!#DC(ITEM_ADVMAP_GOLD_VALUE)                           = 1007;
+!#DC(ITEM_ADVMAP_RES_VALUE_FIRST)                      = (ITEM_ADVMAP_WOOD_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_1)                          = (ITEM_ADVMAP_WOOD_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_2)                          = (ITEM_ADVMAP_MERCURY_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_3)                          = (ITEM_ADVMAP_ORE_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_4)                          = (ITEM_ADVMAP_SULPHUR_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_5)                          = (ITEM_ADVMAP_CRYSTAL_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_6)                          = (ITEM_ADVMAP_GEMS_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_7)                          = (ITEM_ADVMAP_GOLD_VALUE);
+!#DC(ITEM_ADVMAP_RES_VALUE_LAST)                       = (ITEM_ADVMAP_GOLD_VALUE);
+!#DC(ITEM_ADVMAP_DATE)                                 = 1008;
+!#DC(ITEM_ADVMAP_WOOD_ICON)                            = 1009;
+!#DC(ITEM_ADVMAP_MERCURY_ICON)                         = 1010;
+!#DC(ITEM_ADVMAP_ORE_ICON)                             = 1011;
+!#DC(ITEM_ADVMAP_SULPHUR_ICON)                         = 1012;
+!#DC(ITEM_ADVMAP_CRYSTAL_ICON)                         = 1013;
+!#DC(ITEM_ADVMAP_GEMS_ICON)                            = 1014;
+!#DC(ITEM_ADVMAP_GOLD_ICON)                            = 1015;
+!#DC(ITEM_ADVMAP_RES_ICON_FIRST)                       = (ITEM_ADVMAP_WOOD_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_1)                           = (ITEM_ADVMAP_WOOD_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_2)                           = (ITEM_ADVMAP_MERCURY_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_3)                           = (ITEM_ADVMAP_ORE_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_4)                           = (ITEM_ADVMAP_SULPHUR_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_5)                           = (ITEM_ADVMAP_CRYSTAL_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_6)                           = (ITEM_ADVMAP_GEMS_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_7)                           = (ITEM_ADVMAP_GOLD_ICON);
+!#DC(ITEM_ADVMAP_RES_ICON_LAST)                        = (ITEM_ADVMAP_GOLD_ICON);
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX)                        = 2000;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PORTRAIT)               = 2001;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_NAME)                   = 2002;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_ATTACK_VALUE)           = 2003;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_DEFENCE_VALUE)          = 2004;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_POWER_VALUE)            = 2005;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_KNOWLEDGE_VALUE)        = 2006;
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PRIM_SKILL_VALUE_FIRST) = (ITEM_ADVMAP_HERO_INFO_BOX_ATTACK_VALUE);
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PRIM_SKILL_VALUE_1)     = (ITEM_ADVMAP_HERO_INFO_BOX_ATTACK_VALUE);
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PRIM_SKILL_VALUE_2)     = (ITEM_ADVMAP_HERO_INFO_BOX_DEFENCE_VALUE);
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PRIM_SKILL_VALUE_3)     = (ITEM_ADVMAP_HERO_INFO_BOX_POWER_VALUE);
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PRIM_SKILL_VALUE_4)     = (ITEM_ADVMAP_HERO_INFO_BOX_KNOWLEDGE_VALUE);
+!#DC(ITEM_ADVMAP_HERO_INFO_BOX_PRIM_SKILL_VALUE_LAST)  = (ITEM_ADVMAP_HERO_INFO_BOX_KNOWLEDGE_VALUE);
+; =======================  END DIALOG ITEM IDS  =======================
 
 
 ; =========  H3 MESSAGE DIALOG TYPES  =========
@@ -1310,6 +1462,8 @@ ZVSE2
 !#DC(DLG_CMD_SET_TEXT)      = 3;
 !#DC(DLG_CMD_SET_DEF_FRAME) = 4;
 !#DC(DLG_CMD_SET_PCX)       = 11;
+
+!#DC(DLG_CMD_TYPE_DEFAULT) = 512; Default command type for most in-game dialogs
 ; =======  END H3 DIALOG COMMANDS  =======
 
 
@@ -1365,17 +1519,125 @@ ZVSE2
 
 
 ; =============  USEFUL ADDRESSES  =============
-!#DC(ADDR_GAME_SCREEN_WIDTH)  = 4199496;
-!#DC(ADDR_GAME_SCREEN_HEIGHT) = 4199503;
+!#DC(ADDR_GAME_SCREEN_WIDTH)    = 4199496;
+!#DC(ADDR_GAME_SCREEN_HEIGHT)   = 4199503;
+!#DC(ADDR_MARKED_SAVEGAME_NAME) = 6828940; Buffer, holding selected item in Save/Load dialog
 ; ===========  END USEFUL ADDRESSES  ===========
 
 
+; =============  BITS  =============
+!#DC(BIT_0)  = 1;
+!#DC(BIT_1)  = 2;
+!#DC(BIT_2)  = 4;
+!#DC(BIT_3)  = 8;
+!#DC(BIT_4)  = 16;
+!#DC(BIT_5)  = 32;
+!#DC(BIT_6)  = 64;
+!#DC(BIT_7)  = 128;
+!#DC(BIT_8)  = 256;
+!#DC(BIT_9)  = 512;
+!#DC(BIT_10) = 1024;
+!#DC(BIT_11) = 2048;
+!#DC(BIT_12) = 4096;
+!#DC(BIT_13) = 8192;
+!#DC(BIT_14) = 16384;
+!#DC(BIT_15) = 32768;
+!#DC(BIT_16) = 65536;
+!#DC(BIT_17) = 131072;
+!#DC(BIT_18) = 262144;
+!#DC(BIT_19) = 524288;
+!#DC(BIT_20) = 1048576;
+!#DC(BIT_21) = 2097152;
+!#DC(BIT_22) = 4194304;
+!#DC(BIT_23) = 8388608;
+!#DC(BIT_24) = 16777216;
+!#DC(BIT_25) = 33554432;
+!#DC(BIT_26) = 67108864;
+!#DC(BIT_27) = 134217728;
+!#DC(BIT_28) = 268435456;
+!#DC(BIT_29) = 536870912;
+!#DC(BIT_30) = 1073741824;
+!#DC(BIT_31) = -2147483648;
+; ===========  END BITS  ===========
+
+
+; =============  BIT MASKS  =============
+!#DC(BITS_1_MASK)  = 1;
+!#DC(BITS_2_MASK)  = 3;
+!#DC(BITS_3_MASK)  = 7;
+!#DC(BITS_4_MASK)  = 15;
+!#DC(BITS_5_MASK)  = 31;
+!#DC(BITS_6_MASK)  = 63;
+!#DC(BITS_7_MASK)  = 127;
+!#DC(BITS_8_MASK)  = 255;
+!#DC(BITS_9_MASK)  = 511;
+!#DC(BITS_10_MASK) = 1023;
+!#DC(BITS_11_MASK) = 2047;
+!#DC(BITS_12_MASK) = 4095;
+!#DC(BITS_13_MASK) = 8191;
+!#DC(BITS_14_MASK) = 16383;
+!#DC(BITS_15_MASK) = 32767;
+!#DC(BITS_16_MASK) = 65535;
+!#DC(BITS_17_MASK) = 131071;
+!#DC(BITS_18_MASK) = 262143;
+!#DC(BITS_19_MASK) = 524287;
+!#DC(BITS_20_MASK) = 1048575;
+!#DC(BITS_21_MASK) = 2097151;
+!#DC(BITS_22_MASK) = 4194303;
+!#DC(BITS_23_MASK) = 8388607;
+!#DC(BITS_24_MASK) = 16777215;
+!#DC(BITS_25_MASK) = 33554431;
+!#DC(BITS_26_MASK) = 67108863;
+!#DC(BITS_27_MASK) = 134217727;
+!#DC(BITS_28_MASK) = 268435455;
+!#DC(BITS_29_MASK) = 536870911;
+!#DC(BITS_30_MASK) = 1073741823;
+!#DC(BITS_31_MASK) = 2147483647;
+!#DC(BITS_32_MASK) = -1;
+; ===========  END BIT MASKS  ===========
+
+
+; =============  BIT SIZES  =============
+!#DC(BITS_IN_INT4)  = 4;
+!#DC(BITS_IN_INT8)  = 8;
+!#DC(BITS_IN_INT16) = 16;
+!#DC(BITS_IN_INT32) = 32;
+!#DC(BITS_IN_INT)   = 32;
+; ===========  END BIT SIZES  ===========
+
+
 ; =============  GAME STRUCTURES  =============
+!#DC(STRUCT_H3DLG_VTABLE) = 0;
 !#DC(STRUCT_H3DLG_WIDTH)  = 32;
 !#DC(STRUCT_H3DLG_HEIGHT) = 36;
 !#DC(STRUCT_H3DLG_X)      = 24;
 !#DC(STRUCT_H3DLG_Y)      = 28;
+
+!#DC(STRUCT_SNDMAN_UNLOCKED) = 132; int32. If TRUE, any new sound can be played and music theme changed. If FALSE, ignores any change.
+                                  ; Used to lock on AITheme during AI turn.
+
+!#DC(STRUCT_COMBATMAN_ATTACKER_ARMY)    = 21700; pointer to array of 14 ints: 7 for monster types, 7 for monster quantities
+!#DC(STRUCT_COMBATMAN_DEFENDER_ARMY)    = 21704; pointer to array of 14 ints: 7 for monster types, 7 for monster quantities
+!#DC(STRUCT_COMBATMAN_IS_WAITING_PHASE) = 81380; boolean. TRUE for phase, where previosly waited stacks do act
+
+!#DC(STRUCT_WIN32_FIND_DATA_ATTRS)    = 0;  int32 file attributes
+!#DC(STRUCT_WIN32_FIND_DATA_FILENAME) = 44; buffer with file name
 ; ===========  END GAME STRUCTURES  ===========
+
+
+; =============  GAME FUNCTIONS  =============
+!#DC(FUNC_MEM_ALLOC) = 6386834; F(Size: integer): pointer; cdecl;
+!#DC(FUNC_MEM_FREE)  = 6336752; F(Ptr: pointer);
+; ===========  END GAME FUNCTIONS  ===========
+
+
+; =============  GAME MANAGERS  =============
+!#DC(GAME_MANAGER)   = 6919480;
+!#DC(TOWN_MANAGER)   = 6919500;
+!#DC(WND_MANAGER)    = 6918864;
+!#DC(SOUND_MANAGER)  = 6919188;
+!#DC(COMBAT_MANAGER) = 6919200;
+; ===========  END GAME MANAGERS  ===========
 
 
 ; =============  SPECIAL ENUMS  =============
@@ -1389,7 +1651,88 @@ ZVSE2
 !#DC(MON_FUZZY_COUNT_HUMAN_FRIENDLY) = 999999; unspecified length with Heroes 3 default text like "Lots (20-49) of"
 
 !#DC(DONT_DECORATE_SMALL_INTS) = (TRUE); used in DecorateInt function
-; =============  SPECIAL ENUMS  =============
+
+!#DC(SCAN_FILES_AND_DIRS)    = 0;      // both directories and files will be scanned
+!#DC(SCAN_FILES_ONLY)        = 1;      // only files will be scanned
+!#DC(SCAN_DIRS_ONLY)         = 2;      // only directories will be scanned
+!#DC(SCAN_RETURN_FULL_PATHS) = (TRUE); // means to include full file paths in result, not file names
+; ===========  END SPECIAL ENUMS  ===========
+
+
+; =============  WIN32 API  =============
+!#DC(INVALID_HANDLE_VALUE)     = -1;
+!#DC(FILE_ATTRIBUTE_DIRECTORY) = 16;
+; ===========  END WIN32 API  ===========
+
+
+; =============  INTERNAL  =============
+; ===========  END INTERNAL  ===========
+
+
+; =============  CHARACTER_CODES  =============
+!#DC(ORD_0) = 48;
+!#DC(ORD_1) = 49;
+!#DC(ORD_2) = 50;
+!#DC(ORD_3) = 51;
+!#DC(ORD_4) = 52;
+!#DC(ORD_5) = 53;
+!#DC(ORD_6) = 54;
+!#DC(ORD_7) = 55;
+!#DC(ORD_8) = 56;
+!#DC(ORD_9) = 57;
+!#DC(ORD_LOWER_A) = 97;
+!#DC(ORD_LOWER_B) = 98;
+!#DC(ORD_LOWER_C) = 99;
+!#DC(ORD_LOWER_D) = 100;
+!#DC(ORD_LOWER_E) = 101;
+!#DC(ORD_LOWER_F) = 102;
+!#DC(ORD_LOWER_G) = 103;
+!#DC(ORD_LOWER_H) = 104;
+!#DC(ORD_LOWER_I) = 105;
+!#DC(ORD_LOWER_J) = 106;
+!#DC(ORD_LOWER_K) = 107;
+!#DC(ORD_LOWER_L) = 108;
+!#DC(ORD_LOWER_M) = 109;
+!#DC(ORD_LOWER_N) = 110;
+!#DC(ORD_LOWER_O) = 111;
+!#DC(ORD_LOWER_P) = 112;
+!#DC(ORD_LOWER_Q) = 113;
+!#DC(ORD_LOWER_R) = 114;
+!#DC(ORD_LOWER_S) = 115;
+!#DC(ORD_LOWER_T) = 116;
+!#DC(ORD_LOWER_U) = 117;
+!#DC(ORD_LOWER_V) = 118;
+!#DC(ORD_LOWER_W) = 119;
+!#DC(ORD_LOWER_X) = 120;
+!#DC(ORD_LOWER_Y) = 121;
+!#DC(ORD_LOWER_Z) = 122;
+!#DC(ORD_UPPER_A) = 65;
+!#DC(ORD_UPPER_B) = 66;
+!#DC(ORD_UPPER_C) = 67;
+!#DC(ORD_UPPER_D) = 68;
+!#DC(ORD_UPPER_E) = 69;
+!#DC(ORD_UPPER_F) = 70;
+!#DC(ORD_UPPER_G) = 71;
+!#DC(ORD_UPPER_H) = 72;
+!#DC(ORD_UPPER_I) = 73;
+!#DC(ORD_UPPER_J) = 74;
+!#DC(ORD_UPPER_K) = 75;
+!#DC(ORD_UPPER_L) = 76;
+!#DC(ORD_UPPER_M) = 77;
+!#DC(ORD_UPPER_N) = 78;
+!#DC(ORD_UPPER_O) = 79;
+!#DC(ORD_UPPER_P) = 80;
+!#DC(ORD_UPPER_Q) = 81;
+!#DC(ORD_UPPER_R) = 82;
+!#DC(ORD_UPPER_S) = 83;
+!#DC(ORD_UPPER_T) = 84;
+!#DC(ORD_UPPER_U) = 85;
+!#DC(ORD_UPPER_V) = 86;
+!#DC(ORD_UPPER_W) = 87;
+!#DC(ORD_UPPER_X) = 88;
+!#DC(ORD_UPPER_Y) = 89;
+!#DC(ORD_UPPER_Z) = 90;
+; =============  CHARACTER_CODES  =============
 
 
 ; =============  DEPRECATED  =============
