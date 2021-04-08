@@ -204,7 +204,7 @@ Supreme Archangel	Supreme Archangels	0	0	0	0	0	4	10000	18250	26300	1	0	500	18	40
 No fear. No enemy retaliation."	DOUBLE_WIDE | FLYING_ARMY | const_raises_morale | KING_2 | const_free_attack
 Diamond Dragon	Diamond Dragons	0	0	0	0	3	0	8000	18750	25500	1	0	500	16	36	36	60	75	0	0	2	5	"Immune to all spells. No fear.
 Can blind. +1 Gem daily."	DOUBLE_WIDE | FLYING_ARMY | KING_1 | HAS_EXTENDED_ATTACK
-Lord of Thunder	Lords of Thunder	0	0	0	0	0	3	10000	15000	22500	1	0	600	12	32	32	60	75	24	24	2	5	"Shoot twice. No melee penalty.
+Lord of Thunder	Lords of Thunder	0	0	0	0	0	3	10000	15000	22500	1	0	600	12	32	32	60	75	24	0	2	5	"Shoot twice. No melee penalty.
 No fear. Thunderclap. Air shield."	SHOOTING_ARMY | const_no_melee_penalty | KING_3
 Hell Baron	Hell Barons	0	3	0	0	0	0	9000	19250	25700	1	0	400	17	35	37	45	60	0	0	2	5	"-1(-2) enemy luck. No fear.
 Takes Soul. No enemy retaliation."	FLYING_ARMY | KING_2

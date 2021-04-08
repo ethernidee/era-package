@@ -2,7 +2,7 @@
    "scope": "entity.name.type.trigger.erm",
 
    "completions":
-   [     
+   [
       { "trigger": "OnAdventureMapLeftMouseClick", "contents": "OnAdventureMapLeftMouseClick" },
       { "trigger": "OnAdventureMapRightMouseClick", "contents": "OnAdventureMapRightMouseClick" },
       { "trigger": "OnAdvMapTileHint", "contents": "OnAdvMapTileHint" },
@@ -18,8 +18,10 @@
       { "trigger": "OnAfterCommanderBuy", "contents": "OnAfterCommanderBuy" },
       { "trigger": "OnAfterCommanderResurrect", "contents": "OnAfterCommanderResurrect" },
       { "trigger": "OnAfterErmInstructions", "contents": "OnAfterErmInstructions" },
+      { "trigger": "OnAfterHeroGainLevel", "contents": "OnAfterHeroGainLevel" },
       { "trigger": "OnAfterHeroInteraction", "contents": "OnAfterHeroInteraction" },
       { "trigger": "OnAfterLoadGame", "contents": "OnAfterLoadGame" },
+      { "trigger": "OnAfterLocalEvent", "contents": "OnAfterLocalEvent" },
       { "trigger": "OnAfterSaveGame", "contents": "OnAfterSaveGame" },
       { "trigger": "OnAfterTacticsPhase", "contents": "OnAfterTacticsPhase" },
       { "trigger": "OnAICalcStackAttackEffect", "contents": "OnAICalcStackAttackEffect" },
@@ -40,6 +42,7 @@
       { "trigger": "OnBeforeBattleStackTurn", "contents": "OnBeforeBattleStackTurn" },
       { "trigger": "OnBeforeBattleUniversal", "contents": "OnBeforeBattleUniversal" },
       { "trigger": "OnBeforeHeroInteraction", "contents": "OnBeforeHeroInteraction" },
+      { "trigger": "OnBeforeLocalEvent", "contents": "OnBeforeLocalEvent" },
       { "trigger": "OnBeforeSaveGame", "contents": "OnBeforeSaveGame" },
       { "trigger": "OnBuildTownBuilding", "contents": "OnBuildTownBuilding" },
       { "trigger": "OnCalculateTownIncome", "contents": "OnCalculateTownIncome" },
@@ -70,6 +73,7 @@
       { "trigger": "OnKingdomOverviewMouseClick", "contents": "OnKingdomOverviewMouseClick" },
       { "trigger": "OnLeaveTownHall", "contents": "OnLeaveTownHall" },
       { "trigger": "OnLoadHeroScreen", "contents": "OnLoadHeroScreen" },
+      { "trigger": "OnLoseGame", "contents": "OnLoseGame" },
       { "trigger": "OnMagicBasicResistance", "contents": "OnMagicBasicResistance" },
       { "trigger": "OnMagicCorrectedResistance", "contents": "OnMagicCorrectedResistance" },
       { "trigger": "OnMonsterPhysicalDamage", "contents": "OnMonsterPhysicalDamage" },
@@ -92,12 +96,14 @@
       { "trigger": "OnSoundPlay", "contents": "OnSoundPlay" },
       { "trigger": "OnStackToStackDamage", "contents": "OnStackToStackDamage" },
       { "trigger": "OnSwitchTownScreen", "contents": "OnSwitchTownScreen" },
-      { "trigger": "OnTownHallMouseClick", "contents": "OnTownHallMouseClick" },
+      { "trigger": "OnTownFortMouseClick", "contents": "OnTownFortMouseClick" },
       { "trigger": "OnTownMouseClick", "contents": "OnTownMouseClick" },
       { "trigger": "OnTownMouseHint", "contents": "OnTownMouseHint" },
+      { "trigger": "OnTransferHero", "contents": "OnTransferHero" },
       { "trigger": "OnUnequipArt", "contents": "OnUnequipArt" },
       { "trigger": "OnWanderingMonsterDeath", "contents": "OnWanderingMonsterDeath" },
       { "trigger": "OnWanderingMonsterReach", "contents": "OnWanderingMonsterReach" },
+      { "trigger": "OnWinGame", "contents": "OnWinGame" },
 
 
       { "trigger": "OnAfterBattleSetup", "contents": "OnAfterBattleSetup" },

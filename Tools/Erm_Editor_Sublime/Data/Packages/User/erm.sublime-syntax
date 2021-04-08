@@ -71,7 +71,7 @@ contexts:
 
     - match: '\$[^\$]*+\$?'
       scope: string.macro.erm
- 
+
   comment:
     - meta_scope: comment.line.erm
     - match: $
@@ -95,7 +95,7 @@ contexts:
   receiver:
     - meta_scope: receiver.erm
     - include:    erm_operator
-    
+
     - match: '[A-Z]'
       scope: command.erm
 

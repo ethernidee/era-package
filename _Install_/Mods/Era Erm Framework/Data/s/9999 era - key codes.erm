@@ -4,7 +4,7 @@
 !#DC(KEY_RETURN)              = 13;
 !#DC(KEY_SHIFT)               = 16;
 !#DC(KEY_CONTROL)             = 17;
-!#DC(KEY_MENU)                = 18;
+!#DC(KEY_ALT)                 = 18;
 !#DC(KEY_PAUSE)               = 19;
 !#DC(KEY_CAPITAL)             = 20;
 !#DC(KEY_KANA)                = 21;

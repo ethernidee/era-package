@@ -30,7 +30,7 @@ ZVSE2
   !!SN:V(savedEventData)/(eventDataPos)/x(argPtr);
   !!VR(eventDataPos):+1;
   !!VR(argPtr):+1;
-!!en:;
+!!en;
 
 !!SN:V(savedEventData)/(eventDataPos)/(numArgs);
 !!VR(eventDataPos):+1;
@@ -47,7 +47,7 @@ ZVSE2
 !!VR(savedEventData:y):Si^savedEventData^;
 !!SN:M(savedEventData)/?(listSize:y);
 
-!!if&(listSize)<(dataSpace):;
+!!if&(listSize)<(dataSpace);
   !!SN:F^ShowErmError^/^Invalid number of arguments for RestoreEventData. Asked to restore %(numArgs) arguments from buffer of size %(listSize)^;
   !!FU(ClearEventChainData):P;
   !!SN:Q;
@@ -55,7 +55,7 @@ ZVSE2
 
 !!SN:V(savedEventData)/-1/?(savedNumArgs:y);
 
-!!if&(listSize)<(dataSpace):;
+!!if&(listSize)<(dataSpace);
   !!SN:F^ShowErmError^/^Invalid number of arguments for RestoreEventData. Asked to restore %(numArgs) arguments, while %(listSize)^;
   !!FU(ClearEventChainData):P;
   !!SN:Q;
@@ -70,13 +70,13 @@ ZVSE2
   !!SN:V(savedEventData)/(eventDataPos)/?x(argPtr);
   !!VR(eventDataPos):+1;
   !!VR(argPtr):+1;
-!!en:;
+!!en;
 
 !?FU(SavePrevKeyModsState);
-!!FU(SaveEventData):Pi^key^/i^key_leftAlt^/i^key_rightAlt^/i^key_alt^/i^key_leftCtrl^/i^key_rightCtrl^/i^key_ctrl^/i^key_leftShift^/i^key_rightShift^/i^key_shift^;
+!!FU(SaveEventData):Pi^key^/i^key_down^/i^key_leftAlt^/i^key_rightAlt^/i^key_alt^/i^key_leftCtrl^/i^key_rightCtrl^/i^key_ctrl^/i^key_leftShift^/i^key_rightShift^/i^key_shift^;
 
 !?FU(RestorePrevKeyModsState);
-!!FU(RestoreEventData):P?i^key^/?i^key_leftAlt^/?i^key_rightAlt^/?i^key_alt^/?i^key_leftCtrl^/?i^key_rightCtrl^/?i^key_ctrl^/?i^key_leftShift^/?i^key_rightShift^/?i^key_shift^;
+!!FU(RestoreEventData):P?i^key^/?i^key_down^/?i^key_leftAlt^/?i^key_rightAlt^/?i^key_alt^/?i^key_leftCtrl^/?i^key_rightCtrl^/?i^key_ctrl^/?i^key_leftShift^/?i^key_rightShift^/?i^key_shift^;
 
 !?FU(GetKeyModsState);
 !!SN:F^GetKeyState^/(KEY_LMENU);
@@ -111,10 +111,13 @@ ZVSE2
 
 !?FU(CollectMouseEventData);
 !!CM:A?i^mouse_x^/?i^mouse_y^ D?i^mouse_battleHex^ F?i^mouse_flags^ H?i^mouse_hero_0^/?i^mouse_hero_1^ I?i^mouse_item^ P?i^mouse_mapX^/?i^mouse_mapY^/?i^mouse_mapZ^
-     S?i^mouse_action^;
+     S?i^mouse_action^ T?i^dlg_action^;
 
-; Replace non-standard MOUSE_LMB_RELEASED_ON_TOWN_OK_BTN action with regular MOUSE_LMB_RELEASED action
-!!VRi^mouse_action^&i^mouse_action^=(MOUSE_LMB_RELEASED_ON_TOWN_OK_BTN):S(MOUSE_LMB_RELEASED);
+; Replace tricky MOUSE_EXIT_BTN_LMB_RELEASED action with regular MOUSE_LMB_RELEASED action
+!!VRi^mouse_action^&i^mouse_action^=(MOUSE_EXIT_BTN_LMB_RELEASED):S(MOUSE_LMB_RELEASED);
+
+; Handle keyboard event for custom dialogs
+!!VRi^mouse_action^&i^dlg_action^=(DLG_ACTION_KEY_PRESSED):S?i^key^ S0;
 
 !?FU(SavePrevMouseEventData);
 !!FU(SaveEventData):Pi^mouse_x^/i^mouse_y^/i^mouse_battleHex^/i^mouse_flags^/i^mouse_hero_0^/i^mouse_item^/i^mouse_mapX^/i^mouse_mapY^/i^mouse_mapZ^/i^mouse_action^;
@@ -126,10 +129,12 @@ ZVSE2
 !!FU(ClearEventChainData):P;
 
 !?FU(OnKeyPressed);
-!#VA(key:x) (preventDefault:x);
+!#VA(key:x) (preventDefault:x) (isDown:x);
 !!FU(SavePrevKeyModsState):P;
 
 !!VRi^key^:S(key);
+!!VRi^key_down^:S(isDown);
+
 !!FU(GetKeyModsState):P;
 
 !?FU(EnterMouseEvent);
@@ -174,6 +179,12 @@ ZVSE2
 
 !?FU(OnTownMouseHint);
 !!FU(EnterMouseEvent):P;
+
+!?FU(OnCustomDialogEvent);
+!#VA(dlgId:x);
+!!FU(EnterMouseEvent):P;
+!!FU(SaveEventData):Pi^dlg_id^;
+!!VRi^dlg_id^:S(dlgId);
 
 !?FU(OnAfterErmInstructions);
 !!VRi^era_everyDayTimerLastDay^:S-1;
@@ -258,22 +269,25 @@ ZVSE2
 !!FU:A?(numArgs:y);
 !!VR(storageType:y):S(M_TRIGGER_LOCAL);
 
-!!if&(numArgs)>=2:;
+!!if&(numArgs)>=2;
   !!VR(penultimateArgInd:y):S(numArgs) -1;
   !!FU:S(penultimateArgInd)/?(penultimateArgSyntax:y);
 
-  !!if&(penultimateArgSyntax)=(ARG_SYNTAX_GET):;
+  !!if&(penultimateArgSyntax)=(ARG_SYNTAX_GET);
     !!VR(storageType):Sx(numArgs);
     !!VR(numArgs):-1;
   !!en;
 !!en;
 
-!!if&(numArgs)<=1:;
-  !!SN:M(M_AUTO_ID)/0/(M_INT)/(storageType)/?(arg1:x) F^ExtendArrayLifetime^/(arg1);
-!!el&(numArgs)<=2:;
-  !!SN:M(M_AUTO_ID)/(arg1)/(M_INT)/(storageType)/?(arg2:x) F^ExtendArrayLifetime^/(arg2);
-!!el&(numArgs)<=3:;
-  !!SN:M(M_AUTO_ID)/(arg1)/(M_INT)/(storageType)/?(arg3:x) F^ExtendArrayLifetime^/(arg3);
+!!if&(numArgs)<=1;
+  !!SN:M(M_AUTO_ID)/0/(M_INT)/(storageType)/?(arg1);
+  !!SN&(storageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(arg1);
+!!el&(numArgs)<=2;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_INT)/(storageType)/?(arg2);
+  !!SN&(storageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(arg2);
+!!el&(numArgs)<=3;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_INT)/(storageType)/?(arg3);
+  !!SN&(storageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(arg3);
   !!FU(Array_Fill):P(arg3)/(arg2)/0;
 !!en;
 
@@ -291,26 +305,29 @@ ZVSE2
 !!FU:A?(numArgs:y);
 !!VR(storageType:y):S(M_TRIGGER_LOCAL);
 
-!!if&(numArgs)>=2:;
+!!if&(numArgs)>=2;
   !!VR(penultimateArgInd:y):S(numArgs) -1;
   !!FU:S(penultimateArgInd)/?(penultimateArgSyntax:y);
 
-  !!if&(penultimateArgSyntax)=(ARG_SYNTAX_GET):;
+  !!if&(penultimateArgSyntax)=(ARG_SYNTAX_GET);
     !!VR(storageType):Sx(numArgs);
     !!VR(numArgs):-1;
   !!en;
 !!en;
 
-!!if&(numArgs)<=1:;
-  !!SN:M(M_AUTO_ID)/0/(M_STR)/(storageType)/?(arg1:x) F^ExtendArrayLifetime^/(arg1);
-!!el&(numArgs)<=2:;
-  !!SN:M(M_AUTO_ID)/(arg1)/(M_STR)/(storageType)/?(arg2:x) F^ExtendArrayLifetime^/(arg2);
-!!el&(numArgs)<=3:;
-  !!SN:M(M_AUTO_ID)/(arg1)/(M_STR)/(storageType)/?(arg3:x) F^ExtendArrayLifetime^/(arg3);
-  
-  !!re i/0/(arg1)/1/-1:;
+!!if&(numArgs)<=1;
+  !!SN:M(M_AUTO_ID)/0/(M_STR)/(storageType)/?(arg1:x);
+  !!SN&(storageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(arg1);
+!!el&(numArgs)<=2;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_STR)/(storageType)/?(arg2:x);
+  !!SN&(storageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(arg2);
+!!el&(numArgs)<=3;
+  !!SN:M(M_AUTO_ID)/(arg1)/(M_STR)/(storageType)/?(arg3:x);
+  !!SN&(storageType)=(M_TRIGGER_LOCAL):F^ExtendArrayLifetime^/(arg3);
+
+  !!re i/0/(arg1)/1/-1;
     !!SN:V(arg3)/i/z(arg2);
-  !!en:;
+  !!en;
 !!en;
 
 !?FU(Array_Push);
@@ -328,15 +345,15 @@ ZVSE2
 !!VR(newListSize:y):S(listSize) +(numArgs) -1;
 !!SN:M(list)/(newListSize);
 
-!!re i/(listSize)/(newListSize)/1/-1:;
+!!re i/(listSize)/(newListSize)/1/-1;
   !!VR(arg:y):Si -(listSize) +(@firstItem) Sx(arg);
 
-  !!if&(itemsType)=(M_INT):;
+  !!if&(itemsType)=(M_INT);
     !!SN:V(list)/i/(arg);
-  !!el:;
+  !!el;
     !!SN:V(list)/i/z(arg);
-  !!en;  
-!!en:;
+  !!en;
+!!en;
 
 !?FU(Array_Pop);
 ; Removes items from the end of the array one by one, returning their values and resizing array automatically.
@@ -359,26 +376,26 @@ ZVSE2
 !!VR(newListSize)&(newListSize)<0:S0;
 !!VR(numRealPops:y):S(listSize) -(newListSize);
 
-!!re i/0/(numPops)/1/-1:;
+!!re i/0/(numPops)/1/-1;
   !!VR(argInd:y):S(@firstItem) +i;
 
-  !!if&i<(numRealPops):;
+  !!if&i<(numRealPops);
     !!VR(listInd:y):S-1 -i;
 
-    !!if&(itemsType)=(M_INT):;
+    !!if&(itemsType)=(M_INT);
       !!SN:V(list)/(listInd)/?x(argInd);
-    !!el:;
+    !!el;
       !!SN:V(list)/(listInd)/?s^temp^;
       !!VRx(argInd):Zs^temp^;
     !!en;
-  !!el:;
-    !!if&(itemsType)=(M_INT):;
+  !!el;
+    !!if&(itemsType)=(M_INT);
       !!VRx(argInd):S0;
-    !!el:;
+    !!el;
       !!VRx(argInd):S(@emptyStr);
     !!en;
   !!en; el
-!!en:; re
+!!en; re
 
 !!SN:M(list)/(newListSize);
 !!VRs^temp^:S^^;
@@ -397,7 +414,7 @@ ZVSE2
 !!SN:M(dstArray)/?(numDstItems)/?(dstItemsType:y)/d;
 !!FU&(numDstItems)<0:E;
 
-!!if&(srcItemsType)<>(dstItemsType):;
+!!if&(srcItemsType)<>(dstItemsType);
   !!SN:F^ShowErmError^/^Array_Copy: cannot copy items between arrays of different types^;
   !!FU:E;
 !!en;
@@ -405,14 +422,14 @@ ZVSE2
 !!SN:M(dstArray)/(numSrcItems);
 !!FU&(numSrcItems)<=0:E;
 
-!!if&(srcItemsType)=(M_INT):;
+!!if&(srcItemsType)=(M_INT);
   !!SN:M(srcArray)/?(srcArrayAddr:y)/0 M(dstArray)/?(dstArrayAddr:y)/0;
   !!VR(numBytesToCopy:y):S(numSrcItems) *(SIZEOF_INT);
   !!SN:K(numBytesToCopy)/(srcArrayAddr)/(dstArrayAddr)/1;
-!!el:;
-  !!re i/0/(numSrcItems)/1/-1:;
+!!el;
+  !!re i/0/(numSrcItems)/1/-1;
     !!SN:M(srcArray)/?(strAddr:y)/i M(dstArray)/i/(strAddr);
-  !!en:;
+  !!en;
 !!en;
 
 !?FU(Array_Clone);
@@ -436,7 +453,7 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@firstArrayToMerge):;
+!!if&(numArgs)<(@firstArrayToMerge);
   !!SN:F^ShowErmError^/^Array_Merge: invalid arguments number. Expected at least %(@firstArrayToMerge) arguments^;
   !!FU:E;
 !!en;
@@ -447,43 +464,43 @@ ZVSE2
 
 !!VR(numNewItems:y):S0;
 
-!!re (argInd:y)/(@firstArrayToMerge)/(numArgs):;
+!!re (argInd:y)/(@firstArrayToMerge)/(numArgs);
   !!VR(array:y):Sx(argInd);
   !!VR(arraySize:y):S-1;
   !!SN:M(array)/?(arraySize)/?(arrayItemsType:y)/d;
   !!FU&(arraySize)<0:E;
 
-  !!if&(arrayItemsType)<>(dstArrayItemsType):;
+  !!if&(arrayItemsType)<>(dstArrayItemsType);
     !!SN:F^ShowErmError^/^Array_Merge: cannot merge arrays of different types. Invalid argument #%(argInd)^;
     !!FU:E;
   !!en;
 
   !!VR(numNewItems):+(arraySize);
-!!en:;
+!!en;
 
 !!FU&(numNewItems)<=0:E;
 !!SN:M(dstArray)/d(numNewItems) M(dstArray)/?t/d/d/?(dstArrayAddr:y);
 !!VRi:S(dstArraySize);
 
-!!re (argInd:y)/(@firstArrayToMerge)/(numArgs):;
+!!re (argInd:y)/(@firstArrayToMerge)/(numArgs);
   !!VR(array:y):Sx(argInd);
   !!SN:M(array)/?(arraySize)/d/d/?(arrayAddr:y);
   !!co&(arraySize)<=0:E;
 
-  !!if&(dstArrayItemsType)=(M_INT):;
+  !!if&(dstArrayItemsType)=(M_INT);
     !!VR(numBytesToCopy:y):S(arraySize) *(SIZEOF_INT);
     !!VR(dstAddr:y):Si *(SIZEOF_INT) +(dstArrayAddr);
     !!SN:K(numBytesToCopy)/(arrayAddr)/(dstAddr)/(DUMMY);
     !!VRi:+(arraySize);
-  !!el:;
-    !!re j/0/(arraySize)/1/-1:;
+  !!el;
+    !!re j/0/(arraySize)/1/-1;
       !!VR(itemAddr:y):Sj *(SIZEOF_PTR) +(arrayAddr);
       !!UN:C(itemAddr)/(UNC_INT)/?(strAddr:y);
       !!SN&(strAddr)<>(NULL):M(dstArray)/i/(strAddr);
       !!VRi:+1;
-    !!en:; re
+    !!en; re
   !!en; el
-!!en:; re
+!!en; re
 
 !?FU(Array_Slice);
 ; Returns part of original array as new trigger-local array.
@@ -496,7 +513,7 @@ ZVSE2
 !!VR(result):S(NULL);
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@result):;
+!!if&(numArgs)<(@result);
   !!SN:F^ShowErmError^/^Array_Slice: invalid arguments number. Expected at least %(@result) arguments^;
   !!FU:E;
 !!en;
@@ -514,7 +531,7 @@ ZVSE2
 
 !!VR(maxItemsToCopy:y):S(listSize) -(start);
 
-!!if&(count)<0:;
+!!if&(count)<0;
   !!VR(maxItemsToCopy):+(count);
   !!VR(count):S(maxItemsToCopy);
 !!en;
@@ -524,20 +541,20 @@ ZVSE2
 
 !!SN:M(result)/(count) M(result)/?t/d/d/?(resultAddr:y);
 
-!!if&(listItemsType)=(M_INT):;
+!!if&(listItemsType)=(M_INT);
   !!VR(srcAddr:y):S(start) *(SIZEOF_INT) +(listAddr);
   !!VR(numBytesToCopy:y):S(count) *(SIZEOF_INT);
   !!SN:K(numBytesToCopy)/(srcAddr)/(resultAddr)/(DUMMY);
-!!el:;
+!!el;
   !!VR(lastIndToCopy:y):S(start) +(count) -1;
   !!VRj:S0;
 
-  !!re i/(start)/(lastIndToCopy):;
+  !!re i/(start)/(lastIndToCopy);
     !!VR(itemAddr:y):Si *(SIZEOF_INT) +(listAddr);
     !!UN:C(itemAddr)/(UNC_INT)/?(strAddr:y);
     !!SN&(strAddr)<>(NULL):M(result)/j/(strAddr);
     !!VRj:+1;
-  !!en:;
+  !!en;
 !!en;
 
 !?FU(Array_Join);
@@ -558,18 +575,18 @@ ZVSE2
 
 !!VR(lastItemInd:y):S(numItems) -1;
 
-!!if&(itemsType)=(M_INT):;
-  !!re i/0/(numItems)/1/-1:;
+!!if&(itemsType)=(M_INT);
+  !!re i/0/(numItems)/1/-1;
     !!SN:V(list)/i/?(item:y);
     !!VRs^result^:+^%(item)^;
     !!VRs^result^&i<(lastItemInd):+z(gluePtr);
-  !!en:;
-!!el:;
-  !!re i/0/(numItems)/1/-1:;
+  !!en;
+!!el;
+  !!re i/0/(numItems)/1/-1;
     !!SN:V(list)/i/?s^temp^;
     !!VRs^result^:+s^temp^;
     !!VRs^result^&i<(lastItemInd):+z(gluePtr);
-  !!en:;
+  !!en;
 
   !!VRs^temp^:S^^;
 !!en;
@@ -601,9 +618,9 @@ ZVSE2
 ; Perform sorting
 !!VR(savedV1:y):Sv1;
 
-!!if&(itemsType)=(M_STR):;
+!!if&(itemsType)=(M_STR);
   !!SN:F^Erm_SortStrArray^/(listAddr)/(startInd)/(endInd);
-!!el:;
+!!el;
   !!SN:F^Erm_SortInt32Array^/(listAddr)/(startInd)/(endInd);
 !!en;
 
@@ -612,19 +629,19 @@ ZVSE2
 !?FU(CompareStrings_Bridge_INTERNAL);
 !#VA(str1Addr:x) (str2Addr:x) (bridgeState:x) (result:x);
 
-!!if&(str1Addr)<>0:;
+!!if&(str1Addr)<>0;
   !!SN:X?t X(str1Addr) X?s^temp^ Xt;
   !!VR(value1:y):Zs^temp^;
   !!VRs^temp^:S^^;
-!!el:;
+!!el;
   !!VR(value1:y):Z^^;
 !!en;
 
-!!if&(str2Addr)<>0:;
+!!if&(str2Addr)<>0;
   !!SN:X?t X(str2Addr) X?s^temp^ Xt;
   !!VR(value2:y):Zs^temp^;
   !!VRs^temp^:S^^;
-!!el:;
+!!el;
   !!VR(value2:y):Z^^;
 !!en;
 
@@ -658,7 +675,7 @@ ZVSE2
 !!FU&(numItems)<=0:E;
 
 ; Check compare function
-!!if&(compareFunc)<0:;
+!!if&(compareFunc)<0;
   !!SN:F^ShowErmError^/^Invalid comparison custom function for Array_CustomSort: %(compareFunc)^;
   !!FU:E;
 !!en;
@@ -676,11 +693,11 @@ ZVSE2
 ; Perform sorting
 !!VR(savedV1:y):Sv1;
 
-!!if&(itemsType)=(M_STR):;
+!!if&(itemsType)=(M_STR);
   !!SN:M(M_AUTO_ID)/2/(M_INT)/(M_TRIGGER_LOCAL)/?(bridgeState:y);
   !!SN:V(bridgeState)/0/(compareFunc)/(state);
   !!SN:F^Erm_CustomStableSortInt32Array^/(listAddr)/(startInd)/(endInd)/(CompareStrings_Bridge_INTERNAL)/(bridgeState);
-!!el:;
+!!el;
   !!SN:F^Erm_CustomStableSortInt32Array^/(listAddr)/(startInd)/(endInd)/(compareFunc)/(state);
 !!en;
 
@@ -695,7 +712,7 @@ ZVSE2
 !!SN:M(list)/?(listSize:y)/?(itemsType:y)/d;
 !!FU&(listSize)<=1:E;
 
-!!if&(itemsType)<>(M_INT):;
+!!if&(itemsType)<>(M_INT);
   !!SN:F^ShowErmError^/^Array_SortedUnique function supports only integer arrays^;
   !!FU:E;
 !!en;
@@ -704,27 +721,27 @@ ZVSE2
 !!SN:V(list)/0/?(prevItem:y);
 
 ; Find first non-unique item
-!!re i/1/(listSize)/1/-1:;
+!!re i/1/(listSize)/1/-1;
   !!SN:V(list)/i/?(item:y);
-  !!br&(item)=(prevItem):;
+  !!br&(item)=(prevItem);
   !!VR(prevItem):S(item);
-!!en:;
+!!en;
 
 ; Non-unique item was found
-!!if&i<(listSize):;
+!!if&i<(listSize);
   ; Loop though rest items, copying only unique to the left part
   !!VRj:Si +1;
 
-  !!re j/j/(listSize)/1/-1:;
+  !!re j/j/(listSize)/1/-1;
     !!SN:V(list)/j/?(item:y);
 
-    !!if&(item)<>(prevItem):;
+    !!if&(item)<>(prevItem);
       !!SN:V(list)/i/(item);
       !!VRi:+1;
     !!en;
 
     !!VR(prevItem):S(item);
-  !!en:;
+  !!en;
 
   ; Truncate non-unique items
   !!SN:M(list)/i;
@@ -740,17 +757,17 @@ ZVSE2
 
 !!VR(lastIndex:y):S(numItems) -1;
 
-!!re i/0/(numItems)/1/-1:;
+!!re i/0/(numItems)/1/-1;
   !!VR(randomInd:y):R0/i/(lastIndex);
 
-  !!if&(itemsType)=(M_INT):;
+  !!if&(itemsType)=(M_INT);
     !!SN:V(list)/(randomInd)/?t V(list)/i/?(currItem:y) V(list)/(randomInd)/(currItem) V(list)/i/t;
-  !!el:;
+  !!el;
     !!VR(currItemAddr:y):Si *(SIZEOF_INT) +(listAddr);
     !!VR(randomItemAddr:y):S(randomInd) *(SIZEOF_INT) +(listAddr);
     !!UN:C(randomItemAddr)/(UNC_INT)/?(randomItem:y) C(currItemAddr)/(UNC_INT)/?(currItem:y) C(randomItemAddr)/(UNC_INT)/(currItem) C(currItemAddr)/(UNC_INT)/(randomItem);
   !!en;
-!!en:;
+!!en;
 
 !?FU(Array_Revert);
 ; Reverts order of itmes in the array. Allows to reverse the order of specific array subrange only.
@@ -827,14 +844,14 @@ ZVSE2
 !!FU&(itemsType)=(M_STR)/z(fillValue)=^^:E;
 
 ; Fill new items value
-!!if&(itemsType)=(M_INT):;
-  !!re i/(numItems)/(newSize)/1/-1:;
+!!if&(itemsType)=(M_INT);
+  !!re i/(numItems)/(newSize)/1/-1;
     !!SN:V(list)/i/(fillValue);
-  !!en:;
-!!el:;
-  !!re i/(numItems)/(newSize)/1/-1:;
+  !!en;
+!!el;
+  !!re i/(numItems)/(newSize)/1/-1;
     !!SN:V(list)/i/z(fillValue);
-  !!en:;
+  !!en;
 !!en;
 
 !?FU(Array_EnsureMinSize);
@@ -872,7 +889,7 @@ ZVSE2
 ; Returns Ceil(Log2(N)) or 0 for invalid values (<= 0).
 !#VA(value:x) (result:x);
 
-!!if&(value)<=0:;
+!!if&(value)<=0;
   !!VR(result):S0;
   !!FU:E;
 !!en;
@@ -891,24 +908,24 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@result):;
+!!if&(numArgs)<(@result);
   !!SN:F^ShowErmError^/^ConstructBitMask function expects at least 2 arguments. Given %(numArgs) arguments^;
   !!FU:E;
 !!en;
 
 !!VR(mask:y):S0;
 
-!!re i/(@args)/(numArgs)/1/-1:;
+!!re i/(@args)/(numArgs)/1/-1;
   !!VR(arg:y):Sxi;
 
-  !!if&(arg)>=0/(arg)<=31:;
+  !!if&(arg)>=0/(arg)<=31;
     !!VR(bit:y):S1 Sd<<(arg);
     !!VR(mask):|(bit);
-  !!el:;
+  !!el;
     !!SN:F^ShowErmError^/^Invalid bit/flag position: %(arg). Arg #%i. Expected value 0..31^;
     !!FU:E;
   !!en;
-!!en:;
+!!en;
 
 !!VRxi:S(mask);
 
@@ -923,11 +940,11 @@ ZVSE2
 
 !!VR(bit:y):S1;
 
-!!re i/0/31:;
+!!re i/0/31;
   !!VR(test:y):S(mask) &(bit);
   !!SN&(test)<>0:M(result)/d1 V(result)/-1/i;
   !!VR(bit):Sd<<1;
-!!en:;
+!!en;
 
 !?FU(PackUnion);
 ; Safely packs union fields into single 32-bits integer, allowing to store multiple values in a single variable.
@@ -939,7 +956,7 @@ ZVSE2
 !!FU:A?(numArgs:y);
 !!VRt:S(numArgs) %2;
 
-!!if&t<>1:;
+!!if&t<>1;
   !!SN:F^ShowErmError^/^PackUnion: invalid arguments number: %(numArgs)^;
   !!FU:E;
 !!en;
@@ -951,20 +968,20 @@ ZVSE2
 !!VR(numPairs:y):S(numArgs) :2;
 !!VR(totalFieldsSize:y):S0;
 
-!!re i/0/(numPairs)/1/-1:;
+!!re i/0/(numPairs)/1/-1;
   !!VR(argInd:y):Si *2 +(@firstArg);
   !!VR(fieldValue:y):Sx(argInd);
   !!VR(argInd):+1;
   !!VR(fieldSize:y):Sx(argInd);
 
-  !!if|(fieldSize)<0/(fieldSize)>(BITS_IN_INT32):;
+  !!if|(fieldSize)<0/(fieldSize)>(BITS_IN_INT32);
     !!SN:F^ShowErmError^/^PackUnion: invalid field size: %(fieldSize). Expected 1..%(BITS_IN_INT32)^;
     !!FU:E;
   !!en;
 
   !!VR(fieldMask:y):S1 Sd<<(fieldSize) -1;
 
-  !!if&(fieldValue)>(fieldMask):;
+  !!if&(fieldValue)>(fieldMask);
     !!VRi:+1;
     !!SN:F^ShowErmError^/^PackUnion: value in pair #%i = %(fieldValue) exceeds maximum possible value %(fieldMask) for field of %(fieldSize) bits^;
     !!FU:E;
@@ -973,13 +990,13 @@ ZVSE2
   !!VR(fieldValue):&(fieldMask) Sd<<(totalFieldsSize);
   !!VR(totalFieldsSize):+(fieldSize);
 
-  !!if&(totalFieldsSize)>(BITS_IN_INT32):;
+  !!if&(totalFieldsSize)>(BITS_IN_INT32);
     !!SN:F^ShowErmError^/^PackUnion: total fields size %(totalFieldsSize) exceeds maximum of %(BITS_IN_INT32) bits^;
     !!FU:E;
   !!en;
 
   !!VR(result):|(fieldValue);
-!!en:; re
+!!en; re
 
 !!VRx(numArgs):S(result);
 
@@ -994,7 +1011,7 @@ ZVSE2
 !!FU:A?(numArgs:y);
 !!VRt:S(numArgs) %2;
 
-!!if|t<>1/(numArgs)<(@firstFieldArg):;
+!!if|t<>1/(numArgs)<(@firstFieldArg);
   !!SN:F^ShowErmError^/^UnpackUnion: invalid arguments number: %(numArgs)^;
   !!FU:E;
 !!en;
@@ -1002,12 +1019,12 @@ ZVSE2
 !!VR(numPairs:y):S(numArgs) :2;
 !!VR(totalFieldsSize:y):S0;
 
-!!re i/0/(numPairs)/1/-1:;
+!!re i/0/(numPairs)/1/-1;
   !!VR(argInd:y):Si *2 +(@firstFieldArg) +1;
   !!VR(fieldSize:y):Sx(argInd);
   !!VR(argInd):-1;
 
-  !!if|(fieldSize)<0/(fieldSize)>(BITS_IN_INT32):;
+  !!if|(fieldSize)<0/(fieldSize)>(BITS_IN_INT32);
     !!SN:F^ShowErmError^/^UnpackUnion: invalid field size: %(fieldSize). Expected 1..%(BITS_IN_INT32)^;
     !!FU:E;
   !!en;
@@ -1016,11 +1033,11 @@ ZVSE2
   !!VRx(argInd:y):S(packedValue) Sd>>(totalFieldsSize) &(fieldMask);
   !!VR(totalFieldsSize):+(fieldSize);
 
-  !!if&(totalFieldsSize)>(BITS_IN_INT32):;
+  !!if&(totalFieldsSize)>(BITS_IN_INT32);
     !!SN:F^ShowErmError^/^UnpackUnion: total fields size %(totalFieldsSize) exceeds maximum of %(BITS_IN_INT32) bits^;
     !!FU:E;
   !!en;
-!!en:; re
+!!en; re
 
 !?FU(Tm32Encode);
 ; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
@@ -1057,9 +1074,9 @@ ZVSE2
 
 !!VR(result):S0;
 
-!!if&z(str1Ptr)<z(str2Ptr):;
+!!if&z(str1Ptr)<z(str2Ptr);
   !!VR(result):S-1;
-!!el&z(str1Ptr)>z(str2Ptr):;
+!!el&z(str1Ptr)>z(str2Ptr);
   !!VR(result):S1;
 !!en;
 
@@ -1103,14 +1120,14 @@ ZVSE2
 !!VR(emptyStr:z):S^^;
 !!VR(result):S(@emptyStr);
 
-!!if&(strPtr)=(NULL):;
+!!if&(strPtr)=(NULL);
   !!SN:F^ShowErmError^/^Substr: invalid strPtr argument: 0^;
   !!FU:E;
 !!en;
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@count):;
+!!if&(numArgs)<(@count);
   !!SN:F^ShowErmError^/^Substr: invalid arguments number. Expected at least %(@count) arguments^;
   !!FU:E;
 !!en;
@@ -1123,7 +1140,7 @@ ZVSE2
 
 !!VR(maxCharsToCopy:y):S(strLen) -(start);
 
-!!if&(count)<0:;
+!!if&(count)<0;
   !!VR(maxCharsToCopy):+(count);
   !!VR(count):S(maxCharsToCopy);
 !!en;
@@ -1179,10 +1196,64 @@ ZVSE2
 
 
 ; ================ FILE SYSTEM ================
+!?FU(FileExists);
+; Returns true if file (not directory) exists.
+!#VA(filePathPtr:x); Absolute or relative path to file
+!#VA(result:x);      Boolean. (TRUE) if file exists and is not a directory
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^GetFileAttributesA^/z(filePathPtr);
+!!VR(result):S(FALSE);
+!!VR(dirFlag:y):Sv1 &(FILE_ATTRIBUTE_DIRECTORY);
+!!VR(result)&v1<>(INVALID_FILE_ATTRIBUTES)/(dirFlag)=0:S(TRUE);
+!!VRv1:S(savedV1);
+
+!?FU(DirExists);
+; Returns true if a directory (not a file) exists.
+!#VA(dirPathPtr:x); Absolute or relative path to directory
+!#VA(result:x);     Boolean. (TRUE) if directory exists and is not a directory
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^GetFileAttributesA^/z(dirPathPtr);
+!!VR(result):S(FALSE);
+!!VR(dirFlag:y):Sv1 &(FILE_ATTRIBUTE_DIRECTORY);
+!!VR(result)&v1<>(INVALID_FILE_ATTRIBUTES)/(dirFlag)<>0:S(TRUE);
+!!VRv1:S(savedV1);
+
+!?FU(DeleteFile);
+; Deletes specified file and returns success flag.
+!#VA(filePathPtr:x); Absolute or relative path to file
+!#VA(result:x);      Boolean. (TRUE) if file existed and was deleted
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^DeleteFileA^/z(filePathPtr);
+!!VR(result):S(FALSE);
+!!VR(result)&v1<>0:S(TRUE);
+!!VRv1:S(savedV1);
+
+!?FU(ClearIniCache);
+; Erases all cached ini file data from memory. You can safely delete ini file afterwards.
+!#VA(filePathPtr:x); Absolute or relative path to ini file
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^ClearIniCache^/z(filePathPtr);
+!!VRv1:S(savedV1);
+
+!?FU(CreateDir);
+; Creates new directory if it does not exist.
+!#VA(dirPathPtr:x); Absolute or relative path to directory
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^CreateDirectoryA^/z(dirPathPtr)/0;
+!!VRv1:S(savedV1);
+
 !?FU(SaveIni);
 ; Saves ini file, if it was earlier cached in memory (any read/write operation was performed).
 !#VA(filePathPtr:x); Absolute or relative path to ini file
+
+!!VR(savedV1:y):Sv1;
 !!SN:F^SaveIni^/z(filePathPtr);
+!!VRv1:S(savedV1);
 
 !?FU(WriteIniInts);
 ; Writes multiple integer values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
@@ -1194,7 +1265,7 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@firstValue):;
+!!if&(numArgs)<(@firstValue);
   !!SN:F^ShowErmError^/^WriteIniInts: invalid arguments number. Expected at least %(@firstValue) arguments^;
   !!FU:E;
 !!en;
@@ -1204,18 +1275,18 @@ ZVSE2
 
 !!VRt:S(numKeyValueArgs) %2;
 
-!!if&t<>0:;
+!!if&t<>0;
   !!SN:F^ShowErmError^/^WriteIniInts: invalid arguments number. The last key-value pair is lack of value argument^;
   !!FU:E;
 !!en;
 
-!!re i/0/(numPairs)/1/-1:;
+!!re i/0/(numPairs)/1/-1;
   !!VR(keyArgInd:y):Si *2 +(@firstKeyPtr);
   !!VR(keyPtr:y):Sx(keyArgInd);
   !!VR(valueArgInd:y):S(keyArgInd) +1;
-  
+
   !!SN:F^WriteStrToIni^/z(keyPtr)/^%x(valueArgInd)^/z(sectionNamePtr)/z(filePathPtr);
-!!en:;
+!!en;
 
 !?FU(WriteIniStrings);
 ; Writes multiple string values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
@@ -1227,7 +1298,7 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@firstValue):;
+!!if&(numArgs)<(@firstValue);
   !!SN:F^ShowErmError^/^WriteIniStrings: invalid arguments number. Expected at least %(@firstValue) arguments^;
   !!FU:E;
 !!en;
@@ -1237,19 +1308,19 @@ ZVSE2
 
 !!VRt:S(numKeyValueArgs) %2;
 
-!!if&t<>0:;
+!!if&t<>0;
   !!SN:F^ShowErmError^/^WriteIniStrings: invalid arguments number. The last key-value pair is lack of value argument^;
   !!FU:E;
 !!en;
 
-!!re i/0/(numPairs)/1/-1:;
+!!re i/0/(numPairs)/1/-1;
   !!VR(keyArgInd:y):Si *2 +(@firstKeyPtr);
   !!VR(keyPtr:y):Sx(keyArgInd);
   !!VR(valueArgInd:y):S(keyArgInd) +1;
   !!VR(valuePtr:y):Sx(valueArgInd);
-  
+
   !!SN:F^WriteStrToIni^/z(keyPtr)/z(valuePtr)/z(sectionNamePtr)/z(filePathPtr);
-!!en:;
+!!en;
 
 !?FU(ReadIniStrings);
 ; Reads multiple string values from ini file or from memory if ini file was read/written to earlier.
@@ -1262,7 +1333,7 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@firstValueDefault):;
+!!if&(numArgs)<(@firstValueDefault);
   !!SN:F^ShowErmError^/^ReadIniStrings: invalid arguments number. Expected at least %(@firstValueDefault) arguments^;
   !!FU:E;
 !!en;
@@ -1272,23 +1343,23 @@ ZVSE2
 
 !!VRt:S(numVariadicArgs) %3;
 
-!!if&t<>0:;
+!!if&t<>0;
   !!SN:F^ShowErmError^/^ReadIniStrings: invalid arguments number. The last (key, value, default value) tripple is incomplete^;
   !!FU:E;
 !!en;
 
-!!re i/0/(numTripples)/1/-1:;
+!!re i/0/(numTripples)/1/-1;
   !!VR(keyArgInd:y):Si *3 +(@firstKeyPtr);
   !!VR(keyPtr:y):Sx(keyArgInd);
   !!VR(valueArgInd:y):S(keyArgInd) +1;
   !!VR(defValueArgInd:y):S(valueArgInd) +1;
   !!VR(defValuePtr:y):Sx(defValueArgInd);
-  
+
   !!SN:F^ReadStrFromIni^/z(keyPtr)/z(sectionNamePtr)/z(filePathPtr)/?(valueStr:z);
 
   !!VR(valueStr)&(valueStr)=^^:Sz(defValuePtr);
   !!VRx(valueArgInd):Z(valueStr);
-!!en:;
+!!en;
 
 !?FU(ReadIniInts);
 ; Reads multiple integer values from ini file or from memory if ini file was read/written to earlier.
@@ -1301,7 +1372,7 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@firstValueDefault):;
+!!if&(numArgs)<(@firstValueDefault);
   !!SN:F^ShowErmError^/^ReadIniInts: invalid arguments number. Expected at least %(@firstValueDefault) arguments^;
   !!FU:E;
 !!en;
@@ -1311,26 +1382,26 @@ ZVSE2
 
 !!VRt:S(numVariadicArgs) %3;
 
-!!if&t<>0:;
+!!if&t<>0;
   !!SN:F^ShowErmError^/^ReadIniInts: invalid arguments number. The last (key, value, default value) tripple is incomplete^;
   !!FU:E;
 !!en;
 
-!!re i/0/(numTripples)/1/-1:;
+!!re i/0/(numTripples)/1/-1;
   !!VR(keyArgInd:y):Si *3 +(@firstKeyPtr);
   !!VR(keyPtr:y):Sx(keyArgInd);
   !!VR(valueArgInd:y):S(keyArgInd) +1;
   !!VR(defValueArgInd:y):S(valueArgInd) +1;
   !!VR(defValue:y):Sx(defValueArgInd);
-  
+
   !!SN:F^ReadStrFromIni^/z(keyPtr)/z(sectionNamePtr)/z(filePathPtr)/?(valueStr:z);
 
-  !!if&(valueStr)=^^:;
+  !!if&(valueStr)=^^;
     !!VRx(valueArgInd):S(defValue);
-  !!el:;
+  !!el;
     !!VRx(valueArgInd):V(valueStr);
-  !!en;  
-!!en:;
+  !!en;
+!!en;
 
 !?FU(LoadIntGlobalsFromJson);
 ; Loads global mod/script settings from json config right into prefixed named global variables.
@@ -1346,26 +1417,26 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@firstKeyNamePtr):;
+!!if&(numArgs)<(@firstKeyNamePtr);
   !!SN:F^ShowErmError^/^LoadIntGlobalsFromJson: invalid arguments number^;
   !!FU:E;
 !!en;
 
 !!VR(numConfigKeys:y):S(numArgs) -(@firstKeyNamePtr) +1;
 
-!!re i/0/(numConfigKeys)/1/-1:;
+!!re i/0/(numConfigKeys)/1/-1;
   !!VR(configKeyPtr:y):S(@firstKeyNamePtr) +i Sx(configKeyPtr);
   !!VR(key:z):S^%z(jsonKeysPrefixPtr)%z(configKeyPtr)^;
   !!SN:T(key)/?(strValue:z);
   !!SN:C(strValue)/?(intValue:y)/?(constExists:y);
 
-  !!if&(constExists)=(TRUE):;
+  !!if&(constExists)=(TRUE);
     !!VRi^%z(globalVarsPrefixPtr)%z(configKeyPtr)^:S(intValue);
-  !!el&(key)<>(strValue):;
+  !!el&(key)<>(strValue);
     !!VR(intValue):V(strValue);
     !!VRi^%z(globalVarsPrefixPtr)%z(configKeyPtr)^:S(intValue);
   !!en;
-!!en:;
+!!en;
 
 !?FU(ScanDir);
 ; Reads directory contents, filling specified list with file names.
@@ -1377,7 +1448,7 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@fileList):;
+!!if&(numArgs)<(@fileList);
   !!SN:F^ShowErmError^/^ScanDir: invalid arguments number^;
   !!FU:E;
 !!en;
@@ -1386,7 +1457,7 @@ ZVSE2
 !!SN:M(fileList)/?(listSize)/?(listItemsType:y)/d;
 !!FU&(listSize)<0:E;
 
-!!if&(listItemsType)<>(M_STR):;
+!!if&(listItemsType)<>(M_STR);
   !!SN:F^ShowErmError^/^ScanDir: expected list of strings to store file names^;
   !!FU:E;
 !!en;
@@ -1404,26 +1475,26 @@ ZVSE2
 !!VR(searchHandle:y):Sv1;
 !!FU&(searchHandle)=(INVALID_HANDLE_VALUE):E;
 
-!!re i:;
+!!re i;
   !!SN:B(fileNameBuf)/d/?(fileName:z);
 
-  !!if&(fileName)<>^.^/(fileName)<>^..^:;
+  !!if&(fileName)<>^.^/(fileName)<>^..^;
     !!SN:B(fileAttrsAddr)/d/?(fileAttrs:y);
     !!VR(isDir:y):S(fileAttrs) &(FILE_ATTRIBUTE_DIRECTORY) F0/1;
-    
+
     !!VR(itemMatches:y):S(TRUE);
     !!VR(itemMatches)&(itemsType)=(SCAN_FILES_ONLY)/(isDir)=(TRUE):S(FALSE);
     !!VR(itemMatches)&(itemsType)=(SCAN_DIRS_ONLY)/(isDir)=(FALSE):S(FALSE);
-    
-    !!if&(itemMatches)=(TRUE):;
+
+    !!if&(itemMatches)=(TRUE);
       !!VR(fileName)&(fullPaths)<>(FALSE):S^%z(dirPathPtr)/%(fileName)^;
       !!SN:M(fileList)/d1 V(fileList)/-1/(fileName);
     !!en;
   !!en;
 
   !!SN:F^FindNextFileA^/(searchHandle)/?(foundData);
-  !!br&v1=0:;
-!!en:; re
+  !!br&v1=0;
+!!en; re
 
 !!SN:F^FindClose^/(searchHandle);
 
@@ -1491,12 +1562,12 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@y):;
+!!if&(numArgs)<(@y);
   !!SN:F^ShowErmError^/^H3Dlg_Coords: invalid number of argumnets^;
   !!FU:E;
 !!en;
 
-!!if&(h3Dlg)=(NULL):;
+!!if&(h3Dlg)=(NULL);
   !!SN:F^ShowErmError^/^H3Dlg_Coords: h3Dlg is NULL^;
   !!FU:E;
 !!en;
@@ -1505,31 +1576,31 @@ ZVSE2
 
 !!UN:C(h3Dlg)/(STRUCT_H3DLG_X)/(UNC_INT)/?(origX:y);
 
-!!if&(xSyntax)=(ARG_SYNTAX_GET):;
+!!if&(xSyntax)=(ARG_SYNTAX_GET);
   !!VR(x):S(origX);
-!!el:;
+!!el;
   !!UN:C(h3Dlg)/(STRUCT_H3DLG_WIDTH)/(UNC_INT)/?(dlgWidth:y);
   !!UN:C(ADDR_GAME_SCREEN_WIDTH)/(UNC_INT16)/?(gameScreenWidth:y);
   !!VR(maxX:y):S(gameScreenWidth) -(dlgWidth) -(DLG_BOX_SHADOW_WIDTH);
-  
+
   !!VR(x)&(xSyntax)=(ARG_SYNTAX_ADD):+(origX);
   !!VR(x):F0/(maxX);
-  
+
   !!UN:C(h3Dlg)/(STRUCT_H3DLG_X)/(UNC_INT)/(x);
 !!en;
 
 !!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/?(origY:y);
 
-!!if&(ySyntax)=(ARG_SYNTAX_GET):;
+!!if&(ySyntax)=(ARG_SYNTAX_GET);
   !!VR(y):S(origY);
-!!el:;
+!!el;
   !!UN:C(h3Dlg)/(STRUCT_H3DLG_HEIGHT)/(UNC_INT)/?(dlgHeight:y);
   !!UN:C(ADDR_GAME_SCREEN_HEIGHT)/(UNC_INT16)/?(gameScreenHeight:y);
   !!VR(maxY:y):S(gameScreenHeight) -(dlgHeight) -(DLG_BOX_SHADOW_WIDTH);
-  
+
   !!VR(y)&(ySyntax)=(ARG_SYNTAX_ADD):+(origY);
   !!VR(y):F0/(maxY);
-  
+
   !!UN:C(h3Dlg)/(STRUCT_H3DLG_Y)/(UNC_INT)/(y);
 !!en;
 
@@ -1553,7 +1624,7 @@ ZVSE2
 !#VA(param:x);      User-specified value. Some numeric parameter or string in case of DLG_CMD_SET_TEXT.
 !#VA(cmdType:x);    Optional. Type of command/action. Default: (DLG_CMD_TYPE_DEFAULT)
 
-!!if&(h3Dlg)=(NULL):;
+!!if&(h3Dlg)=(NULL);
   !!SN:F^ShowErmError^/^H3Dlg_SendCmdToItem: h3Dlg is NULL^;
   !!FU:E;
 !!en;
@@ -1563,9 +1634,9 @@ ZVSE2
 
 !!VR(savedV1:y):Sv1;
 
-!!if&(cmdSubtype)=(DLG_CMD_SET_TEXT):;
+!!if&(cmdSubtype)=(DLG_CMD_SET_TEXT);
   !!SN:E6288384/(CALLCONV_THISCALL)/(h3Dlg)/(cmdType)/(cmdSubtype)/(itemId)/z(param);
-!!el:;
+!!el;
   !!SN:E6288384/(CALLCONV_THISCALL)/(h3Dlg)/(cmdType)/(cmdSubtype)/(itemId)/(param);
 !!en;
 
@@ -1576,7 +1647,7 @@ ZVSE2
 !#VA(h3Dlg:x);
 !#VA(itemId:x); Dialog item ID or (ALL_ITEMS).
 
-!!if&(h3Dlg)=(NULL):;
+!!if&(h3Dlg)=(NULL);
   !!SN:F^ShowErmError^/^H3Dlg_DrawItemOnScreen: h3Dlg is NULL^;
   !!FU:E;
 !!en;
@@ -1593,7 +1664,7 @@ ZVSE2
 !#VA(minItemId:x); Minimal item ID to update
 !#VA(maxItemId:x); Maximal item ID to update
 
-!!if&(h3Dlg)=(NULL):;
+!!if&(h3Dlg)=(NULL);
   !!SN:F^ShowErmError^/^H3Dlg_UpdateItemRange: h3Dlg is NULL^;
   !!FU:E;
 !!en;
@@ -1626,7 +1697,7 @@ ZVSE2
 !!VR(savedV1:y):Sv1;
 !!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
 
-!!if&(dlgObj)<>(NULL):;
+!!if&(dlgObj)<>(NULL);
   !!UN:C(dlgObj)/(UNC_INT)/?(h3Dlg:y);
   !!FU(H3Dlg_ShowPopup):P(h3Dlg);
   !!FU(DL_Destroy):P(dlgObj);
@@ -1645,12 +1716,12 @@ ZVSE2
 
 !!FU:A?(numArgs:y);
 
-!!if&(numArgs)<(@y):;
+!!if&(numArgs)<(@y);
   !!SN:F^ShowErmError^/^DL_Coords: invalid number of argumnets^;
   !!FU:E;
 !!en;
 
-!!if&(dlgObj)=(NULL):;
+!!if&(dlgObj)=(NULL);
   !!SN:F^ShowErmError^/^DL_Coords: DL-dialog %(dlgId) is not loaded^;
   !!FU:E;
 !!en;
@@ -1675,7 +1746,7 @@ ZVSE2
 
 !!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
 
-!!if&(dlgObj)=(NULL):;
+!!if&(dlgObj)=(NULL);
   !!SN:F^ShowErmError^/^DL_GetSize: DL-dialog %(dlgId) is not loaded^;
   !!FU:E;
 !!en;
@@ -1691,7 +1762,7 @@ ZVSE2
 
 !!FU(DL_FindById):P(dlgId)/?(dlgObj:y);
 
-!!if&(dlgObj)=(NULL):;
+!!if&(dlgObj)=(NULL);
   !!SN:F^ShowErmError^/^DL_AlignDlg: DL-dialog %(dlgId) is not loaded^;
   !!FU:E;
 !!en;
@@ -1709,17 +1780,17 @@ ZVSE2
 
 !!VR(x:y):S0;
 
-!!if&(alignCenter)<>(FALSE):;
+!!if&(alignCenter)<>(FALSE);
   !!VR(x):S(gameScreenWidth) -(dlgWidth) :2;
-!!el&(alignRight)<>(FALSE):;
+!!el&(alignRight)<>(FALSE);
   !!VR(x):S(gameScreenWidth) -(dlgWidth);
 !!en;
 
 !!VR(y:y):S0;
 
-!!if&(alignMiddle)<>(FALSE):;
+!!if&(alignMiddle)<>(FALSE);
   !!VR(y):S(gameScreenHeight) -(dlgHeight) :2;
-!!el&(alignBottom)<>(FALSE):;
+!!el&(alignBottom)<>(FALSE);
   !!VR(y):S(gameScreenHeight) -(dlgHeight);
 !!en;
 
@@ -1771,12 +1842,12 @@ ZVSE2
 !!VRi^battle_remote_0^:S(FALSE);
 !!VRi^battle_remote_1^:S(FALSE);
 
-!!if&i^battle_owner_0^<>(NO_OWNER):;
+!!if&i^battle_owner_0^<>(NO_OWNER);
   !!OW:Ii^battle_owner_0^/?i^battle_ai_0^ Gi^battle_owner_0^/?(isLocalHuman:y);
   !!VRi^battle_remote_0^&i^battle_ai_0^=(FALSE)/(isLocalHuman)=(FALSE):S(TRUE);
 !!en;
 
-!!if&i^battle_owner_1^<>(NO_OWNER):;
+!!if&i^battle_owner_1^<>(NO_OWNER);
   !!OW:Ii^battle_owner_1^/?i^battle_ai_1^ Gi^battle_owner_1^/?(isLocalHuman:y);
   !!VRi^battle_remote_1^&i^battle_ai_1^=(FALSE)/(isLocalHuman)=(FALSE):S(TRUE);
 !!en;
@@ -1829,6 +1900,17 @@ ZVSE2
 !!SN:F^GetProcessGuid^/?(processGuid:z);
 !!VR(result):Z(processGuid);
 !!VRv1:S(savedV1);
+
+!?FU(IsDllLoaded);
+; Returns (TRUE) is specified DLL is loaded. The check is fast and does not lead to loading dll.
+!#VA(dllFileNamePtr:x); DLL file name with extension (*.dll, *.era, *.ani, etc).
+!#VA(result:x);         Boolean. (TRUE) if DLL is loaded.
+
+!!VR(savedV1:y):Sv1;
+!!SN:F^GetModuleHandleA^/z(dllFileNamePtr);
+!!VR(result):S(FALSE);
+!!VR(result)&v1<>(NULL):S(TRUE);
+!!VRv1:S(savedV1);
 ; ============ END UTILITIES ============
 
 
@@ -1840,7 +1922,7 @@ ZVSE2
 !#VA(resultPtr:x);      OUT. Result string
 !#VA(maxTextLength:x);  Optional. Result length restriction in the form of MON_FUZZY_COUNT_XXX constant. Default: MON_FUZZY_COUNT_SHORT
 
-!!if&(monNum)<0:;
+!!if&(monNum)<0;
   !!SN:F^ShowErmError^/^MonCountToFuzzyText: negative monster quantity %(monNum)^;
   !!FU:E;
 !!en;
@@ -1848,43 +1930,43 @@ ZVSE2
 !!VR(h3HintsBaseAddr:y):S6970400;
 !!VR(rangeInd:y):-1;
 
-!!if&(monNum)<=4:;
+!!if&(monNum)<=4;
   !!VRs^result^:S^1-4^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S0;
-!!el&(monNum)<=9:;
+!!el&(monNum)<=9;
   !!VRs^result^:S^5-9^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S1;
-!!el&(monNum)<=19:;
+!!el&(monNum)<=19;
   !!VRs^result^:S^10-19^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S2;
-!!el&(monNum)<=49:;
+!!el&(monNum)<=49;
   !!VRs^result^:S^20-49^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S3;
-!!el&(monNum)<=99:;
+!!el&(monNum)<=99;
   !!VRs^result^:S^50-99^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S4;
-!!el&(monNum)<=249:;
+!!el&(monNum)<=249;
   !!VRs^result^:S^100-249^;
   !!VRs^result^&(maxTextLength)=(MON_FUZZY_COUNT_EXTRA_SHORT):S^100+^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S5;
-!!el&(monNum)<=499:;
+!!el&(monNum)<=499;
   !!VRs^result^:S^250-499^;
   !!VRs^result^&(maxTextLength)=(MON_FUZZY_COUNT_EXTRA_SHORT):S^250+^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S6;
-!!el&(monNum)<=999:;
+!!el&(monNum)<=999;
   !!VRs^result^:S^500-999^;
   !!VRs^result^&(maxTextLength)=(MON_FUZZY_COUNT_EXTRA_SHORT):S^500+^;
   !!VR(rangeInd)&(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):S7;
-!!el&(monNum)<2000/(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY):;
+!!el&(monNum)<2000/(maxTextLength)=(MON_FUZZY_COUNT_HUMAN_FRIENDLY);
   !!VR(rangeInd):S8;
-!!el&(monNum)<1000000:;
+!!el&(monNum)<1000000;
   !!VR(thousandInd:y):S(monNum) :1000;
   !!FU(IntLog2):P(thousandInd)/?(thousandPower:y);
   !!VR(borderValue:y):S1 Sd<<(thousandPower) *1000 -1;
   !!VR(thousandPower)&(monNum)<=(borderValue):-1;
   !!VR(rangeStart:y):S1 Sd<<(thousandPower);
   !!VRs^result^:S^%(rangeStart)K+^;
-!!el:;
+!!el;
   !!VR(billionInd:y):S(monNum) :1000000;
   !!FU(IntLog2):P(billionInd)/?(billionPower:y);
   !!VR(borderValue:y):S1 Sd<<(billionPower) *1000000 -1;
@@ -1894,7 +1976,7 @@ ZVSE2
   !!VRs^result^:S^%(rangeStart)M+^;
 !!en;
 
-!!if&(rangeInd)<>-1:;
+!!if&(rangeInd)<>-1;
   !!VRf:S(rangeInd) *(SIZEOF_INT) *3 +(SIZEOF_INT) +(h3HintsBaseAddr);
   !!UN:Cf/(SIZEOF_PTR)/?(strAddr:y);
   !!SN:B(strAddr)/d/?s^result^;
@@ -1930,10 +2012,10 @@ ZVSE2
 !!SN:M(M_AUTO_ID)/0/(M_INT)/(M_TRIGGER_LOCAL)/?(degradesList) F^ExtendArrayLifetime^/(degradesList);
 !!FU(GetMaxMonsterId):P?(lastMonsterId:y);
 
-!!re i/(MON_FIRST)/(lastMonsterId):;
+!!re i/(MON_FIRST)/(lastMonsterId);
   !!FU(GetUpgradedMonster):Pi/?(upgradedMonId:y);
   !!SN&(upgradedMonId)=(monId):M(degradesList)/d1 V(degradesList)/-1/i;
-!!en:;
+!!en;
 ; ============ END MONSTERS ============
 
 

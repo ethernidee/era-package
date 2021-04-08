@@ -1,3 +1,236 @@
+Version 3.4.0 (04/2020)
+------------------------
+[+] Added possibility to use animated defs in DL-dialogs. Just append " animated" to dialog item name to make it animated. Example: "Def" => "Def animated".
+    Up to 10 animated defs are supported for each dialog. Animation speed is 10 frames per second. One single DEF group of frames is used.
+
+[+] Added possibility to specify frames group index for defs in DL-dialogs. Write frame index as GROUP_INDEX * 100000 + FRAME_INDEX. Group indexes are counted from 0.
+
+[+] Implemented horizontal text alignment support in Era Markup Language (EML).
+
+  To specify alignment use either regular color tags with new align=xxx attribute or new tag "text".
+  Possible alignment values: "left", "center", "right".
+
+  Examples:
+
+  {~RosyBrown align=right}Some text with(out) images{~}
+  {~text align=center}Some text with(out) images{~}
+  {~RosyBrown align="left"}Some text with(out) images{~}
+  {~text color="RosyBrown" align="left"}Some text with(out) images{~}
+
+  Attribute values without spaces and special chars may be written without double quotes.
+
+[+] Implemented block-style images support for Era Markup Language (EML).
+
+  Use "block" attribute to mark image in text as block-style. New line before and after image will be forced automatically.
+  Vertical space in text is also automatically reserved for block images. Moreover, they can be partially scrolled without vanishing effect, occuring for inline images.
+
+  Examples:
+
+  !!IF:M^{~text align=center}{~Orange}Fire camping{~}
+
+  ----
+  {~>CDEVIL.def:0:0 valign="middle" block}
+  ----
+
+  {~>cndrgn.def:12:2 block}{~}^;
+
+[+] Added support for 65536-color pcx images (pcx16) in DL-dialogs. Default loading mode is 256 colors (pcx8). To load image as pcx16 change its name in dialogs editor to '****.pcx.pcx16'. Real file name in lod/pac archive should be left as is. The engine will recognise new extension, transform it into '.pcx' and load image as pcx16.
+
+[+] Improved ERM 2 compiler. It became possible to use named local variables and quick variables (f..t) as arrays subscripts.
+  Syntax: (array[index]) or (array[i]).
+  Index value is evaluated BEFORE current receiver, thus do not change it in receiver itself like "!!MO998:G?i G(array[i])".
+
+  A new magic constant 'SIZE' was added to return array size. Usage: (array[SIZE]). It's compiled into count of array items.
+  Thus looping through all array items became easy:
+
+  !!re i/0/(array[SIZE])/1/-1; Note the last -1, meaning loop from index 0 to SIZE - 1
+    !!IF:M^%(array[i])^;
+  !!en;
+
+  Note, that regular constants are also supported:
+  !!IF:M^%(array[PLAYER_TEAL])^;
+
+[+] Implemented automatical static and dynamical index checking for ERM 2.0 arrays. Invalid indexes are reported and forced to valid range.
+
+  Example:
+
+  !#VA(msgType[7]:y) (msgColor[7]:y);
+
+  !!re i/(PLAYER_FIRST)/(PLAYER_LAST);
+    !!VR(msgType[i]):S(PIC_TYPE_FLAG); Here we get error. Array size is 7, while number of game players is 8. i = 7 is outside of valid 0..6 range
+    !!VR(msgColor[i]):Si;              Here we get error. Array size is 7, while number of game players is 8. i = 7 is outside of valid 0..6 range
+  !!en;
+
+  Let's rewrite the example without bugs:
+
+  !#VA(msgType[NUM_PLAYERS]:y) (msgColor[NUM_PLAYERS]:y);
+
+  !!re i/(PLAYER_FIRST)/(PLAYER_LAST);
+    !!VR(msgType[i]):S(PIC_TYPE_FLAG);
+    !!VR(msgColor[i]):Si;
+  !!en;
+
+[+] Event DL/(OnCustomDialogEvent) now receive all mouse/keyboard parameters, accessible via !!CM and tracks clicks outside dialogs main area.
+    Check CM:T or i^dlg_action^ value for:
+      (DLG_ACTION_INDLG_CLICK)
+      (DLG_ACTION_OUTDLG_CLICK)
+      (DLG_ACTION_MOUSE_WHEEL)
+      (DLG_ACTION_KEY_PRESSED)
+
+    Example:
+
+      !?DL&i^dlg_action^=(DLG_ACTION_OUTDLG_CLICK);
+      !!IF:M^You clicked outside dialog!^;
+
+    For (DLG_ACTION_MOUSE_WHEEL) action CM:S or i^mouse_action^ can be one of:
+      (MOUSE_WHEEL_UP)
+      (MOUSE_WHEEL_DOWN)
+
+    Example:
+
+      !?DL&i^dlg_action^=(DLG_ACTION_MOUSE_WHEEL);
+      !!IF:M^Wheel: %i(mouse_action)^; display 1/-1 for wheel up/down
+
+    Keyboard presses in dialog can be handled now using Era Erm Framework:
+
+      !?DL&i^dlg_action^=(DLG_ACTION_KEY_PRESSED)/i^key^=(KEY_Q);
+      !!IF:M^Good buy any dialog!^;
+      !!DLi^dlg_id^:C(TRUE);
+
+    Added two global variables to Era Erm Framework:
+    - i^dlg_action^ with CM:T value (action type). Specially useful for DL-dialog events. See DLG_ACTION_XXX constants.
+    - i^dlg_id^ with active DL-dialog ID.
+
+[+] !!VR:F command can be called with 3 parameters now: !!VR(var):F(minValue)/(maxValue)/(showErrors);
+    If the third parameter is specified and not (FALSE), values outside specified range are reported using regular ERM error reporting dialog.
+
+[+] Added new ERM events:
+  - "OnWinGame"  occurs when human player wins scenario.
+  - "OnLoseGame" occurs when human player loses scenario.
+
+  - "OnTransferHero" occurs when hero data from the previous campaign scenario is transferred to the next zone.
+                     The events occurs after instructions but before PI (OnAfterErmInstructions).
+                     The only argument is ID of hero, which is transferred from the previous scenario.
+
+  - "OnAfterHeroGainLevel" occurs after AI/Human hero level-up. Dialog is already closed. Use (ERM_FLAG_IS_HUMAN) and (CURRENT_HERO) constants.
+                           The only argument is Hero ID.
+
+[+] Added extra parameter to "OnKeyPressed" event. "OnKeyPressed" occurs multiple times, when you hold the key, while it's sometimes necessary to catch only the first time, when key state changes to DOWN and ignore other events until key state changes to UP. The third event argument serves this purpose and is TRUE only when the key changes its state to DOWN.
+
+ !?FU(OnKeyPressed);
+ !#VA(key:x) (preventDefault:x) (isDown:x);
+
+[+] Implemented two universal events for handling human local events: "OnBeforeLocalEvent" and "OnAfterLocalEvent". They occur before any !?LE/!$LE trigger respecively
+    and receive 3 parameters: x, y and z coordinates.
+
+    Example:
+
+    !?FU(OnBeforeLocalEvent);
+    !#VA(x:x) (y:x) (z:x);
+    !!IF:M^OnBeforeLocalEvent %(x) %(y) %(z)^;
+
+    !?FU(OnAfterLocalEvent);
+    !#VA(x:x) (y:x) (z:x);
+    !!IF:M^OnAfterLocalEvent %(x) %(y) %(z)^;
+
+[+] Added the following new functions to Era Erm Framework:
+
+  !?FU(IsDllLoaded);
+  ; Returns (TRUE) is specified DLL is loaded. The check is fast and does not lead to loading dll.
+  !#VA(dllFileNamePtr:x); DLL file name with extension (*.dll, *.era, *.ani, etc).
+  !#VA(result:x);         Boolean. (TRUE) if DLL is loaded.
+
+  !?FU(FileExists);
+  ; Returns true if file (not directory) exists.
+  !#VA(filePathPtr:x); Absolute or relative path to file
+  !#VA(result:x);      Boolean. (TRUE) if file exists and is not a directory
+
+  !?FU(DirExists);
+  ; Returns true if a directory (not a file) exists.
+  !#VA(dirPathPtr:x); Absolute or relative path to directory
+  !#VA(result:x);     Boolean. (TRUE) if directory exists and is not a directory
+
+  !?FU(DeleteFile);
+  ; Deletes specified file and returns success flag.
+  !#VA(filePathPtr:x); Absolute or relative path to directory
+  !#VA(result:x);      Boolean. (TRUE) if file existed and was deleted.
+
+  !?FU(ClearIniCache);
+  ; Erases all cached ini file data from memory. You can safely delete ini file afterwards.
+  !#VA(filePathPtr:x); Absolute or relative path to ini file
+
+  !?FU(CreateDir);
+  ; Creates new directory if it does not exist.
+  !#VA(dirPathPtr:x); Absolute or relative path to directory
+
+[+] The following improvements were introduced in "Era Erm Framework" mod:
+
+  - Added new globally saved parameters for "OnKeyPressed" event:
+  i^key_down^: boolean. TRUE only when the key changes its state from UP to DOWN the first time until being released.
+
+[+] Added the following exported functions to era.dll:
+
+  - function IsCampaign: TDwordBool;
+
+  !!SN:F^IsCampaign^; v1 = (TRUE) or (FALSE)
+
+  - procedure GetCampaignFileName (Buf: pchar);
+
+  !!SN:F^GetCampaignFileName^/?(campaignFileName:z); will crash if it's not campaign
+
+  - procedure GetMapFileName (Buf: pchar);
+
+  !!SN:F^GetMapFileName^/?(mapFileName:z);
+
+  - function GetCampaignMapInd: integer;
+    Returns campaign map zone index (index in original zone maps list, starting from 0).
+
+  !!SN:F^GetCampaignMapInd^;  will crash if it's not campaign
+  !!IF:M^%v1^;
+
+[+] Fixed transferring of WoG commanders with heroes in campaigns. Previously transferring didn't work if hero was inactive in transition zone.
+    "OnTransferHero" is called for all transferred heroes, even for inactive ones, which will be used in other zones.
+
+[+] Added support for 32-bit colors in backgrounds of text items (rewritten Pcx16_FillRect).
+[+] Disabled ALT + KEY system menu triggering in windowed mode. ALT key combinations can be freely used by scripts.
+[+] Updated ERM editor.
+
+[*] Fixed non-working "OnBeforeBattleReplay" and "OnAfterBattleReplay events". Newest "BattleReplay" plugin by igrik is required.
+    After battle end when user clicks "Cancel" button, "OnBeforeBattleReplay" is generated. Battle state is reset and "OnBattleReplay" event
+    is generated, where you can revert global variables to pre-battle state, because OnBeforeBattleUniversal will not be called twice.
+
+[*] Renamed "OnTownHallMouseClick" to more accurate "OnTownFortMouseClick".
+
+[!] SN:Q is deprecated and shoudn't be used for new scripts because it may break any ERM library/mod/script functionality.
+    ERM interpreter and Era Erm Framework were updated to support SN:Q in old scripts.
+    If an event has at least single Lua/Erm/plugin handler, whenever it ends or SN:Q is called, an "OriginalEventName_Quit" trigger is called with the same x-arguments.
+    In quit triggers SN:Q works as FU:E.
+
+    Example:
+
+    !?FU(OnAfterErmInstructions);
+    !!FU(ex_OnSomeCustomEvent):P;
+
+    !?FU(ex_OnSomeCustomEvent);
+    !!IF:M^Trigger 1^;
+    !!SN:Q; skip Trigger 2, trigger "ex_OnSomeCustomEvent_Quit" event
+
+    !?FU(ex_OnSomeCustomEvent);
+    !!IF:M^Trigger 2^;
+
+    !?FU(ex_OnSomeCustomEvent_Quit);
+    !!IF:M^Quit Trigger Handler^;
+    !!SN:Q; works as FU:E here
+
+    !?FU(ex_OnSomeCustomEvent_Quit);
+    !!IF:M^Another Quit Trigger Handler^;
+
+[-] Fixed bug with random input delay in text input controls.
+[-] Fixed bug in Era Erm Framework: NewIntArray and NewStrArray function were ignoring (storageType) argument.
+[-] Fixed bug in Era Erm Framework: mouse/keyboard event data was not restored on trigger end.
+[-] Fixed invalid spells count for Thunder Lord in zcrtrait.txt. Credits: Archer30.
+
+
 Version 3.3.0 (01/2020)
 ------------------------
 [+] Implemented support for colored texts and Era Markup Language in general for all HD mod modes now.
@@ -103,7 +336,7 @@ Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} som
 [+] Added many new constants to "Era Erm Framework" mod for bits, bit masks, game managers addresses, dialog item ids, etc.
 
 [+] The following improvements were introduced in "Era Erm Framework" mod:
-  
+
   - "OnKeyPressed" event and all mouse click events were improved, storing keyboard special keys in global variables.
   i^key^:            Pressed key virtual key code (not scan code) for "OnKeyPressed" event only. Use KEY_XXX constants for it.
   i^key_leftAlt^:    TRUE if left ALT is pressed.
@@ -220,7 +453,7 @@ Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} som
   !?FU(SaveIni);
   ; Saves ini file, if it was earlier cached in memory (any read/write operation was performed).
   !#VA(filePathPtr:x); Absolute or relative path to ini file
-  
+
   !?FU(WriteIniInts);
   ; Writes multiple integer values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
   ; Example: P^Runtime/my mod.ini^/^hero levels^/(HERO_ORRIN)/13/(HERO_XERON)/41;
@@ -228,7 +461,7 @@ Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} som
   !#VA(sectionNamePtr:x); Section name in ini file.
   !#VA(firstKeyPtr:x);    ... Up to 7 key, value pairs to write.
   !#VA(firstValue:x);
-  
+
   !?FU(WriteIniStrings);
   ; Writes multiple string values to ini file in memory, but postpones saving data to disk. Call "SaveIni" to flush cached data.
   ; Example: P^Runtime/my mod.ini^/^custom hero names^/^%(HERO_ORRIN)^/^Perrin R^/^%(HERO_XERON)^/^Berson^;
@@ -236,7 +469,7 @@ Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} som
   !#VA(sectionNamePtr:x); Section name in ini file.
   !#VA(firstKeyPtr:x);    ... Up to 7 key, value pairs to write.
   !#VA(firstValue:x);
-  
+
   !?FU(ReadIniStrings);
   ; Reads multiple string values from ini file or from memory if ini file was read/written to earlier.
   ; Example: P(filePath)/(sectionName)/^%(HERO_ORRIN)^/?(orrinName:z)/^Orrin^/^%(HERO_XERON)^/?(xeronName:z)/^Xeron^;
@@ -339,7 +572,7 @@ Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} som
 
 [+] Added GetProcessGuid exported function, allowing to retrieve unique 32-character ID of game process run.
     Each game process start will generate different value. Modders can use this value to check, whether player restarted the game process or not.
-    
+
     procedure GetProcessGuid (Buf: pchar); stdcall;
 
     Usage:
@@ -406,7 +639,7 @@ Version 3.2.0 (11/2020)
 [+] Improved Heroes 3 complex dialogs support. Credits: Berserker, igrik.
     IF:N(msgType)/^text^[/?result/(textAlignment)/(preselectedPicId)/(selectablePicsMask)].
       selectablePicsMask - bit mask of pictures, allowed for selection. Default value is -1 (all pictures).
-    
+
     To make the first and the forth pictures selectable only specify mask 1 ^ 0 + 1 ^ 3 = 1 + 8 = 9.
     This setting allows some pictures to act as decoration only and the others to act as selectable items.
 
@@ -429,7 +662,7 @@ Version 3.2.0 (11/2020)
 [+] Added new ERM command VR:F in the form of !!VR(numericVar):F(minValue)/(maxValue).
     It's used to force value to be in specific range and can be used instead of ToRange, Min and Max math functions.
     All arguments must be of the same type.
-    
+
     (numericVar) - any integer or float variable.
     (minValue)   - minimum range value (integer or float).
     (maxValue)   - maximum range value (integer or float).
@@ -506,7 +739,7 @@ Version 3.2.0 (11/2020)
   New event allows to be sure, that basic battle parameters (heroes, quick battle, coordinates) are set up.
 
 [+] The following improvements were introduced in "Era Erm Framework" mod:
-  
+
   - "OnBeforeBattle" and "OnBeforeBattleUniversal" events were improved, storing most of prebattle parameters in global variables.
   i^battle_isQuick^:       (TRUE) if quick battle is enabled, (FALSE) otherwise
   i^battle_x^:             Battle x-coordinate
@@ -549,7 +782,7 @@ Version 3.2.0 (11/2020)
   ;  (size)/(?result)              The result array will have (size) items with 0 value.
   ;  (size)/(fillValue)/(?result)  The result array will have (size) items will (fillValue) value
   ;  You may optionally specify (storageType) parameter after (?result) argument with value like M_STORED or M_TEMP.
-  
+
   !?FU(NewStrArray);
   ; Creates and returns trigger local array of strings.
   ; Alternative function arguments:
@@ -582,10 +815,10 @@ Version 3.2.0 (11/2020)
 
   !?FU(H3Dlg_StopAnimation);
   ; Stops current dialogs animation
-  
+
   !?FU(H3Dlg_ResumeAnimation);
   ; Resumes stopped dialogs animation
-  
+
   !?FU(H3Dlg_ShowPopup);
   ; Shows H3 dialog as RMB popup.
   !#VA(h3Dlg:x); H3 dialog object address
@@ -595,16 +828,16 @@ Version 3.2.0 (11/2020)
   !#VA(h3Dlg:x); H3 dialog object address.
   !#VA(x:x);     X-coordinate, supports GET/SET/ADD syntax
   !#VA(y:x);     Y-coordinate, supports GET/SET/ADD syntax
-  
+
   !?FU(DL_FindById);
   ; Returns DL dialog object address by DL id or (NULL) .
   !#VA(dlgId:x);
   !#VA(result:x);
-  
+
   !?FU(DL_Destroy);
   ; Destroys DL dialog object.
   !#VA(dlgObj:x);
-  
+
   !?FU(DL_ShowPopup);
   ; Shows DL dialog as RMB popup.
   ; The dialog will be destroyed after showing. Call DL:N again to recreate it.
@@ -665,12 +898,12 @@ Version 3.2.0 (11/2020)
   ; Null address (0) results in empty string.
   !#VA(strAddr:x);   Address of null-terminated string in memory or 0.
   !#VA(resultPtr:x); String variable, to copy string contents to.
-  
+
   !?FU(StrToUpper);
   ; Converts given string to upper case.
   !#VA(strPtr:x);    Source string.
   !#VA(resultPtr:x); OUT. Result string.
-  
+
   !?FU(StrToLower);
   ; Converts given string to lower case.
   !#VA(strPtr:x);    Source string.
@@ -790,7 +1023,7 @@ Version 3.1.1 (10/2020)
   ; Both arrays must have the same items type.
   !#VA(srcArray:x); ID of array to copy items from (source).
   !#VA(dstArray:x); ID of array to copy items to (destination).
-  
+
   !?FU(Array_Clone);
   ; Creates trigger local copy of array.
   !#VA(srcArray:x); ID of array to clone.
@@ -799,7 +1032,7 @@ Version 3.1.1 (10/2020)
   !?FU(Tm32Encode);
   ; Fast and reversable int32 hashing. Link: https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key
   !#VA(value:x) (result:x);
-  
+
   !?FU(Tm32Decode);
   !#VA(value:x) (result:x);
 
@@ -925,7 +1158,7 @@ Version 3.1.0 (10/2020)
   !?FU(StrToUpper);
   ; Converts given string to upper case. Result is returned in s^result^.
   !#VA(strPtr:x);
-  
+
   !?FU(StrToLower);
   ; Converts given string to lower case. Result is returned in s^result^.
   !#VA(strPtr:x);
@@ -973,7 +1206,7 @@ Version 3.1.0 (10/2020)
     ; here the (arr) array is already deleted
 
 [+] Added support for local z-strings as function parameters. They will be converted to temporary read-only z-variable indexes.
-    
+
     Example:
     !!VR(str:z):S^haVe A nIce day!^;
     !!FU(StrToUpper):P(str); here z-1 will be converted into something like "10000002" which is z10000002 index
@@ -1010,7 +1243,7 @@ Version 3.1.0 (10/2020)
 
     !#VA(x:y) (y:y) (z:y); define variables to store object coordinates
     !!VR(x):S-1;           setting x-coordinate to -1 will force to start search from scratch
-    
+
     !!re i; endless loop
       !!UN:U(OBJ_MONSTER)/(ANY_OBJ)/-1/(x)/(y)/(z); find next monster, (x) = -1 on failure
       !!br&(x)<0:;                                  exit loop if nothing found
@@ -1037,7 +1270,7 @@ Version 3.1.0 (10/2020)
 
     !#VA(x:y) (y:y) (z:y); define variables to store object coordinates
     !!VR(x):S-1;           setting x-coordinate to -1 will force to start search from scratch
-    
+
     !!re i; endless loop
       !!SN:F^FindNextObject^/(OBJ_MONSTER)/(ANY_OBJ)/?(x)/?(y)/?(z)/-1; find next monster, v1 is (TRUE) on success
       !!br&v1=(FALSE):;                                                 exit loop if nothing found
@@ -1148,7 +1381,7 @@ Version 3.0.5 (09/2020)
   ; It also means, that if one value is 100x greater than the other one, then
   ; it would take 7 multiplications by 2 before the second value will become >= the first one.
 
-  
+
   !!VR(base:e):S123 :10; base = 12.3
   !!VR(power:e):S35 :10; power = 3.5
   !!FU(Pow):P(base)/(power)/?(float:e);
@@ -1344,7 +1577,7 @@ Version 3.0.3 (07/2020)
 
 [+] Added OnBeforeBattleStackTurn event. It occurs right before OnBattleRegenerationPhase event.
     Parameters: Stack ID (0..41). Change the first parameter to give turn to another stack.
-    
+
     Note, that similar OnBattleStackObtainsTurn event occurs when stack becomes active and is not related to regeneration phase at all.
     Normally OnBattleStackObtainsTurn occurs after OnBattleRegenerationPhase but may also be triggered manually by calling
     464F10 (THISCALL, ecx = CombatManager, Side 0..1, StackInd 0..20).
@@ -1457,10 +1690,10 @@ Version 3.0.1 (06/2020)
 
     Another example with string parameters.
     'Ptr' means 'pointer', index of z-variable.
-    
+
     !?FU(acl_ShowMessage);
     !#VA / (messagePtr);
-    
+
     !!FU:A?(numArgs:y);    get number of passed arguments
     !!VR(message:z):S^OK^; set up default message text
     !!VR(message)&(numArgs)>=(@messagePtr):Sz(messagePtr); override message text with provided value, if it's passed
@@ -1513,10 +1746,10 @@ Version 3.0.0 (06/2020)
   Main features:
     - Named local variables to write human readable code instead of cryptic one.
       Example: !!HE-1:C0/0/?(monType:y)/?(monNum:y) instead of !!HE-1:C0/0/?y23/?y24;
-    
+
     - Global named constants instead of magic numbers to write self-explaining code:
       Example: !?FU(OnKeyPressed)&x1=(KEY_1) instead of !?FU(OnKeyPressed)&x1=49; what is 49???
-    
+
     - Strict distinguishing naming for functions, local variables and constants. No way to mix up.
       Example: thisIsVariable, THIS_IS_CONSTANT, ThisIsFunction and era_ThisIsFunctionAgain.
 
@@ -1543,7 +1776,7 @@ Version 3.0.0 (06/2020)
   Example:
   ; for mod Battle Heroes let's use prefix "BH_"
   !#DC(BH_ART_RING_OF_POWER) = 160;
-  
+
   !#DC(BH_CLASS_WARRIOR) = 1;
   !#DC(BH_CLASS_MAGE)    = 2;
   !#DC(BH_CLASS_RANGER)  = 3;
@@ -1551,7 +1784,7 @@ Version 3.0.0 (06/2020)
   --- Globality ---
   Constants are global. It means, that one script can use constants of another script. To ensure, that your constants
   are always loaded before other scripts, place them in the script with high priority (ex. "1000 - phoenix consts.erm").
-  
+
   --- Standard constants ---
   ERA provides file "1000 - era consts.erm" with many predefined constants, covering most values, mentioned in ERM help.
   Look through it before defining your own constant for secondary skill, monster or player color.
@@ -1635,7 +1868,7 @@ Version 3.0.0 (06/2020)
   --- Getting variable address (real index) ---
   It's often necessary to get real index of variable or even array element. When you want to output "2" instead of
   y2, use address operator '@'.
-  
+
   Example:
   ; Initialize array with 3 artifacts
   !#VA(arts[3]:y);
@@ -1644,12 +1877,12 @@ Version 3.0.0 (06/2020)
   ; Select one artifact randomly
   ; same as R0/0/2, generates random number in 0..2 range and assigns it to artPtr variable.
   !!VR(artPtr:y):R0/(@arts)/(@arts[-1]);
-  
+
   ; Give artifact to hero
   !!HE-1:Ay(artPtr);
 
   will be compiled to something like that:
-  
+
   !!VRy1:C20/21/56;
   !!VRy4:R0/0/2;
   !!HE-1:Ayy4;
@@ -1693,7 +1926,7 @@ Version 3.0.0 (06/2020)
   !!el:;
     !!VR(price:y):S(day) *(difficultyLevel) +300;
     ...
-  !!en:; 
+  !!en:;
 
   --- Reusing same name in other trigger ---
   Variable names are local to nearest trigger only. New trigger starts with no declared variables.
@@ -1785,7 +2018,7 @@ Version 3.0.0 (06/2020)
     Unsets bits #2 in $1 integer variable.
     Example:
     !!VR(flags):~17; unset bits/flags 1 + 16 from (flags) variable.
-   
+
 [+] New command !!VR$1:Z#2. Creates trigger local temporary z-variable with given contents and assigns its index to integer variable.
     $1 - integer variable.
     #2 - any string.
@@ -2003,7 +2236,7 @@ Version 3.0.0 (06/2020)
     Example:
 
     ZVSE2
-    
+
     !?FU(OnDetermineMonInfoDlgUpgrade);
     !#VA(monType:x) (upgType:x) (town:x) (hero:x);
     !!VR(upgType):S(MON_GOLD_DRAGON); allow upgrade anything into Gold Dragons
@@ -2021,13 +2254,13 @@ Version 3.0.0 (06/2020)
     !?FU(OnAdventureMapRightMouseClick);
     !!SN:M-1/4/1/-1;        [allocate 4 strings array (-1 = auto ID, 4 = 4 items, 1 = of string type, -1 = local to current trigger)]
     !!VR(dlgStrings:y):Sv1; [save array ID]
-    
+
     ; Setup strings
     !!SN:M(dlgStrings)/0/^Select commander bonus:^;
     !!SN:M(dlgStrings)/1/^1) Attack^;
     !!SN:M(dlgStrings)/2/^2) Speed^;
     !!SN:M(dlgStrings)/3/^3) Health^;
-    
+
     !!FU(PM_ShowDialog):P(dlgStrings); [pass 4 string to dialog showing function]
     ; here array with (dlgStrings) ID will be automatically freed, same as SN:M(dlgStrings);
 

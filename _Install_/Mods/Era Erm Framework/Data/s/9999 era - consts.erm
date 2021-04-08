@@ -32,12 +32,18 @@ ZVSE2
 ; ======= END MOUSE CLICKS =======
 
 
-; =========== MOUSE CLICK SUBTYPES ===========
-!#DC(MOUSE_LMB_RELEASED_ON_TOWN_OK_BTN) = 10;
-!#DC(MOUSE_LMB_PRESSED)                 = 12;
-!#DC(MOUSE_LMB_RELEASED)                = 13;
-!#DC(MOUSE_RMB_PRESSED)                 = 14;
-; ========= END MOUSE CLICK SUBTYPES =========
+; ======== MOUSE CLICK SUBTYPES ========
+!#DC(MOUSE_EXIT_BTN_LMB_RELEASED) = 10;
+!#DC(MOUSE_LMB_PRESSED)           = 12;
+!#DC(MOUSE_LMB_RELEASED)          = 13;
+!#DC(MOUSE_RMB_PRESSED)           = 14;
+; ====== END MOUSE CLICK SUBTYPES ======
+
+
+; ========= MOUSE WHEEL SUBTYPES =========
+!#DC(MOUSE_WHEEL_UP)   = 1;
+!#DC(MOUSE_WHEEL_DOWN) = -1;
+; ======= END MOUSE WHEEL SUBTYPES =======
 
 
 ; ===============  PLAYERS  ===============
@@ -1091,6 +1097,7 @@ ZVSE2
 
 ; =============  TOWNS  =============
 !#DC(NO_TOWN)         = -1;
+!#DC(CURRENT_TOWN)    = -1;
 !#DC(TOWN_FIRST)      = 0;
 !#DC(TOWN_CASTLE)     = 0;
 !#DC(TOWN_RAMPART)    = 1;
@@ -1102,6 +1109,9 @@ ZVSE2
 !#DC(TOWN_FORTRESS)   = 7;
 !#DC(TOWN_CONFLUX)    = 8;
 !#DC(TOWN_LAST_WOG)   = 8;
+
+!#DC(MAP_TOWN_FIRST) = 0;
+!#DC(MAP_TOWN_LAST)  = 47;
 ; ===========  END TOWNS  ===========
 
 
@@ -1138,6 +1148,19 @@ ZVSE2
 !#DC(STACK_EXP_ALGO_WEIGHTED_SHARES_HIGH_LEVELS_PRIORITY) = 2;
 !#DC(STACK_EXP_ALGO_EQUAL_SHARES_DIVIDE_BY_ALL)           = 3;
 ; =============  END WOG OPTIONS  =============
+
+
+; ========== ARMY SLOTS ==============
+!#DC(ARMY_SLOT_FIRST) = 0;
+!#DC(ARMY_SLOT_0)     = 0;
+!#DC(ARMY_SLOT_1)     = 1;
+!#DC(ARMY_SLOT_2)     = 2;
+!#DC(ARMY_SLOT_3)     = 3;
+!#DC(ARMY_SLOT_4)     = 4;
+!#DC(ARMY_SLOT_5)     = 5;
+!#DC(ARMY_SLOT_6)     = 6;
+!#DC(ARMY_SLOT_LAST)  = 6;
+; ======== END ARMY SLOTS ============
 
 
 ; =============  BATTLE  =============
@@ -1190,6 +1213,12 @@ ZVSE2
 ; ===========  END BATTLE ACTIONS  ===========
 
 
+; ========== BATTLE HEXES ==============
+!#DC(BATTLE_HEX_FIRST) = 0;
+!#DC(BATTLE_HEX_LAST)  = 186;
+; ======== END BATTLE HEXES ============
+
+
 ; =============  BM:G FIELD OFFSETS  =============
 !#DC(BMG_FIELD_VALUE_VISIBLE)               = 4; stack is visible
 !#DC(BMG_FIELD_VALUE_INVISIBLE)             = 8; stack is invisible before any action
@@ -1223,6 +1252,9 @@ ZVSE2
 !#DC(MON_MIN_LEVEL)            = 0;
 !#DC(MON_MAX_LEVEL)            = 6;
 !#DC(MON_NUM_LEVELS)           = 7;
+!#DC(NUM_PRIMARY_SKILLS)       = 4;
+!#DC(NUM_SECONDARY_SKILLS)     = 28;
+!#DC(NUM_PLAYERS)              = 8;
 ; ===========  END GAME LIMITS  ===========
 
 
@@ -1347,8 +1379,18 @@ ZVSE2
 ; ===============  END DIALOGS  ===============
 
 
+; ========= DIALOG ACTION TYPES =========
+!#DC(DLG_ACTION_HOVER)        = 4;
+!#DC(DLG_ACTION_INDLG_CLICK)  = 512;
+!#DC(DLG_ACTION_OUTDLG_CLICK) = 8;
+!#DC(DLG_ACTION_MOUSE_WHEEL)  = 522;
+!#DC(DLG_ACTION_KEY_PRESSED)  = 256;
+; ======= END DIALOG ACTION TYPES =======
+
+
 ; =========================  DIALOG ITEM IDS  =========================
-!#DC(ALL_ITEMS)                                        = -1;
+!#DC(ITEM_OUTSIDE_DLG)                                 = -2; For DL-dialogs only, any item outside dialog
+!#DC(ITEM_INSIDE_DLG)                                  = -1; Any free space inside dialog
 !#DC(ITEM_ADVMAP_BACK)                                 = 0;
 !#DC(ITEM_ADVMAP_MINI_MAP)                             = 1;
 !#DC(ITEM_ADVMAP_HERO_INFO_BOX_BORDER)                 = 2;
@@ -1622,6 +1664,16 @@ ZVSE2
 
 !#DC(STRUCT_WIN32_FIND_DATA_ATTRS)    = 0;  int32 file attributes
 !#DC(STRUCT_WIN32_FIND_DATA_FILENAME) = 44; buffer with file name
+
+!#DC(STRUCT_HOOK_CONTEXT_EDI) = 0;  Hook Context structure is used with ERM Hooker 2 plugin in hook callbacks
+!#DC(STRUCT_HOOK_CONTEXT_ESI) = 4;
+!#DC(STRUCT_HOOK_CONTEXT_EBP) = 8;
+!#DC(STRUCT_HOOK_CONTEXT_ESP) = 12;
+!#DC(STRUCT_HOOK_CONTEXT_EBX) = 16;
+!#DC(STRUCT_HOOK_CONTEXT_EDX) = 20;
+!#DC(STRUCT_HOOK_CONTEXT_ECX) = 24;
+!#DC(STRUCT_HOOK_CONTEXT_EAX) = 28;
+!#DC(STRUCT_HOOK_CONTEXT_RET) = 32;
 ; ===========  END GAME STRUCTURES  ===========
 
 
@@ -1661,8 +1713,16 @@ ZVSE2
 
 ; =============  WIN32 API  =============
 !#DC(INVALID_HANDLE_VALUE)     = -1;
+!#DC(INVALID_FILE_ATTRIBUTES)  = -1;
 !#DC(FILE_ATTRIBUTE_DIRECTORY) = 16;
 ; ===========  END WIN32 API  ===========
+
+
+; =============  ASSEMBLER  =============
+!#DC(OPCODE_NOP_1) = 144;
+!#DC(OPCODE_NOP_2) = 37008;
+!#DC(OPCODE_NOP_4) = -1869574000;
+; =============  ASSEMBLER  =============
 
 
 ; =============  INTERNAL  =============

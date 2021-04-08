@@ -1,16 +1,16 @@
 ZVSE2
 ; Implement new event "OnAfterErmInited", occuring after all instructions and postinstruction triggers are executed
-!?FU(OnAfterErmInstructions);
+!?FU(OnAfterErmInstructions_Quit);
 !!FU(OnAfterErmInited):P;
 !!FU(OnStartOrLoad):P(TRUE);
 
 ; Implement new "OnStartOrLoad" event, occuring after map start or savegame loaded. Safe alternative to OnGameStart, which is triggered before adventure map display.
-!?FU(OnAfterLoadGame);
+!?FU(OnAfterLoadGame_Quit);
 !!FU(OnStartOrLoad):P(FALSE);
 
 ; Implement new events with the same parameters, as OnKeyPressed, but for particular dialogs.
 ; OnKeyPressed_AdvMap, OnKeyPressed_Battle, OnKeyPressed_HeroScreen, OnKeyPressed_HeroMeetingScreen, OnKeyPressed_Town
-!?FU(OnKeyPressed);
+!?FU(OnKeyPressed_Quit);
 !#VA(key:x) (preventDefault:x);
 !!SN:F^GetGameState^/?(mainDialogs[2]:y);
 !!FU(OnKeyPressed_AdvMap)&(mainDialogs[1])=(DLG_ADVMAP):P?(key)/?(preventDefault);
@@ -21,46 +21,49 @@ ZVSE2
 
 !!FU(RestorePrevKeyModsState):P;
 
-!?FU(OnAdventureMapRightMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnAdventureMapRightMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnTownMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnTownMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnHeroScreenMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnHeroScreenMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnHeroesMeetScreenMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnHeroesMeetScreenMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnBattleScreenMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnBattleScreenMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnAdventureMapLeftMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnAdventureMapLeftMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnRecruitDlgMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnRecruitDlgMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnTownHallMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnTownHallMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnKingdomOverviewMouseClick);
-!!FU(EnterMouseEvent):P;
+!?FU(OnKingdomOverviewMouseClick_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnBattleMouseHint);
-!!FU(EnterMouseEvent):P;
+!?FU(OnBattleMouseHint_Quit);
+!!FU(LeaveMouseEvent):P;
 
-!?FU(OnTownMouseHint);
-!!FU(EnterMouseEvent):P;
+!?FU(OnTownMouseHint_Quit);
+!!FU(LeaveMouseEvent):P;
+
+!?FU(OnCustomDialogEvent_Quit);
+!!FU(RestoreEventData):P?i^dlg_id^;
+!!FU(LeaveMouseEvent):P;
+
+!?FU(OnBeforeBattle_Quit);
+!!FU(UpdateBattleVars):P;
+
+!?FU(OnBeforeBattleUniversal_Quit);
+!!FU(UpdateBattleVars):P;
 
 ; Implement new "OnAfterBattleSetup" event, occuring right after "OnBeforeBattle" and "OnBeforeBattleUniversal" events.
 ; New event allows to to be sure, that basic battle parameters (heroes, quick battle, coordinates) are set up.
-!?FU(OnBeforeBattleUniversal);
 !!FU(OnAfterBattleSetup):P;
-
-!?FU(OnBeforeBattle);
-!!FU(UpdateBattleVars):P;
-
-!?FU(OnBeforeBattleUniversal);
-!!FU(UpdateBattleVars):P;
