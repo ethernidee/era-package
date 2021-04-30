@@ -1,3 +1,269 @@
+Version 3.7.0 (04/2020)
+------------------------
+[+] Added new SN:H syntax to work with spell texts.
+
+    !!SN:H^spell^/#spell_id/#spell_text_type/$text
+
+    where #spell_text_type is one of SPELL_TEXT_XXX constants.
+
+    This command deprecates SS usage for texts.
+    Deletion syntax works partially. The settings are reset, but text will be restored on savegame load only.
+
+    Example:
+
+    !?FU(OnAfterErmInstructions);
+    ; List all spell, displaying all texts
+    !!re i/(SPELL_FIRST)/(SPELL_LAST_WOG);
+      !!SN:H^spell^/i/(SPELL_TEXT_NAME)/?(text0:z);
+      !!SN:H^spell^/i/(SPELL_TEXT_SHORT_NAME)/?(text1:z);
+      !!SN:H^spell^/i/(SPELL_TEXT_DESCR)/?(text2:z);
+      !!SN:H^spell^/i/(SPELL_TEXT_DESCR_BASIC)/?(text3:z);
+      !!SN:H^spell^/i/(SPELL_TEXT_DESCR_ADVANCED)/?(text4:z);
+      !!SN:H^spell^/i/(SPELL_TEXT_DESCR_EXPERT)/?(text5:z);
+      !!SN:H^spell^/i/(SPELL_TEXT_SOUND)/?(text6:z);
+      !!IF:M^Spell %i:
+    %(text0)
+    %(text1)
+    %(text2)
+    %(text3)
+    %(text4)
+    %(text5)
+    %(text6)^;
+    !!en;
+
+[+] SN:V#1/#2/#3 command now applies "mod 32" operation to argument #2, allowing to use commands on XXL maps without errors.
+
+[+] Added global exported functions to work with ERA global named ERM variables (i^..^ and s^...^):
+
+  int (__stdcall) GetAssocVarIntValue (const char *VarName);
+  char* (__stdcall) GetAssocVarStrValue (const char *VarName);
+  void (__stdcall) SetAssocVarIntValue (const char *VarName, int NewValue);
+  void (__stdcall) SetAssocVarStrValue (const char *VarName, const char *NewValue);
+
+  Do not forget to call (__stdcall) MemFree (void* Addr) to release memory, returned by string functions.
+
+[+] Added global exported functions to work with ERA shared global in-memory registry.
+    The registry can be used by plugins to exchange config values and signals.
+
+  int (__stdcall) GetEraRegistryIntValue (const char *VarName);
+  char* (__stdcall) GetEraRegistryStrValue (const char *VarName);
+  void (__stdcall) SetEraRegistryIntValue (const char *VarName, int NewValue);
+  void (__stdcall) SetEraRegistryStrValue (const char *VarName, const char *NewValue);
+
+  Do not forget to call (__stdcall) MemFree (void* Addr) to release memory, returned by string functions.
+
+[+] Added missing crtrait0.txt and crtraits.txt to hmm35wog.pac.
+[*] "Failed to load image at %s" message will not be displayed anymore for missing images in wog native dialogs.
+[*] Updated Erm Editor and Era Erm Framework.
+
+
+Version 3.6.0 (04/2020)
+------------------------
+[+] Implemented def frames replacement with png images. Replacement occurs on the fly when game asks to draw def frame.
+    Real def frame may be missing, but a def file itself must exist. It may have any dimensions, but preferrable height should
+    be greater or equal to maximum height of all frames. Png frame may have different size, but will be always drawn at (0, 0) def coordinates.
+
+    Current supported def types: interface defs, interface defs with multiple frame groups.
+    Supported features: horizontal mirroring.
+
+    Png frame path template: "Data/Defs/[defname.def]/[group_index]_[frame_index].png".
+    Group and frame indexes are counted from 0.
+    Example: "Data/Defs/zmenulg.def/0_2.png". It's a "Load Game" menu item, group 0, frame 2.
+
+    All png formats are supported, including all types of transparency.
+    The fastest drawing is performed for png without transparency and 32 bit HD mode.
+
+    Era Markup Language (EML) fully supports defs with png frames. Thus any png image can be displayed in almost any place, where text is output.
+    Frames are automatically trimmed before displaying.
+    Example: "{~>cndrgn.def:12:2 block mirror}"
+
+    Note: Heroes 3 engine redraws dialog buttons on every mouse move, thus buttons with partial transparency are drawn many times on the same background.
+
+[!] The only recommended way of providing changed artifacts/spells/monster icons in mods is png frames usage.
+    Png frames have priority over def files even if frame is located in a mod with a lower priority.
+
+[+] Added global resource manager, which is used currently for def frames png caching. Specify maximum cache size in heroes3.ini
+    in the "ResourceCacheSize" key.
+
+[*] ERA does not provide "heroes3.ini" anymore. Instead it comes with "default heroes3.ini" file, which is
+    a fallback for any key, missing in "heroes3.ini". Thus "heroes3.ini" will never be overwritten and will
+    preserve user settings. "heroes 3.ini" will be automatically created when any in-game setting is changed.
+
+
+Version 3.5.1 (04/2020)
+------------------------
+[-] Fixed bug: spaces after comparison operators (<, >, =, <>) were still not ignored.
+
+
+Version 3.5.0 (04/2020)
+------------------------
+[+] Rewritten part of old ERM engine, which was responsible for conditions evaluations.
+
+  - It's now possible to use spaces and line feeds to decorate complex conditions.
+
+  Example:
+
+  !!if|i^Master_Warrior_Hero%(hero)^         <> (prevWasMasterWarrior)/
+       i^Master_Mage_Hero%(hero)^            <> (prevWasMasterMage)/
+       i^Master_Adventurer_Hero%(hero)^      <> (prevWasMasterAdventurer)/
+       i^Grandmaster_Warrior_Hero%(hero)^    <> (prevWasGrandmasterWarrior)/
+       i^Grandmaster_Mage_Hero%(hero)^       <> (prevWasGrandmasterMage)/
+       i^Grandmaster_Adventurer_Hero%(hero)^ <> (prevWasGrandmasterAdventurer);
+    ; ...
+  !!en;
+
+  - It's now possible to use numbers in the left side of comparisons. Previosly they were treated as flags.
+
+  Example 1:
+
+  !!IF&1000>=(goldLeft):M^You have enough gold to buy the map^;
+
+  Example 2:
+
+  !#DC(EDU_MOD_VERSION) = 317;
+
+  !!if & (EDU_MOD_VERSION) < 320;
+    !!IF:M^You use old version of Edu mod. Please, update it^;
+  !!en;
+
+  - Single numeric or string values are casted to boolean now. For numbers it's the same as <> 0. For strings it's the same as <> ^^ (empty string).
+
+  Examples:
+
+  !!HE(CURRENT_HERO):W?(movePoints:y);
+  !!IF&(movePoints):M^Ok, you have some movement points^; same as &(movePoints)<>0
+  ; Please, use >= operator in real code for anything, that can become negative. It's just an example
+
+  !!VR(inputText:z):S^test^;
+  !!IF&(inputText)/(inputText)<>^secret password^:M^You have entered wrong password!^; same as &(inputText)<>^^/(inputText)<>^secret password^
+
+Version 3.4.3 (04/2020)
+------------------------
+[+] Added new ERM command VR:B. It converts any number to boolean (1 or 0). Any non-zero value becomes 1.
+
+  Example:
+
+  !!OW:R(CURRENT_PLAYER)/(RES_GOLD)/?(goldAmount:y);
+  !!VR(hasGold:y):S(goldAmount) B; now hasGold = (TRUE) or (FALSE)
+
+  !!if&(hasGold)=(TRUE);
+    !!IF:M^I know you have some gold in your pockets!^;
+  !!en;
+
+
+Version 3.4.2 (04/2020)
+------------------------
+[+] Added the following functions to Era Erm Framework:
+
+  !?FU(RadioDlg_GetNumItems);
+  ; Returns number of items, added to dialog
+  !#VA(result:x);
+
+  !?FU(RadioDlg_GetItemValue);
+  ; Returns value of specified item or throws error in case of invalid index.
+  !#VA(itemInd:x);
+  !#VA(result:x);
+
+  !?FU(RadioDlg_GetItemTag);
+  ; Returns tag of specified item or throws error in case of invalid index.
+  !#VA(itemInd:x);
+  !#VA(result:x);
+
+[+] Updated ERM Editor.
+[-] Fixed black background in Credits menu.
+
+Version 3.4.1 (04/2020)
+------------------------
+[+] (CURRENT_HERO) constant (-1) can be safely used in triggers from now. Previosly this global value could be overwritten by nested events.
+
+  Example:
+  !?HM0; current hero is Orrin
+  !!HE(HERO_XERON):Ed100000;     Level up for Xeron, current hero used to become Xeron in previous Era versions
+  !!HE(CURRENT_HERO):N?(hero:y); (hero) is always (HERO_ORRIN), starting from Era 3.4.1
+
+[+] Implemented high level API for WoG radio dialogs (IF:G). Configure dialog before showing. Optionally assign value and tag to each item.
+    Optionally add special "cancel" item. The result is item index, value and tag. No need to convert bits anymore.
+
+    Example 1:
+
+    !?FU(OnAfterErmInstructions);
+    !!FU(RadioDlg_Reset):P;
+    !!FU(RadioDlg_SetTitle):P^What primary skill would you like to increase?^;
+    !!FU(RadioDlg_AddCancelButton):P;
+
+    !!FU(RadioDlg_AddItem):P^Attack^/(SKILL_ATTACK)/^attack^;
+    !!FU(RadioDlg_AddItem):P^Defense^/(SKILL_DEFENSE)/^defense^;
+    !!FU(RadioDlg_AddItem):P^Knowledge^/(SKILL_KNOWLEDGE)/^knowledge^;
+    !!FU(RadioDlg_AddItem):P^Power^/(SKILL_POWER)/^power^;
+
+    !!FU(RadioDlg_SelectItemByTag):P^knowledge^;
+    !!FU(RadioDlg_Show):P?(item:y)/?(value:y)/?(tag:z);
+    !!IF:M^Item: %(item). Value: %(value). Tag: %(tag)^;
+
+    Example 2:
+
+    !?FU(OnAfterErmInstructions);
+    !!FU(RadioDlg_Reset):P;
+    !!FU(RadioDlg_SetTitle):P^Select your starting hero:^;
+    !!FU(RadioDlg_AddCancelButton):P;
+
+    !!FU(RadioDlg_AddItem):P^Orrin^/(HERO_ORRIN);
+    !!FU(RadioDlg_AddItem):P^Xeron^/(HERO_XERON);
+    !!FU(RadioDlg_AddItem):P^Gird^/(HERO_GIRD);
+    !!FU(RadioDlg_AddItem):P^Valeska^/(HERO_VALESKA);
+
+    !!FU(RadioDlg_SelectItemByValue):P(HERO_GIRD); Preselect Gird from start
+    !!FU(RadioDlg_Show):P?(item:y)/?(hero:y);
+
+    !!if&(hero)>=(HERO_FIRST);
+      !!IF:M^Selected hero: %(hero)^;
+    !!en;
+
+    API:
+
+    !?FU(RadioDlg_Reset);
+    ; Resets all radio dialog settings to empty values.
+
+    !?FU(RadioDlg_SetTitle);
+    ; Changes radio dialog title.
+
+    !?FU(RadioDlg_AddCancelButton);
+    ; Adds cancel button to dialog. Decreases maximum number of items in dialog by one.
+
+    !?FU(RadioDlg_SelectItem);
+    ; Sets new selected item by its index.
+    !#VA(itemInd:x);
+
+    !?FU(RadioDlg_SelectItemByValue);
+    ; Finds the first item with specified value and selects it.
+    !#VA(itemValue:x);
+
+    !?FU(RadioDlg_SelectItemByTag);
+    ; Finds the first item with specified tag and selects it.
+    !#VA(itemTagPtr:x); Tag string
+
+    !?FU(RadioDlg_AddItem);
+    ; Adds new item to radio dialog.
+    !#VA(itemCaptionPtr:x); Optional. New item caption. Empty/spacy captions are valid. Default: ^^.
+    !#VA(itemValue:x);      Optional. Numeric value, associated with item. Default: 0.
+    !#VA(itemTagPtr:x);     Optional. String tag, associated with item. Default: ^^.
+    !#VA(selectItem:x);     Optional. Boolean. If TRUE, item will be selected. Default: FALSE.
+
+    !?FU(RadioDlg_AddItems);
+    ; Adds up to 5 items to radio dialog. For detailed arguments description see (RadioDlg_AddItem).
+    !#VA(firstItemCaptionPtr:x);
+    !#VA(firstItemValue:x);
+    !#VA(firstItemTagPtr:x);
+
+    !?FU(RadioDlg_Show);
+    ; Display previously configured radio dialog with single possible choice.
+    ; Currently maximum RADIO_DLG_MAX_ITEMS (-1 for cancel button) items can be added to the dialog.
+    ; Returns selected item index, value and tag. Item index is (NO_RADIO_DLG_ITEM) if no items are present for selection
+    ; or Cancel button was pressed.
+    !#VA(resultItem:x);   Default: (NO_RADIO_DLG_ITEM).
+    !#VA(resultValue:x);  Default: -1.
+    !#VA(resultTagPtr:x); Default: ^^.
+
 Version 3.4.0 (04/2020)
 ------------------------
 [+] Added possibility to use animated defs in DL-dialogs. Just append " animated" to dialog item name to make it animated. Example: "Def" => "Def animated".
@@ -236,7 +502,7 @@ Version 3.3.0 (01/2020)
 [+] Implemented support for colored texts and Era Markup Language in general for all HD mod modes now.
 [+] It became possible to enter invisible tags in edit fields using "{" and "}". This behavior may be changed in future.
 
-[+] Implemented transparency support for colored texts using {~RRGGBBAA}...{~} tags, where AA stands for alpha channel, which determines text opaqueness. 0 means transparant, 255 is fully opaque, $80 is 50% transparent. Old-style tags in {~RRGGBB} format works as fully opaque.
+[+] Implemented transparency support for colored texts using {~RRGGBBAA}...{~} tags, where AA stands for alpha channel, which determines text opacity. 0 means transparant, 255 is fully opaque, $80 is 50% transparent. Old-style tags in {~RRGGBB} format works as fully opaque.
 
 Example: !!IF:L^{~FF0000}{~FF0000C0}{~FF000080}{~FF000040}You've{~} found{~} some{~} gold{~}^;
 
