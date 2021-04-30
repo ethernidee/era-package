@@ -1816,6 +1816,243 @@ ZVSE2
 !!FU(H3Dlg_SendCmdToItem):P(rootDlg)/(ITEM_ADVMAP_HINT)/(DLG_CMD_SET_TEXT)/z(newHint);
 !!FU(H3Dlg_UpdateItemRange):P(rootDlg)/(ITEM_ADVMAP_HINT)/(ITEM_ADVMAP_HINT);
 !!FU(H3Dlg_DrawItemOnScreen):P(rootDlg)/(ITEM_ADVMAP_HINT);
+
+!#DC(NO_RADIO_DLG_ITEM)         = -1;
+!#DC(RADIO_DLG_MAX_ITEMS)       = 12;
+!#DC(RADIO_DLG_FLAG_BTN_CANCEL) = 1;
+
+!#SN:M(M_AUTO_ID)/(RADIO_DLG_MAX_ITEMS)/(M_STR)/(M_STORED)/?i^radioDlg_captions^;
+!#SN:M(M_AUTO_ID)/0/(M_STR)/(M_STORED)/?i^radioDlg_tags^;
+!#SN:M(M_AUTO_ID)/0/(M_INT)/(M_STORED)/?i^radioDlg_values^;
+
+!#VRs^radioDlg_title^:S^^;
+!#VRi^radioDlg_numItems^:S0;
+!#VRi^radioDlg_selectedItemInd^:S0;
+!#VRi^radioDlg_flags^:S0;
+!#VRi^radioDlg_freeSpaceAlerted^:S(FALSE);
+
+!?FU(RadioDlg_Reset);
+; Resets all radio dialog settings to empty values.
+!!SN:Mi^radioDlg_captions^/0 Mi^radioDlg_captions^/(RADIO_DLG_MAX_ITEMS);
+!!SN:Mi^radioDlg_tags^/0;
+!!SN:Mi^radioDlg_values^/0;
+
+!!VRs^radioDlg_title^:S^^;
+!!VRi^radioDlg_numItems^:S0;
+!!VRi^radioDlg_selectedItemInd^:S(NO_RADIO_DLG_ITEM);
+!!VRi^radioDlg_flags^:S0;
+!!VRi^radioDlg_freeSpaceAlerted^:S(FALSE);
+
+!?FU(RadioDlg_SetTitle);
+; Changes radio dialog title.
+!#VA(titlePtr:x); New dialog title.
+
+!!VRs^radioDlg_title^:Sz(titlePtr);
+
+!?FU(RadioDlg_AddCancelButton);
+; Adds cancel button to dialog. Decreases maximum number of items in dialog by one.
+!!VR(hasCancelBtn:y):Si^radioDlg_flags^ &(RADIO_DLG_FLAG_BTN_CANCEL) F(FALSE)/(TRUE);
+!!FU&(hasCancelBtn)<>(FALSE):E;
+
+; Always add cancel button, removing the last item if necessary
+!!VRi^radioDlg_flags^:|(RADIO_DLG_FLAG_BTN_CANCEL);
+
+!!VR(numFreeItems:y):S(RADIO_DLG_MAX_ITEMS) -i^radioDlg_numItems^;
+
+!!if&(numFreeItems)<=0;
+  !!SN&i^radioDlg_freeSpaceAlerted^=(FALSE):F^ShowErmError^/^RadioDlg_AddCancelButton: cannot add cancel button, there is no free position for it^;
+  !!VRi^radioDlg_freeSpaceAlerted^:S(TRUE);
+  !!VRi^radioDlg_numItems^:-1;
+!!en;
+
+!?FU(RadioDlg_SelectItem);
+; Sets new selected item by its index.
+!#VA(itemInd:x);
+
+!!VRi^radioDlg_selectedItemInd^:S(NO_RADIO_DLG_ITEM);
+!!VRi^radioDlg_selectedItemInd^&(itemInd)>=0/(itemInd)<i^radioDlg_numItems^:S(itemInd);
+
+!?FU(RadioDlg_SelectItemByValue);
+; Finds the first item with specified value and selects it.
+!#VA(itemValue:x);
+
+!!VR(newItemInd:y):S(NO_RADIO_DLG_ITEM);
+
+!!re i/0/i^radioDlg_numItems^/1/-1;
+  !!SN:Vi^radioDlg_values^/i/?(value:y);
+
+  !!if&(value)=(itemValue);
+    !!VR(newItemInd):Si;
+    !!br;
+  !!en;
+!!en;
+
+!!VRi^radioDlg_selectedItemInd^:S(newItemInd);
+
+!?FU(RadioDlg_SelectItemByTag);
+; Finds the first item with specified tag and selects it.
+!#VA(itemTagPtr:x); Tag string
+
+!!VR(newItemInd:y):S(NO_RADIO_DLG_ITEM);
+
+!!re i/0/i^radioDlg_numItems^/1/-1;
+  !!SN:Vi^radioDlg_tags^/i/?s^temp^;
+
+  !!if&s^temp^=z(itemTagPtr);
+    !!VR(newItemInd):Si;
+    !!br;
+  !!en;
+!!en;
+
+!!VRs^temp^:S^^;
+!!VRi^radioDlg_selectedItemInd^:S(newItemInd);
+
+!?FU(RadioDlg_AddItem);
+; Adds new item to radio dialog.
+!#VA(itemCaptionPtr:x); Optional. New item caption. Empty/spacy captions are valid. Default: ^^.
+!#VA(itemValue:x);      Optional. Numeric value, associated with item. Default: 0.
+!#VA(itemTagPtr:x);     Optional. String tag, associated with item. Default: ^^.
+!#VA(selectItem:x);     Optional. Boolean. If TRUE, item will be selected. Default: FALSE.
+
+!!VR(hasCancelBtn:y):Si^radioDlg_flags^ &(RADIO_DLG_FLAG_BTN_CANCEL) F(FALSE)/(TRUE);
+!!VR(numFreeItems:y):S(RADIO_DLG_MAX_ITEMS) -i^radioDlg_numItems^ -(hasCancelBtn);
+
+!!if&(numFreeItems)<=0;
+  !!SN&i^radioDlg_freeSpaceAlerted^=(FALSE):F^ShowErmError^/^RadioDlg_AddItem: cannot add new items, there is no free position^;
+  !!VRi^radioDlg_freeSpaceAlerted^:S(TRUE);
+  !!FU:E;
+!!en;
+
+!!VR(emptyStr:z):S^^;
+!!VR(blankItemStr:z):S^-/-^;
+!!VR(itemCaptionPtr)|(itemCaptionPtr)=(NULL)/z(itemCaptionPtr)=^^:S(@blankItemStr);
+!!VR(itemTagPtr)&(itemTagPtr)=(NULL):S(@emptyStr);
+!!VR(selectItem):F(FALSE)/(TRUE);
+
+!!SN:Vi^radioDlg_captions^/i^radioDlg_numItems^/z(itemCaptionPtr);
+!!SN:Mi^radioDlg_tags^/d1 Vi^radioDlg_tags^/-1/z(itemTagPtr);
+!!SN:Mi^radioDlg_values^/d1 Vi^radioDlg_values^/-1/(itemValue);
+
+!!VRi^radioDlg_selectedItemInd^&(selectItem)<>(FALSE):Si^radioDlg_numItems^;
+!!VRi^radioDlg_numItems^:+1;
+
+!?FU(RadioDlg_AddItems);
+; Adds up to 5 items to radio dialog. For detailed arguments description see (RadioDlg_AddItem).
+!#VA(firstItemCaptionPtr:x);
+!#VA(firstItemValue:x);
+!#VA(firstItemTagPtr:x);
+
+!!FU:A?(numArgs:y);
+!!VR(numItems:y):S(numArgs) :3;
+!!FU&(numItems)<=0:E;
+
+!!re i/0/(numItems)/1/-1;
+  !!VR(argCaptionPtr:y):Si *3 +(@firstItemCaptionPtr);
+  !!VR(argValuePtr:y):  Si *3 +(@firstItemValue);
+  !!VR(argTagPtr:y):    Si *3 +(@firstItemTagPtr);
+  !!FU(RadioDlg_AddItem):Px(argCaptionPtr)/x(argValuePtr)/x(argTagPtr);
+!!en;
+
+!?FU(RadioDlg_GetNumItems);
+; Returns number of items, added to dialog
+!#VA(result:x);
+
+!!VR(result):Si^radioDlg_numItems^;
+
+!?FU(RadioDlg_GetItemValue);
+; Returns value of specified item or throws error in case of invalid index.
+!#VA(itemInd:x);
+!#VA(result:x);
+
+!!if|(itemInd)<0/(itemInd)>=i^radioDlg_numItems^;
+  !!VR(result):S-1;
+  !!SN:F^ShowErmError^/^RadioDlg_GetItemValue: invalid item index %(itemInd). Found %i(radioDlg_numItems) items in dialog^;
+  !!FU:E;
+!!el;
+  !!SN:Vi^radioDlg_values^/(itemInd)/?(result);
+!!en;
+
+!?FU(RadioDlg_GetItemTag);
+; Returns tag of specified item or throws error in case of invalid index.
+!#VA(itemInd:x);
+!#VA(result:x);
+
+!!if|(itemInd)<0/(itemInd)>=i^radioDlg_numItems^;
+  !!VR(result):S-1;
+  !!SN:F^ShowErmError^/^RadioDlg_GetItemTag: invalid item index %(itemInd). Found %i(radioDlg_numItems) items in dialog^;
+  !!FU:E;
+!!el;
+  !!SN:Vi^radioDlg_tags^/(itemInd)/?s^temp^;
+  !!VR(result):Zs^temp^;
+  !!VRs^temp^:S^^;
+!!en;
+
+!?FU(RadioDlg_Show);
+; Display previously configured radio dialog with single possible choice.
+; Currently maximum RADIO_DLG_MAX_ITEMS (-1 for cancel button) items can be added to the dialog.
+; Returns selected item index, value and tag. Item index is (NO_RADIO_DLG_ITEM) if no items are present for selection
+; or Cancel button was pressed.
+!#VA(resultItem:x);   Default: (NO_RADIO_DLG_ITEM).
+!#VA(resultValue:x);  Default: -1.
+!#VA(resultTagPtr:x); Default: ^^.
+
+!!VR(resultItem):S(NO_RADIO_DLG_ITEM);
+!!VR(resultValue):S-1;
+!!VR(emptyStr:z):S^^;
+!!VR(resultTagPtr):S(@emptyStr);
+
+!!VR(numItems:y):Si^radioDlg_numItems^;
+!!FU&(numItems)<=0:E;
+
+!!FU(NewStrArray):P?(captions:y);
+!!FU(Array_Copy):Pi^radioDlg_captions^/(captions);
+!!FU(NewStrArray):P?(tags:y);
+!!FU(Array_Copy):Pi^radioDlg_tags^/(tags);
+!!FU(NewIntArray):P?(values:y);
+!!FU(Array_Copy):Pi^radioDlg_values^/(values);
+
+!!VR(titlePtr:y):Zs^radioDlg_title^;
+!!VR(flags:y):Si^radioDlg_flags^;
+!!VR(selectedItemInd:y):Si^radioDlg_selectedItemInd^;
+
+!!VR(hasCancelBtn:y):S(flags) &(RADIO_DLG_FLAG_BTN_CANCEL) F(FALSE)/(TRUE);
+
+!!if&(selectedItemInd)=(NO_RADIO_DLG_ITEM);
+  !!if&(hasCancelBtn)<>(FALSE);
+    !!VR(selectedItemInd):S(numItems);
+  !!el;
+    !!VR(selectedItemInd):S0;
+  !!en;
+!!en;
+
+!!VR(selectionMask:y):S1 Sd<<(selectedItemInd);
+!!SN&(hasCancelBtn)<>(FALSE):V(captions)/(numItems)/^%T(era.buttons.cancel)^;
+
+!#VA(itemCaptions[RADIO_DLG_MAX_ITEMS]:y);
+
+!!re i/0/(itemCaptions[SIZE])/1/-1;
+  !!SN:V(captions)/i/?s^temp^;
+  !!VR(itemCaptions[i]):Zs^temp^;
+!!en;
+
+!!VR(savedV1:y):Sv1;
+!!IF:G(TRUE)/1/(selectionMask)/z(titlePtr)/z(itemCaptions[0])/z(itemCaptions[1])/z(itemCaptions[2])/z(itemCaptions[3])/
+                                           z(itemCaptions[4])/z(itemCaptions[5])/z(itemCaptions[6])/z(itemCaptions[7])/
+                                           z(itemCaptions[8])/z(itemCaptions[9])/z(itemCaptions[10])/z(itemCaptions[11]);
+!!VR(selectionMask):Sv1;
+!!VRv1:S(savedV1);
+
+!!FU(IntLog2):P(selectionMask)/?(resultItem);
+
+!!if&(hasCancelBtn)<>(FALSE)/(resultItem)=(numItems);
+  !!VR(resultItem):S(NO_RADIO_DLG_ITEM);
+!!el;
+  !!SN:V(values)/(resultItem)/?(resultValue);
+  !!SN:V(tags)/(resultItem)/?s^temp^;
+  !!VR(resultTagPtr):Zs^temp^;
+!!en;
+
+!!VRs^temp^:S^^;
 ; ============= END DIALOGS =============
 
 

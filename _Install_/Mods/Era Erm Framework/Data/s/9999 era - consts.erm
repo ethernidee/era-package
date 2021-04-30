@@ -574,6 +574,17 @@ ZVSE2
 ; =======  SPELL SCHOOLS  =======
 
 
+; =======  SPELL TEXTS FOR SN_H  =======
+!#DC(SPELL_TEXT_NAME)           = 0;
+!#DC(SPELL_TEXT_SHORT_NAME)     = 1;
+!#DC(SPELL_TEXT_DESCR)          = 2;
+!#DC(SPELL_TEXT_DESCR_BASIC)    = 3;
+!#DC(SPELL_TEXT_DESCR_ADVANCED) = 4;
+!#DC(SPELL_TEXT_DESCR_EXPERT)   = 5;
+!#DC(SPELL_TEXT_SOUND)          = 6;
+; =======  SPELL TEXTS FOR SN_H  =======
+
+
 ; ===============  SPELLS  ===============
 !#DC(NO_SPELL)                    = -1;
 !#DC(ANY_SPELL)                   = -1;
@@ -1347,15 +1358,13 @@ ZVSE2
 !#DC(SIZEOF_PTR)    = 4;
 !#DC(SIZEOF_ZSTR)   = 512;
 
+!#DC(SIZEOF_SPELL_STRUCT)            = 136; size of game Spell structure
 !#DC(SIZEOF_WIN32_FIND_DATA)         = 320; size of WIN32_FIND_DATAA structure
-!#DC(SIZEOF_WIN32_FIND_DATA_IN_INTS) = 80; size of WIN32_FIND_DATAA structure in int32 integers
+!#DC(SIZEOF_WIN32_FIND_DATA_IN_INTS) = 80;  size of WIN32_FIND_DATAA structure in int32 integers
 ; ===========  END DATA TYPES  ===========
 
 
 ; =================  DIALOGS  =================
-!#DC(RADIO_DLG_SINGLE)   = 0;
-!#DC(RADIO_DLG_MULTIPLE) = 1;
-
 !#DC(DLG_BOX_SHADOW_WIDTH) = 8;
 
 !#DC(DLG_ADVMAP)              = 4205280;
@@ -1564,6 +1573,7 @@ ZVSE2
 !#DC(ADDR_GAME_SCREEN_WIDTH)    = 4199496;
 !#DC(ADDR_GAME_SCREEN_HEIGHT)   = 4199503;
 !#DC(ADDR_MARKED_SAVEGAME_NAME) = 6828940; Buffer, holding selected item in Save/Load dialog
+!#DC(ADDR_WOG_SPELLS_TABLE)     = 8114880; All SS commands operate this table
 ; ===========  END USEFUL ADDRESSES  ===========
 
 
@@ -1661,6 +1671,13 @@ ZVSE2
 !#DC(STRUCT_COMBATMAN_ATTACKER_ARMY)    = 21700; pointer to array of 14 ints: 7 for monster types, 7 for monster quantities
 !#DC(STRUCT_COMBATMAN_DEFENDER_ARMY)    = 21704; pointer to array of 14 ints: 7 for monster types, 7 for monster quantities
 !#DC(STRUCT_COMBATMAN_IS_WAITING_PHASE) = 81380; boolean. TRUE for phase, where previosly waited stacks do act
+
+!#DC(STRUCT_SPELL_NAME)           = 16;
+!#DC(STRUCT_SPELL_SHORT_NAME)     = 20;
+!#DC(STRUCT_SPELL_DESCR)          = 120;
+!#DC(STRUCT_SPELL_DESCR_BASIC)    = 124;
+!#DC(STRUCT_SPELL_DESCR_ADVANCED) = 128;
+!#DC(STRUCT_SPELL_DESCR_EXPERT)   = 132;
 
 !#DC(STRUCT_WIN32_FIND_DATA_ATTRS)    = 0;  int32 file attributes
 !#DC(STRUCT_WIN32_FIND_DATA_FILENAME) = 44; buffer with file name
