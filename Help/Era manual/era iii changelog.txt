@@ -1,4 +1,115 @@
-Version 3.7.0 (04/2020)
+Version 3.8.1 (06/2021)
+------------------------
+[+] Implemented composite png images support.
+    When any png image is loaded, a background from another pcx8/pcx16 (or their png replacement) image may be applied to form final composite image.
+    This behavior is controlled via json configs. Example, making all "Load Game" button frames composite images:
+
+    {
+      "era": {
+        "png_backs": {
+          "data/defs/zmenulg.def/0_0.png": {
+            "file": "zpic1005.pcx16",
+            "x": "533",
+            "y": "132",
+          },
+
+          "data/defs/zmenulg.def/0_1.png": {
+            "file": "zpic1005.pcx16",
+            "x": "533",
+            "y": "132",
+          },
+
+          "data/defs/zmenulg.def/0_2.png": {
+            "file": "zpic1005.pcx16",
+            "x": "533",
+            "y": "132",
+          },
+
+          "data/defs/zmenulg.def/0_3.png": {
+            "file": "zpic1005.pcx16",
+            "x": "533",
+            "y": "132",
+          },
+        }
+      }
+    }
+
+    Here "era.png_backs" is config section. Specify relative path to png image in a lower case as subkey and the following parameters in value:
+    - "file": pcx file name of background. Use "*.pcx" extension for pcx8 (256 colors with transparency) and "*.pcx16" for pcx16 (65536 colors without transparency).
+              The real resource name for "*.pcx16" extension is "*.pcx", but the extension tells Era, which image format to use. If there is png replacement for pcx
+              image, it will be used instead.
+    - "x":    x-coordinate in background image to start drawing from.
+    - "y":    y-coordinate in background image to start drawing from.
+
+    Composite images allow to have semi-transparency in game buttons. Original game buttons frames were made with pre-applied background like main menu background (zpic1005.pcx).
+    Thus all skin makers had to apply fixed background to each button frame. From now we are able to release skins, which will suit any backgrounds. We are also able to apply
+    fixed background for icons, monster portraits and skills, supplying foreground images in png format with transparent areas.
+
+[+] Implemented real png cropping in memory. Memory consumption was highly reduced for images with large perimeter transparent areas.
+
+[+] Implemented stable multiplayer battles support by introducing deterministic pseudo random number generator in PvP battles. Thanks to ZVS for idea.
+    Deterministic generator influences all calls to rand() function, including native creature abilities, stack experience abilities and VR:R command.
+    The state of generator is formed by the following values: [Combat round, Min value to generate, Combat ID, Max value to generate, Combat action ID], where Combat ID is truly random value for each combat, Combat round is round counter and Combat action ID is action counter.
+
+[+] Added "DebugRng" option to heroes3.ini. If set to 1, rand/srand/VR:R commands will generate debug messages.
+
+[+] acredit.smk main menu animation position does not depend on Rus/Eng switch in zmess00.txt. The coordinates are not hardcoded anymore and are stored in
+    json config file in "era.acredit_pos.x" and "era.acredit_pos.y" keys.
+
+[+] Added new Javascript utility to convert UN:C patches into binary patches. See "Tools/UncToBin/index.html".
+[+] Included optional binary patch "disable darkness dragons map shadowing.bin.off" in WoG mod.
+[+] Added missing constants to Era Erm Framework. New constants for hero classes: HERO_CLASS_XXX.
+[+] Updated Erm Editor.
+[*] "no prisons on random maps.bin" binary patch is on by default.
+[-] Fixed game random number generator behavior: reseeding does not influence Mersenne Twister generator state anymore. VR:T will not return the same values after battle.
+
+
+Version 3.8.0 (05/2021)
+------------------------
+[+] Improved png support for def frames. Fixed known bugs and added support for adventure map objects.
+
+    For shadows use 12.5%..75% transparent black color. The most often used shadow is 50% transparent black.
+    For adventure map objects with flags use $FFFF00 (yellow) color as flag color placeholder.
+
+    Png frames may have different sizes, but it's recommended to keep their dimensions in def bounds. For EML texts png frames may have any sizes.
+    F12 clears png frames cache, allowing to test changes immediately.
+
+    Png images without transparency are drawn at least 4X faster than images with at least single transparent pixel.
+
+[+] Added support for pcx replacement with png images. Replaced pcx files may not exist if corresponding png file exists.
+    To replace pcx image with png image place png file in the following location:
+    "Mods/YourMod/Data/Pcx/[any directories, possibly nested...]\[pcx file name without extension].png".
+    Example: "Heroes 3/Mods/Mixed Neutrals/Data/Pcx/Test/zpic1005.png" for main menu background (zpic1005.pcx).
+
+    Many interface pcx images in game are colorized with current player color using 32-color pal-palettes.
+    For instance, town interface background (hd_towns.pcx in HD mod). Era supports two ways of png image colorization.
+    The first one using single image for all player colors, like it's done in original game resources.
+    Use special 32 colors from the following files to draw colorizable areas:
+
+      - Help/player interface palette.pal
+      - Help/player interface palette.png
+
+    The second way it to provide unique image for specific player color, for instance for purple (ID: 5).
+    In this case your png image should have the following name:
+    "Mods/YourMod/Data/Pcx/[any directories, possibly nested...]\[pcx file name without extension]_p[player ID].png".
+    Example: "Heroes 3/Mods/Mixed Neutrals/Data/Pcx/Test/HD_TownS_p5.png" for purple player.
+
+      0 red
+      1 blue
+      2 tan
+      3 green
+      4 orange
+      5 purple
+      6 teal
+      7 pink
+
+    Both methods may be combined. If Era does not find a separate image for particular player, it tries to use common png,
+    replacing fixed 32 color codes with player palette colors.
+
+[+] Doubled Era associative arrays performance, affecting most Era and VFS code. Updated vfs.dll.
+
+
+Version 3.7.0 (04/2021)
 ------------------------
 [+] Added new SN:H syntax to work with spell texts.
 
@@ -57,7 +168,7 @@ Version 3.7.0 (04/2020)
 [*] Updated Erm Editor and Era Erm Framework.
 
 
-Version 3.6.0 (04/2020)
+Version 3.6.0 (04/2021)
 ------------------------
 [+] Implemented def frames replacement with png images. Replacement occurs on the fly when game asks to draw def frame.
     Real def frame may be missing, but a def file itself must exist. It may have any dimensions, but preferrable height should
@@ -90,12 +201,12 @@ Version 3.6.0 (04/2020)
     preserve user settings. "heroes 3.ini" will be automatically created when any in-game setting is changed.
 
 
-Version 3.5.1 (04/2020)
+Version 3.5.1 (04/2021)
 ------------------------
 [-] Fixed bug: spaces after comparison operators (<, >, =, <>) were still not ignored.
 
 
-Version 3.5.0 (04/2020)
+Version 3.5.0 (04/2021)
 ------------------------
 [+] Rewritten part of old ERM engine, which was responsible for conditions evaluations.
 
@@ -137,7 +248,7 @@ Version 3.5.0 (04/2020)
   !!VR(inputText:z):S^test^;
   !!IF&(inputText)/(inputText)<>^secret password^:M^You have entered wrong password!^; same as &(inputText)<>^^/(inputText)<>^secret password^
 
-Version 3.4.3 (04/2020)
+Version 3.4.3 (04/2021)
 ------------------------
 [+] Added new ERM command VR:B. It converts any number to boolean (1 or 0). Any non-zero value becomes 1.
 
@@ -151,7 +262,7 @@ Version 3.4.3 (04/2020)
   !!en;
 
 
-Version 3.4.2 (04/2020)
+Version 3.4.2 (04/2021)
 ------------------------
 [+] Added the following functions to Era Erm Framework:
 
@@ -172,7 +283,7 @@ Version 3.4.2 (04/2020)
 [+] Updated ERM Editor.
 [-] Fixed black background in Credits menu.
 
-Version 3.4.1 (04/2020)
+Version 3.4.1 (04/2021)
 ------------------------
 [+] (CURRENT_HERO) constant (-1) can be safely used in triggers from now. Previosly this global value could be overwritten by nested events.
 
@@ -264,7 +375,7 @@ Version 3.4.1 (04/2020)
     !#VA(resultValue:x);  Default: -1.
     !#VA(resultTagPtr:x); Default: ^^.
 
-Version 3.4.0 (04/2020)
+Version 3.4.0 (04/2021)
 ------------------------
 [+] Added possibility to use animated defs in DL-dialogs. Just append " animated" to dialog item name to make it animated. Example: "Def" => "Def animated".
     Up to 10 animated defs are supported for each dialog. Animation speed is 10 frames per second. One single DEF group of frames is used.
@@ -497,7 +608,7 @@ Version 3.4.0 (04/2020)
 [-] Fixed invalid spells count for Thunder Lord in zcrtrait.txt. Credits: Archer30.
 
 
-Version 3.3.0 (01/2020)
+Version 3.3.0 (01/2021)
 ------------------------
 [+] Implemented support for colored texts and Era Markup Language in general for all HD mod modes now.
 [+] It became possible to enter invisible tags in edit fields using "{" and "}". This behavior may be changed in future.
