@@ -1,3 +1,18 @@
+Version 3.8.2 (06/2021)
+------------------------
+[+] Updated patcher_x86.dll patching library. Credits: baratorch.
+[+] Updated "wog native dialogs.era" plugin. Credits: igrik.
+[+] Updated "game bug fixes extended.era" plugin. Credits: igrik.
+
+[*] The following changes were made to Era Erm Framework:
+  - (MON_ANTICHRIST) constant was renamed to (MON_HELL_BARON). Credits: Archer30.
+  - Changed "GetMaxMonsterId" function to use SoD address instead of WoG for better compatibility with other plugins.
+
+[+] Updated Erm Editor.
+[-] Fixed "disable darkness dragons map shadowing.bin.off" patch. Credits: Hawaiing.
+[-] Removed "campaign heroes as start heroes.bin.off" binary patch, which was incompatible with HD mod.
+
+
 Version 3.8.1 (06/2021)
 ------------------------
 [+] Implemented composite png images support.
