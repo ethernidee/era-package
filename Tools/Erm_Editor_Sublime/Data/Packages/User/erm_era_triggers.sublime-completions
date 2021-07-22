@@ -24,6 +24,7 @@
       { "trigger": "OnAfterSaveGame", "contents": "OnAfterSaveGame" },
       { "trigger": "OnAfterTacticsPhase", "contents": "OnAfterTacticsPhase" },
       { "trigger": "OnAICalcStackAttackEffect", "contents": "OnAICalcStackAttackEffect" },
+      { "trigger": "OnBattleActionEnd", "contents": "OnBattleActionEnd" },
       { "trigger": "OnBattlefieldVisible", "contents": "OnBattlefieldVisible" },
       { "trigger": "OnBattleMouseHint", "contents": "OnBattleMouseHint" },
       { "trigger": "OnBattleRegeneratePhase", "contents": "OnBattleRegeneratePhase" },

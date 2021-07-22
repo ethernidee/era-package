@@ -524,7 +524,7 @@ ZVSE2
 !#DC(MON_SUPREME_ARCHANGEL)   = 150;
 !#DC(MON_DIAMOND_DRAGON)      = 151;
 !#DC(MON_LORD_OF_THUNDER)     = 152;
-!#DC(MON_ANTICHRIST)          = 153;
+!#DC(MON_HELL_BARON)          = 153;
 !#DC(MON_BLOOD_DRAGON)        = 154;
 !#DC(MON_DARKNESS_DRAGON)     = 155;
 !#DC(MON_GHOST_BEHEMOTH)      = 156;
@@ -1536,6 +1536,7 @@ ZVSE2
 ; =========  H3 DIALOG COMMANDS  =========
 !#DC(DLG_CMD_SET_TEXT)      = 3;
 !#DC(DLG_CMD_SET_DEF_FRAME) = 4;
+!#DC(DLG_CMD_SET_DEF)       = 9;
 !#DC(DLG_CMD_SET_PCX)       = 11;
 
 !#DC(DLG_CMD_TYPE_DEFAULT) = 512; Default command type for most in-game dialogs

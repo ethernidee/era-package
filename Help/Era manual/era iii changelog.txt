@@ -1,3 +1,36 @@
+Version 3.8.5 (07/2021)
+------------------------
+[+] Added new event "OnBattleActionEnd", occuring right after battle action, but before checking if battle is ended, before selecting next active stack and before starting new round or autoclosing the moat.
+
+  Events order is the following:
+  "OnBeforeBattleAction"
+  >>> "OnBattleActionEnd" <<<
+  "OnBattleRound"
+  "OnBeforeBattleStackTurn"
+  "OnBattleStackObtainsTurn"
+  "OnAfterBattleAction"
+
+[+] The following changes were made to Era Erm Framework:
+  - Added (DLG_CMD_SET_DEF) constant.
+
+[*] Updated Erm editor.
+
+
+Version 3.8.4 (07/2021)
+------------------------
+[+] Era uses two separate Mersenne Twister generators now.
+  The first one is used as native rand()/srand()/VR:R replacement for all cases except of pre-battle configuration, network PvP battle and VR:T command.
+  The second one is used for VR:T and always produces unique values, not influenced by game generator reseeding.
+  Pre-battle configuration uses original rand() implementation in order to keep battlefield obstacles the same, as mapmaker saw them during development. During network PvP battle fully deterministic random generator is used as was described earlier in changelog with additional unique integer field for each battle. That generator depends mostly on round and action counters.
+
+[-] Fixed WoG bug: NoMoreTactic function was not called for opposite side in battle, which could lead to wrong round numbers and desynchronization.
+
+
+Version 3.8.3 (06/2021)
+------------------------
+[-] Fixed HE:P command. Previosly if new coordinates were the same as previous hero coordinates, no visual update was performed.
+
+
 Version 3.8.2 (06/2021)
 ------------------------
 [+] Updated patcher_x86.dll patching library. Credits: baratorch.

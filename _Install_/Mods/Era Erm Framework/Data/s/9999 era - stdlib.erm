@@ -2227,7 +2227,7 @@ ZVSE2
 ; monsters, resulting in max ID = 9999, for instance.
 !#VA(result:x);
 
-!!UN:C7549734/(UNC_INT)/?(result);
+!!UN:C4855383/(UNC_INT)/?(result);
 !!VR(result):-1;
 
 !?FU(GetUpgradedMonster);
