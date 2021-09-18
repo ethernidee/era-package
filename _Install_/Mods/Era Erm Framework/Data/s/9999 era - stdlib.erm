@@ -1551,7 +1551,7 @@ ZVSE2
 !#VA(h3Dlg:x); H3 dialog object address
 
 !!FU(H3Dlg_StopAnimation):P;
-!!SN:E6245264/2/(h3Dlg);
+!!SN:E6245264/(CALLCONV_THISCALL)/(h3Dlg);
 !!FU(H3Dlg_ResumeAnimation):P;
 
 !?FU(H3Dlg_Coords);
@@ -2053,6 +2053,18 @@ ZVSE2
 !!en;
 
 !!VRs^temp^:S^^;
+
+!?FU(ShowAnimatedDefDlg);
+; Displays message dialog with OK button, text and leading animated def.
+!#VA(textPtr:x);    Text to show
+!#VA(defNamePtr:x); Optional. Name of def to show animation for or empty string.
+
+!!if|(defNamePtr)=0/z(defNamePtr)=^^;
+  !!IF:M1/z(textPtr);
+!!el;
+  !!SN:E7814514/(CALLCONV_CDECL)/z(textPtr)/z(defNamePtr);
+!!en;
+
 ; ============= END DIALOGS =============
 
 
@@ -2264,3 +2276,61 @@ ZVSE2
 !!UN:C4960750/(UNC_INT)/?(result);
 !!VR(result):-1;
 ; ============ END HEROES ============
+
+
+; ============== ARTIFACTS ==============
+!?FU(GetHeroPrimarySkillsWithoutArts);
+; Returns hero real primary skills without artifacts. Enequips all artifacts to get values and reequipts afterwards,
+; thus triggering OnEquipArt and OnUnequipArt events.
+!#VA(hero:x);      Hero ID or (CURRENT_HERO).
+!#VA(attack:x);    Out. Attack value.
+!#VA(defense:x);   Out. Defense value.
+!#VA(power:x);     Out. Power value.
+!#VA(knowledge:x); Out. Knowledge value.
+
+!#VA(equippedArts[19]:y);
+
+!!re (slot:y)/0/(equippedArts[SIZE])/1/-1;
+  !!HE(hero):A1/?(art:y)/(slot);
+  !!VR(equippedArts[slot]):S(NO_ART);
+
+  !!if&(art)<>(ART_HIGHLIGHTED_SLOT)/(art)<>(ART_ARTIFACT_LOCK);
+    !!VR(equippedArts[slot]):S(art);
+    !!FU(UnequipArtFromSlot):P(hero)/(slot);
+  !!en;
+!!en;
+
+!!HE(hero):F?(attack)/?(defense)/?(power)/?(knowledge);
+
+!!re (slot:y)/0/(equippedArts[SIZE])/1/-1;
+  !!VR(art):S(equippedArts[slot]);
+  !!FU(EquipArtToSlot)&(art)<>(NO_ART):P(hero)/(art)/-1/(slot);
+!!en;
+
+!?FU(EquipArtToSlot);
+; Tries to put artifact to specified hero doll slot, triggering OnEquipArt event. Returns success flag.
+!#VA(hero:x);   ID of hero to equip artifact to.
+!#VA(art:x);    ID of artifact to equipt.
+!#VA(slot:x);   ID of hero doll slot to put artifact in or (NO_ART_SLOT) for autodetection.
+!#VA(result:x); Boolean. Success flag.
+
+!!if|(slot)<(NO_ART_SLOT)/(slot)>(ART_SLOT_MISC_5);
+  !!VR(result):S(FALSE);
+  !!FU:E;
+!!en;
+
+!!UN:C(GAME_MANAGER)/(UNC_INT)/?(gameManager:y);
+!!HE(hero):Z?(heroStruct:y);
+!!VR(savedV1:y):Sv1;
+!!SN:E5123184/(CALLCONV_THISCALL)/(heroStruct)/?(art)/(slot);
+!!VR(result):Sv1 &1;
+!!VRv1:S(savedV1);
+
+!?FU(UnequipArtFromSlot);
+; Tries to unquip artifact from specified hero doll slot, triggering OnUnequipArt event. Returns success flag.
+!#VA(hero:x);   ID of hero to equip artifact to.
+!#VA(slot:x);   ID of hero doll slot to put artifact in.
+
+!!HE(hero):Z?(heroStruct:y);
+!!SN:E5123648/(CALLCONV_THISCALL)/(heroStruct)/(slot);
+; ============ END ARTIFACTS ============

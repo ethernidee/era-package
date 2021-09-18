@@ -6,9 +6,6 @@
 		"author" : "Aliaksei SyDr Karalenka",
 		"language" : "Язык"
 	},
-	"menu" : {
-		"report_bug" : "Сообщить об ошибке"
-	},
 	"mod_list" :
 	{
 		"mod" : "Мод",

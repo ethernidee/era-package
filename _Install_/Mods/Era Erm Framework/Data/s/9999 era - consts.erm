@@ -692,6 +692,7 @@ ZVSE2
 
 
 ; =========  HERO ARTIFACT SLOTS  =========
+!#DC(NO_ART_SLOT)                = -1;
 !#DC(ART_SLOT_HEAD)              = 0;
 !#DC(ART_SLOT_SHOULDERS)         = 1;
 !#DC(ART_SLOT_NECK)              = 2;
@@ -716,6 +717,16 @@ ZVSE2
 !#DC(ART_SLOT_BACKPACK_FIRST)    = 19;
 !#DC(ART_SLOT_BACKPACK_LAST)     = 82;
 ; =======  END HERO ARTIFACT SLOTS  =======
+
+
+; =========  HERO ARTIFACT LEVELS  =========
+!#DC(ART_LEVEL_RANDOM)   = -1;
+!#DC(ART_LEVEL_SPECIAL)  = 1; // Spell book/scroll and war machines
+!#DC(ART_LEVEL_TREASURE) = 2;
+!#DC(ART_LEVEL_MINOR)    = 4;
+!#DC(ART_LEVEL_MAJOR)    = 8;
+!#DC(ART_LEVEL_RELIC)    = 16;
+; =======  END HERO ARTIFACT LEVELS  =======
 
 
 ; ===============  ARTIFACTS  ===============
@@ -1269,6 +1280,7 @@ ZVSE2
 !#DC(BMG_FIELD_NUM_DISPLAYED_MONS) = -82;  number of displayed monsters or BMG_FIELD_VALUE_DISPLAY_REAL_NUM_MONS. May differ from real number and is changed in many events
 !#DC(BMG_FIELD_IRRECOVERABLE_LOSS) = -81;  number of monsters, that will disappear from stack after battle
 !#DC(BMG_FIELD_MORALE)             = 212;  value is recalculated before "OnBeforeAction" and "OnAfterAction" events
+!#DC(BMG_FIELD_LUCK)               = 213;  value is recalculated before "OnBeforeAction" and "OnAfterAction" events
 ; ===========  END BM:G FIELD OFFSETS  ===========
 
 
@@ -1588,7 +1600,7 @@ ZVSE2
 !#DC(PIC_TYPE_SKILL_DEFENSE)            = 32;
 !#DC(PIC_TYPE_SKILL_KNOWLEDGE)          = 33;
 !#DC(PIC_TYPE_SKILL_POWER)              = 34;
-!#DC(PIC_TYPE_PRIM_SKILL_LAST)          = 34;
+!#DC(PIC_TYPE_PRIM_SKILL_LAST)          = (PIC_TYPE_SKILL_POWER);
 !#DC(PIC_TYPE_SPELL_POINTS)             = 35;
 !#DC(PIC_TYPE_MONEY)                    = 36;
 ; =======  END H3 DIALOG PICTURE TYPES  =======
@@ -1835,13 +1847,3 @@ ZVSE2
 !#DC(ORD_UPPER_Y) = 89;
 !#DC(ORD_UPPER_Z) = 90;
 ; =============  CHARACTER_CODES  =============
-
-
-; =============  DEPRECATED  =============
-; Deprecated SN:M constants
-!#DC(SN_M_AUTO_ID)       = -1;
-!#DC(SN_M_INT)           = 0;
-!#DC(SN_M_STR)           = 1;
-!#DC(SN_M_STORED)        = 1;
-!#DC(SN_M_TEMP)          = 0;
-!#DC(SN_M_TRIGGER_LOCAL) = -1;

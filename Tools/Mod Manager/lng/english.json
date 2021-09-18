@@ -1,14 +1,13 @@
 {
-	"lang" : {
+	"lang" :
+	{
 		"code" : "en_US",
 		"name" : "English",
 		"author" : "Aliaksei SyDr Karalenka",
 		"language" : "Language"
 	},
-	"menu" : {
-		"report_bug" : "Report a bug"
-	},
-	"mod_list" : {
+	"mod_list" :
+	{
 		"mod" : "Mod",
 		"caption" : "Mod list (%s)",
 		"no_game_dir" : "no game dir - select from \"Tools\"",

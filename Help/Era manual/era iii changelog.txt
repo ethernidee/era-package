@@ -1,3 +1,101 @@
+Version 3.9 (09/2021)
+------------------------
+[+] Added support for zip archives. All zip archives from "Data" directory are automatically scanned for PNG files at game start.
+    The inner structure of zip archives should be the same as if all files/directories were stored directly in game root directory.
+    For instance, zip archive "Mods/TestMod/Data/test_archive.zip" could have the following contents:
+    -  Data/Defs/cefres.def/0_0.png
+    -  Data/Defs/cefres.def/0_1.png
+    -  Data/Defs/cefres.def/0_2.png
+
+    The best approach is to compress each PNG image using tools like "pngcrush" and create zip archives with 0-level compression.
+    Non-zero zip-compression will increase total files size and will slow down the process of resources loading.
+    Files in real directories have priority over files in zip-archives and thus should be avoided.
+
+[+] Added PNG support for battle creatures, including support for clone/blood lust/petrification effects.
+
+[+] Added support for shadows in PNG frames for adventure map objects and battle creatures. Shadow can now be implemented not only in the form of black color with alpha channel,
+    but using the following opaque reserved colors:
+    - #FF00FF (50%   shadow opacity)
+    - #FF96FF (37.5% shadow opacity)
+    - #FF64FF (25%   shadow opacity)
+    - #FF32FF (12.5% shadow opacity)
+
+[+] Added support for separate DEF PNG frames redirections.
+    Command template: SN:R^defname.def:groupIndex_frameIndex.png^/^new path to png, relative to root directory.png^.
+    Prefer to use single backslashes as path separators in order to avoid "a\test.png" and "a/test.png" to be loaded and cached as different images.
+
+  Example:
+  !!SN:R^cefres.def:1_0.png^/^Data\Defs\cefres.def\5_6.png^;
+
+[+] Added the following functions to Era Erm Framework:
+
+  !?FU(ShowAnimatedDefDlg);
+  ; Displays message dialog with OK button, text and leading animated def.
+  !#VA(textPtr:x);    Text to show
+  !#VA(defNamePtr:x); Optional. Name of def to show animation for or empty string.
+
+  !?FU(GetHeroPrimarySkillsWithoutArts);
+  ; Returns hero real primary skills without artifacts. Enequips all artifacts to get values and reequipts afterwards,
+  ; thus triggering OnEquipArt and OnUnequipArt events.
+  !#VA(hero:x);      Hero ID or (CURRENT_HERO).
+  !#VA(attack:x);    Out. Attack value.
+  !#VA(defense:x);   Out. Defense value.
+  !#VA(power:x);     Out. Power value.
+  !#VA(knowledge:x); Out. Knowledge value.
+
+  !?FU(EquipArtToSlot);
+  ; Tries to put artifact to specified hero doll slot, triggering OnEquipArt event. Returns success flag.
+  !#VA(hero:x);   ID of hero to equip artifact to.
+  !#VA(art:x);    ID of artifact to equipt.
+  !#VA(slot:x);   ID of hero doll slot to put artifact in or (NO_ART_SLOT) for autodetection.
+  !#VA(result:x); Boolean. Success flag.
+
+  !?FU(UnequipArtFromSlot);
+  ; Tries to unquip artifact from specified hero doll slot, triggering OnUnequipArt event.
+  !#VA(hero:x);   ID of hero to equip artifact to.
+  !#VA(slot:x);   ID of hero doll slot to put artifact in.
+
+[+] Increased number of battle rounds before fast finish in quick battles from 30 to 100.
+
+[+] Restored default positioning of adventure map hint dialogs. They will not be centered anymore, but appear at the place of mouse click.
+    In addition most of popup dialogs with text and 1..3 pictures will appear
+    at the place of mouse click, but only in adventure map screen, town screen, hero screen, hero meeting screen and battle screen.
+
+[+] Updated Mod Manager to v.0.96.6.16 beta. Credits: SyDr.
+[*] Changed dpwsockx.dll library to v4.07.00.0700, used in Era Launcher Edition assembly.
+[-] Fixed WoG bug: Blood Dragons used to have only 20% aging chance instead of 40%.
+[-] Removed all *.msg files from hmm35wog.pac.
+[-] Removed heroscr3.pcx and heroscr4.pcx from hmm35wog.pac.
+[-] Fixed pskl32.def wrong icons ordering. Credits: Archer.
+
+
+Version 3.8.10 (08/2021)
+------------------------
+[+] Added artifact level constants to Era Erm Framework. See ART_LEVEL_XXX.
+[-] Fixed one more mirrored png rendering issue.
+
+
+Version 3.8.9 (08/2021)
+------------------------
+[-] Fixed mirrored png pictures rendering issues.
+
+
+Version 3.8.8 (08/2021)
+------------------------
+[+] Png def frames/pcx replacements honor def/pcx redirections (SN:R) from now.
+[-] Fixed possible crash in png drawing functions.
+
+
+Version 3.8.7 (08/2021)
+------------------------
+[+] Fixed spell animation png frames positioning for non 800x600 game window resolutions.
+
+
+Version 3.8.6 (07/2021)
+------------------------
+[+] Added def png support for spell animations.
+
+
 Version 3.8.5 (07/2021)
 ------------------------
 [+] Added new event "OnBattleActionEnd", occuring right after battle action, but before checking if battle is ended, before selecting next active stack and before starting new round or autoclosing the moat.
@@ -22,6 +120,8 @@ Version 3.8.4 (07/2021)
   The first one is used as native rand()/srand()/VR:R replacement for all cases except of pre-battle configuration, network PvP battle and VR:T command.
   The second one is used for VR:T and always produces unique values, not influenced by game generator reseeding.
   Pre-battle configuration uses original rand() implementation in order to keep battlefield obstacles the same, as mapmaker saw them during development. During network PvP battle fully deterministic random generator is used as was described earlier in changelog with additional unique integer field for each battle. That generator depends mostly on round and action counters.
+
+[+] Added "Debug.Rng" option to heroes3.ini, allowing to debug random number generator.
 
 [-] Fixed WoG bug: NoMoreTactic function was not called for opposite side in battle, which could lead to wrong round numbers and desynchronization.
 
