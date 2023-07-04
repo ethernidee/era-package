@@ -1,3 +1,245 @@
+Version 3.9.5 (07/2023)
+------------------------
+[*] Updated patcher_x86.dll to version 4.17.2.0.
+[*] Updated game bug fixes plugin by igrik to latest version.
+[*] Updated wog native dialogs plugin by igrik to latest version.
+[*] Updated Era Erm Framework to the one from H3 Launcher 2.927.
+[*] Updated vfs.dll to the one from H3 Launcher 2.927.
+[*] Updated Erm Editor Sublime to version 4143.
+[-] Fixed h3era.exe: the executable has no more zdraw.dll dependency.
+[-] Fixed memory leak in LoadPcx8/LoadPcx16 functions, occuring for pcx images, having corresponding png replacements.
+[@] Thanks to Panda, daemon_n and Archer for hints and recommendations.
+
+
+Version 3.9.4 (03/2023)
+------------------------
+[+] ERA finally got new icon. Credits: Nikt, suftfree, Elmore.
+[-] Fixed map description truncation in scrollbar text dialogs without scroll bars.
+
+[+] Added the following functions to Era ERM Framework:
+
+  !?FU(BattleStack_MakeActive);
+  ; Makes specified stack active/acting.
+  !#VA(stackId:x); Stack ID to pass control to.
+
+  !?FU(PrepareMultiPicDialog);
+  ; Initializes IF:N dialog pictures. Call IF:N to show it afterwards.
+  ; Automatically skips pairs with NO_PIC_TYPE type and pairs with PIC_TYPE_MONSTER type and negative subtype.
+  ; Ignores more than 8 non-empty pairs. Always safe to call.
+  ;
+  ; Supports three call syntaxes:
+  ;   P; dialog without pictures
+  ;   P(first picture type)/(first picture subtype)/(second picture type)...
+  ;   P(ID of dynamic array, containing picture pairs)
+
+  !?FU(Array_CountValue);
+  ; Returns number of array items, equal to specified value.
+  !#VA(list:x);            Array ID.
+  !#VA(value:x);           Value to count. Strings are supported.
+  !#VA(result:x);          Result.
+  !#VA(caseInsensitive:x); Optional. If true, strings will be compared case insensitively. Default: false.
+
+  !?FU(Array_IndexOf);
+  ; Returns index of the first array item with specified value or -1 in case of failure.
+  !#VA(list:x);            Array ID.
+  !#VA(value:x);           Value to search for.
+  !#VA(result:x);          Result index or -1 in case of failure.
+  !#VA(caseInsensitive:x); Optional. If true, strings will be compared case insensitively. Default: false.
+
+  !?FU(Array_Find);
+  ; Returns index of the first array item, for which custom callback function returns (TRUE) or -1 in case of failure.
+  !#VA(list:x);      Array ID.
+  !#VA(callback:x);  Callback function F(itemValue, ?result, [listId], [customArg]), where result is (TRUE) or (FALSE). (FALSE) is passed by default.
+                  ;  listID is array ID and customArg is anything, specified as custom argument to Array_Find. Zero by default.
+  !#VA(result:x);    Result index or -1 in case of failure.
+  !#VA(customArg:x); Custom argument to pass to callback as the 4-th parameter.
+
+  Examples:
+
+  !?PI;
+  !!FU(NewStrArray):P?(list:y);
+  !!FU(Array_Push):P(list)/^banana^/^daemon^/^apple^/^juice^/^Apple^/^orange^/^apple^;
+  !!FU(Array_CountValue):P(list)/^apple^/?(numOccurencies:y)/(TRUE);
+  !!IF:M^%(numOccurencies)^; displays 3, because 'apple' occured 3 times in the array
+
+  !!FU(NewStrArray):P?(list:y);
+  !!FU(Array_Push):P(list)/^banana^/^daemon^/^juice^/^Apple^/^orange^/^apple^;
+  !!FU(Array_IndexOf):P(list)/^apple^/?(itemIndex:y);
+  !!IF:M^%(itemIndex)^; displays 5, index of the last array item
+
+  !!FU(NewStrArray):P?(list:y);
+  !!FU(Array_Push):P(list)/^banana^/^daemon^/^juice^/^Apple^/^orange^/^apple^;
+  !!FU(Array_Find):P(list)/(edu_FilterDaemons)/?(itemIndex:y);
+  !!IF:M^%(itemIndex)^; displays 1, because function edu_FilterDaemons returns (TRUE) only for 'daemon_n' and 'daemon' strings.
+
+  !?FU(edu_FilterDaemons);
+  !#VA(strPtr:x);
+  !#VA(result:x);
+
+  !!VR(result)|z(strPtr)=^daemon_n^/z(strPtr)=^daemon^:S(TRUE);
+
+[*] Increased ERM engine static memory buffer size from 3 MB to 10 MB. The buffer is used for temporary strings storage during events and commands execution.
+[*] Debug.LogDestination setting value in heroes3.ini became case insensitive.
+[*] Removed '$OnGameLeave' private event support, used by HD-mod earlier. Added support for 'OnGameLeave' event as a replacement.
+[-] Fixed bug, causing 'TServiceMemAllocator.Alloc failed. No page allocated' error. Memory was leaking if interpolated conditions where used in ERM event conditions.
+[-] Fixed bug: x-variables modifications in "_Quit" events were not transferred to the results of original events.
+[-] Fixed bug: custom network events and FU:D didn't work in battle.
+[-] Fixed issues with HD-mod way of loading game from battle. OnGameEnter/OnGameLeave counter will not be corrupted if HD mod generates "OnGameLeave" event for ERA before quitting game loop. No more need in dollar prefix for event name.
+
+
+Version 3.9.3 (09/2022)
+------------------------
+[+] Rewrote game random number generator (RNG) engine.
+
+  Main changes:
+  - All RNGs are not thread safe now. They should be used in the main thread only.
+  - There are two main RNGs: the global one (rand/srand/VR:R) and the unique one (VR:T).
+  - ERA uses 3 different engines for the global RNG and switches them dynamicly to provide qualitative outputs, the same battle obstacles, as they are in original Heroes 3, and network PvP battles stability.
+  - VR:T generator cannot be seeded anymore. It serves as the source of unpredictable randomness.
+  - At the start of game process, all generators are seeded with cryptographically safe random seeds.
+  - Most of the time Xoroshiro128** engine is used for global RNG. It has both excellent speed and qualitative output.
+  - The global generator engine is switched to native C rand implementation only for the phase of placing battle obstacles.
+  - In network PvP battles the global generator is switched to deterministic one. Deterministic generator uses only the following information: unique battle ID, combat round ID, combat action ID, minimum and maximum value to generate. Thus any attempt to generate a sequence of numbers in the same range will produce the same result for each generation. It's recommended to replace dwarf-style resistence mechanics with golem-style resistence mechanics.
+  - Global RNG is seeded with unique value at battle start/replay, thus the first action and autocasted spells are not deterministic anymore.
+  - Using random functions in before battle and before battlefield visible phases does not influence battle obstacles placing anymore.
+  - Extended "Debug.Rng" setting in "heroes 3.ini". 0 means no debugging, 1 is for seeding, 2 is for seeding and random_range, 3 enables debugging of all rand/srand/random_range calls.
+  - rand() is guaranteed to return 0..32767 value, as it does in original Heroes 3. But random_range (VR:R/VR:T) call can return any value in int32 range (-2147483648..2147483647).
+  - ERA intercepts all rand/srand calls. Previously a few functions were not tracked.
+  - Deterministic RNG for network PvP battles is enabled for the whole battle (excluding obstacles placing stage). Bad morale probability and magic resistence additionaly depend on stack ID, thus producing different results for different stacks. Stack damage calculation additionally depends on iteration counter (game generates up to 10 random values for each stack damage event).
+
+[+] Added new event: "OnBeforePlaceBattleObstacles", occuring after "OnBeforeBattlefieldVisible" event. Global RNG is switched to the native one before calling ERM event and the generator is seeded with the following value: (110291 * map_tile_x + 167801 * map_tile_y + 81569). Thus the same obstacle types and positions are guaranteed for each particular map tile. Using RNG functions in this event will influence obstacles generation. Modder may implement unique obstacles for each battle at this phase or use custom deterministic seed formula.
+
+[+] Added new event "OnAfterPlaceBattleObstacles", occuring after all obstacles are placed on battlefield. Random number generated is switched back to the qualitative one. New custom obstacles may be added in this phase.
+
+[+] Implemented easy-to-use means to generate remote Era events with arbitrary data. The whole process of data compressing/decompressing/splitting/joining is hidden from clients. Support for progress callbacks is implemented. The following exported function was added to era.dll:
+
+  (* Generates remote Era event. Returns 1 if at least an attempt to call remote event was done. False for invalid/empty/too long event name *)
+  function FireRemoteNetworkEvent (
+    DestPlayerId:                   integer; // Destination player ID or -1 for all players
+    EventName:                      pchar;   // Event name like "OnSomethingHappened"
+    {n} Data:                       pointer; // Pointer to buffer with data to send
+    DataSize:                       integer; // Size of the buffer with data
+    {n} ProgressHandler:            TNetworkStreamProgressHandler; // Progress handler function or null
+    {n} ProgressHandlerCustomParam: pointer                        // Custom parameter for progress handler function
+  ): TDwordBool; stdcall;
+
+  Big amounts of data are divided into smaller packets and sent one by one. In this case ProgressHandler function is called after successful packet sending, allowing to abort the stream or update interface. Small packets will be joined automatically on remote side and single event will be generated. Moreover, the data is sent in compressed form, increasing transferring speed. HD Mod Lobby is fully supported.
+
+  TNetworkStreamProgressHandler = function (BytesSent, TotalBytes: integer; {n} CustomParam: pointer): TDwordBool; stdcall;
+
+[+] Erm "FU:D" command was fully rewritten. Fixed bug: HD mod used to disable FU:D on adventure map. From now FU:D supports arbitrary string parameters and d-modifiers.
+[+] Map editor uses "*.msk" files instead of "*.msg" files now.
+[+] ERA will retrieve final addresses to monster, spell, artifact and skill structures in OnAfterStructRelocations event using native pointers to those structures. Credits: Xeromant.
+
+[-] Fixed issues with HD-mod way of loading game from battle. OnGameEnter/OnGameLeave counter will
+    not be corrupted if HD mod generates "$OnGameLeave" event for ERA before quitting game loop.
+
+
+Version 3.9.2 (12/2021)
+------------------------
+[+] Implemented palette colorization support for def png frames.
+    The rules are the same, as for pcx png replacements. Png file should either use special 32 reserved colors or there should exist alternative png file named "groupInd_frameInd_p[player index].png". Example: "dialgbox.def/0_0_p3.png". Alternative files are not used if single png frame redirection is used.
+
+[+] Added new "OnAfterBuildTownBuilding" event, occuring right after town building was built.
+    x-parameters: Town ID, Building ID.
+
+[+] Added new "OnKeyReleased" event, occuring on keyboard key release.
+    Parameters: keyCode, preventDefault.
+
+    Example:
+
+    !?FU(OnKeyReleased);
+    !#VA(key:x) (preventDefault:x);
+    !!IF:M^Released key %(key)^;
+
+[+] Added new events to Era Erm Framework: "OnKeyReleased_AdvMap", "OnKeyReleased_Battle", "OnKeyReleased_HeroScreen",
+    "OnKeyReleased_HeroMeetingScreen", "OnKeyReleased_Town", occuring right after "OnKeyReleased" events and taking two arguments:
+    x1 - key code
+    x2 - prevent default reaction (0 - no, 1 - yes).
+
+    Example:
+
+    !?FU(OnKeyReleased_Battle)&x1=(KEY_F1):;
+    !#VA(key:x) (preventDefault:x);
+
+    !!VR(preventDefault):S(TRUE);
+    !!IF:M^Released F1 in battle!^;
+
+[+] Added the following functions to Era Erm Framework:
+
+  !?FU(H3Dlg_GetCurrentDlgId);
+  ; Returns topmost dialog unique ID (DLG_XXX constant). It may be message box, custom dialog or any in-game dialog.
+  !#VA(result:x);
+
+  !?FU(AddArtToHero);
+  ; Adds artifact to hero, trying to equip it first and fallbacking to putting in backpack. Returns success flag.
+  ; Automatically builds combo arts and checks scenario win conditions.
+  !#VA(hero:x);   ID of hero to equip artifact to.
+  !#VA(art:x);    ID of artifact to equip.
+  !#VA(artMod:x); Artifact modifier or (NO_ART_MOD). For spell scrolls its spell ID. For other artifacts the value is usually ignored.
+                ; Custom artifact modifiers may be implemented. Artifact modifier is always carried with artifact by game functions.
+  !#VA(result:x); Boolean. Success flag.
+
+  !?FU(GetArtAtSlot);
+  ; Returns hero artifact and artifact modifier at given slot.
+  !#VA(hero:x);   Hero ID or (CURRENT_HERO)
+  !#VA(slot:x);   Slot ID (backpack is supported).
+  !#VA(artId:x);  OUT. Artifact ID.
+  !#VA(artMod:x); OUT. Artifact modifier.
+
+  !?FU(ChangeArtModAtSlot);
+  ; Changes artifact modifier in specified hero slot. Usually modifier is spell ID for spell scrolls or (NO_ART_MOD).
+  !#VA(hero:x);   Hero ID or (CURRENT_HERO)
+  !#VA(slot:x);   Slot ID (backpack is supported).
+  !#VA(artMod:x); Artifact modifier.
+
+[+] The following functions were changed in Era Erm Framework:
+
+  !?FU(EquipArtToSlot);
+  ; Tries to put artifact to specified hero doll slot, triggering OnEquipArt event. Returns success flag.
+  !#VA(hero:x);   ID of hero to equip artifact to.
+  !#VA(art:x);    ID of artifact to equipt.
+  !#VA(artMod:x); Artifact modifier or (NO_ART_MOD). For spell scrolls it's spell ID. For other artifacts the value is usually ignored.
+                ; Custom artifact modifiers may be implemented. Artifact modifier is always carried with artifact by game functions.
+  !#VA(slot:x);   ID of hero doll slot to put artifact in or (NO_ART_SLOT) for autodetection.
+  !#VA(result:x); Boolean. Success flag.
+
+  !?FU(GetHeroPrimarySkillsWithoutArts);
+  ; ...
+  The function correctly handles artifact modifiers now, including spell IDs of magic scrolls.
+
+[+] Added KEY_ENTER constant to Era Erm Framework, as alias to KEY_RETURN.
+
+[+] Added new exported functions to era.dll:
+  - PcxPngExists (const PcxName: pchar): integer; stdcall;
+    Tries to load PNG replacement for pcx file name and returns success flag (0 or 1).
+
+[+] Added support for LMB popup dialogs positioning at click coordinates.
+[+] Included updated zutorial.tut file by Archer.
+[-] Fixed crash in OnAICalcStackAttackEffect event, occuring on attempt to get tower stack ID by invalid position (251, 254, 255). Credits: daemon_n.
+[-] Fixed bug: composite images with pcx16 background didn't use to respect pcx redirections.
+
+
+Version 3.9.1 (09/2021)
+------------------------
+[+] Improved RMB popups positioning in all game screens for dialogs with text and 0..3 pictures.
+
+[+] Added "Tools/PngCrush" utility to optimize png images and "optimize_png.bat" script for batch image optimization.
+    Either copy "pngcrush.exe" and "optimize_png.bat" to root directory with png files and subdirectories or run "optimize_png.bat", passing path to png directory as the only argument.
+
+[+] acredit.smk coordinates, specified in "era.acredit_pos.x" and "era.acredit_pos.y" json config keys can be out of 800x600 bounds now.
+    Set them to -1/-1 to disable main menu smk video at all.
+
+[*] PNG replacements will not be used for any fallback resources (resources specified as values in "Data\Redirections\Missing\*.json" configs).
+    Use WoG resource names instead. Example: 'zpic1005.png' for main menu background instead of "gamselbk.png".
+
+[-] Fixed SoD bug: text and pictures were not properly centered in dialogs with text and 0-3 pictures.
+[-] Fixed bug: special shadows colors didn't work for adventure map objects without flags.
+[-] Fixed bug: it was not possible to use WoG resource names if resources were redirected to another resources using "Data\Redirections\Missing\*.json" mechanism.
+[-] Fixed bug: png palette colorization in player colors was invalid. Multiple player colors were used for the same image.
+[-] Fixed bug: composite images didn't work with zip archives.
+
+
 Version 3.9 (09/2021)
 ------------------------
 [+] Added support for zip archives. All zip archives from "Data" directory are automatically scanned for PNG files at game start.
@@ -575,7 +817,7 @@ Version 3.4.0 (04/2021)
   Note, that regular constants are also supported:
   !!IF:M^%(array[PLAYER_TEAL])^;
 
-[+] Implemented automatical static and dynamical index checking for ERM 2.0 arrays. Invalid indexes are reported and forced to valid range.
+[+] Implemented automatical static and dynamic index checking for ERM 2.0 arrays. Invalid indexes are reported and forced to valid range.
 
   Example:
 
@@ -2440,7 +2682,7 @@ Version 3.0.0 (06/2020)
   !!HE(hero):S(skill)/?(result);
 
   !?FU(...); some event
-  !!FU(BH_GetHeroSecSkill)/(HERO_XERON)/(SKILL_FIRST_AID)/?(xeronFirstAidLevel:y); so what's the level of First Aid skill Xeron has? )
+  !!FU(BH_GetHeroSecSkill):P(HERO_XERON)/(SKILL_FIRST_AID)/?(xeronFirstAidLevel:y); so what's the level of First Aid skill Xeron has? )
 
   --- Redeclaration ---
   If you need to declare variable in both branches of if-then block, specify type/length in both of them.
@@ -2638,7 +2880,7 @@ Version 3.0.0 (06/2020)
     performance (from linear search to binary tree search). Savegames format was changed.
 
 [+] Added VR:C alternative for SN:M arrays. New command !!SN:V#1/#2/$3...up to $21 allows to set/check/get/modify
-    many items of dynamical array (working with Vector).
+    many items of dynamic array (working with Vector).
     #1 - SN:M array ID.
     #2 - starting index
     $3... - items at starting index, starting index + 1, starting index + 2, etc.
@@ -2770,7 +3012,7 @@ Version 3.0.0 (06/2020)
 
 [+] SN:D may be used now in battle, being equal to BU:R.
 
-[+] Added support for trigger local dynamical arrays. !!SN:M-1/#/#/-1 will allocate new dynamical array
+[+] Added support for trigger local dynamic arrays. !!SN:M-1/#/#/-1 will allocate new dynamic array
     with ID, that will be automatically released after current trigger is exited. Thus no
     corresponding !!SN:M# is necessary to release this temporary array. It can be used, for instance,
     for large calculations or to pass string arguments to function.
@@ -2790,7 +3032,7 @@ Version 3.0.0 (06/2020)
     ; here array with (dlgStrings) ID will be automatically freed, same as SN:M(dlgStrings);
 
     !?FU(PM_ShowDialog);
-    ; (dlgStrings:x) - dynamical array of 4 strings
+    ; (dlgStrings:x) - dynamic array of 4 strings
     ; (items[3]:z)
     !!SN:M(dlgStrings)/0/?(caption:z);
     !!SN:M(dlgStrings)/1/?(items[0]);
@@ -2801,4 +3043,4 @@ Version 3.0.0 (06/2020)
     (items[1])
     (items[2])^;
 
-[-] Fixed memory leakage in SN:M dynamical arrays deallocation and a few other places.
+[-] Fixed memory leakage in SN:M dynamic arrays deallocation and a few other places.

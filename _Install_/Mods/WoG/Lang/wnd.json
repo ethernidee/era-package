@@ -8,7 +8,8 @@
     
     "dlg_wog_options": {
       "intro_font": "bigfont2.fnt",
-      "bttn_name": "{WoG Options}"
+      "bttn_name": "{WoG Options}",
+      "use_json_strings": "on"
     },
     
     "dlg_crexpo": {

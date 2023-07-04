@@ -94,7 +94,7 @@ pending_on_activated_async_callbacks = {
 view_event_listener_excluded_callbacks = {
     'on_clone',
     'on_clone_async',
-    'on_exit'
+    'on_exit',
     'on_init',
     'on_load_project',
     'on_load_project_async',
@@ -668,7 +668,7 @@ def check_text_change_listeners(buf):
             if want and not found:
                 cls().attach(buf)
             elif found and not want:
-                instance.detach(buf)
+                instance.detach()
 
 
 def detach_buffer(buf):
@@ -1612,7 +1612,7 @@ class TextChangeListener:
     def is_attached(self):
         """ Check whether the listener is receiving events from a buffer.
 
-        May not be called from __init__.
+        May not be called from `__init__`.
         """
         return self.__key is not None
 

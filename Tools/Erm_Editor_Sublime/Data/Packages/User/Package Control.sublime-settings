@@ -5,6 +5,7 @@
 	],
 	"installed_packages":
 	[
+		"ConvertToUTF8",
 		"Emmet",
 		"Package Control"
 	],

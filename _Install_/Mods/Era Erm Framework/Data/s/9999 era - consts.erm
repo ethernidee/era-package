@@ -206,6 +206,8 @@ ZVSE2
 !#DC(ANY_HERO)          = -1;
 !#DC(NO_DEFENDING_HERO) = -2;
 !#DC(CURRENT_HERO)      = -1;
+!#DC(HERO_ATTACKER)     = -10;
+!#DC(HERO_DEFENDER)     = -20;
 !#DC(HERO_FIRST)        = 0;
 !#DC(HERO_ORRIN)        = 0;
 !#DC(HERO_VALESKA)      = 1;
@@ -693,6 +695,8 @@ ZVSE2
 
 ; =========  HERO ARTIFACT SLOTS  =========
 !#DC(NO_ART_SLOT)                = -1;
+!#DC(ART_SLOT_FIRST)             = 0;
+!#DC(ART_SLOT_EQUIPPED_FIRST)    = 0;
 !#DC(ART_SLOT_HEAD)              = 0;
 !#DC(ART_SLOT_SHOULDERS)         = 1;
 !#DC(ART_SLOT_NECK)              = 2;
@@ -714,8 +718,10 @@ ZVSE2
 !#DC(ART_SLOT_CATAPULT)          = 16;
 !#DC(ART_SLOT_SPELL_BOOK)        = 17;
 !#DC(ART_SLOT_MISC_5)            = 18;
+!#DC(ART_SLOT_EQUIPPED_LAST)     = (ART_SLOT_MISC_5);
 !#DC(ART_SLOT_BACKPACK_FIRST)    = 19;
 !#DC(ART_SLOT_BACKPACK_LAST)     = 82;
+!#DC(ART_SLOT_LAST)              = (ART_SLOT_BACKPACK_LAST);
 ; =======  END HERO ARTIFACT SLOTS  =======
 
 
@@ -905,12 +911,20 @@ ZVSE2
 !#DC(ART_BLANK_BOOTS)                     = 169;
 !#DC(ART_BLANK_HORN)                      = 170;
 !#DC(ART_LAST_WOG)                        = 170;
+!#DC(ART_META_SPELLBOOK)                  = 1000; used by HE:A command, not a real ID
+!#DC(ART_META_SPELL_SCROLL_FIRST)         = 1001; used by HE:A command, not a real ID
 ; =============  END ARTIFACTS  =============
+
+
+; ===========  ARTFIACT MODIFIERS  ===========
+!#DC(NO_ART_MOD) = -1;
+; =========  END ARTFIACT MODIFIERS  =========
 
 
 ; =============  OBJECT TYPES  =============
 !#DC(NO_OBJ)                          = -1;
 !#DC(ANY_OBJ)                         = -1;
+!#DC(CURRENT_OBJ)                     = 998; short syntax for v998/v999/v1000, storing object coordinates
 !#DC(OBJ_FIRST)                       = 0;
 !#DC(OBJ_STUB)                        = 0;
 !#DC(OBJ_BLANK_1)                     = 1;
@@ -1260,8 +1274,9 @@ ZVSE2
 
 
 ; ========== BATTLE HEXES ==============
-!#DC(BATTLE_HEX_FIRST) = 0;
-!#DC(BATTLE_HEX_LAST)  = 186;
+!#DC(BATTLE_HEX_FIRST)     = 0;
+!#DC(BATTLE_HEX_LAST)      = 186;
+!#DC(BATTLE_HEXES_PER_ROW) = 17;
 ; ======== END BATTLE HEXES ============
 
 
@@ -1598,9 +1613,9 @@ ZVSE2
 !#DC(PIC_TYPE_PRIM_SKILL_FIRST)         = 31;
 !#DC(PIC_TYPE_SKILL_ATTACK)             = 31;
 !#DC(PIC_TYPE_SKILL_DEFENSE)            = 32;
-!#DC(PIC_TYPE_SKILL_KNOWLEDGE)          = 33;
-!#DC(PIC_TYPE_SKILL_POWER)              = 34;
-!#DC(PIC_TYPE_PRIM_SKILL_LAST)          = (PIC_TYPE_SKILL_POWER);
+!#DC(PIC_TYPE_SKILL_POWER)              = 33;
+!#DC(PIC_TYPE_SKILL_KNOWLEDGE)          = 34;
+!#DC(PIC_TYPE_PRIM_SKILL_LAST)          = (PIC_TYPE_SKILL_KNOWLEDGE);
 !#DC(PIC_TYPE_SPELL_POINTS)             = 35;
 !#DC(PIC_TYPE_MONEY)                    = 36;
 ; =======  END H3 DIALOG PICTURE TYPES  =======
@@ -1738,11 +1753,14 @@ ZVSE2
 
 
 ; =============  GAME MANAGERS  =============
+!#DC(ADV_MANAGER)    = 6918840;
 !#DC(GAME_MANAGER)   = 6919480;
 !#DC(TOWN_MANAGER)   = 6919500;
 !#DC(WND_MANAGER)    = 6918864;
 !#DC(SOUND_MANAGER)  = 6919188;
 !#DC(COMBAT_MANAGER) = 6919200;
+!#DC(RECRUIT_MANAGER)= 6990524;
+
 ; ===========  END GAME MANAGERS  ===========
 
 
