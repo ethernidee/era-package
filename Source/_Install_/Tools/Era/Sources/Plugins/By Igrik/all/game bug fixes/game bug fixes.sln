@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game bug fixes", "game bug fixes\game bug fixes.vcxproj", "{D33DE757-143D-49A0-AF05-6FD14821E6FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D33DE757-143D-49A0-AF05-6FD14821E6FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D33DE757-143D-49A0-AF05-6FD14821E6FD}.Debug|Win32.Build.0 = Debug|Win32
+		{D33DE757-143D-49A0-AF05-6FD14821E6FD}.Release|Win32.ActiveCfg = Release|Win32
+		{D33DE757-143D-49A0-AF05-6FD14821E6FD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F95E2788-C27D-4BE5-93A3-6B5854489B41}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,30 @@
+{
+	"caption": {
+		"Cn_Simp": "简单秘籍",
+		"en_US": "Easy Cheats",
+		"ru_RU": "Лёгкие Читы"
+	},
+
+	"description": {
+		"full": {
+			"Cn_Simp": "",
+			"en_US": "description.txt",
+			"ru_RU": "description_rus.txt"
+		}
+	},
+	"author": "Berserker",
+	"homepage": "",
+	"icon": {
+		"file": "easy cheats.ico",
+		"index": 0
+	},
+	"version": "1.1.3",
+	"mod_version": "1.1.3",
+
+	"requires": {
+		"WoG": ">= 3.9.15",
+		"Era Erm Framework": ">= 3.9.15"
+	},
+
+	"category": "cheats"
+}
